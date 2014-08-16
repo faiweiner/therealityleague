@@ -87,4 +87,16 @@ RSpec.describe League, :type => :model do
       it { expect(@league3).to be_invalid }
     end
   end
+
+  describe '#gen_league_key' do
+    #FIXME!
+  end
+
+  describe '#gen_league_password' do
+    #FIXME!
+  end
+
+  describe '#set_up_league' do
+    #FIXME!
+  end
 end
