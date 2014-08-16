@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140816030214) do
+ActiveRecord::Schema.define(version: 20140816170129) do
 
   create_table "contestants", force: true do |t|
     t.string  "name"
@@ -30,7 +30,8 @@ ActiveRecord::Schema.define(version: 20140816030214) do
   end
 
   create_table "episodes", force: true do |t|
-    t.integer "show_id"
+    t.integer  "show_id"
+    t.datetime "air_date"
   end
 
   create_table "leagues", force: true do |t|
