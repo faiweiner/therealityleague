@@ -26,7 +26,7 @@ class League < ActiveRecord::Base
 
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
-	
+
 	private
 	def gen_league_key
 		self.league_key = SecureRandom.hex(5)
@@ -37,7 +37,7 @@ class League < ActiveRecord::Base
 	end
 
 	def set_up_league
-		if public_access == false #which means this league is private
+		if public_access == false # if the league is private
 			gen_league_key
 			gen_league_password
 		end

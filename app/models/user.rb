@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 	validates :email, :presence => true, :uniqueness => true, :length => { :minimum => 6 }, :on => :create
 	validates_format_of :username, :with => EmailRegex
 	validates :username, :presence => true, :uniqueness => true, :length => { :minimum => 6 }, :on => :create
-	validates :password, length: { in: 6..20 }
+	validates :password, length: { in: 6..20 }, :confirmation => true
 
 end
 

@@ -18,6 +18,7 @@
 require 'rails_helper'
 
 RSpec.describe League, :type => :model do
+  # ---- associations ---- #
 	it { is_expected.to have_and_belong_to_many(:users) }
   it { is_expected.to belong_to(:show) }
   it { is_expected.to have_many(:rosters) } # Through users
@@ -27,15 +28,16 @@ RSpec.describe League, :type => :model do
   pending 'associations with future models' do
     it { is_expected.to have_many(:scores) }
 	end
-
+  # ---- dummy data ---- #
 	before do
 		# private league
 		@league1 = League.create(:name => 'The Best Private League', :commissioner_id => 2, :show_id => 2, :public_access => false, :draft_type => :fantasy, :scoring_system => 2)
 		# public leagues
 		@league2 = League.create(:name => 'The Public League', :commissioner_id => 1, :show_id => 2, :public_access => true, :draft_type => :bracket, :scoring_system => 2)
-    @league3 = League.create(:name => '', :commissioner_id => '', :show_id => '', :public_access => true, :draft_type => :bracket, :scoring_system => 2 )
+    @league3 = League.create(:name => '', :commissioner_id => '', :show_id => '', :public_access => true, :draft_type => '', :scoring_system => 2 )
 	end
   
+  # ---- general testing ---- #
   describe 'name field' do
     it 'should have a name' do
     	expect(@league1.name).to eq 'The Best Private League'

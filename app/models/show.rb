@@ -18,5 +18,9 @@ class Show < ActiveRecord::Base
 	has_many :contestants
 	has_many :episodes
 	has_many :contestants
-	# belongs_to :scoring
+	# belongs_to :score
+
+	validates :name, :presence => true, :on => :create
+	validates :premiere_date, :presence => true, :on => :create
+	validates :draft_close_date, :presence => true, :on => :create
 end
