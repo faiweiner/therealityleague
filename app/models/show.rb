@@ -23,4 +23,11 @@ class Show < ActiveRecord::Base
 	validates :name, :presence => true, :on => :create
 	validates :premiere_date, :presence => true, :on => :create
 	validates :draft_close_date, :presence => true, :on => :create
+	# FIXME! put in a check for draft_close_date to be 
+
+	private
+
+	def self.check_draft_date
+		self.draft_close_date.change(day: 5)
+	end
 end

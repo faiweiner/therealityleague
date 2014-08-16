@@ -59,6 +59,8 @@
         1,
         1,
         1,
+        null,
+        null,
         null
       ],
       "/Users/Fai/Desktop/deployment/reality_app/app/models/contestant.rb": [
@@ -146,6 +148,6 @@
         null
       ]
     },
-    "timestamp": 1408177799
+    "timestamp": 1408181789
   }
 }
