@@ -25,7 +25,4 @@ class Show < ActiveRecord::Base
 	validates :draft_close_date, :presence => true, :on => :create
 	# FIXME!
 	# validates_time :draft_close_date, :on_or_before => calculate_draft_close
-
-	private
-
 end

@@ -46,6 +46,27 @@
         1,
         1,
         1,
+<<<<<<< HEAD
+=======
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        null
+      ],
+      "/Users/Fai/Desktop/deployment/reality_app/app/models/contestant.rb": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+>>>>>>> 912b173276578704a094605713ef5cf478eb1737
         null,
         1,
         1,
@@ -100,6 +121,10 @@
         null
       ]
     },
+<<<<<<< HEAD
     "timestamp": 1408208970
+=======
+    "timestamp": 1408181789
+>>>>>>> 912b173276578704a094605713ef5cf478eb1737
   }
 }
