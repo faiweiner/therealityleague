@@ -25,6 +25,8 @@ class League < ActiveRecord::Base
 	before_save :set_up_league
 
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
+	validates :commissioner_id, :presence => true
+	
 	private
 	def gen_league_key
 		self.league_key = SecureRandom.hex(5)

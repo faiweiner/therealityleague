@@ -44,20 +44,45 @@ RSpec.describe League, :type => :model do
     context 'when name is empty' do
       it { expect(@league3).to be_invalid }
     end
-
   end
 
-  it 'should have a commissioner assigned' do
-		expect(@league1.commissioner_id).to_not eq nil
+  describe 'commissioner field' do
+    it 'should have a commissioner' do
+  		expect(@league1.commissioner_id).to eq 2
+    end
+    context 'when a commissioner is not assigned' do
+      it { expect(@league3).to be_invalid }
+    end
   end
 
-  it 'should have empty league key and password if it\'s a public league' do
-  	expect(@league2.public_access).to be(true)
+  describe 'show ID field' do
+    it 'should have a show' do
+      expect(@league1.show_id).to eq 2
+    end
+    context 'when a show is not assigned' do
+      it { expect(@league3).to be_invalid }
+    end
   end
 
-  it 'should assign league key and password if it\'s a private league' do
-  	expect(@league1.public_access).to be(false)
-  	expect(@league1.league_key).to be
-  	expect(@league1.league_password).to be
+  describe 'public and private league access' do
+    it 'should have empty league key and password if it\'s a public league' do
+    	expect(@league2.public_access).to be(true)
+    end
+
+    it 'should assign league key and password if it\'s a private league' do
+    	expect(@league1.public_access).to be(false)
+    	expect(@league1.league_key).to be
+    	expect(@league1.league_password).to be
+    end
+  end
+
+  describe 'draft type field' do
+    it 'should have a draft type' do
+      expect(@league1.draft_type).to eq :fantasy 
+      expect(@league2.draft_type).to eq :bracket
+    end
+    context 'when a draft type is not assigned' do
+      it { expect(@league3).to be_invalid }
+    end
   end
 end
