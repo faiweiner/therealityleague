@@ -25,22 +25,30 @@ RSpec.describe League, :type => :model do
 
   # FIXME
   pending 'associations with future models' do
-    it { is_expected.to have_one(:scores) }
+    it { is_expected.to have_many(:scores) }
 	end
 
 	before do
 		# private league
 		@league1 = League.create(:name => 'The Best Private League', :commissioner_id => 2, :show_id => 2, :public_access => false, :draft_type => :fantasy, :scoring_system => 2)
-		# public league
+		# public leagues
 		@league2 = League.create(:name => 'The Public League', :commissioner_id => 1, :show_id => 2, :public_access => true, :draft_type => :bracket, :scoring_system => 2)
+    @league3 = League.create(:name => '', :commissioner_id => '', :show_id => '', :public_access => true, :draft_type => :bracket, :scoring_system => 2 )
 	end
   
-  it 'should have a name' do
-  	expect(@league1	.name).to eq 'The Best Private League'
+  describe 'name field' do
+    it 'should have a name' do
+    	expect(@league1.name).to eq 'The Best Private League'
+      expect(@league2.name).to eq 'The Public League'
+    end
+    context 'when name is empty' do
+      it { expect(@league3).to be_invalid }
+    end
+
   end
 
   it 'should have a commissioner assigned' do
-		expect(@league1.commissioner_id).to eq 2
+		expect(@league1.commissioner_id).to_not eq nil
   end
 
   it 'should have empty league key and password if it\'s a public league' do
