@@ -13,7 +13,6 @@
 #  updated_at       :datetime
 #
 
-# IF THIS THING DOESNT CONVER TO TWO TABS I WILL FLIP THE CRAP!
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
