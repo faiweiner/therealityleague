@@ -2,6 +2,10 @@ class UsersController < ApplicationController
 	before_action :check_if_logged_in, :except => [:new, :create]
 	before_action :save_login_state, :only => [:new, :create]
 
+	def index
+		
+	end
+	
 	def new
 		@user = User.new
 	end

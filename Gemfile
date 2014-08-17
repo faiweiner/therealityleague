@@ -33,9 +33,10 @@ gem 'validates_timeliness'
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.0.0'
- 	gem 'minitest'
+	gem 'minitest'
 	gem 'shoulda-matchers'			# help with associations
 	gem 'simplecov', :require => false
+	gem "factory_girl_rails", "~> 4.0"
 end
 # Use unicorn as the app server
 # gem 'unicorn'
