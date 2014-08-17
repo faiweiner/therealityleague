@@ -1,38 +1,6 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/application_helper.rb": [
-        1,
-        null
-      ],
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/contestants_helper.rb": [
-        1,
-        null
-      ],
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/episodes_helper.rb": [
-        1,
-        null
-      ],
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/leagues_helper.rb": [
-        1,
-        null
-      ],
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/rosters_helper.rb": [
-        1,
-        null
-      ],
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/rounds_helper.rb": [
-        1,
-        null
-      ],
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/shows_helper.rb": [
-        1,
-        null
-      ],
-      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/helpers/users_helper.rb": [
-        1,
-        null
-      ],
       "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/user.rb": [
         null,
         null,
@@ -67,8 +35,148 @@
         null,
         null,
         null
+      ],
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/league.rb": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        null,
+        1,
+        1,
+        null,
+        1,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        0,
+        0,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/roster.rb": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        null
+      ],
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/contestant.rb": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null
+      ],
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/show.rb": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        null
+      ],
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/round.rb": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null
       ]
     },
-    "timestamp": 1408264495
+    "timestamp": 1408272631
   }
 }
