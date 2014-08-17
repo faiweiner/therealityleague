@@ -36,7 +36,7 @@ group :test, :development do
 	gem 'minitest'
 	gem 'shoulda-matchers'			# help with associations
 	gem 'simplecov', :require => false
-	gem 'factory_girl_rails', :require => false
+	gem 'factory_girl_rails'
 end
 # Use unicorn as the app server
 # gem 'unicorn'
