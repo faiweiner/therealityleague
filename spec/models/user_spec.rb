@@ -26,7 +26,7 @@ RSpec.describe User, :type => :model do
 
 	# ---- dummy data ---- #
 	before do
-		@user1 = User.create(:email => 'user1@email.com', :username => 'username1', :password => 'chicken', :password_confirmation => 'chicken')
+		@user1 = FactoryGirl.create(:user)
 		@user2 = User.create(:email => 'user2@email.com', :username => 'username2', :password => 'chicken', :password_confirmation => 'chicken')
 		# user with invalid email address
 		@user3 = User.create(:email => '', :username => 'username3', :password => 'chicken', :password_confirmation => 'chicken')
