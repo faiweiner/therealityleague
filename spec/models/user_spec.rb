@@ -13,6 +13,7 @@
 #  updated_at       :datetime
 #
 
+# IF THIS THING DOESNT CONVER TO TWO TABS I WILL FLIP THE CRAP!
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
@@ -76,7 +77,7 @@ RSpec.describe User, :type => :model do
 
 	end
 
-	# # username
+	# username
 	describe 'username field' do
 
 		it 'should have a username' do
@@ -137,13 +138,13 @@ RSpec.describe User, :type => :model do
 		end
 
 		context 'when password is not present' do
-		  it 'should be invalid' do
-		  	expect(FactoryGirl.build(:user, password: '', password_confirmation: '')).to be_invalid
-		  end
+			it 'should be invalid' do
+				expect(FactoryGirl.build(:user, password: '', password_confirmation: '')).to be_invalid
+			end
 		end
 
 		context 'when passwords don\'t match' do
-		  it { expect(FactoryGirl.build(:user, password: 'turkey', password_confirmation: 'chicken')).to be_invalid }
+			it { expect(FactoryGirl.build(:user, password: 'turkey', password_confirmation: 'chicken')).to be_invalid }
 		end
 	end
 end
