@@ -1,4 +1,4 @@
-<h1>Welcome to The Reality League</h1>
+<h1>The Reality League</h1>
 
 <!-- Render latest scores and updates if USER is logged in -->
 <% if @current_user.present? %>
@@ -28,17 +28,38 @@
 
 <!-- Render  -->
 <% else %>
-  <h3>Gamify your music knowledge.</h3>
-  <p>See how fast you can identify songs.</p>
+  <h3>Welcome to the best place to play Fantasy Reality TV</h3>
+  <p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
   <br>   
-  <%= link_to(content_tag(:div, 'Sign up', class:"button"), new_user_path) %>
-  <%= link_to(content_tag(:div, 'Sign in', class:"button"), login_path) %>
-  <h3>Find your Genre.</h3>
-  <p>Shuffle has access to thousands of public playlist to choose from!</p>
-  <p>See if you can find your favorite — if not, just let us know.</p>
+  <%= link_to(content_tag(:div, 'Sign up', class:"button btn-primary"), new_user_path) %>
+  <%= link_to(content_tag(:div, 'Sign in', class:"button btn-primary"), login_path) %>
+  <h2>How it works</h2>
 
-  <h3>Powered by</h3>
-  <img src="http://spotifypresscom.files.wordpress.com/2013/01/spotify-logo-primary-vertical-dark-background-rgb.jpg" alt="spotify-icon" class="med-img-by-width">
-  <p>Shuffla runs on Spotify - you must have a Spotify account in order to play Shuffla.</p>
+	<p>Play "fantasy" games with your favorite reality TV shows. Pick your "dream team" from the pool of contestants on a show and watch as they earn points for you over the course of the season. Whether you join a public or a private league, the goal is always the same: earn as many points as possible to win!</p>
+
+	<p>There are many ways for each team's contestants to earn points; scoring rules are set at the beginning of the season and are listed on each show's scoring system.</p>
+
+	<p>Can't decide on a favorite show? Join them all! Players can join as many leagues as they wish - for as many reality TV programs as we offer.</p>
+
+	<h3>Step 1: Register</h3>
+
+	<p>Email or Facebook. Once we've confirmed your email address, you are good to go.</p>
+
+	<h3>Step 2: Browse Shows</h3>
+	
+	<p>Search through a selection of featured reality shows. Get to know the game and the player, then select a show to play on.</p>
+
+	<h3>Step 3: Create or Join a League</h3>
+
+	<p>Play in an existing public league to compete with total strangers or create your own public league that anyone can join!</p>
+
+	<p>Want to start an office league? Create your own private league or join one already created by one of your friends. League access is invite-only and cannot be viewed by the public. To join an existing private league, simply follow the instructions in the invitation email sent by the commissioner.</p>
+
+	<h3>Step 4: Draft Contestants</h3>
+	<p>The roster makes or breaks your chances, so choose your contestants wisely!</p>
+
+	<h3>Step 5: Watch The Show and Play!</h3>
+
+	<p>Once you have joined a league and drafted your contestants, you can sit back, relax and watch the show. Keep track of your score on your league's page. You can read commentary and get the latest analyst on the season on our Resources tab. Draft wisely, have fun, and good luck!!</p>
   
 <% end %>
