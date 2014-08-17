@@ -31,7 +31,7 @@ RSpec.describe User, :type => :model do
 		# existence and uniqueness
 		it 'shold have an email' do
 			user = FactoryGirl.create(:user)
-			user_email = FactoryGirl.attributes_for(:user)[:email]
+			user_email = user.email
 			expect(user.email).to eq user_email
 		end
 
@@ -47,7 +47,7 @@ RSpec.describe User, :type => :model do
 		context 'when an email address is not unique' do
 			it 'should fail' do
 				user = FactoryGirl.create(:user)
-				expect(FactoryGirl.build(:user, username: 'newuser')).to be_invalid
+				expect(FactoryGirl.build(:user, email: 'username1@email.com')).to be_invalid
 			end
 		end
 
