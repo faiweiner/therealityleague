@@ -5,4 +5,8 @@ FactoryGirl.define do
 		password 'chicken'
 		password_confirmation 'chicken'
 	end
+
+	trait :bad do
+		email '@'
+	end
 end
