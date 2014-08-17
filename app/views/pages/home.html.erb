@@ -1,3 +1,44 @@
-<h1>Hello World</h1>
+<h1>Welcome to The Reality League</h1>
 
-<%= link_to('Users', users_path) %>
+<!-- Render latest scores and updates if USER is logged in -->
+<% if @current_user.present? %>
+  <div>
+    <% if flash[:notice].present? %>
+      <div class="notice">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <div id="instructions">
+      <div id="play_inst">
+        <h3>How to play</h3>
+        <p>1. Click PLAY button to begin song</p>
+        <p>2. Guest fast for more points</p>
+        <p>3. Click PLAY button again when the timer reloads <br>to play the next question</p>
+      </div>
+      <div id="scoring_inst">
+        <h3>Scoring System</h3>
+        <p>Compete with your friends</p>
+        <p><strong>10 points</strong> for every correct guess</p>
+        <p><strong>Bonus points</strong> awarded by speed</p>
+      </div>
+    </div>
+  </div>
+<!--   <%= render partial: "/games/scoreboard" %> -->
+
+<!-- Render  -->
+<% else %>
+  <h3>Gamify your music knowledge.</h3>
+  <p>See how fast you can identify songs.</p>
+  <br>   
+  <%= link_to(content_tag(:div, 'Sign up', class:"button"), new_user_path) %>
+  <%= link_to(content_tag(:div, 'Sign in', class:"button"), login_path) %>
+  <h3>Find your Genre.</h3>
+  <p>Shuffle has access to thousands of public playlist to choose from!</p>
+  <p>See if you can find your favorite — if not, just let us know.</p>
+
+  <h3>Powered by</h3>
+  <img src="http://spotifypresscom.files.wordpress.com/2013/01/spotify-logo-primary-vertical-dark-background-rgb.jpg" alt="spotify-icon" class="med-img-by-width">
+  <p>Shuffla runs on Spotify - you must have a Spotify account in order to play Shuffla.</p>
+  
+<% end %>
