@@ -1,9 +1,8 @@
-== README
+== The Reality League App - Version 0.0.1
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project combines my two guilty pleasures into one: recreational gambling and competitive reality TV shows.
 
-Things you may want to cover:
+The Reality League is the next Yahoo!Fantasy for those who wish to put a wager on the performance of contestants on competitive reality TV shows. More to come!
 
 * Ruby version
 

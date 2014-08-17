@@ -9,8 +9,10 @@ RSpec.describe UsersController, :type => :controller do
 		end
 
 		describe "GET #index" do 
-			it "populates a list of all users" 
-			it "renders the :index view" 
+			it "populates a list of all users" do
+			end
+			it "renders the :index view" do
+			end
 		end 
 		describe "POST #create" do 
 			context "with valid attributes" do 
