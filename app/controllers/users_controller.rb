@@ -40,18 +40,18 @@ class UsersController < ApplicationController
 	private
 
 	def user_params
-    params.require(:user).permit(:email, :username, :avatar, :password, :password_confirmation)
-  end
+		params.require(:user).permit(:email, :username, :avatar, :password, :password_confirmation)
+	end
 
 	def find_current_user
-    User.find(@current_user.id)
-  end
+		User.find(@current_user.id)
+	end
 
-  def check_if_logged_in
-    redirect_to(root_path) if @current_user.nil?
-  end
-  
-  def check_if_admin
-    redirect_to(root_path) unless @current_user.is_admin?
-  end
+	def check_if_logged_in
+		redirect_to(root_path) if @current_user.nil?
+	end
+	
+	def check_if_admin
+		redirect_to(root_path) unless @current_user.is_admin?
+	end
 end
