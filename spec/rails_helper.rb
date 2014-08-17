@@ -9,7 +9,6 @@ if ENV['RAILS_ENV'] == 'test'
   require 'simplecov'
   SimpleCov.start 'rails'
   puts "required simplecov"
-  # FactoryGirl.find_definitions 
 end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -26,10 +25,6 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
-  # config.before(:suite) do
-  #   FactoryGirl.lint
-  # end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
