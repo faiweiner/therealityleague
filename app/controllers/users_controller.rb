@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-	# before_action :check_if_logged_in, :except => [:new, :create]
-	# before_action :save_login_state, :only => [:new, :create]
+	
+	before_action :check_if_logged_in, :except => [:new, :create]
+	before_action :save_login_state, :only => [:new, :create]
 
 	def index
 		@users = User.all
@@ -26,11 +27,16 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		
+		@user = @current_user
 	end
 
 	def update
-		
+		if @current_user.update(user_params)
+      redirect_to user_path
+    else
+      @user = @current_user
+      render :edit
+    end
 	end
 
 	def show

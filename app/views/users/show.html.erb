@@ -2,8 +2,8 @@
 
 <p>
   <strong>Name:</strong>
-  <%= @user.name %>
+  <%= @current_user.username %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Edit', edit_user_path(@current_user.id) %> |
 <%= link_to 'Back', users_path %>

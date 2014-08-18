@@ -1,6 +1,6 @@
 <h1>The Reality League</h1>
 
-<!-- Render latest scores and updates if USER is logged in -->
+<!-- CURRENT USER PRESENT> -->
 <% if @current_user.present? %>
   <div>
     <% if flash[:notice].present? %>
@@ -9,24 +9,28 @@
       </div>
     <% end %>
 
-    <div id="instructions">
-      <div id="play_inst">
-        <h3>How to play</h3>
-        <p>1. Click PLAY button to begin song</p>
-        <p>2. Guest fast for more points</p>
-        <p>3. Click PLAY button again when the timer reloads <br>to play the next question</p>
-      </div>
+    <div id="user_leagues_display">
       <div id="scoring_inst">
-        <h3>Scoring System</h3>
-        <p>Compete with your friends</p>
-        <p><strong>10 points</strong> for every correct guess</p>
-        <p><strong>Bonus points</strong> awarded by speed</p>
+        <h3>Your Leagues</h3>
+        <p>Scoreboard of all leagues go here <p/>
+        <p>League 1 <button>View League</button></p>
+        
+        <p>League 2 <button>View League</button></p>
       </div>
+
+      ! if no league !
+      <p>You are currently not a member of any league.</p>
+    </div>
+
+    <div class="nav_pane" id="access_league">
+      <button>Create League</button>
+      <button>Join League</button>
     </div>
   </div>
-<!--   <%= render partial: "/games/scoreboard" %> -->
+<!-- FIXME render partial in erb tag here -->
 
-<!-- Render  -->
+<!-- IF CURRENT USER DOES NOT EXIST -->
+
 <% else %>
   <h3>Welcome to the best place to play Fantasy Reality TV</h3>
   <p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>

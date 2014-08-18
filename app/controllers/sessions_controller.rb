@@ -13,6 +13,9 @@ class SessionsController	< ApplicationController
 			session[:user_id] = user.user_id
 			flash[:notice] = "Welcome back!"
 			redirect_to user_path(user.user_id)
+		else
+			flash[:notice] = "Invalid login. Please try again."
+      redirect_to login_path
 		end
 	end
 
