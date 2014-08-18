@@ -10,9 +10,9 @@
 #
 
 class Roster < ActiveRecord::Base
-	belongs_to :user
-	belongs_to :league
-	has_and_belongs_to_many :contestants
+	belongs_to :user, inverse_of: :rosters
+	belongs_to :league, through: :users
+	has_and_belongs_to_many :contestants, inverse_of: :rosters
 
 	validates :user_id, :presence => true
 	validates :league_id, :presence => true

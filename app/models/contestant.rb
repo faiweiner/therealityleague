@@ -14,8 +14,8 @@
 #
 
 class Contestant < ActiveRecord::Base
-	belongs_to :show
-	has_and_belongs_to_many :rosters
+	belongs_to :show, inverse_of: :contestants
+	has_and_belongs_to_many :rosters, inverse_of: :contestants
 
 	validates :name, :presence => true, :on => :create
 	validates :show_id, :presence => true, :on => :create

@@ -2,8 +2,9 @@
 	<span class="participating-leagues">
 		<h2>My Rosters and Leagues</h2>
 		<%= link_to(content_tag(:button, "Edit Rosters"), rosters_path) %>
+		<%= @current_user.leagues %>
 	</span>
-	<table id="all_leagues_table">
+	<table id="my_leagues_table">
 		<thead>
 			<tr>
 				<th>Name</th>

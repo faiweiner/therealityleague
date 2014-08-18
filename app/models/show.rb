@@ -14,10 +14,9 @@
 #
 
 class Show < ActiveRecord::Base
-	has_many :leagues
-	has_many :contestants
-	has_many :episodes
-	has_many :contestants
+	has_many :leagues, inverse_of: :show
+	has_many :contestants, inverse_of: :show
+	has_many :episodes, inverse_of: :show
 	# belongs_to :score
 
 	validates :name, :presence => true, :on => :create

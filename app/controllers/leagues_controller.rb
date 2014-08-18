@@ -24,8 +24,6 @@ class LeaguesController < ApplicationController
 			# Automatically adds the league to the list of leagues joined by the user
 			@current_user.leagues.create(id: @league.id)
 
-			debugger 
-			
 			# get customized text based on type
 			@access_type = nil
 			if @league.public_access == true
