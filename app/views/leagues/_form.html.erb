@@ -1,7 +1,7 @@
 <%= form_for(@league) do |f| %>
   <% if @league.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@league.errors.count, "error") %> prohibited this league from being saved:</h2>
+      <h2><%= pluralize(@league.errors.count, 'error') %> prohibited this league from being saved:</h2>
 
       <ul>
       <% @league.errors.full_messages.each do |message| %>
@@ -25,23 +25,23 @@
   <div class="field"> <!-- Public or private league, public default -->
     <%= f.label :league_access %><br>
     <%= f.radio_button :public_access, true %>
-    <%= f.label(:public, "Public league") %>
+    <%= f.label(:public, 'Public league') %>
     <%= f.radio_button(:public_access, false) %>
-    <%= f.label(:private, "Private league") %>
+    <%= f.label(:private, 'Private league') %>
   </div>
   <div class="field"> <!-- Draft type FIXME! -->
     <%= f.label :draft_type %><br>
     <%= f.radio_button :draft_type, true %>
-    <%= f.label(:fantasy, "Draft fantasy") %>
+    <%= f.label(:fantasy, 'Draft fantasy') %>
     <%= f.radio_button(:draft_type, false) %>
-    <%= f.label(:bracket, "Standard bracket") %>
+    <%= f.label(:bracket, 'Standard bracket') %>
   </div>
   <div class="field"> <!-- Scoring system FIXME! -->
     <%= f.label :scoring_system %><br>
     <%= f.radio_button :scoring_system, true %>
-    <%= f.label(:standard, "Standard") %>
+    <%= f.label(:standard, 'Standard') %>
     <%= f.radio_button(:scoring_system, false) %>
-    <%= f.label(:custom, "Custom") %>
+    <%= f.label(:custom, 'Custom') %>
   </div>
   <div class="actions">
     <%= link_to(content_tag(:button, 'Back'), leagues_path) %>

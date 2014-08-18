@@ -18,21 +18,28 @@ class LeaguesController < ApplicationController
 	def create
 		@league = League.new league_params
 		if @league.save
+			# Automatically adds the commissioner (user) as participant of the league
+			@league.users.create(id: @current_user.id)
 
+			# Automatically adds the league to the list of leagues joined by the user
+			@current_user.leagues.create(id: @league.id)
+
+			debugger 
+			
 			# get customized text based on type
 			@access_type = nil
 			if @league.public_access == true
-				@access_type = "public"
+				@access_type = 'public'
 			else
-				@access_type = "private"
+				@access_type = 'private'
 			end
-			flash[:notice] = "You've successfully created a #{access_type} league!"
+			flash[:notice] = 'You\'ve successfully created a #{@access_type} league!'
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
-			flash[:color] = "valid"
+			flash[:color] = 'valid'
 			redirect_to league_path(League.last)
 		else
-			flash[:notice] = "Something went wrong and we were unable to save your league"
-			flash[:color] = "invalid"
+			flash[:notice] = 'Something went wrong and we were unable to save your league'
+			flash[:color] = 'invalid'
 			render :new
 		end
 	end
