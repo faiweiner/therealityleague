@@ -35,8 +35,15 @@
   <h3>Welcome to the best place to play Fantasy Reality TV</h3>
   <p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
   <br>   
-  <%= link_to(content_tag(:div, 'Sign up', class:"button btn-primary"), new_user_path) %>
-  <%= link_to(content_tag(:div, 'Sign in', class:"button btn-primary"), login_path) %>
+  <%= link_to(content_tag(:div, 'Sign up', class: "button btn-primary"), new_user_path) %>
+  <%= link_to(content_tag(:div, 'Sign in', class: "button btn-primary"), login_path) %>
+
+  <h2>Browse Shows</h2>
+  <%= link_to(content_tag(:button, 'All Shows', class: ""), shows_path)%>
+  <%= render partial: 'featured_shows' %>
+
+  <h2>Access Leagues</h2>
+  <%= render partial: 'league_acccess_nav' %>
   <h2>How it works</h2>
 
 	<p>Play "fantasy" games with your favorite reality TV shows. Pick your "dream team" from the pool of contestants on a show and watch as they earn points for you over the course of the season. Whether you join a public or a private league, the goal is always the same: earn as many points as possible to win!</p>
