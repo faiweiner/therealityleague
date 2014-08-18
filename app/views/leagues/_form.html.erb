@@ -11,33 +11,40 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :reality_program %><br>
-    <%= f.select :show, options_for_select(Show.select_show) %>
+  <div class="field"> <!-- Hidden field commissioner ID -->
+    <%= f.hidden_field :commissioner_id, value: @current_user.id %>  
   </div>
-  <div class="field">
+  <div class="field"> <!-- Select reality show -->
+    <%= f.label :reality_show %><br>
+    <%= f.select :show, options_for_select(Show.select_show), autofocus: true %>
+  </div>
+  <div class="field"> <!-- Name of League -->
     <%= f.label :league_name %><br>
     <%= f.text_field :name %>
   </div>
-  <div class="field">
+  <div class="field"> <!-- Public or private league, public default -->
+    <%= f.label :league_access %><br>
     <%= f.radio_button :public_access, true %>
     <%= f.label(:public, "Public league") %>
     <%= f.radio_button(:public_access, false) %>
     <%= f.label(:private, "Private league") %>
   </div>
-  <div class="field">
-    <%= f.radio_button :public_access, true %>
-    <%= f.label(:public, "Public league") %>
-    <%= f.radio_button(:public_access, false) %>
-    <%= f.label(:private, "Private league") %>
+  <div class="field"> <!-- Draft type FIXME! -->
+    <%= f.label :draft_type %><br>
+    <%= f.radio_button :draft_type, true %>
+    <%= f.label(:fantasy, "Draft fantasy") %>
+    <%= f.radio_button(:draft_type, false) %>
+    <%= f.label(:bracket, "Standard bracket") %>
   </div>
-  <div class="field">
-    <%= f.radio_button :public_access, true %>
-    <%= f.label(:public, "Public league") %>
-    <%= f.radio_button(:public_access, false) %>
-    <%= f.label(:private, "Private league") %>
+  <div class="field"> <!-- Scoring system FIXME! -->
+    <%= f.label :scoring_system %><br>
+    <%= f.radio_button :scoring_system, true %>
+    <%= f.label(:standard, "Standard") %>
+    <%= f.radio_button(:scoring_system, false) %>
+    <%= f.label(:custom, "Custom") %>
   </div>
   <div class="actions">
+    <%= link_to(content_tag(:button, 'Back'), leagues_path) %>
     <%= f.submit %>
   </div>
 <% end %>

@@ -11,20 +11,19 @@ class LeaguesController < ApplicationController
 	def create
 		@league = League.new league_params
 		if @league.save
-			session[:user_id] = @user.id
 			flash[:notice] = "You've successfully signed up."
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = "valid"
-			redirect_to root_path
+			redirect_to league_path(League.last)
 		else
-			flash[:notice] = "Unsuccessful sign up, please try again."
+			flash[:notice] = "Something went wrong and we were unable to save your league"
 			flash[:color] = "invalid"
 			render :new
 		end
 	end
 
 	def show
-		
+		@league = League.last
 	end
 	def search
 		@public_leagues = League.where(:public_access => true)
