@@ -53,7 +53,9 @@ RSpec.describe UsersController, :type => :controller do
 	end
 
 	describe "GET #new" do 
-		it "assigns a new user to @user" 
+		it "assigns a new user to @user" do
+			expect(@user).to eq FactoryGirl.build(:user)
+		end
 		it "renders the :new template for user" 
 	end 
 
