@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 	post 'leagues/search/:search' => 'leagues#results'
 	resources :leagues
 	resources :users
+	resources :rosters
 
 	get '/login' => 'sessions#new'
 	post '/login' => 'sessions#login_attempt'

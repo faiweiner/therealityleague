@@ -1,7 +1,14 @@
 class LeaguesController < ApplicationController
 
 	def index
-		@leagues = League.all #FIXME!
+		# List of all leagues for full app's admin
+		@all_leagues = League.all
+
+		# List of participating leagues
+		@leagues = @current_user.leagues.where(id: @current_user.id)
+
+		# List of leagues of which user is the commissioner
+		@comm_leagues = League.where(commissioner_id: @current_user.id)
 	end
 	def new
 		@league = League.new 

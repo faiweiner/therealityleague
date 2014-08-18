@@ -1,6 +1,12 @@
-<h1>Listing leagues</h1>
+<div name="header">
+  <h2>My Rosters and Leagues</h2>
+  <%= link_to(content_tag(:button, "Edit Rosters"), rosters_path) %>
+</div>
 
-<table>
+<div name="participating-leagues">
+  
+</div>
+<table id="all_leagues_table" class="hidden">
   <thead>
     <tr>
       <th>Name</th>
