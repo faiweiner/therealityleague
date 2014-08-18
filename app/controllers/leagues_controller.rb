@@ -1,4 +1,8 @@
 class LeaguesController < ApplicationController
+
+	def index
+		@leagues = League.all #FIXME!
+	end
 	def new
 		@league = League.new 
 	end
@@ -16,6 +20,16 @@ class LeaguesController < ApplicationController
 			flash[:color] = "invalid"
 			render :new
 		end
+	end
+
+	def show
+		
+	end
+	def search
+		@public_leagues = League.where(:public_access => true)
+	end
+
+	def results
 	end
 
 	private

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
-  before_action :authenticate_user
+  before_action :set_current_user
   before_action :save_login_state, :only => [:new, :login_attempt]
 
   private 
@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     @featured_shows = Show.top_three
   end
 
-  def authenticate_user
+  def set_current_user
     if session[:user_id].present? 
       @current_user = User.where(:id => session[:user_id]).first
     end

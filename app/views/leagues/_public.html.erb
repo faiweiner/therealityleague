@@ -1,0 +1,10 @@
+<div>
+	<% @public_leagues.each do |league| %>
+		<%= league.name %>
+
+		<%= button_to :submit, name: "View League", path: league_path(league.id), name: league.id, value: league.id %>
+		  
+		<%= link_to "View League", league_path(league.id)%>
+
+	<% end %>
+</div>

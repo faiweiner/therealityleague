@@ -22,4 +22,12 @@
 
 <br>
 
+<h3>League Lists</h3>
+<ul>
+  <% @leagues.each do |league| %>
+    <li><%= league.name %></li>
+  <% end %>
+</ul>
+
+
 <%= link_to 'New League', new_league_path %>

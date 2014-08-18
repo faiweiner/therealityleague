@@ -1,0 +1,9 @@
+<h1>Are you searching for me???</h1>
+  
+<%= form_tag leagues_search_path do %>
+    <%= text_field_tag :search, params[:search] %>
+		<%= submit_tag("Search", :class => "form_submit") %>
+<% end %>  
+
+<%= render partial: "public" %>
+
