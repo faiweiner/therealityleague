@@ -12,21 +12,14 @@
     <div id="user_leagues_display">
       <div id="scoring_inst">
         <h3>Your Leagues</h3>
-        <p>Scoreboard of all leagues go here <p/>
+        <p>Scoreboard of all leagues go here </p>
         <p>League 1 <button>View League</button></p>
         
         <p>League 2 <button>View League</button></p>
       </div>
-
-      ! if no league !
-      <p>You are currently not a member of any league.</p>
     </div>
+    <%= render partial: 'league_acccess_nav' %>
 
-    <div class="nav_pane" id="access_league">
-      <button>Create League</button>
-      <button>Join League</button>
-    </div>
-  </div>
 <!-- FIXME render partial in erb tag here -->
 
 <!-- IF CURRENT USER DOES NOT EXIST -->

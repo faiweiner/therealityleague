@@ -5,6 +5,7 @@ class LeaguesController < ApplicationController
 	end
 	def new
 		@league = League.new 
+		@shows = Show.all
 	end
 
 	def create

@@ -12,8 +12,30 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br>
+    <%= f.label :reality_program %><br>
+    <%= f.select :show, options_for_select(Show.select_show) %>
+  </div>
+  <div class="field">
+    <%= f.label :league_name %><br>
     <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.radio_button :public_access, true %>
+    <%= f.label(:public, "Public league") %>
+    <%= f.radio_button(:public_access, false) %>
+    <%= f.label(:private, "Private league") %>
+  </div>
+  <div class="field">
+    <%= f.radio_button :public_access, true %>
+    <%= f.label(:public, "Public league") %>
+    <%= f.radio_button(:public_access, false) %>
+    <%= f.label(:private, "Private league") %>
+  </div>
+  <div class="field">
+    <%= f.radio_button :public_access, true %>
+    <%= f.label(:public, "Public league") %>
+    <%= f.radio_button(:public_access, false) %>
+    <%= f.label(:private, "Private league") %>
   </div>
   <div class="actions">
     <%= f.submit %>
