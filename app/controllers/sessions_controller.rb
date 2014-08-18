@@ -8,11 +8,11 @@ class SessionsController	< ApplicationController
 	end
 
 	def login_attempt
-		user = User.find_by(:username => params[:username])
+		user = User.find_by(:email => params[:email])
 		if user.present? && user.authenticate(params[:password])
-			session[:user_id] = user.user_id
+			session[:user_id] = user.id
 			flash[:notice] = "Welcome back!"
-			redirect_to user_path(user.user_id)
+			redirect_to user_path(user.id)
 		else
 			flash[:notice] = "Invalid login. Please try again."
       redirect_to login_path

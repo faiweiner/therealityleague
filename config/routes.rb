@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 	resources :leagues
 	resources :users
 
-	get '/' => 'sessions#new'
+	get '/login' => 'sessions#new'
 	post '/login' => 'sessions#login_attempt'
 	delete '/login' => 'sessions#logout'
 end

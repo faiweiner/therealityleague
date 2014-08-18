@@ -38,10 +38,6 @@
   <%= link_to(content_tag(:div, 'Sign up', class: "button btn-primary"), new_user_path) %>
   <%= link_to(content_tag(:div, 'Sign in', class: "button btn-primary"), login_path) %>
 
-  <h2>Browse Shows</h2>
-  <%= link_to(content_tag(:button, 'All Shows', class: ""), shows_path)%>
-  <%= render partial: 'featured_shows' %>
-
   <h2>Access Leagues</h2>
   <%= render partial: 'league_acccess_nav' %>
   <h2>How it works</h2>
@@ -74,3 +70,7 @@
 	<p>Once you have joined a league and drafted your contestants, you can sit back, relax and watch the show. Keep track of your score on your league's page. You can read commentary and get the latest analyst on the season on our Resources tab. Draft wisely, have fun, and good luck!!</p>
   
 <% end %>
+
+<h2>Browse Shows</h2>
+<%= link_to(content_tag(:button, 'All Shows', class: ""), shows_path)%>
+<%= render partial: 'featured_shows' %>

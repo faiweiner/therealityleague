@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
 
   private 
 
-  def scoreboard
+  def featured_shows
+    @featured_shows = Show.top_three
   end
 
   def authenticate_user

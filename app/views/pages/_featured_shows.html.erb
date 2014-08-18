@@ -1,10 +1,13 @@
 <div>
 	<h4>Here are some of the most popular shows at the moment</h4>
 	<ul>
-		<li><a href="#">Show 1</a></li>
-		<li><a href="#">Show 2</a></li>
-		<li><a href="#">Show 3</a></li>
-		<li><a href="#">Show 4</a></li>
-		<li><a href="#">Show 5</a></li>
+		<% @featured_shows.each do |show| %>
+			<li>
+				<%= show.name %>
+				<%= show.premiere_date %>
+				<%= show.draft_close_date %>
+				<%= link_to(content_tag(:button, "Explore Show"), show_path(show.id)) %>
+			</li>
+		<% end %>
 	</ul>
 </div>

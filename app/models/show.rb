@@ -25,4 +25,10 @@ class Show < ActiveRecord::Base
 	validates :draft_close_date, :presence => true, :on => :create
 	# FIXME!
 	# validates_time :draft_close_date, :on_or_before => calculate_draft_close
+
+	def self.top_three
+		# This model method is called in Pages#home to give list of the three latest shows
+    Show.last(3)
+  end
+
 end

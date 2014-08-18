@@ -33,6 +33,9 @@ gem 'validates_timeliness'
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.0.0'
+  gem 'pry-rails'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 	gem 'minitest'
 	gem 'shoulda-matchers'			# help with associations
 	gem 'simplecov', :require => false
