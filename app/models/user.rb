@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 
 	EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-	has_and_belongs_to_many :leagues, inverse_of: :users
+	has_and_belongs_to_many :leagues, inverse_of: :users, dependent: :delete
 	has_many :rosters, inverse_of: :user
 	has_many :contestants, through: :rosters
 	has_many :shows, through: :leagues

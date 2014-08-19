@@ -1,8 +1,16 @@
 <div>
+	<%= @league_players %>
 	<span class="participating-leagues">
 		<h2>My Rosters and Leagues</h2>
 		<%= link_to(content_tag(:button, "Edit Rosters"), rosters_path) %>
-		<%= @current_user.leagues %>
+
+		<h2>League I'm participating in</h2>
+		<ul>
+		<%= @current_user.leagues.length %>
+		<% @leagues.each do |league| %>
+			<li><%= league.name %></li>
+		<% end %>
+		</ul>
 	</span>
 	<table id="my_leagues_table">
 		<thead>
@@ -24,6 +32,41 @@
 	</table>
 </div>
 
+
+for form to autofocus, add this codee; 
+
+  $("input:text:visible:first").focus();
+
+
+
+
+
+
+
+<table id="all_leagues_table" class="hidden">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @leagues.each do |league| %>
+      <tr>
+        <td><%= league.name %></td>
+        <td><%= link_to 'Show', league %></td>
+        <td><%= link_to 'Edit', edit_league_path(league) %></td>
+        <td><%= link_to 'Destroy', league, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Additional Tests:
+
+	+ Show's ID not being successfully passed when creating the league
+	+ Make sure models have inverses
 <div name="commissioning-leagues">
 	<h2>Commissioned Leagues</h2>
 	<table id="comm_leagues_table"

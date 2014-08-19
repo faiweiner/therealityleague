@@ -5,10 +5,14 @@ class LeaguesController < ApplicationController
 		@all_leagues = League.all
 
 		# List of participating leagues
-		@leagues = @current_user.leagues.where(id: @current_user.id)
+		@leagues = @current_user.leagues
 
 		# List of leagues of which user is the commissioner
 		@comm_leagues = League.where(commissioner_id: @current_user.id)
+
+		# @league_players = @league.users
+		@all_leagues = @current_user.leagues
+
 	end
 	def new
 		@league = League.new 
@@ -17,13 +21,13 @@ class LeaguesController < ApplicationController
 
 	def create
 		@league = League.new league_params
+		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
-			@league.users.create(id: @current_user.id)
+			@league.users << [@current_user]
+			@current_user.leagues << [@league]
 
-			# Automatically adds the league to the list of leagues joined by the user
-			@current_user.leagues.create(id: @league.id)
-
+			raise params
 			# get customized text based on type
 			@access_type = nil
 			if @league.public_access == true
@@ -31,7 +35,7 @@ class LeaguesController < ApplicationController
 			else
 				@access_type = 'private'
 			end
-			flash[:notice] = 'You\'ve successfully created a #{@access_type} league!'
+			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = 'valid'
 			redirect_to league_path(League.last)
