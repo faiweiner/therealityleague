@@ -1,5 +1,5 @@
 class ShowsController < ApplicationController
 	def index
-		@shows = Show.all
+		@shows = Show.all.order("name ASC")
 	end
 end

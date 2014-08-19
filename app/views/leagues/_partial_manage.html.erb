@@ -1,51 +1,55 @@
-<h3>Dashboard</h3>
 <div class="panel panel-default">
-	<div class="panel-heading">
-		<h4><%= pluralize_without_count(@current_user.leagues.count, "League", text = nil) %></h4>
-	</div>
 	<div class="panel-body">
-		<table class="table table-striped" id="my_leagues_table">
-			<thead>
-				<tr>
-					<th>League Name</th>
-					<th>Show</th>
-					<th></th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @leagues.each do |league| %>
-					<tr>
-						<td><%= league.name %></td>
-						<td>
-							<%= league.show.name %> 
-						</td>
-						<% if league.commissioner_id == @current_user.id %>
-							<td>
-								<div class="commish_league_icon">(Commissioner)</div>
-							</td>
-						<% else %>
-							<td></td>
+		<h2>Dashboard</h2>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4><%= pluralize_without_count(@current_user.leagues.count, "League", text = nil) %></h4>
+			</div>
+			<div class="panel-body">
+				<table class="table table-striped" id="my_leagues_table">
+					<thead>
+						<tr>
+							<th>League Name</th>
+							<th>Show</th>
+							<th></th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @leagues.each do |league| %>
+							<tr>
+								<td><%= league.name %></td>
+								<td>
+									<%= league.show.name %> 
+								</td>
+								<% if league.commissioner_id == @current_user.id %>
+									<td>
+										<div class="commish_league_icon">(Commissioner)</div>
+									</td>
+								<% else %>
+									<td></td>
+								<% end %>
+								<td>
+									<%= link_to "View Roster", rosters_path, class:'btn btn-default' %>
+									<%= link_to "View League", league_path(league.id), class:'btn btn-default' %>
+									<% if league.commissioner_id == @current_user.id %>
+										<%= link_to(content_tag(:div, "Edit League", class:'btn btn-default'), edit_league_path(league)) %>
+									<% end%>
+								</td>
+							</tr>
 						<% end %>
-						<td>
-							<%= link_to "View Roster", rosters_path, class:'btn btn-default' %>
-							<%= link_to "View League", league_path(league.id), class:'btn btn-default' %>
-							<% if league.commissioner_id == @current_user.id %>
-								<%= link_to(content_tag(:div, "Edit League", class:'btn btn-default'), edit_league_path(league)) %>
-							<% end%>
-						</td>
-					</tr>
-				<% end %>
-			</tbody>
-		</table>
-	</div>
-</div>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h4>Past <%= pluralize_without_count(@current_user.leagues.count, "League", text = nil) %></h4> <!-- FIXME -->
-	</div>
-	<div class="panel-body">
-		Panel content
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>Past <%= pluralize_without_count(@current_user.leagues.count, "League", text = nil) %></h4> <!-- FIXME -->
+			</div>
+			<div class="panel-body">
+				Panel content
+			</div>
+		</div>
 	</div>
 </div>

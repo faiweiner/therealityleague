@@ -11,6 +11,9 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  description      :string(255)
+#  image            :string(255)
+#  series_id        :integer
+#  expired          :boolean          default(FALSE)
 #
 
 class Show < ActiveRecord::Base
@@ -31,7 +34,8 @@ class Show < ActiveRecord::Base
   end
 
   def self.select_show
-  	@shows_list = Show.all.each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
+  	# This model method is for populating Create League's drop-down menu
+  	@shows_list = Show.where(expired: false).each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
   end
 
   def self.get_show_name(show_id)

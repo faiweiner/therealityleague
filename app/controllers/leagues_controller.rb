@@ -66,7 +66,9 @@ class LeaguesController < ApplicationController
 		@league_show = Show.find(@league.show)
 		@participants = @league.users
 		@comm_this_league = true if @league.commissioner_id == @current_user.id
+		@not_a_participant = true if @participants.include? @current_user == false
 	end
+
 	def search
 		@public_leagues = League.where(:public_access => true).order("created_at DESC") # FIXME!
 		@private_leagues = League.where(:public_access => false)

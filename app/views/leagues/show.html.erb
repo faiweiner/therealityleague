@@ -12,6 +12,8 @@
 					<p>Commissioner</p>
 					<%= link_to"Edit League", edit_league_path, class:"btn btn-default" %>
 				</span>
+			<% elsif @not_a_participant == true %>
+				<%= link_to "Join League", root_path, class:"btn btn-default" %>
 			<% end %>
 
 		</div>

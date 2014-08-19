@@ -1,23 +1,21 @@
-<h1>The Reality League</h1>
-	<% if @current_user.present? %>
-		<!-- CURRENT USER PRESENT> -->
-		<!-- ==================================================== -->
-		<div class="panel-body">
-			<%= link_to("Manage Your Leagues", leagues_path, class: "btn btn-primary btn-lg") %>
-			<h4>OR</h4>
-			<%= render partial: 'leagues/nav_league_access' %>
-		</div>
+<h1>CAROUSEL TO COME</h1>
 
-	<% else %>
-		<!-- IF CURRENT USER DOES NOT EXIST -->
-		<!-- ==================================================== -->
-		<div class="jumbotron">
-			<h3>Welcome to the best place to play Fantasy Reality TV</h3>
-			<p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
-			<%= render partial: 'leagues/nav_league_access' %>
-		</div>
-		<%= render partial: 'instructions' %>		
-	<% end %>
+<% if @current_user.present? %>
+	<!-- CURRENT USER PRESENT> -->
+	<!-- ==================================================== -->
+	<%= render partial: 'leagues/nav_league_access' %>
+
+
+<% else %>
+	<!-- IF CURRENT USER DOES NOT EXIST -->
+	<!-- ==================================================== -->
+	<div class="jumbotron">
+		<h3>Welcome to the best place to play Fantasy Reality TV</h3>
+		<p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
+		<%= render partial: 'leagues/nav_league_access' %>
+	</div>
+	<%= render partial: 'instructions' %>		
+<% end %>
 
 
 <div class="panel panel-default">

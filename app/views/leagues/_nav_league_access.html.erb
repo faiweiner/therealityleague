@@ -1,5 +1,20 @@
-<%= link_to(content_tag(:div, 'Create League', :class=>"btn btn-primary btn-lg"), new_league_path) %>
-<%= link_to(content_tag(:div, 'Join League', :class=>"btn btn-primary btn-lg"), leagues_search_path) %>	
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-7">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci modi, voluptatibus culpa distinctio asperiores nemo, vero earum deserunt, amet ad eum quos at iure molestiae eaque iusto ipsa nisi. At?</p>
+
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, fugit, doloremque. Perferendis corporis necessitatibus, error nobis maxime tempore eius minus, in neque alias voluptate asperiores sapiente earum doloremque voluptas officiis!</p>
+			</div>
+			<div class="col-md-5">
+				<%= link_to "Manage Your Leagues", leagues_path, class:"btn btn-primary btn-lg btn-block" %>
+				<%= link_to "Create League", new_league_path, class:"btn btn-primary btn-lg btn-block" %>
+				<%= link_to 'Join League', leagues_search_path, class:"btn btn-primary btn-lg btn-block" %>		
+			</div>
+		</div>
+	</div>
+</div>
+
 
 
 
