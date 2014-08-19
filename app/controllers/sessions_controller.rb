@@ -12,7 +12,7 @@ class SessionsController	< ApplicationController
 		if user.present? && user.authenticate(params[:password])
 			session[:user_id] = user.id
 			flash[:notice] = "Welcome back!"
-			redirect_to user_path(user.id)
+			redirect_to leagues_path
 		else
 			flash[:notice] = "Invalid login. Please try again."
       redirect_to login_path

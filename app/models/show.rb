@@ -31,7 +31,6 @@ class Show < ActiveRecord::Base
   end
 
   def self.select_show
-  	@shows_list = Show.all.map.with_index {|s, i| s.name } # FIXME! add a filter to only include the most recent show
-  	@shows_list.unshift("Select show")
+  	@shows_list = Show.all.each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
   end
 end

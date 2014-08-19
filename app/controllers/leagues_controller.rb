@@ -21,6 +21,7 @@ class LeaguesController < ApplicationController
 
 	def create
 		@league = League.new league_params
+		show = Show.where(name: params[:league][:show])
 		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
