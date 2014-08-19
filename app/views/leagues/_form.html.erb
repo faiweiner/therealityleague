@@ -1,64 +1,93 @@
 <div class="panel panel-default">
 	<div class="panel-body">
-		<h1>Start a league</h1>
+		<div class="panel panel-heading">
+			<h1>Start a league</h1>
+		</div>
 		<%= form_for(@league) do |f| %>
-			<!-- Errors Message -->
-			<div class="form-group">
+			<div class="panel panel-body">
+				<!-- Errors Message -->
 				<% if @league.errors.any? %>
-					<div id="alert alert-danger">
+					<div class="row form-group alert alert-danger">
 						<h4><%= pluralize(@league.errors.count, 'error') %> prohibited this league from being saved:</h4>
-
 						<ul>
-						<% @league.errors.full_messages.each do |message| %>
-							<li><%= message %></li>
-						<% end %>
+							<% @league.errors.full_messages.each do |message| %>
+								<li><%= message %></li>
+							<% end %>
 						</ul>
 					</div>
-				<% end %>
-			</div>
-			<!-- Form -->
-			<div class="form-group">
-				<div class="form-group"> <!-- Hidden field commissioner ID -->
+				</div>
+			<% end %>
+
+				<!-- Form -->
+				<div class="row">
 					<%= f.hidden_field :commissioner_id, value: @current_user.id %>
 				</div>
-				<div class="form-group"> <!-- Select reality show -->
-					<%= f.label :reality_show %><br>
-					<div class="col-sm-10">
-						<%= f.select :show, options_for_select(Show.select_show), autofocus: true %>
+				<!-- Select reality show -->
+				<div class="row form-group"> 
+					<div class="col-md-3 text-right">
+						<%= f.label :reality_show %><br>
+					</div>
+					<div class="col-md-6">
+						<%= f.select(:show, options_for_select(Show.select_show), {}, {:class => "form-control"}) %>
 					</div>
 				</div>
-
-				oh hey
-				<div class="field"> <!-- Name of League -->
-					<%= f.label :league_name %><br>
-					<%= f.text_field :name %>
+				<!-- Name of League -->
+				<div class="row form-group"> 
+					<div class="col-md-3 text-right">
+						<%= f.label :league_name %><br>	
+					</div>
+						<div class="col-md-6">
+					<%= f.text_field :name, :class => "form-control" %>
+					</div>
 				</div>
-				<div class="field"> <!-- Public or private league, public default -->
-					<%= f.label :league_access %><br>
-					<%= f.radio_button :public_access, true %>
-					<%= f.label(:public, 'Public league') %>
-					<%= f.radio_button(:public_access, false) %>
-					<%= f.label(:private, 'Private league') %>
+				<!-- Public or private league, public default -->
+				<div class="row form-group"> 
+					<div class="col-md-3 text-right">
+						<%= f.label :league_access %><br>
+					</div>
+					<div class="col-md-3">
+						<%= f.radio_button :public_access, true %>
+						<%= f.label(:public, 'Public league') %>
+					</div>
+					<div class="col-md-3">
+						<%= f.radio_button(:public_access, false) %>
+						<%= f.label(:private, 'Private league') %>
+					</div>
 				</div>
-				<div class="field"> <!-- Draft type FIXME! -->
-					<%= f.label :draft_type %><br>
-					<%= f.radio_button :draft_type, true %>
-					<%= f.label(:fantasy, 'Draft fantasy') %>
-					<%= f.radio_button(:draft_type, false) %>
-					<%= f.label(:bracket, 'Standard bracket') %>
+				<!-- Draft type FIXME! -->
+				<div class="row form-group">
+					<div class="col-md-3 text-right">
+						<%= f.label :draft_type %><br>
+					</div>
+					<div class="col-md-3">
+						<%= f.radio_button :draft_type, true %>
+						<%= f.label(:fantasy, 'Fantasy') %>
+					</div>
+					<div class="col-md-3">
+						<%= f.radio_button(:draft_type, false) %>
+						<%= f.label(:bracket, 'Bracket') %>
+					</div>
 				</div>
-				<div class="field"> <!-- Scoring system FIXME! -->
-					<%= f.label :scoring_system %><br>
-					<%= f.radio_button :scoring_system, true %>
-					<%= f.label(:standard, 'Standard') %>
-					<%= f.radio_button(:scoring_system, false) %>
-					<%= f.label(:custom, 'Custom') %>
+				<!-- Scoring system FIXME! -->
+				<div class="row form-group"> 
+					<div class="col-md-3 text-right">
+						<%= f.label :scoring_system %><br>
+					</div>
+					<div class="col-md-3">
+						<%= f.radio_button :scoring_system, true %>
+						<%= f.label(:standard, 'Standard') %>
+					</div>
+					<div class="col-md-3">
+						<%= f.radio_button(:scoring_system, false) %>
+						<%= f.label(:custom, 'Custom') %>
+					</div>
 				</div>
-				<div class="actions">
-					<%= link_to(content_tag(:button, 'Back'), leagues_path) %>
-					<%= f.submit %>
+				<div class="row form-group">
+					<div class="actions col-md-9 text-right">
+							<%= f.submit 'Create League', :class => 'btn btn-default' %>
+							<%= link_to('Cancel', leagues_path, class:'btn btn-default') %>
+					</div>
 				</div>
 			</div>
 		<% end %>
 	</div>
-</div>
