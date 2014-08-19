@@ -13,14 +13,15 @@ class LeaguesController < ApplicationController
 		# List of all leagues for full app's admin
 		@all_leagues = League.all
 
-		# List of participating leagues
-		@leagues = @current_user.leagues
+		if @current_user.present?
+			# List of participating leagues
+			@leagues = @current_user.leagues
+			# List of leagues of which user is the commissioner
+			@comm_leagues = League.where(commissioner_id: @current_user.id)
+			# @league_players = @league.users
+			@all_leagues = @current_user.leagues
+		end
 
-		# List of leagues of which user is the commissioner
-		@comm_leagues = League.where(commissioner_id: @current_user.id)
-
-		# @league_players = @league.users
-		@all_leagues = @current_user.leagues
 	end
 
 	def new
@@ -65,7 +66,6 @@ class LeaguesController < ApplicationController
 		@league_show = Show.find(@league.show)
 		@participants = @league.users
 
-		# raise "Check"
 	end
 	def search
 		@public_leagues = League.where(:public_access => true).order("created_at DESC") # FIXME!

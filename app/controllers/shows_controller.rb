@@ -1,7 +1,5 @@
 class ShowsController < ApplicationController
-	private
-
-	def order(array)
-		
+	def index
+		@shows = Show.all
 	end
 end

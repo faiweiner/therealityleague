@@ -1,10 +1,6 @@
-<div class="panel panel-default">
-	<div class="panel-body">
-		<% if @leagues.length > 0 %>
-			<%= render partial: "partial_manage" %>
-		<% else %>
-			<h2>You have not joined any league yet.</h2>
-			<%= render partial: "nav_league_access" %>
-		<% end %>
-	</div>
-</div>
+<% if @leagues.length > 0 %>
+	<%= render partial: "partial_manage" %>
+<% else %>
+	<h2>You have not joined any league yet.</h2>
+	<%= render partial: "nav_league_access" %>
+<% end %>
