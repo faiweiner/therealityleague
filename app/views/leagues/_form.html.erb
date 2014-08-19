@@ -44,7 +44,7 @@
 				<!-- Public or private league, public default -->
 				<div class="row form-group"> 
 					<div class="col-md-3 text-right">
-						<%= f.label :league_access %><br>
+						<%= f.label :league_access %>
 					</div>
 					<div class="col-md-3">
 						<%= f.radio_button :public_access, true %>
@@ -88,7 +88,7 @@
 
 				<!-- Submit -->
 				<div class="row form-group">
-					<div class="actions col-md-9 text-right">
+					<div class="actions col-md-offset-3 col-md-9">
 							<%= f.submit "Create League", :class => "btn btn-default" %>
 							<%= link_to("Cancel", leagues_path, class:'btn btn-default') %>
 					</div>

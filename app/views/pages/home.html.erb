@@ -4,11 +4,8 @@
 		<!-- CURRENT USER PRESENT> -->
 		<!-- ==================================================== -->
 		<div class="panel-body">
-			<% if flash[:notice].present? %>
-				<div class="alert">
-					<%= flash[:notice] %>
-				</div>
-			<% end %>
+			<%= link_to("Manage Your Leagues", leagues_path, class: "btn btn-primary btn-lg") %>
+			<h4>OR</h4>
 			<%= render partial: 'leagues/nav_league_access' %>
 		</div>
 
@@ -18,9 +15,10 @@
 		<div class="jumbotron">
 			<h3>Welcome to the best place to play Fantasy Reality TV</h3>
 			<p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
-			
 			<%= render partial: 'leagues/nav_league_access' %>
 		</div>
+	</div>
+	<div class="panel panel-default">
 		<div class="panel-body">
 			<%= render partial: 'instructions' %>		
 		</div>
@@ -30,8 +28,7 @@
 
 <div class="panel panel-default">
 	<div class="panel-body">
-		<h2>Browse Shows</h2>
-		<%= link_to(content_tag(:button, 'All Shows', class: ""), shows_path)%>
-		<%= render partial: 'featured_shows' %>
+		<%= link_to('Browse Shows', shows_path, class: "btn btn-default btn-lg")%>
+		<%= render partial: '/shows/featured_shows' %>
 	</div>
 </div>

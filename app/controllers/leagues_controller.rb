@@ -68,7 +68,7 @@ class LeaguesController < ApplicationController
 		# raise "Check"
 	end
 	def search
-		@public_leagues = League.where(:public_access => true)
+		@public_leagues = League.where(:public_access => true).order("created_at DESC") # FIXME!
 		@private_leagues = League.where(:public_access => false)
 	end
 
