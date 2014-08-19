@@ -16,11 +16,12 @@
 #
 
 class League < ActiveRecord::Base
+	
 	belongs_to :show
 	has_and_belongs_to_many :users
 	has_many :rosters, through: :users
 	has_many :rounds
-	# has_one :scoring
+	has_one :scoring
 
 	before_save :set_up_league
 

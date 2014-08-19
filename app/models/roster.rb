@@ -11,7 +11,7 @@
 
 class Roster < ActiveRecord::Base
 	belongs_to :user
-	belongs_to :league, through: :users
+	belongs_to :league
 	has_and_belongs_to_many :contestants
 
 	validates :user_id, :presence => true
