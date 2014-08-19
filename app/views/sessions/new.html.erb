@@ -1,26 +1,3 @@
 <h1>SIGN IN NOW!</h1>
 
-<div class="signin_form">
-  <%= form_tag('/login', method: "post") do %>
-    <div class="signin_field">
-      <%= label_tag(:email) %>
-      <%= text_field_tag 'email', nil, placeholder: 'email@domain.com', :autofocus => true %>
-    </div>
-    <div class="signin_field">
-      <%= label_tag(:password) %>
-      <%= password_field_tag(:password) %>
-    </div>
-    <div>
-      <%= submit_tag("Sign in", :class => "form_submit") %>
-    </div>
-  <% end %>
-  OR
-  <div id="user-widget">
-    <% if current_user %>
-      Welcome <strong><%= current_user.name %></strong>!
-      <%= link_to "Sign out", logout_path, id: "sign_out" %>
-    <% else %>
-      <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
-    <% end %>
-  </div>
-</div>
+<%= render partial: "form_signin" %>

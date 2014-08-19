@@ -1,5 +1,25 @@
 <p id="notice"><%= notice %></p>
 
-<%= render 'form_confirm' %>
+<h2><%= @league.name %></h2>
+<h3><%= @league_show.name %></h3>
 
-
+<div>
+	<table>
+		<thead>
+			<th>Rank</th>
+			<th>Participants</th>
+			<th>W-L-T</th>
+			<th>Total Points</th>
+		</thead>
+		<tbody>
+			<tr>
+				<% @participants.each_with_index do |participant, i| %>
+					<td><%= i+1 %></td>
+					<td><%= @current_user.username %></td>
+					<td></td>
+					<td>130</td>
+				<% end -%>
+			<tr>
+		</tbody>
+	</table>
+</div>

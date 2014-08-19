@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
     @featured_shows = Show.top_three
   end
 
+  def check_if_logged_in
+    redirect_to(root_path) if @current_user.nil?
+  end
+  
   def set_current_user
     if session[:user_id].present? 
       @current_user = User.where(:id => session[:user_id]).first

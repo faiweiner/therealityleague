@@ -1,0 +1,38 @@
+<div>
+	<span class="participating-leagues">
+		<h2>My Rosters and Leagues (<%= @current_user.leagues.length %>)</h2>
+		<table id="my_leagues_table">
+			<thead>
+				<tr>
+					<th>League Name</th>
+					<th>Show</th>
+					<th></th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @leagues.each do |league| %>
+					<tr>
+						<td><%= league.name %></td>
+						<td>
+							<%= league.show.name %> 
+						</td>
+						<% if league.commissioner_id == @current_user.id %>
+							<td>
+								<div class="commish_league_icon">(Commissioner)</div>
+							</td>
+						<% else %>
+							<td></td>
+						<% end %>
+						<td>
+							<%= link_to(content_tag(:button, "Edit Roster"), rosters_path) %>
+							<% if league.commissioner_id == @current_user.id %>
+								<%= link_to(content_tag(:button, "Edit League"), edit_league_path(league)) %>
+							<% end%>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</span>
+</div>

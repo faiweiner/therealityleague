@@ -1,4 +1,4 @@
-<h1>Are you searching for me???</h1>
+<h2>Search League</h2>
   
 <%= form_tag leagues_search_path do %>
     <%= text_field_tag :search, params[:search] %>
@@ -6,4 +6,4 @@
 <% end %>  
 
 <%= render partial: "public" %>
-
+<%= render partial: "private" %>

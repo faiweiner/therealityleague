@@ -1,6 +1,15 @@
 class LeaguesController < ApplicationController
 
+	before_action :check_if_logged_in, :except => [:index, :new, :create]
+	before_action :save_login_state, :only => [:new, :create]
+
 	def index
+		if @current_user == nil
+			flash[:notice] = "You must be a registered user to view leagues. Please sign up or sign in."
+			flash[:color] = 'invalid'
+			redirect_to new_user_path
+		end		
+
 		# List of all leagues for full app's admin
 		@all_leagues = League.all
 
@@ -9,16 +18,18 @@ class LeaguesController < ApplicationController
 
 		# List of leagues of which user is the commissioner
 		@comm_leagues = League.where(commissioner_id: @current_user.id)
-		@comm_leagues_name_array = []
-		@comm_leagues.each do |league|
-			@comm_leagues_name_array << league.name
-		end
+
 		# @league_players = @league.users
 		@all_leagues = @current_user.leagues
-
-		raise "HELL COME BACK TO THIS"
 	end
+
 	def new
+		if @current_user == nil
+			flash[:notice] = "Looks like you haven't registered yet - please sign up before creating a new league."
+			flash[:color] = 'invalid'
+			redirect_to new_user_path
+		end
+
 		@league = League.new 
 	end
 
@@ -50,10 +61,15 @@ class LeaguesController < ApplicationController
 	end
 
 	def show
-		@league = League.last
+		@league = League.find(params[:id])
+		@league_show = Show.find(@league.show)
+		@participants = @league.users
+
+		# raise "Check"
 	end
 	def search
 		@public_leagues = League.where(:public_access => true)
+		@private_leagues = League.where(:public_access => false)
 	end
 
 	def results

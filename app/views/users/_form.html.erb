@@ -1,3 +1,7 @@
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
+
 <%= form_for(@user) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
@@ -24,6 +28,6 @@
     <%= f.password_field :password_confirmation %><br>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :value => "Register" %>
   </div>
 <% end %>

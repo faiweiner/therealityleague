@@ -20,3 +20,4 @@ league3 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id 
 
 league1.users << [user1, user2, user3]
 league2.users << [user3, user4, user5]
+league3.users << [user1, user4, user5]
