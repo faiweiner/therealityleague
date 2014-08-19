@@ -15,13 +15,12 @@
 							<% end %>
 						</ul>
 					</div>
-				</div>
-			<% end %>
-
+				<% end %>
 				<!-- Form -->
 				<div class="row">
 					<%= f.hidden_field :commissioner_id, value: @current_user.id %>
 				</div>
+					
 				<!-- Select reality show -->
 				<div class="row form-group"> 
 					<div class="col-md-3 text-right">
@@ -31,6 +30,7 @@
 						<%= f.select(:show, options_for_select(Show.select_show), {}, {:class => "form-control"}) %>
 					</div>
 				</div>
+					
 				<!-- Name of League -->
 				<div class="row form-group"> 
 					<div class="col-md-3 text-right">
@@ -40,6 +40,7 @@
 					<%= f.text_field :name, :class => "form-control" %>
 					</div>
 				</div>
+
 				<!-- Public or private league, public default -->
 				<div class="row form-group"> 
 					<div class="col-md-3 text-right">
@@ -54,6 +55,7 @@
 						<%= f.label(:private, 'Private league') %>
 					</div>
 				</div>
+
 				<!-- Draft type FIXME! -->
 				<div class="row form-group">
 					<div class="col-md-3 text-right">
@@ -68,6 +70,7 @@
 						<%= f.label(:bracket, 'Bracket') %>
 					</div>
 				</div>
+
 				<!-- Scoring system FIXME! -->
 				<div class="row form-group"> 
 					<div class="col-md-3 text-right">
@@ -82,12 +85,16 @@
 						<%= f.label(:custom, 'Custom') %>
 					</div>
 				</div>
+
+				<!-- Submit -->
 				<div class="row form-group">
 					<div class="actions col-md-9 text-right">
 							<%= f.submit "Create League", :class => "btn btn-default" %>
 							<%= link_to("Cancel", leagues_path, class:'btn btn-default') %>
 					</div>
 				</div>
+
 			</div>
 		<% end %>
 	</div>
+</div>
