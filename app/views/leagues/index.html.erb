@@ -40,6 +40,7 @@
 			<% @comm_leagues.each do |league| %>
 				<tr>
 					<td><%= league.name %></td>
+					<td><%= league.show_id %></td>
 					<td><%= link_to 'Show', league %></td>
 					<td><%= link_to 'Edit', edit_league_path(league) %></td>
 				</tr>

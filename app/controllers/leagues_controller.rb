@@ -16,11 +16,12 @@ class LeaguesController < ApplicationController
 	end
 	def new
 		@league = League.new 
-		@shows = Show.all
+		@shows_with_id = Show.select_show # referential FIXME - delete when not needed
 	end
 
 	def create
 		@league = League.new league_params
+		@league.show_id = params[:league][:show]
 		show = Show.where(name: params[:league][:show])
 		
 		if @league.save
