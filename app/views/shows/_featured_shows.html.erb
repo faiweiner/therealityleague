@@ -7,7 +7,7 @@
 						<img data-src="holder.js/300x300" alt="...">
 						<div class="caption">
 							<h4><%= show.name %></h4>
-							<p>Premiering: <%= show.premiere_date.strftime("%B %d, %Y") %></p>
+							<p>Premieres: <%= show.premiere_date.strftime("%B %d, %Y") %></p>
 							<% if show.draft_close_date - DateTime.now < 7 %>
 								ALMOST HERE
 							<% end %>
