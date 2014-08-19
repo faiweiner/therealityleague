@@ -5,12 +5,15 @@
 				<h4><%= @league.name %></h4>
 				<%= @league_show.name %>
 			</span>
-			<% if @league.commissioner_id == @current_user.id %>
+
+			<!-- FIXME with jQuery -->
+			<% if @comm_this_league == true %>
 				<span class="col-md-2"> 
 					<p>Commissioner</p>
 					<%= link_to"Edit League", edit_league_path, class:"btn btn-default" %>
 				</span>
 			<% end %>
+
 		</div>
 	</div>
 	<div class="panel-body">
