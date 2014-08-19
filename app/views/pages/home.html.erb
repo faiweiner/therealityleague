@@ -1,31 +1,37 @@
 <h1>The Reality League</h1>
+<div class="panel panel-default">
+	<% if @current_user.present? %>
+		<!-- CURRENT USER PRESENT> -->
+		<!-- ==================================================== -->
+		<div class="panel-body">
+			<% if flash[:notice].present? %>
+				<div class="alert alert-success">
+					<%= flash[:notice] %>
+				</div>
+			<% end %>
+			<%= render partial: 'leagues/nav_league_access' %>
+		</div>
 
-<% if @current_user.present? %>
-	<!-- CURRENT USER PRESENT> -->
-	<!-- ==================================================== -->
-	<% if flash[:notice].present? %>
-		<div class="notice">
-			<%= flash[:notice] %>
+	<% else %>
+		<!-- IF CURRENT USER DOES NOT EXIST -->
+		<!-- ==================================================== -->
+		<div class="jumbotron">
+			<h3>Welcome to the best place to play Fantasy Reality TV</h3>
+			<p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
+			
+			<%= render partial: 'leagues/nav_league_access' %>
+		</div>
+		<div class="panel-body">
+			<%= render partial: 'instructions' %>		
 		</div>
 	<% end %>
-	
-	<%= link_to(content_tag(:button, 'Manage Leagues'), leagues_path) %>
-	<div>
-		<%= render partial: 'leagues/nav_league_access' %>
-	</div>
+</div>
 
-<% else %>
-	<!-- IF CURRENT USER DOES NOT EXIST -->
-	<!-- ==================================================== -->
-	<div class="jumbotron">
-		<h3>Welcome to the best place to play Fantasy Reality TV</h3>
-		<p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
-		
-		<%= render partial: 'leagues/nav_league_access' %>
-	</div>
-	<%= render partial: 'instructions' %>
-<% end %>
 
-<h2>Browse Shows</h2>
-<%= link_to(content_tag(:button, 'All Shows', class: ""), shows_path)%>
-<%= render partial: 'featured_shows' %>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<h2>Browse Shows</h2>
+		<%= link_to(content_tag(:button, 'All Shows', class: ""), shows_path)%>
+		<%= render partial: 'featured_shows' %>
+	</div>
+</div>

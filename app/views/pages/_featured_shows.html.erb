@@ -7,8 +7,11 @@
 						<img data-src="holder.js/300x300" alt="...">
 						<div class="caption">
 							<h4><%= show.name %></h4>
-							<p><%= show.premiere_date.strftime("%B %d, %Y") %></p>
-							<p><%= show.draft_close_date.strftime("%B %d, %Y") %></p>
+							<p>Premiering: <%= show.premiere_date.strftime("%B %d, %Y") %></p>
+							<% if show.draft_close_date - DateTime.now < 7 %>
+								ALMOST HERE
+							<% end %>
+							<p>Final Draft on: <%= show.draft_close_date.strftime("%B %d, %Y") %></p>
 							<p><%= link_to(content_tag(:button, "Explore Show", class:'btn btn-primary'), show_path(show.id)) %></p>
 						</div>
 					</div>

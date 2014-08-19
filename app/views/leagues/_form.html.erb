@@ -1,51 +1,64 @@
-<%= form_for(@league) do |f| %>
-  <% if @league.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@league.errors.count, 'error') %> prohibited this league from being saved:</h2>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<h1>Start a league</h1>
+		<%= form_for(@league) do |f| %>
+			<!-- Errors Message -->
+			<div class="form-group">
+				<% if @league.errors.any? %>
+					<div id="alert alert-danger">
+						<h4><%= pluralize(@league.errors.count, 'error') %> prohibited this league from being saved:</h4>
 
-      <ul>
-      <% @league.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-  
-  <div class="field"> <!-- Hidden field commissioner ID -->
-    <%= f.hidden_field :commissioner_id, value: @current_user.id %>
-  </div>
+						<ul>
+						<% @league.errors.full_messages.each do |message| %>
+							<li><%= message %></li>
+						<% end %>
+						</ul>
+					</div>
+				<% end %>
+			</div>
+			<!-- Form -->
+			<div class="form-group">
+				<div class="form-group"> <!-- Hidden field commissioner ID -->
+					<%= f.hidden_field :commissioner_id, value: @current_user.id %>
+				</div>
+				<div class="form-group"> <!-- Select reality show -->
+					<%= f.label :reality_show %><br>
+					<div class="col-sm-10">
+						<%= f.select :show, options_for_select(Show.select_show), autofocus: true %>
+					</div>
+				</div>
 
-  <div class="field"> <!-- Select reality show -->
-    <%= f.label :reality_show %><br>
-    <%= f.select :show, options_for_select(Show.select_show), autofocus: true %>
-  </div>
-  <div class="field"> <!-- Name of League -->
-    <%= f.label :league_name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field"> <!-- Public or private league, public default -->
-    <%= f.label :league_access %><br>
-    <%= f.radio_button :public_access, true %>
-    <%= f.label(:public, 'Public league') %>
-    <%= f.radio_button(:public_access, false) %>
-    <%= f.label(:private, 'Private league') %>
-  </div>
-  <div class="field"> <!-- Draft type FIXME! -->
-    <%= f.label :draft_type %><br>
-    <%= f.radio_button :draft_type, true %>
-    <%= f.label(:fantasy, 'Draft fantasy') %>
-    <%= f.radio_button(:draft_type, false) %>
-    <%= f.label(:bracket, 'Standard bracket') %>
-  </div>
-  <div class="field"> <!-- Scoring system FIXME! -->
-    <%= f.label :scoring_system %><br>
-    <%= f.radio_button :scoring_system, true %>
-    <%= f.label(:standard, 'Standard') %>
-    <%= f.radio_button(:scoring_system, false) %>
-    <%= f.label(:custom, 'Custom') %>
-  </div>
-  <div class="actions">
-    <%= link_to(content_tag(:button, 'Back'), leagues_path) %>
-    <%= f.submit %>
-  </div>
-<% end %>
+				oh hey
+				<div class="field"> <!-- Name of League -->
+					<%= f.label :league_name %><br>
+					<%= f.text_field :name %>
+				</div>
+				<div class="field"> <!-- Public or private league, public default -->
+					<%= f.label :league_access %><br>
+					<%= f.radio_button :public_access, true %>
+					<%= f.label(:public, 'Public league') %>
+					<%= f.radio_button(:public_access, false) %>
+					<%= f.label(:private, 'Private league') %>
+				</div>
+				<div class="field"> <!-- Draft type FIXME! -->
+					<%= f.label :draft_type %><br>
+					<%= f.radio_button :draft_type, true %>
+					<%= f.label(:fantasy, 'Draft fantasy') %>
+					<%= f.radio_button(:draft_type, false) %>
+					<%= f.label(:bracket, 'Standard bracket') %>
+				</div>
+				<div class="field"> <!-- Scoring system FIXME! -->
+					<%= f.label :scoring_system %><br>
+					<%= f.radio_button :scoring_system, true %>
+					<%= f.label(:standard, 'Standard') %>
+					<%= f.radio_button(:scoring_system, false) %>
+					<%= f.label(:custom, 'Custom') %>
+				</div>
+				<div class="actions">
+					<%= link_to(content_tag(:button, 'Back'), leagues_path) %>
+					<%= f.submit %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
