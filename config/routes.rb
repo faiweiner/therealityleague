@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 	resources :leagues
 	resources :users
 	resources :rosters
+	resources :contestants
 
 	get '/login' => 'sessions#new'
 	post '/login' => 'sessions#login_attempt'

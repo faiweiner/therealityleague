@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20140819154318) do
     t.text    "description"
     t.string  "status_on_show"
     t.boolean "present",        default: true
+    t.string  "image"
   end
 
   create_table "contestants_rosters", force: true do |t|

@@ -2,5 +2,32 @@
 	<div class="panel-heading">
 		<h3><%= @show.name %></h3>
 	</div>
-	<div class="panel-body"></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-9 col-md-push-3">
+				<div class="panel-body">
+					<% @contestants.each do |contestant| %>
+						<div class="col-sm-6 col-md-4">
+							<div class="thumbnail">
+								<img data-src="holder.js/300x300" alt="...">
+								<div class="caption">
+									<h3><%= contestant.name %></h3>
+									<p><%= contestant.description %></p>
+									<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+								</div>
+							</div>
+						</div>
+
+					<% end %>
+				</div>
+			</div>
+			<div class="col-md-3 col-md-pull-9">
+				Premieres:
+				<h4><%= @show.premiere_date.strftime("%B %d, %Y") %></h4>
+				<br>
+				<p><%= @show.description %></p>
+			</div>
+			<!-- end -->
+		</div>
+	</div>
 </div>

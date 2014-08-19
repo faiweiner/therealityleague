@@ -4,5 +4,7 @@ class ShowsController < ApplicationController
 	end
 	def show
 		@show = Show.find(params[:id])
+		@contestants = @show.contestants
+		# raise
 	end
 end

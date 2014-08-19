@@ -30,3 +30,17 @@ league3 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id 
 league1.users << [user1, user2, user3]
 league2.users << [user3, user4, user5]
 league3.users << [user1, user4, user5]
+
+cont1 = Contestant.create(:name => 'Layla', :show_id => show1.id, :age => 22)
+cont2 = Contestant.create(:name => 'Nikki', :show_id => show1.id, :age => 22)
+cont3 = Contestant.create(:name => 'Jessica', :show_id => show1.id, :age => 22)
+cont4 = Contestant.create(:name => 'Heather', :show_id => show1.id, :age => 22)
+
+
+
+
+
+
+
+
+
