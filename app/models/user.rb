@@ -17,11 +17,13 @@ class User < ActiveRecord::Base
 
 	EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-	has_and_belongs_to_many :leagues
+	has_and_belongs_to_many :leagues, inverse_of: :users
 	has_many :rosters
 	has_many :contestants, through: :rosters
 	has_many :shows, through: :leagues
 	has_many :rounds, through: :leagues
+
+	# FIXME! Come bck to deal with dependencies please
 
 	has_secure_password
 	validates :email, :presence => true, :uniqueness => true, :length => { :minimum => 6 }, :on => :create

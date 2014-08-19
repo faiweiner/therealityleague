@@ -25,9 +25,7 @@ class LeaguesController < ApplicationController
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
 			@league.users << [@current_user]
-			@current_user.leagues << [@league]
 
-			raise params
 			# get customized text based on type
 			@access_type = nil
 			if @league.public_access == true

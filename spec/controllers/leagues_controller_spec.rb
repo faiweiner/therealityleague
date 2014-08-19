@@ -131,6 +131,8 @@ RSpec.describe LeaguesController, :type => :controller do
       }.to change(League, :count).by(-1)
     end
 
+    pending("destroys associated users")
+
     it "redirects to the leagues list" do
       league = League.create! valid_attributes
       delete :destroy, {:id => league.to_param}, valid_session
