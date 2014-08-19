@@ -16,10 +16,10 @@
 #
 
 class League < ActiveRecord::Base
-	belongs_to :show, inverse_of: :leagues
-	has_and_belongs_to_many :users, inverse_of: :leagues, dependent: :destroy
-	has_many :rosters, through: :league
-	has_many :rounds, inverse_of: :league
+	belongs_to :show
+	has_and_belongs_to_many :users
+	has_many :rosters, through: :users
+	has_many :rounds
 	# has_one :scoring
 
 	before_save :set_up_league

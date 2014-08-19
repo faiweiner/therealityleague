@@ -8,6 +8,6 @@
 #
 
 class Round < ActiveRecord::Base
-	belongs_to :league, inverse_of: :rounds
-	belongs_to :episode, inverse_of: :rounds
+	belongs_to :league
+	belongs_to :episode
 end
