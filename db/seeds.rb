@@ -14,8 +14,9 @@ show2 = Show.create(:name => 'The Bachelorette', :premiere_date => '02/03/14', :
 show3 = Show.create(:name => 'The Challenge', :premiere_date => '02/03/14', :draft_close_date => '06/03/14')
 show4 = Show.create(:name => 'The Voice', :premiere_date => '02/03/14', :draft_close_date => '06/03/14')
 
-league1 = League.create(:name => 'The Best Public League', :commissioner_id => '2', :show_id => '3', :public_access => true)
-league2 = League.create(:name => 'The Super Private League', :commissioner_id => '3', :show_id => '3', :public_access => false)
+league1 = League.create(:name => 'The Best Public League', :commissioner_id => user1.id, :show_id => show3.id, :public_access => true)
+league2 = League.create(:name => 'The Super Private League', :commissioner_id => user2.id, :show_id => show3.id, :public_access => false)
+league3 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :show_id => show1.id, :public_access => false)
 
 league1.users << [user1, user2, user3]
 league2.users << [user3, user4, user5]
