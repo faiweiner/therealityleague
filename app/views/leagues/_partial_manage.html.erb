@@ -1,12 +1,14 @@
 <div class="panel panel-default">
-	<span class="participating-leagues">
+	<div class="panel-heading">
 		<% if @current_user.leagues.count > 0 %>
 			<h2>Dashboard: <%= pluralize(@current_user.leagues.count, "League") %></h2>
 		<% else %>
 			<h2>You have not joined a league.</h2>
 			<% render partial: "nav_league_access" %>
 		<% end %>
-		<table id="my_leagues_table">
+	</div>
+	<div class="panel-body">
+		<table class="table table-striped" id="my_leagues_table">
 			<thead>
 			
 				<tr>
@@ -31,7 +33,7 @@
 							<td></td>
 						<% end %>
 						<td>
-							<%= link_to(content_tag(:div, "Edit Roster", class:'btn btn-default'), rosters_path) %>
+							<%= link_to(content_tag(:div, "View Roster", class:'btn btn-default'), rosters_path) %>
 							<% if league.commissioner_id == @current_user.id %>
 								<%= link_to(content_tag(:div, "Edit League", class:'btn btn-default'), edit_league_path(league)) %>
 							<% end%>
@@ -40,5 +42,5 @@
 				<% end %>
 			</tbody>
 		</table>
-	</span>
+	</div>
 </div>
