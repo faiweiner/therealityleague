@@ -21,9 +21,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="media col-md-4">
-				<a href="#">
-					<img class="media-object img-thumbnail" src="http://abcallaccess.com/wp-content/uploads/2012/03/logo_Prime_Bachelorette.png" alt="...">
-				</a>
+				<%= link_to (content_tag(:img, nil, :src => "http://abcallaccess.com/wp-content/uploads/2012/03/logo_Prime_Bachelorette.png", class:"media-object img-thumbnail")), show_path(@league_show.id) %>
 				<br>
 				<div class="media-body">
 					<h4 class="media-heading"><%= @league_show.name %></h4>
