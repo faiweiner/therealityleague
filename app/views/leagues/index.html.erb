@@ -14,6 +14,12 @@
 					<tr>
 						<td><%= league.name %></td>
 						<td><%= league.show_id %></td>
+						<td>
+							<%= @comm_leagues.name %>
+							<% if @comm_leagues.include? ("Hiya") %>
+								FIXME INSERT SOMETHING HERE!!!
+							<% end %>
+						</td>
 						<td><%= link_to(content_tag(:button, "Edit Roster"), rosters_path) %></td>
 						
 					</tr>

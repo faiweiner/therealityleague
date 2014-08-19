@@ -11,18 +11,13 @@
     </div>
   <% end %>
   
-  <% @shows_with_id.each do |show, show_id| %>
-    <%= show %>
-    <%= show_id %>
-  <% end %>
   <div class="field"> <!-- Hidden field commissioner ID -->
     <%= f.hidden_field :commissioner_id, value: @current_user.id %>
   </div>
-  
+
   <div class="field"> <!-- Select reality show -->
     <%= f.label :reality_show %><br>
     <%= f.select :show, options_for_select(Show.select_show), autofocus: true %>
-  
   </div>
   <div class="field"> <!-- Name of League -->
     <%= f.label :league_name %><br>

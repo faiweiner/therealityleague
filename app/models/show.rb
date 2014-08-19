@@ -14,7 +14,7 @@
 #
 
 class Show < ActiveRecord::Base
-	has_many :leagues
+	has_many :leagues, inverse_of: :show, dependent: :destroy
 	has_many :contestants
 	has_many :episodes
 	# belongs_to :score
@@ -32,5 +32,10 @@ class Show < ActiveRecord::Base
 
   def self.select_show
   	@shows_list = Show.all.each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
+  end
+
+  def self.get_show_name(show_id)
+  	show = Show.find(show_id)
+  	show.name
   end
 end

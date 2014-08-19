@@ -9,14 +9,17 @@ class LeaguesController < ApplicationController
 
 		# List of leagues of which user is the commissioner
 		@comm_leagues = League.where(commissioner_id: @current_user.id)
-
+		@comm_leagues_name_array = []
+		@comm_leagues.each do |league|
+			@comm_leagues_name_array << league.name
+		end
 		# @league_players = @league.users
 		@all_leagues = @current_user.leagues
 
+		raise "HELL COME BACK TO THIS"
 	end
 	def new
 		@league = League.new 
-		@shows_with_id = Show.select_show # referential FIXME - delete when not needed
 	end
 
 	def create
@@ -61,4 +64,5 @@ class LeaguesController < ApplicationController
 	def league_params
     params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :scoring_system, :league_key, :league_password)
   end
+
 end

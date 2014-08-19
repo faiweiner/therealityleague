@@ -17,7 +17,7 @@
 
 class League < ActiveRecord::Base
 
-	belongs_to :show
+	belongs_to :show, inverse_of: :leagues
 	has_and_belongs_to_many :users, inverse_of: :leagues
 	before_destroy { users.clear }
 	has_many :rosters, through: :users
