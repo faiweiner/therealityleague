@@ -100,11 +100,23 @@ class LeaguesController < ApplicationController
 
 	def access
 		if params[:league_key].empty? || params[:password].empty?
-			flash[:notice] = "Private league key and password empty, please try again."
+			flash[:notice] = "Private league key and password empty. Please try again."
 			flash[:color] = "invalid"
 			redirect_to leagues_search_path
 		end
-		# For private leagues
+
+		if League.where(league_key: params[:league_key]).first.present?
+			@league = League.where(league_key: params[:league_key]).first
+		end
+
+		if @league.present? && @league.league_password === params[:password]
+			params[:league] = @league.id
+			redirect_to	league_path(@league.id)
+		else
+			flash[:notice] = "Invalid league key and password. Please try again."
+			flash[:color] = "invalid"
+			redirect_to leagues_search_path
+		end
 	end
 
 	def join
