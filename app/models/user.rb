@@ -31,5 +31,9 @@ class User < ActiveRecord::Base
 	validates :username, :presence => true, :uniqueness => true, :length => { :minimum => 6 }, :on => :create
 	validates :password, length: { in: 6..20 }, :confirmation => true
 
+	def roster_for_league(league)
+		roster = self.rosters.where(:league_id => league.id).first
+		roster || Roster.first
+	end
 end
 

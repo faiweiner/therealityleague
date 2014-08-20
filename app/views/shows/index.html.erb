@@ -1,13 +1,13 @@
 <div class="panel panel-default">
 	<div class="panel-body">
-	<h2>Browse Shows</h2>
+	<h2>All Shows</h2>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias placeat, soluta nihil minus quaerat et sit quae totam earum? Illo architecto ipsam dignissimos pariatur esse, sunt sed ducimus quod modi!</p>
 		<div class="row">
 			<% @shows.each do |show| %>
 				<div class="col-sm-6 col-md-4">
 					<div class="thumbnail">
 						<img data-src="holder.js/300x300" alt="...">
-						<div class="caption">
+						<div class="caption caption-lg">
 							<h4><%= show.name %></h4>
 							<p>Premieres: <%= show.premiere_date.strftime("%B %d, %Y") %></p>
 							<p>Final Draft on: <%= show.draft_close_date.strftime("%B %d, %Y") %></p>

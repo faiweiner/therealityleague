@@ -1,6 +1,6 @@
 class LeaguesController < ApplicationController
 
-	before_action :check_if_logged_in, :except => [:index, :new, :create]
+	before_action :check_if_logged_in, :except => [:index, :new, :create, :search]
 	before_action :save_login_state, :only => [:new, :create]
 
 	def index
@@ -20,6 +20,8 @@ class LeaguesController < ApplicationController
 			@comm_leagues = League.where(commissioner_id: @current_user.id)
 			# @league_players = @league.users
 			@all_leagues = @current_user.leagues
+			# Get user's roster for that particular league
+			@rosters = @current_user.rosters
 		end
 
 	end

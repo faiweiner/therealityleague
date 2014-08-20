@@ -947,6 +947,11 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.thumbnail-mini {
+  max-width: 50px;
+}
+
 .img-rounded {
   border-radius: 6px;
 }
@@ -4615,7 +4620,20 @@ a.thumbnail.active {
 .thumbnail .caption {
   padding: 9px;
   color: #333;
+  overflow: scroll;
 }
+
+.caption-sm {
+  max-height: 90px;
+}
+
+.caption-lg {
+  max-height: 300px;
+}
+.caption-header h3 {
+  margin: 5px 0 0 0;
+}
+
 .alert {
   padding: 15px;
   margin-bottom: 20px;

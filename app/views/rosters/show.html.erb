@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="panel-title">
+				<h3><%= @roster.league.name %></h3>
+				<p><%= @roster.league.show.name %></p>
+				<%= link_to "Edit Roster", edit_roster_path(@roster.id), class:"btn btn-default" %>
+		</div>
+		<!-- FIXME with jQuery -->
+	</div>
+	<div class="panel-body">
+		<div class="col-sm-6 col-md-4">
+			<h3><%= @roster.league.show.name %></h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta delectus dolorum sequi odio odit veritatis suscipit illum soluta iusto doloribus. Nisi distinctio odio modi, eius accusantium debitis quis aut in!</p>
+			<h4>All Contestants</h4>
+			<% @all_contestants.each do |contestant| %>
+				<div class="col-md-5">
+					<div class="thumbnail">
+						<%= image_tag "http://neighborhoodwomen.org/wp-content/uploads/2012/08/BioPlaceholder.jpg" %>
+						<div class="caption">
+							<%= contestant.name %>
+						</div>
+					</div>
+				</div>
+			<% end %>
+		</div>
+		<div class="col-sm-6 col-md-8">
+			<h3>Your Roster</h3>
+			<div class="row">
+					<% @selected_contestants.each do |contestant| %>
+						<div class="col-md-5">
+							<div class="thumbnail">
+								<%= image_tag "http://neighborhoodwomen.org/wp-content/uploads/2012/08/BioPlaceholder.jpg" %>
+								<div class="caption">
+									<%= contestant.name %>
+								</div>
+							</div>
+						</div>
+					<% end %>
+			</div>
+			<div class="row">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odit eius non, ratione ducimus magni consequatur eum quae quia quam itaque hic id provident obcaecati soluta fugiat doloribus ab aliquam?</p>
+			</div>
+		</div>
+	</div>
+</div>

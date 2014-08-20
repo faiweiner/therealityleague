@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140819154318) do
+ActiveRecord::Schema.define(version: 20140820031644) do
 
   create_table "contestants", force: true do |t|
     t.string  "name"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20140819154318) do
     t.datetime "updated_at"
     t.string   "league_key"
     t.string   "league_password"
+    t.integer  "draft_limit",     default: 5
   end
 
   create_table "leagues_users", id: false, force: true do |t|
