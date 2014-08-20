@@ -14,7 +14,7 @@ class LeaguesController < ApplicationController
 		@league = League.new 
 		@shows = Show.all
 	end
-
+	
 	def create
 		@league = League.new league_params
 		if @league.save
@@ -24,7 +24,7 @@ class LeaguesController < ApplicationController
 			# Automatically adds the league to the list of leagues joined by the user
 			@current_user.leagues.create(id: @league.id)
 
-			debugger 
+			debugger
 			
 			# get customized text based on type
 			@access_type = nil
