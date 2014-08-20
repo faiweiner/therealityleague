@@ -43,6 +43,10 @@ group :test, :development do
 	gem 'factory_girl_rails'
 	gem 'database_cleaner'
 end
+
+group :production do
+	gem 'rails_12factor'
+end
 # Use unicorn as the app server
 # gem 'unicorn'
 
