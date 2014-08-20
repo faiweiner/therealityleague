@@ -10,10 +10,11 @@
 #  type             :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
-#  description      :string(255)
+#  description      :text
 #  image            :string(255)
 #  series_id        :integer
 #  expired          :boolean          default(FALSE)
+#  episode_count    :integer
 #
 
 class Show < ActiveRecord::Base

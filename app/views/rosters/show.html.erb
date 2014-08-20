@@ -8,12 +8,12 @@
 	</div>
 	<div class="panel-body">
 		<!-- Contestant Board -->
-		<div class="col-sm-6 col-md-4" id="contestantBoard">
+		<div class="col-xs-12 col-sm-3 col-md-4" id="contestantBoard">
 			<h3><%= @roster.league.show.name %></h3>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta delectus dolorum sequi odio odit veritatis suscipit illum soluta iusto doloribus. Nisi distinctio odio modi, eius accusantium debitis quis aut in!</p>
 			<h4>Available Contestants</h4>
 			<% @available_contestants.each do |contestant| %>
-				<div class="col-md-5">
+				<div class="col-xs-3 col-sm-6 col-md-5">
 					<div class="thumbnail">
 						<%= image_tag contestant.image %>
 						<div class="caption">
@@ -25,11 +25,17 @@
 		</div>
 		<!-- END Contestant Board -->
 		<!-- Roster Board -->
-		<div class="col-sm-6 col-md-8">
-			<h3>Your Roster</h3>
+		<div class="col-xs-12 col-sm-9 col-md-8">
+			<div class="row">
+				<h3>Your Roster</h3>
+				<% if @roster.user_id == @current_user.id %>
+					<%= link_to "Edit Roster", edit_roster_path(@roster.id), class:"btn btn-primary" %>
+				<% end %>
+			</div>
+			<br>
 			<div class="row" id="rosterBoard">
 					<% @selected_contestants.each do |contestant| %>
-						<div class="col-md-3">
+						<div class="col-xs-3 col-sm-3 col-md-3">
 							<div class="thumbnail">
 								<%= image_tag contestant.image %>
 								<div class="caption">
