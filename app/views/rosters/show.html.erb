@@ -90,6 +90,7 @@
 			$(this).css('color', 'red');
 			thumbnailFactory($box, 'add', 'plus', 2); //FIXME to be dynamic
 			console.log('end round');
+			$(this).closest('div.col-md-5').remove();
 		});
 		// clicking remove-button	for selected_contestants
 		$('.remove-button').on('click', function() {
