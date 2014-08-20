@@ -21,7 +21,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="media col-md-4">
-				<%= link_to (content_tag(:img, nil, :src => "http://abcallaccess.com/wp-content/uploads/2012/03/logo_Prime_Bachelorette.png", class:"media-object img-thumbnail")), show_path(@league_show.id) %>
+				<%= link_to (content_tag(:img, nil, :src => @league.show.image, class:"media-object img-thumbnail")), show_path(@league_show.id) %>
 				<br>
 				<div class="media-body">
 					<h4 class="media-heading"><%= @league_show.name %></h4>
@@ -45,7 +45,7 @@
 								<td>130</td>
 								<td>
 									<% if participant.username == @current_user.username %>
-										<%= link_to "Edit Roster", edit_roster_path(1), class:"btn btn-default btn-primary" %>
+										<%= link_to "Edit Roster", edit_roster_path(, class:"btn btn-default btn-primary" %>
 									<% else %>
 										<%= link_to "View Roster", roster_path(1), class:"btn btn-default" %>
 									<% end %>

@@ -953,6 +953,9 @@ img {
   display: inline-block;
   width: 100% \9;
   max-width: 100%;
+  max-height: 120px;
+  margin: auto;
+  overflow: hidden;
   height: auto;
   padding: 4px;
   line-height: 1.42857143;
@@ -6220,5 +6223,5 @@ button.close {
     display: none !important;
   }
 }
-/*# sourceMappingURL=bootstrap.css.map */
+
 
