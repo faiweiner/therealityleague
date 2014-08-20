@@ -1,38 +1,29 @@
-<h1>The Reality League</h1>
+<h1>CAROUSEL TO COME</h1>
 
-<!-- CURRENT USER PRESENT> -->
 <% if @current_user.present? %>
-  <div>
-    <% if flash[:notice].present? %>
-      <div class="notice">
-        <%= flash[:notice] %>
-      </div>
-    <% end %>
+	<!-- CURRENT USER PRESENT> -->
+	<!-- ==================================================== -->
+	<%= render partial: 'leagues/nav_league_access' %>
 
-    <div id="user_leagues_display">
-      <div id="scoring_inst">
-        <h3>Your Leagues</h3>
-        <p>Scoreboard of all leagues go here </p>
-        <p>League 1 <button>View League</button></p>
-        
-        <p>League 2 <button>View League</button></p>
-      </div>
-    </div>
-    <%= render partial: 'leagues/league_access_nav' %>
-
-<!-- FIXME render partial in erb tag here -->
-
-<!-- IF CURRENT USER DOES NOT EXIST -->
 
 <% else %>
-  <h3>Welcome to the best place to play Fantasy Reality TV</h3>
-  <p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
-  
-  <%= render partial: 'leagues/league_access_nav' %>
-  
-  <%= render partial: 'instructions' %>
+	<!-- IF CURRENT USER DOES NOT EXIST -->
+	<!-- ==================================================== -->
+	<div class="jumbotron">
+		<h3>Welcome to the best place to play Fantasy Reality TV</h3>
+		<p>Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.</p>
+		<%= render partial: 'leagues/nav_league_access' %>
+	</div>
+	<%= render partial: 'instructions' %>		
 <% end %>
 
-<h2>Browse Shows</h2>
-<%= link_to(content_tag(:button, 'All Shows', class: ""), shows_path)%>
-<%= render partial: 'featured_shows' %>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 colass="col-md-10">Featured Shows</h3>
+	</div>
+	<div class="panel-body">
+		<%= render partial: '/shows/featured_shows' %>
+		<%= link_to('Browse Shows', shows_path, class: "btn btn-default btn-lg") %>
+	</div>
+</div>

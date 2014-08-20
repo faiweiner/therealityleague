@@ -1,9 +1,32 @@
-<h1>Are you searching for me???</h1>
-  
-<%= form_tag leagues_search_path do %>
-    <%= text_field_tag :search, params[:search] %>
-		<%= submit_tag("Search", :class => "form_submit") %>
-<% end %>  
-
-<%= render partial: "public" %>
-
+<div class="panel panel-default">
+  <div class="panel panel-body">
+		<%= render partial: "public" %>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<h2>Private Leagues</h2>
+		<p>You must provide a league key and password in order to join or view a private league. To access a private league, please enter a league key and password as provided by the league's commissioner.</p>
+		<div class="signin_form col-md-10">
+			<%= form_tag('/login', method: "post", :class => "form-horizontal", :row => "form") do %>
+				<div class="form-group">
+					<%= label_tag :league_key, 'League Key', class:'col-sm-2 control-label' %>
+					<div class="col-sm-4">
+						<%= text_field_tag 'League Key', nil, :class => "form-control" %>  
+					</div>
+				</div>
+				<div class="form-group">
+					<%= label_tag(:league_password, 'Password', class:"col-sm-2 control-label") %>
+					<div class="col-sm-4">
+						<%= password_field_tag :password, nil, class: "form-control" %>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-4">
+						<%= submit_tag("Access Private League", :class => "form_submit btn btn-default") %>
+					</div>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>

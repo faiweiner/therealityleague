@@ -1,5 +1,60 @@
-<p id="notice"><%= notice %></p>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="panel-title row">
+			<span class="col-md-10">
+				<h4><%= @league.name %></h4>
+				<%= @league_show.name %>
+			</span>
 
-<%= render 'form_confirm' %>
+			<!-- FIXME with jQuery -->
+			<% if @comm_this_league == true %>
+				<span class="col-md-2"> 
+					<p>Commissioner</p>
+					<%= link_to"Edit League", edit_league_path, class:"btn btn-default" %>
+				</span>
+			<% elsif @not_a_participant == true %>
+				<%= link_to "Join League", root_path, class:"btn btn-default" %>
+			<% end %>
 
-
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="media col-md-4">
+				<%= link_to (content_tag(:img, nil, :src => "http://abcallaccess.com/wp-content/uploads/2012/03/logo_Prime_Bachelorette.png", class:"media-object img-thumbnail")), show_path(@league_show.id) %>
+				<br>
+				<div class="media-body">
+					<h4 class="media-heading"><%= @league_show.name %></h4>
+					<p><%= @league_show.description %></p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur unde odio cumque autem totam enim debitis minima illo dicta corporis excepturi rem laborum voluptates deserunt eum minus, quod commodi accusamus.</p>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<table class="table table-striped">
+					<thead>
+						<th>Rank</th>
+						<th>Participants</th>
+						<th>Total Points</th>
+						<th>Action</th>
+					</thead>
+					<tbody>
+						<% @participants.each_with_index do |participant, i| %>
+							<tr>
+								<td><%= i + 1 %></td>
+								<td><%= participant.username %></td>
+								<td>130</td>
+								<td>
+									<% if participant.username == @current_user.username %>
+										<%= link_to "Edit Roster", edit_roster_path(1), class:"btn btn-default btn-primary" %>
+									<% else %>
+										<%= link_to "View Roster", roster_path(1), class:"btn btn-default" %>
+									<% end %>
+								</td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

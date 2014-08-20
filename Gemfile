@@ -36,7 +36,7 @@ group :test, :development do
   gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
-	gem 'debugger'
+	# gem 'debugger'
 	gem 'minitest'
 	gem 'shoulda-matchers'			# help with associations
 	gem 'simplecov', :require => false

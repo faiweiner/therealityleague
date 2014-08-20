@@ -11,7 +11,9 @@
 #  description    :text
 #  status_on_show :string(255)
 #  present        :boolean          default(TRUE)
+#  image          :string(255)
 #
+
 require 'rails_helper'
 
 RSpec.describe Contestant, :type => :model do

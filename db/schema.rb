@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140816170129) do
+ActiveRecord::Schema.define(version: 20140819154318) do
 
   create_table "contestants", force: true do |t|
     t.string  "name"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20140816170129) do
     t.text    "description"
     t.string  "status_on_show"
     t.boolean "present",        default: true
+    t.string  "image"
   end
 
   create_table "contestants_rosters", force: true do |t|
@@ -73,6 +74,9 @@ ActiveRecord::Schema.define(version: 20140816170129) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "description"
+    t.string   "image"
+    t.integer  "series_id"
+    t.boolean  "expired",          default: false
   end
 
   create_table "users", force: true do |t|

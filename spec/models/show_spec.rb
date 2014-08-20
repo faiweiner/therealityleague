@@ -11,6 +11,9 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  description      :string(255)
+#  image            :string(255)
+#  series_id        :integer
+#  expired          :boolean          default(FALSE)
 #
 
 require 'rails_helper'

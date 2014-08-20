@@ -1,4 +1,4 @@
- # == Schema Information
+# == Schema Information
 #
 # Table name: leagues
 #
@@ -16,11 +16,15 @@
 #
 
 class League < ActiveRecord::Base
-	belongs_to :show
-	has_and_belongs_to_many :users
+
+	belongs_to :show, inverse_of: :leagues
+	has_and_belongs_to_many :users, inverse_of: :leagues
+	before_destroy { users.clear }
 	has_many :rosters, through: :users
 	has_many :rounds
 	has_one :scoring
+
+# FIXME! Come bck to deal with dependencies please
 
 	before_save :set_up_league
 
