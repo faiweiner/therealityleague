@@ -27,9 +27,9 @@
 		</div>
 		<!-- END Contestant Board -->
 		<!-- Roster Board -->
-		<div class="col-sm-6 col-md-8" id="rosterBoard">
+		<div class="col-sm-6 col-md-8">
 			<h3>Your Roster</h3>
-			<div class="row">
+			<div class="row" id="rosterBoard">
 					<% @selected_contestants.each do |contestant| %>
 						<div class="col-md-3">
 							<div class="thumbnail">
@@ -52,14 +52,29 @@
 
 <script>
 	$box = $('#box');
+	$contestantBoard = $('#contestantBoard');
+	$rosterBoard = $('#rosterBoard');
 
-	var thumbnailFactory = function (canvas, contestant_id) {
-		var $newThumbnail = $('<div>');
-		$newThumbnail.addClass('col-md-5');
-		
-		$newThumbnail.text('I got this');
+	var thumbnailFactory = function (canvas, operation, icon, contestant_id) {
+		var $newThumbnail = $('<div>');										// Making the outermost div thumbnail
+		$newThumbnail.addClass('col-md-3');
+		var $secondLayer = $('<div>');										// Second layer def with .thumbnail
+		$secondLayer.addClass('thumbnail');	
+		var $thirdLayer = $('<i></i>');										// Third layer where the <i> lives
+		$thirdLayer.addClass(															//  - adding class to populate icon
+			operation + 
+			'-button fa fa-' + 
+			icon);						
+		jQuery.data($thirdLayer, 'contestantId', 3); // FIXME to be dynamic
+		$thirdLayer.appendTo($secondLayer);						// + append to layer 2, first item
+		var $contestantImage = $('<img>');								//	Image for contestant pic
+		$contestantImage.appendTo($secondLayer); 			// + append to layer 2, second item
+		var $caption = $('<div>');												// Caption for contestant name
+		$caption.text('Contestant Name');  			//FIXME to be dynamic
+		$caption.appendTo($secondLayer);							// + append to layer 2, thrid item		
+		$secondLayer.appendTo($newThumbnail);					// + append to outermost thumbnail
 		console.log('i created something');
-		$newThumbnail.appendTo($box);
+		$newThumbnail.appendTo($rosterBoard);
 	};
 
 	$(function () {
@@ -73,9 +88,8 @@
 		$('.add-button').on('click', function() {
 			console.log('i want to add ' + $(this).data('contestant-id'));
 			$(this).css('color', 'red');
-			thumbnailFactory($box, 2);
+			thumbnailFactory($box, 'add', 'plus', 2); //FIXME to be dynamic
 			console.log('end round');
-			debugger
 		});
 		// clicking remove-button	for selected_contestants
 		$('.remove-button').on('click', function() {
