@@ -1,9 +1,10 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<div class="panel-title">
+		<div class="panel-title row">
+			<span class="col-md-10">
 				<h3><%= @roster.league.name %></h3>
 				<p><%= @roster.league.show.name %></p>
-				<%= link_to "Edit Roster", edit_roster_path(@roster.id), class:"btn btn-default" %>
+			</span>
 		</div>
 		<!-- FIXME with jQuery -->
 	</div>

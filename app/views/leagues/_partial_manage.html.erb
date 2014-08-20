@@ -34,7 +34,6 @@
 									<% if league.commissioner_id == @current_user.id %>
 										<%= link_to(content_tag(:div, "Edit League", class:'btn btn-default'), edit_league_path(league)) %>
 									<% end%>
-									<%= link_to "View Roster", roster_path(@current_user.roster_for_league(league)), class:'btn btn-default' %>
 								</td>
 							</tr>
 						<% end %>
@@ -53,3 +52,5 @@
 		</div>
 	</div>
 </div>
+
+									<%#= link_to "View Roster", roster_path(@current_user.roster_for_league(league)), class:'btn btn-default' %>
