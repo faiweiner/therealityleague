@@ -6,12 +6,6 @@
 
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 
-@brand-primary: #428bca;
-@brand-success: #5cb85c;
-@brand-info:    #5bc0de;
-@brand-warning: #f0ad4e;
-@brand-danger:  #d9534f;
-
 html {
   font-family: 'Lato', sans-serif;
   -webkit-text-size-adjust: 100%;
