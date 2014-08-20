@@ -65,9 +65,25 @@ class LeaguesController < ApplicationController
 	def show
 		@league = League.find(params[:id])
 		@league_show = Show.find(@league.show)
+		@league_rosters = @league.rosters
 		@participants = @league.users
+		@a_participant = nil
+		p_id = @participants.pluck(:id)
 		@comm_this_league = true if @league.commissioner_id == @current_user.id
-		@not_a_participant = true if @participants.include? @current_user == false
+		if p_id.include? @current_user.id
+			@a_participant = true
+		else
+			@a_participant = false
+		end
+	
+		# get roster ID
+		@participants_roster_id = {}
+		@participants.each do |participant|
+			participant_username = participant.username
+			roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)
+			@participants_roster_id.store(participant_username, roster_id)
+		end
+
 	end
 
 	def search
@@ -76,6 +92,19 @@ class LeaguesController < ApplicationController
 	end
 
 	def results
+	end
+
+	def join
+		@league = League.find(params[:league])
+		@league.users << @current_user
+		if Roster.where(user_id: @current_user.id).where(league_id: @league.id).nil?
+			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
+			roster.save
+		else
+			flash[:notice] = "You already have a roster for this league."
+			flash[:color] = "invalid"
+			redirect_to league_path(@league.id)
+		end
 	end
 
 	private

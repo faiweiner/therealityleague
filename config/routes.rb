@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
 	get 'leagues/search' => 'leagues#search'
 	post 'leagues/search/:search' => 'leagues#results'
+	post 'leagues/join/:league' => 'leagues#join', :as => :league_join
 	resources :leagues
 	resources :users
 

@@ -14,9 +14,16 @@ class RostersController < ApplicationController
 		roster.save
 	end
 	def edit
-		@roster = Roster.find params[:id]
+		@roster = Roster.find(params[:id])
+		@all_contestants = Contestant.where(show_id: @roster.league.show)
 		@selected_contestants = @roster.contestants
-  	render :json => @selected_contestants
+		@available_contestants = []
+		# iterate to pull list of non-selected contestants
+		@all_contestants.select do |contestant|
+			unless @selected_contestants.include? contestant
+				@available_contestants.push contestant
+			end
+		end
 	end
 
 	def create

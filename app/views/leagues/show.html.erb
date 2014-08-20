@@ -12,9 +12,10 @@
 					<p>Commissioner</p>
 					<%= link_to"Edit League", edit_league_path, class:"btn btn-default" %>
 				</span>
-			<% elsif @not_a_participant == true %>
-				<%= link_to "Join League", root_path, class:"btn btn-default" %>
+			<% elsif @a_participant == false %>
+				<%= button_to "Join League", league_join_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default" %>
 			<% end %>
+
 
 		</div>
 	</div>
@@ -45,9 +46,9 @@
 								<td>130</td>
 								<td>
 									<% if participant.username == @current_user.username %>
-										<%= link_to "Edit Roster", edit_roster_path(, class:"btn btn-default btn-primary" %>
+										<%= link_to "Edit Roster", edit_roster_path(@participants_roster_id[participant.username]), class:"btn btn-default btn-primary" %>
 									<% else %>
-										<%= link_to "View Roster", roster_path(1), class:"btn btn-default" %>
+										<%= link_to "View Roster", roster_path(@participants_roster_id[participant.username]), class:"btn btn-default" %>
 									<% end %>
 								</td>
 							</tr>
