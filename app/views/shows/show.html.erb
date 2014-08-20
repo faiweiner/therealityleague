@@ -9,9 +9,12 @@
 					<% @contestants.each do |contestant| %>
 						<div class="col-sm-6 col-md-4">
 							<div class="thumbnail">
-								<%= image_tag("http://neighborhoodwomen.org/wp-content/uploads/2012/08/BioPlaceholder.jpg")%>
+								<%= image_tag contestant.image %>
 								<div class="caption caption-header">
 									<h3><%= contestant.name %></h3>
+									Age: <%= contestant.age %>
+										<br>
+									<%= contestant.occupation %>
 								</div>
 								<div class="caption caption-sm">
 									<p><%= contestant.description %></p>

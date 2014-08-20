@@ -15,7 +15,7 @@
 			<% @all_contestants.each do |contestant| %>
 				<div class="col-md-5">
 					<div class="thumbnail">
-						<%= image_tag "http://neighborhoodwomen.org/wp-content/uploads/2012/08/BioPlaceholder.jpg" %>
+						<%= image_tag contestant.image %>
 						<div class="caption">
 							<%= contestant.name %>
 						</div>
@@ -29,7 +29,7 @@
 					<% @selected_contestants.each do |contestant| %>
 						<div class="col-md-5">
 							<div class="thumbnail">
-								<%= image_tag "http://neighborhoodwomen.org/wp-content/uploads/2012/08/BioPlaceholder.jpg" %>
+								<%= image_tag contestant.image %>
 								<div class="caption">
 									<%= contestant.name %>
 								</div>

@@ -2,6 +2,8 @@
 User.destroy_all
 Show.destroy_all
 League.destroy_all
+Contestant.destroy_all
+Roster.destroy_all
 
 last_month = DateTime.now - 31
 one_week = DateTime.now + 7
@@ -31,12 +33,12 @@ league1.users << [user1, user2, user3]
 league2.users << [user3, user4, user5]
 league3.users << [user1, user4, user5]
 
-cont1 = Contestant.create(:name => 'Layla', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Physical Therapist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis ullam doloribus, laborum asperiores aperiam, recusandae soluta est eum, accusantium delectus tempore voluptate reprehenderit repellat. Perspiciatis atque, obcaecati adipisci eos tempora.', :image => '/assets/the_bachelor/layla.jpg')
-cont2 = Contestant.create(:name => 'Nikki', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Executive Assistant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae. Dolorem, laudantium eveniet. Earum possimus minus ex culpa error, quaerat aut!', :image => '/assets/the_bachelor/nikki.jpg')
-cont3 = Contestant.create(:name => 'Jessica', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Nurse', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt totam iusto nulla dolorum modi nisi debitis ipsum quae blanditiis laudantium saepe, similique cum repudiandae quod officia expedita tenetur praesentium magnam.', :image => '/assets/the_bachelor/jessica.jpg')
-cont4 = Contestant.create(:name => 'Heather', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Hair Stylist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus praesentium corporis repellat, facere possimus, suscipit tempore! Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/heather.jpg')
-cont5 = Contestant.create(:name => 'Alex', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Entrepreneur', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus praesentium corporis repellat, facere possimus, suscipit tempore! Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/alex.jpg')
-cont6 = Contestant.create(:name => 'Suzie', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Web Designer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus praesentium corporis repellat, facere possimus, suscipit tempore! Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/suzie.jpg')
+cont1 = Contestant.create(:name => 'Layla', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Physical Therapist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis ullam doloribus, laborum asperiores aperiam, .', :image => '/assets/the_bachelor/layla.jpg')
+cont2 = Contestant.create(:name => 'Nikki', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Executive Assistant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae.', :image => '/assets/the_bachelor/nikki.jpg')
+cont3 = Contestant.create(:name => 'Jessica', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Nurse', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique cum repudiandae quod officia expedita tenetur praesentium magnam.', :image => '/assets/the_bachelor/jessica.jpg')
+cont4 = Contestant.create(:name => 'Heather', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Hair Stylist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/heather.jpg')
+cont5 = Contestant.create(:name => 'Alex', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Entrepreneur', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/alex.jpg')
+cont6 = Contestant.create(:name => 'Suzie', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Web Designer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/suzie.jpg')
 
 roster1 = Roster.create(user_id: user1.id, league_id: league3.id)
 roster2 = Roster.create(user_id: user4.id, league_id: league3.id)
