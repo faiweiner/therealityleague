@@ -8,18 +8,37 @@ class RostersController < ApplicationController
 			flash[:color] = 'invalid'
 			redirect_to new_user_path	
 		end	
-
 	end
 
+	def add
+		roster.save
+	end
 	def edit
 		@roster = Roster.find params[:id]
 		@selected_contestants = @roster.contestants
   	render :json => @selected_contestants
+	end
+
+	def create
+		
 	end
 	
 	def show
 		@roster = Roster.find(params[:id])
 		@all_contestants = Contestant.where(show_id: @roster.league.show)
 		@selected_contestants = @roster.contestants
+		@available_contestants = []
+		# iterate to pull list of non-selected contestants
+		@all_contestants.select do |contestant|
+			unless @selected_contestants.include? contestant
+				@available_contestants.push contestant
+			end
+		end
 	end
+
 end
+
+
+# post to the server, change this contestant to become selected, remove it fromthe front end
+
+# also render the actual contestant back BECCAUSE in AJAX function you'll get data back from the server and you can use that to build the new element that you need to append to the right handside

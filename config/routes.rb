@@ -8,7 +8,10 @@ Rails.application.routes.draw do
 	post 'leagues/search/:search' => 'leagues#results'
 	resources :leagues
 	resources :users
+
+	post 'rosters/:league/:contestant' => 'roster#add', :as => :roster_add
 	resources :rosters
+
 	resources :contestants
 
 	get '/login' => 'sessions#new'
