@@ -4,6 +4,9 @@ Show.destroy_all
 League.destroy_all
 Contestant.destroy_all
 Roster.destroy_all
+Round.destroy_all
+Episode.destroy_all
+Score.destroy_all
 
 last_month = DateTime.now - 31
 one_week = DateTime.now + 7
@@ -24,37 +27,76 @@ show3 = Show.create(:name => 'The Challenge', :premiere_date => three_weeks, :dr
 show4 = Show.create(:name => 'The Voice', :premiere_date => one_month, :draft_close_date => one_month - 5, :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ipsam illum eos accusantium ad doloribus porro, pariatur sed. Libero magni debitis culpa natus, illum ex ut facilis vel qui. Voluptatibus.', :image => '/assets/the_voice/logo.jpg', :episode_count => 10)
 show5 = Show.create(:name => 'The Bachelor Pad', :premiere_date => one_week, :draft_close_date => one_week - 5, :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum laudantium iure, iusto doloremque odit delectus tempora molestiae eos soluta, voluptatum expedita ipsum ut quod eius non minus placeat vel! Sit.', :image => '/assets/bachelor_pad/logo.jpg', :episode_count => 10)
 show6 = Show.create(:name => 'Master Chef', :premiere_date => last_month, :draft_close_date => last_month - 5, :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores animi id repudiandae alias expedita, nisi aspernatur vel natus quam, recusandae sint assumenda mollitia qui culpa at delectus harum explicabo totam!', :image => '/assets/master_chef/logo.png', :episode_count => 10)
+show7 = Show.create(:name => 'The Bachelor: Sean Lowe', :premiere_date => '01/07/2013', :draft_close_date => '01/12/2013', :description	=> 'The best bachelor ever - Sean Lowe is the man!', :image => '/assets/the_bachelor/logo.jpg', :episode_count => 10)
 
 league1 = League.create(:name => 'The Best Public League', :commissioner_id => user1.id, :show_id => show3.id, :public_access => true)
 league2 = League.create(:name => 'The Super Private League', :commissioner_id => user2.id, :show_id => show3.id, :public_access => false)
 league3 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :show_id => show1.id, :public_access => false)
+league4 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :show_id => show7.id, :public_access => false)
 
 league1.users << [user1, user2, user3]
 league2.users << [user3, user4, user5]
 league3.users << [user1, user4, user5]
+league4.users << [user1, user2]
 
 cont1 = Contestant.create(:name => 'Layla', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Physical Therapist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis ullam doloribus, laborum asperiores aperiam.', :image => '/assets/the_bachelor/layla.jpg')
-cont2 = Contestant.create(:name => 'Nikki', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Executive Assistant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae.', :image => '/assets/the_bachelor/nikki.jpg')
-cont3 = Contestant.create(:name => 'Jessica', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Nurse', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique cum repudiandae quod officia expedita tenetur praesentium magnam.', :image => '/assets/the_bachelor/jessica.jpg')
-cont4 = Contestant.create(:name => 'Heather', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Hair Stylist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/heather.jpg')
-cont5 = Contestant.create(:name => 'Alex', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Entrepreneur', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/alex.jpg')
-cont6 = Contestant.create(:name => 'Suzie', :show_id => show1.id, :age => 22, :gender => 'Female', :occupation => 'Web Designer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/suzie.jpg')
+cont2 = Contestant.create(:name => 'Nikki', :show_id => show1.id, :age => 24, :gender => 'Female', :occupation => 'Executive Assistant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae.', :image => '/assets/the_bachelor/nikki.jpg')
+cont3 = Contestant.create(:name => 'Jessica', :show_id => show1.id, :age => 32, :gender => 'Female', :occupation => 'Nurse', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique cum repudiandae quod officia expedita tenetur praesentium magnam.', :image => '/assets/the_bachelor/jessica.jpg')
+cont4 = Contestant.create(:name => 'Heather', :show_id => show1.id, :age => 26, :gender => 'Female', :occupation => 'Hair Stylist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/heather.jpg')
+cont5 = Contestant.create(:name => 'Alex', :show_id => show1.id, :age => 24, :gender => 'Female', :occupation => 'Entrepreneur', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/alex.jpg')
+cont6 = Contestant.create(:name => 'Suzie', :show_id => show1.id, :age => 24, :gender => 'Female', :occupation => 'Web Designer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/suzie.jpg')
 
-roster1 = Roster.create(user_id: user1.id, league_id: league3.id)
-roster2 = Roster.create(user_id: user4.id, league_id: league3.id)
-roster3 = Roster.create(user_id: user5.id, league_id: league3.id)
-roster4 = Roster.create(user_id: user3.id, league_id: league2.id)
-roster5 = Roster.create(user_id: user4.id, league_id: league2.id)
-roster6 = Roster.create(user_id: user5.id, league_id: league2.id)
-roster7 = Roster.create(user_id: user1.id, league_id: league1.id)
-roster8 = Roster.create(user_id: user2.id, league_id: league1.id)
-roster9 = Roster.create(user_id: user3.id, league_id: league1.id)
+cont7 = Contestant.create(:name => 'Catherine', :show_id => show7.id, :age => 26, :gender => 'Female', :occupation => 'Graphic Designer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont8 = Contestant.create(:name => 'Lindsay', :show_id => show7.id, :age => 24, :gender => 'Female', :occupation => 'Substitute Teacher', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont9 = Contestant.create(:name => 'AshLee', :show_id => show7.id, :age => 32, :gender => 'Female', :occupation => 'Personal Organizer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont10 = Contestant.create(:name => 'Desiree', :show_id => show7.id, :age => 26, :gender => 'Female', :occupation => 'Bridal Stylist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont11 = Contestant.create(:name => 'Lesley M.', :show_id => show7.id, :age => 24, :gender => 'Female', :occupation => 'Political Consultant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont12 = Contestant.create(:name => 'Tierra', :show_id => show7.id, :age => 24, :gender => 'Female', :occupation => 'Leasing Consultant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont13 = Contestant.create(:name => 'Daniella', :show_id => show7.id, :age => 24, :gender => 'Female', :occupation => 'Commercial Casting Associate', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont14 = Contestant.create(:name => 'Selma', :show_id => show7.id, :age => 29, :gender => 'Female', :occupation => 'Real Estate Dealer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont15 = Contestant.create(:name => 'Sarah', :show_id => show7.id, :age => 26, :gender => 'Female', :occupation => 'Advertising Executive', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont16 = Contestant.create(:name => 'Robyn', :show_id => show7.id, :age => 24, :gender => 'Female', :occupation => 'Oil Field Account Manager', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont17 = Contestant.create(:name => 'Jackie', :show_id => show7.id, :age => 25, :gender => 'Female', :occupation => 'Cosmetics Consultant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont18 = Contestant.create(:name => 'Amanda', :show_id => show7.id, :age => 28, :gender => 'Female', :occupation => 'Fit Model', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont19 = Contestant.create(:name => 'Leslie H.', :show_id => show7.id, :age => 26, :gender => 'Female', :occupation => 'Poker Dealer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont20 = Contestant.create(:name => 'Kristy', :show_id => show7.id, :age => 26, :gender => 'Female', :occupation => 'Model', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont21 = Contestant.create(:name => 'Taryn', :show_id => show7.id, :age => 30, :gender => 'Female', :occupation => 'Health Club Manager', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont22 = Contestant.create(:name => 'Kacie', :show_id => show7.id, :age => 25, :gender => 'Female', :occupation => 'Community Organizer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont23 = Contestant.create(:name => 'Brooke', :show_id => show7.id, :age => 25, :gender => 'Female', :occupation => 'Graphic Designer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont24 = Contestant.create(:name => 'Diana', :show_id => show7.id, :age => 31, :gender => 'Female', :occupation => 'Salon Owner', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+cont25 = Contestant.create(:name => 'Katie', :show_id => show7.id, :age => 27, :gender => 'Female', :occupation => 'Yoga Instructor', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!')
+
+roster1 = Roster.create(:user_id => user1.id, :league_id => league3.id)
+roster2 = Roster.create(:user_id => user4.id, :league_id => league3.id)
+roster3 = Roster.create(:user_id => user5.id, :league_id => league3.id)
+roster4 = Roster.create(:user_id => user3.id, :league_id => league2.id)
+roster5 = Roster.create(:user_id => user4.id, :league_id => league2.id)
+roster6 = Roster.create(:user_id => user5.id, :league_id => league2.id)
+roster7 = Roster.create(:user_id => user1.id, :league_id => league1.id)
+roster8 = Roster.create(:user_id => user2.id, :league_id => league1.id)
+roster9 = Roster.create(:user_id => user3.id, :league_id => league1.id)
+
+roster10 = Roster.create(:user_id => user1.id, :league_id => league4.id)
+roster11 = Roster.create(:user_id => user2.id, :league_id => league4.id)
+roster10.contestants << [cont7, cont17, cont20, cont25, cont9, cont11]
+roster11.contestants << [cont8, cont10, cont13, cont19, cont20, cont25]
 
 # Roster for Edelman's Bachelor League (The Bachelor)
 roster1.contestants << [cont1, cont2, cont3, cont4]
 roster2.contestants << [cont2, cont3, cont4, cont5]
 roster3.contestants << [cont3, cont4, cont5, cont6]
 
+episode1 = Episode.create(:show_id => show7.id, :air_date => '07/01/2013')
+episode2 = Episode.create(:show_id => show7.id, :air_date => '14/01/2013')
+episode3 = Episode.create(:show_id => show7.id, :air_date => '21/01/2013')
 
+round1 = Round.create(:league_id => league4.id, :episode_id => episode1.id)
+round2 = Round.create(:league_id => league4.id, :episode_id => episode2.id)
+round3 = Round.create(:league_id => league4.id, :episode_id => episode3.id)
 
-
+score1 = Score.create(:round_id => round1.id, :contestant_id => cont7.id)
+score2 = Score.create(:round_id => round1.id, :contestant_id => cont8.id)
+score3 = Score.create(:round_id => round2.id, :contestant_id => cont17.id)
+score4 = Score.create(:round_id => round2.id, :contestant_id => cont25.id)
+score5 = Score.create(:round_id => round3.id, :contestant_id => cont20.id)
+score6 = Score.create(:round_id => round3.id, :contestant_id => cont13.id)

@@ -7,8 +7,6 @@ development:
   <<: *default
   database: therealityleague_development
   host: localhost
-  username: Fai
-  password:
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.

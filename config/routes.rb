@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :scores
+
 	root :to => 'pages#home'
 
 	get 'shows/search' => 'shows#search'
