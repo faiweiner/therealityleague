@@ -8,7 +8,7 @@
 		<!-- FIXME with jQuery -->
 	</div>
 	<div class="panel-body">
-		<div class="col-sm-6 col-md-4">
+		<div class="col-sm-6 col-md-4" id="contestantBoard">
 			<h3><%= @roster.league.show.name %></h3>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta delectus dolorum sequi odio odit veritatis suscipit illum soluta iusto doloribus. Nisi distinctio odio modi, eius accusantium debitis quis aut in!</p>
 			<h4>All Contestants</h4>
@@ -43,3 +43,34 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	$(function() {
+		// set up the contestantBoard and rosterBoard
+		var $contestantBoard = $('#contestantBoard'),
+				$rosterBoard = $('#rosterBoard');
+		console.log('hello');
+		$( '.thumbnail', $contestantBoard ).css( "border", "1px solid red" );
+		// let the contestantBoard items be draggable
+		$( '.thumbnail', $contestantBoard ).draggable({
+    });
+
+
+	});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
