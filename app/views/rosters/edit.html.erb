@@ -3,6 +3,7 @@
 		<div class="panel-title">
 				<h3><%= @roster.league.name %></h3>
 				<p><%= @roster.league.show.name %></p>
+				<%= link_to "Edit Roster", edit_roster_path(@roster.id), class:"btn btn-default" %>
 		</div>
 		<!-- FIXME with jQuery -->
 	</div>
@@ -15,6 +16,7 @@
 			<% @available_contestants.each do |contestant| %>
 				<div class="col-md-5">
 					<div class="thumbnail">
+						<i class="add-button fa fa-plus" data-contestant-id="<%= contestant.id %>"></i>
 						<%= image_tag contestant.image %>
 						<div class="caption">
 							<%= contestant.name %>
@@ -31,6 +33,7 @@
 					<% @selected_contestants.each do |contestant| %>
 						<div class="col-md-3">
 							<div class="thumbnail">
+								<i class="remove-button fa fa-times" data-contestant-id="<%= contestant.id %>"></i>
 								<%= image_tag contestant.image %>
 								<div class="caption">
 									<%= contestant.name %>
