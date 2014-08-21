@@ -91,11 +91,15 @@ class LeaguesController < ApplicationController
 	end
 
 	def search
+
+		raise params
 		@public_leagues = League.where(:public_access => true).order("created_at DESC") # FIXME!
 		@private_leagues = League.where(:public_access => false)
 	end
 
 	def results
+
+		raise params
 		if params[:id]
 			raise "hi"
 		elsif 

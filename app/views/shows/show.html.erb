@@ -41,7 +41,7 @@
 				<% end %>
 				<br>
 				<p><%= @show.description %></p>
-				<%= button_to "Find a league for this show", XXXXXX, class:"btn btn-default" %>
+				<%= link_to "Find a league for this show", leagues_search_path, :action => 'what', class:"btn btn-default" %>
 			</div>
 			<!-- end -->
 		</div>
