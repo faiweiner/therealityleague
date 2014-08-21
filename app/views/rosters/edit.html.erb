@@ -5,6 +5,10 @@
 				<h3><%= @roster.league.name %></h3>
 				<p><%= @roster.league.show.name %></p>
 			</span>
+			<span>
+					<h4 class="small">Deadline: <%= @roster.league.show.premiere_date.strftime("%B %d") %></h4>
+					<%= link_to "Save", roster_path(@roster.id), class:"btn btn-primary" %>
+			</span>
 		</div>
 		<!-- FIXME with jQuery -->
 	</div>

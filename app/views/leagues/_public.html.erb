@@ -7,7 +7,6 @@
 				<tr>
 					<th>League Name</th>
 					<th>Show</th>
-					<th>Draft Deadline</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -16,7 +15,6 @@
 					<tr>
 						<td><%= league.name %></td>
 						<td><%= league.show.name %></td>
-						<td><%= league.show.draft_close_date.strftime("%B %d") %></td>
 						<td>
 							<%= link_to "View League", league_path(league.id), class:"btn btn-default" %>
 						</td>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821062426) do
+ActiveRecord::Schema.define(version: 20140821160607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,7 +82,6 @@ ActiveRecord::Schema.define(version: 20140821062426) do
   create_table "shows", force: true do |t|
     t.string   "name"
     t.datetime "premiere_date"
-    t.datetime "draft_close_date"
     t.string   "country_origin"
     t.string   "type"
     t.datetime "created_at"
@@ -90,8 +89,10 @@ ActiveRecord::Schema.define(version: 20140821062426) do
     t.text     "description"
     t.string   "image"
     t.integer  "series_id"
-    t.boolean  "expired",          default: false
+    t.boolean  "expired",        default: false
     t.integer  "episode_count"
+    t.string   "shows"
+    t.datetime "finale_date"
   end
 
   create_table "users", force: true do |t|

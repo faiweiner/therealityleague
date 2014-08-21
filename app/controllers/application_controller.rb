@@ -13,7 +13,12 @@ class ApplicationController < ActionController::Base
   end
 
   def check_if_logged_in
-    redirect_to(root_path) if @current_user.nil?
+    if @current_user.nil?
+      session[:user_id] = "unassigned"
+      flash[:notice] = "Please sign in to proceed." # FIXME to add a URL tracker for back-tracking
+      flash[:color] = "invalid"
+      redirect_to(login_path) 
+    end
   end
   
   def set_current_user

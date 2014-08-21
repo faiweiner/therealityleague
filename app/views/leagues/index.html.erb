@@ -1,3 +1,10 @@
+<% if flash[:notice] && flash[:color] == "valid" %>
+	<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
+<% elsif flash[:notice] && flash[:color] == "invalid"%>
+	<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
+<% end %>
+
+
 <% if @leagues.length > 0 %>
 	<%= render partial: "partial_manage" %>
 <% else %>

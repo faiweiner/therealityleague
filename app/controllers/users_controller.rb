@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 			redirect_to root_path
 		else
 			flash[:notice] = "Unsuccessful sign up, please try again."
-			flash[:color] = "invalid"
+			flash[:color] = "prohibited"
 			render :new
 		end
 	end
