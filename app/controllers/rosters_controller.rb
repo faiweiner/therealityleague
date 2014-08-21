@@ -12,6 +12,12 @@ class RostersController < ApplicationController
 
 	def add
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 
+		@roster = Roster.find(params[:roster_id])
+		contestant = Contestant.find(params[:contestant_id])
+		@roster.contestants << contestant
+		@selected_contestants = @roster.contestants
+		render :partial => "current_roster"
+
 	end
 	def edit
 		@roster = Roster.find(params[:id])

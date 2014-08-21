@@ -912,7 +912,7 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #428bca;
+  color: blue;
   text-decoration: none;
 }
 a:hover,
@@ -4617,7 +4617,7 @@ a.thumbnail.active {
 .thumbnail .caption {
   padding: 9px;
   color: #333;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .caption-sm {
