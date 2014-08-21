@@ -10,11 +10,13 @@
 	</div>
 	<div class="panel-body">
 		<!-- Contestant Board -->
-		<div class="col-sm-6 col-md-4" id="contestantBoard">
+		<div class="col-sm-6 col-md-4" id="right-box">
 			<h3><%= @roster.league.show.name %></h3>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta delectus dolorum sequi odio odit veritatis suscipit illum soluta iusto doloribus. Nisi distinctio odio modi, eius accusantium debitis quis aut in!</p>
 			<h4>Available Contestants</h4>
-			<%= render partial: "current_available_contestants" %>
+			<div class="row", id="contestantBoard">
+				<%= render partial: "current_available_contestants" %>
+			</div>
 		</div>
 		<!-- END Contestant Board -->
 		<!-- Roster Board -->
@@ -23,7 +25,7 @@
 			<div class="row" id="rosterBoard">
 				<%= render partial: "current_roster" %>
 			</div>
-			<div class="row" id="box">
+			<div class="row" id="left-box">
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odit eius non, ratione ducimus magni consequatur eum quae quia quam itaque hic id provident obcaecati soluta fugiat doloribus ab aliquam?</p>
 			</div>
 		</div>
@@ -53,7 +55,7 @@
 			type: 'POST',
 			success: function(msg) {
 				var partial = msg;
-				$rosterBoard.html(partial);
+				$contestantBoard.html(partial);
 			}
 		});
 	};
@@ -88,9 +90,8 @@
 			$contestantId = $clickedElement.data().contestantId;
 			$rosterId = $clickedElement.data().rosterId;
 			thumbnailFactory(operation, $contestantId, $rosterId);
-			// $(this).closest('div.col-md-3').remove();
+			$(this).closest('div.col-md-3').remove();
 		});
-
 	});
 
 </script>

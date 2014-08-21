@@ -39,9 +39,8 @@ class RostersController < ApplicationController
 			end
 		end
 
-		@available_contestants
-
 		render :partial => "current_available_contestants"
+
 	end
 	
 	def edit
