@@ -14,17 +14,7 @@
 			<h3><%= @roster.league.show.name %></h3>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta delectus dolorum sequi odio odit veritatis suscipit illum soluta iusto doloribus. Nisi distinctio odio modi, eius accusantium debitis quis aut in!</p>
 			<h4>Available Contestants</h4>
-			<% @available_contestants.each do |contestant| %>
-				<div class="col-md-5">
-					<div class="thumbnail">
-						<i class="add-button fa fa-plus" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>" data-roster-id="<%= @roster.id %>"></i>
-						<%= image_tag contestant.image %>
-						<div class="caption">
-							<%= contestant.name %>
-						</div>
-					</div>
-				</div>
-			<% end %>
+			<%= render partial: "current_available_contestants" %>
 		</div>
 		<!-- END Contestant Board -->
 		<!-- Roster Board -->
@@ -69,6 +59,7 @@
 	};
 
 	var thumbnailFactory = function (operation, contestantId, rosterId) {
+		// setting up variables to be used in constructing the thumbnail (for both adding and removing)
 		if (operation == 'add') {
 			var $canvas = $rosterBoard;
 			var operation = operation;
@@ -80,32 +71,32 @@
 			var $canvas = $contestantBoard;
 			var operation = operation;
 			var oppositeIcon = 'plus';											// turn X to +, opposite because the re-redered 
-			var oppositeOperation = 'remove'; 							// element does different thing
-			var thumbnailColumnSize = 'col-md-3';
+			var oppositeOperation = 'add'; 									// element does different thing
+			var thumbnailColumnSize = 'col-md-5';
 			var thumbnailClass = 'thumbnail';	
 			console.log('im deleting');
 		};
-		var $newThumbnail = $('<div>');										// Making the outermost div thumbnail
-		$newThumbnail.addClass('col-md-3');
-		var $secondLayer = $('<div>');										// Second layer def with .thumbnail
-		$secondLayer.addClass('thumbnail');	
-		var $thirdLayer = $('<i></i>');										// Third layer where the <i> lives
-		$thirdLayer.addClass(															//  - adding class to populate icon
-			oppositeOperation + 
-			'-button fa fa-' + 
-			oppositeIcon);						
-		jQuery.data($thirdLayer, 'contestantId', contestantId); // FIXME to be dynamic
-		console.log("hi");
-		addContestantToRoster(contestantId, rosterId)
-		$thirdLayer.appendTo($secondLayer);						// + append to layer 2, first item
-		var $contestantImage = $('<img>');								//	Image for contestant pic
-		$contestantImage.appendTo($secondLayer); 			// + append to layer 2, second item
-		var $caption = $('<div>');												// Caption for contestant name
-		$caption.text('Contestant Name');  			//FIXME to be dynamic
-		$caption.appendTo($secondLayer);							// + append to layer 2, thrid item		
-		$secondLayer.appendTo($newThumbnail);					// + append to outermost thumbnail
-		console.log('i created something');
-		$newThumbnail.appendTo($canvas);
+		// var $newThumbnail = $('<div>');										// Making the outermost div thumbnail
+		// $newThumbnail.addClass('col-md-3');
+		// var $secondLayer = $('<div>');										// Second layer def with .thumbnail
+		// $secondLayer.addClass('thumbnail');	
+		// var $thirdLayer = $('<i></i>');										// Third layer where the <i> lives
+		// $thirdLayer.addClass(															//  - adding class to populate icon
+		// 	oppositeOperation + 
+		// 	'-button fa fa-' + 
+		// 	oppositeIcon);						
+		// jQuery.data($thirdLayer, 'contestantId', contestantId); // FIXME to be dynamic
+		// console.log("hi");
+		// addContestantToRoster(contestantId, rosterId)
+		// $thirdLayer.appendTo($secondLayer);						// + append to layer 2, first item
+		// var $contestantImage = $('<img>');								//	Image for contestant pic
+		// $contestantImage.appendTo($secondLayer); 			// + append to layer 2, second item
+		// var $caption = $('<div>');												// Caption for contestant name
+		// $caption.text('Contestant Name');  			//FIXME to be dynamic
+		// $caption.appendTo($secondLayer);							// + append to layer 2, thrid item		
+		// $secondLayer.appendTo($newThumbnail);					// + append to outermost thumbnail
+		// console.log('i created something');
+		// $newThumbnail.appendTo($canvas);
 	};
 
 	$(function () {
