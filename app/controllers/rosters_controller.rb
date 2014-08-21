@@ -14,23 +14,39 @@ class RostersController < ApplicationController
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 
 		@roster = Roster.find(params[:roster_id])
 		contestant = Contestant.find(params[:contestant_id])
-		unless @roster.contestants.include? contestant
-			@roster.contestants << contestant
-		end
+		@roster.contestants << contestant unless @roster.contestants.include? contestant 
+		# i.e. do NOT append if roster already includes contestant
 		@selected_contestants = @roster.contestants
+
 		render :partial => "current_roster"
 	end
 
 	def remove
 		# removing contestants from rosters
 		@roster = Roster.find(params[:roster_id])
-		@roster.contestants.find(:contestant_id).destroy
-		render :partial => "current_roster"
+		contestant = Contestant.find(params[:contestant_id])
+
+		if contestant
+			@roster.contestants.destroy(contestant)
+		end
+
+		all_contestants = Contestant.where(show_id: @roster.league.show)
+		selected_contestants = @roster.contestants
+		@available_contestants = []
+		all_contestants.select do |contestant|
+			unless selected_contestants.include? contestant
+				@available_contestants.push contestant
+			end
+		end
+
+		@available_contestants
+
+		render :partial => "current_available_contestants"
 	end
 	
 	def edit
 		@roster = Roster.find(params[:id])
-		@all_contestants = Contestant.where(show_id: @roster.league.show)
+		@all_contestants = Contestant.where(show_id: @roster.league.show).order(name: :asc)
 		@selected_contestants = @roster.contestants
 		@available_contestants = []
 		# iterate to pull list of non-selected contestants
