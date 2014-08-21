@@ -6,7 +6,9 @@
 			<% @featured_shows.each do |show| %>
 				<div class="col-sm-6 col-md-4">
 					<div class="thumbnail">
-						<img src="<%= show.image %>" class="img-thumbnail"/>
+						<div class="img-thumbnail-container">
+							<img src="<%= show.image %>" class="img-thumbnail"/>						
+						</div>
 						<div class="caption">
 							<h4><%= show.name %></h4>
 							<p>Premieres: <%= show.premiere_date.strftime("%B %d, %Y") %></p>

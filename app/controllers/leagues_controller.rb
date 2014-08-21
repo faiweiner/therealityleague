@@ -1,7 +1,7 @@
 class LeaguesController < ApplicationController
 
-	before_action :check_if_logged_in, :except => [:index, :new, :create, :search]
-	before_action :save_login_state, :only => [:new, :create, :search]
+	before_action :check_if_logged_in, :except => [:index, :new, :search]
+	before_action :save_login_state, :only => [:new, :search]
 
 	def index
 		if @current_user == nil

@@ -1,8 +1,11 @@
 <div class="panel panel-default">
 	<div class="panel-body">
-		<div class="signup_form col-md-10">
+		<div class="signup_form col-md-12">
 			<h1>Sign Up</h1>
 
+			<% if flash[:notice] %>
+				<div class="alert alert-warning col-lg-12" role="alert"><%= flash[:notice] %></div>
+			<% end %>
 			<%= form_for(@user, :class => "form-horizontal", :row => "form") do |f| %>
 				<% if @user.errors.any? %>
 					<div class="alert alert-danger" role="alert">
@@ -51,8 +54,10 @@
 						<%= f.submit "Register", :class => "btn btn-primary btn-lg" %>
 					</div>
 				</div>
+				<div class="actions col-sm-offset-4 col-sm-4">
+					<p>Already signed up? <%= link_to "Sign in", login_path %></p>
+				</div>
 			<% end %>
-
 		</div>
 	</div>
 </div>

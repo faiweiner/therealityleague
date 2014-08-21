@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821062426) do
+ActiveRecord::Schema.define(version: 20140821160607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,8 @@ ActiveRecord::Schema.define(version: 20140821062426) do
     t.integer  "series_id"
     t.boolean  "expired",          default: false
     t.integer  "episode_count"
+    t.string   "shows"
+    t.datetime "finale_date"
   end
 
   create_table "users", force: true do |t|

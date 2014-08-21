@@ -15,6 +15,8 @@
 #  series_id        :integer
 #  expired          :boolean          default(FALSE)
 #  episode_count    :integer
+#  shows            :string(255)
+#  finale_date      :datetime
 #
 
 class Show < ActiveRecord::Base
@@ -42,5 +44,9 @@ class Show < ActiveRecord::Base
   def self.get_show_name(show_id)
   	show = Show.find(show_id)
   	show.name
+  end
+
+  def self.expired
+  	
   end
 end

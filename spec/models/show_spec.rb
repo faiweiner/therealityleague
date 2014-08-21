@@ -15,6 +15,8 @@
 #  series_id        :integer
 #  expired          :boolean          default(FALSE)
 #  episode_count    :integer
+#  shows            :string(255)
+#  finale_date      :datetime
 #
 
 require 'rails_helper'
