@@ -1,17 +1,11 @@
-<h3>Your Roster</h3>
-	<div class="row" id="rosterBoard">
-			<% @selected_contestants.each do |contestant| %>
-				<div class="col-md-3">
-					<div class="thumbnail">
-						<i class="remove-button fa fa-times" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>" data-roster-id="<%= @roster.id %>"></i>
-						<%= image_tag contestant.image %>
-						<div class="caption">
-							<%= contestant.name %>
-						</div>
-					</div>
-				</div>
-			<% end %>
+<% @selected_contestants.each do |contestant| %>
+	<div class="col-md-3">
+		<div class="thumbnail">
+			<i class="remove-button fa fa-times" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>" data-roster-id="<%= @roster.id %>"></i>
+			<%= image_tag contestant.image %>
+			<div class="caption">
+				<%= contestant.name %>
+			</div>
+		</div>
 	</div>
-	<div class="row" id="box">
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odit eius non, ratione ducimus magni consequatur eum quae quia quam itaque hic id provident obcaecati soluta fugiat doloribus ab aliquam?</p>
-	</div>
+<% end %>

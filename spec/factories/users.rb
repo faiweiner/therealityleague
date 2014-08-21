@@ -11,6 +11,7 @@
 #  oauth_expires_at :datetime
 #  created_at       :datetime
 #  updated_at       :datetime
+#  admin            :boolean          default(FALSE)
 #
 
 FactoryGirl.define do
