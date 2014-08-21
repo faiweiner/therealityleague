@@ -6,7 +6,7 @@ class LeaguesController < ApplicationController
 	def index
 		if @current_user == nil
 			flash[:notice] = "You must be a registered user to view leagues. Please sign up or sign in."
-			flash[:color] = 'invalid'
+			flash[:color] = "invalid"
 			redirect_to new_user_path
 		end		
 
@@ -23,13 +23,12 @@ class LeaguesController < ApplicationController
 			# Get user's roster for that particular league
 			@rosters = @current_user.rosters
 		end
-
 	end
 
 	def new
 		if @current_user == nil
 			flash[:notice] = "Looks like you haven't registered yet - please sign up before creating a new league."
-			flash[:color] = 'invalid'
+			flash[:color] = "invalid"
 			redirect_to new_user_path
 		end
 
@@ -47,9 +46,9 @@ class LeaguesController < ApplicationController
 			# get customized text based on type
 			@access_type = nil
 			if @league.public_access == true
-				@access_type = 'public'
+				@access_type = "public"
 			else
-				@access_type = 'private'
+				@access_type = "private"
 			end
 			# automatically creates a league roster for the user
 			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
@@ -57,13 +56,23 @@ class LeaguesController < ApplicationController
 
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
-			flash[:color] = 'valid'
+			flash[:color] = "valid"
 			redirect_to league_path(@league.id)
 		else
-			flash[:notice] = 'Something went wrong and we were unable to save your league'
-			flash[:color] = 'invalid'
+			flash[:notice] = "Something went wrong and we were unable to save your league"
+			flash[:color] = "invalid"
 			render :new
 		end
+	end
+
+	def edit
+		@league = League.find(params[:id])
+	end
+
+	def update
+		@league = League.find(params[:id])
+		@league.update league_params
+		redirect_to leagues_path
 	end
 
 	def show

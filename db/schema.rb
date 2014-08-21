@@ -82,7 +82,6 @@ ActiveRecord::Schema.define(version: 20140821160607) do
   create_table "shows", force: true do |t|
     t.string   "name"
     t.datetime "premiere_date"
-    t.datetime "draft_close_date"
     t.string   "country_origin"
     t.string   "type"
     t.datetime "created_at"
@@ -90,7 +89,7 @@ ActiveRecord::Schema.define(version: 20140821160607) do
     t.text     "description"
     t.string   "image"
     t.integer  "series_id"
-    t.boolean  "expired",          default: false
+    t.boolean  "expired",        default: false
     t.integer  "episode_count"
     t.string   "shows"
     t.datetime "finale_date"

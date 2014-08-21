@@ -17,7 +17,7 @@ RSpec.describe Round, :type => :model do
 
 	# ---- dummy data ---- #
 	before do 
-		@show1 = Show.create(:id => 1, :name => 'The Bachelor', :premiere_date => '06/01/14', :draft_close_date => '11/01/14', :country_origin => 'USA', :description => 'The Bachelor is an American reality television dating game show debuting in 2002 on ABC. For all seasons, the show is hosted by Chris Harrison.')
+		@show1 = Show.create(:id => 1, :name => 'The Bachelor', :premiere_date => '06/01/2014', :finale_date => '11/01/2014', :country_origin => 'USA', :description => 'The Bachelor is an American reality television dating game show debuting in 2002 on ABC. For all seasons, the show is hosted by Chris Harrison.')
 	end
 
 	# ---- general tests ---- #

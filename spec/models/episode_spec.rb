@@ -16,9 +16,9 @@ RSpec.describe Episode, :type => :model do
 
 	# ---- dummy data ---- #
 	before do 
-		@show1 = Show.create(:id => 1, :name => 'The Bachelor', :premiere_date => '06/01/14', :draft_close_date => '11/01/14', :country_origin => 'USA', :description => 'The Bachelor is an American reality television dating game show debuting in 2002 on ABC. For all seasons, the show is hosted by Chris Harrison.')
-		@episode1 = Episode.create(:show_id => 1, :air_date => '13/05/14')
-		@episode2 = Episode.create(:show_id => nil, :air_date => '20/05/14')
+		@show1 = Show.create(:id => 1, :name => 'The Bachelor', :premiere_date => '06/01/2014', :country_origin => 'USA', :description => 'The Bachelor is an American reality television dating game show debuting in 2002 on ABC. For all seasons, the show is hosted by Chris Harrison.')
+		@episode1 = Episode.create(:show_id => 1, :air_date => '13/05/2014')
+		@episode2 = Episode.create(:show_id => nil, :air_date => '20/05/2014')
 		@episode3 = Episode.create(:show_id => 1, :air_date => nil)
 	end
 

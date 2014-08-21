@@ -11,7 +11,8 @@
 						<tr>
 							<th>League Name</th>
 							<th>Show</th>
-							<th>Action</th>
+							<th>Type</th>
+							<th><%= pluralize_without_count(@comm_leagues.count, "Action", text = nil) %></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -24,6 +25,13 @@
 									<%= league.name %></td>
 								<td>
 									<%= league.show.name %> 
+								</td>
+								<td>
+									<% if league.public_access == true %>
+										Public
+									<% else %>
+										Private 
+									<% end %>
 								</td>
 								<td>
 									<%= link_to "View League", league_path(league.id), class:'btn btn-default' %>

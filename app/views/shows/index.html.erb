@@ -11,8 +11,7 @@
 					</div>
 					<div class="caption caption-lg">
 						<h4><%= show.name %></h4>
-						<p>Premieres: <%= show.premiere_date.strftime("%B %d, %Y") %></p>
-						<p>Final Draft on: <%= show.draft_close_date.strftime("%B %d, %Y") %></p>
+						<p>Premieres: <%= show.premiere_date.strftime("%B %d") %></p>
 						<p><%= link_to "Explore Show", show_path(show.id), class:"btn btn-primary" %></p>
 					</div>
 				</div>
@@ -34,8 +33,7 @@
 					</div>
 					<div class="caption caption-lg">
 						<h4><%= show.name %></h4>
-						<p>Premieres: <%= show.premiere_date.strftime("%B %d, %Y") %></p>
-						<p>Final Draft on: <%= show.draft_close_date.strftime("%B %d, %Y") %></p>
+						<p>Premieres: <%= show.premiere_date.strftime("%B %d") %></p>
 						<p><%= link_to "Explore Show", show_path(show.id), class:"btn btn-primary" %></p>
 					</div>
 				</div>

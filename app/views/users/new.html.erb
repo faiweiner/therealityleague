@@ -1,11 +1,15 @@
+<% if flash[:notice] && flash[:color] == "valid" %>
+	<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
+<% elsif flash[:notice] && flash[:color] == "invalid" %>
+	<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
+<% elsif flash[:notice] && flash[:color] == "prohibited"%>
+	<div class="alert alert-danger" role="alert"><%= flash[:notice] %></div>
+<% end %>
+
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="signup_form col-md-12">
 			<h1>Sign Up</h1>
-
-			<% if flash[:notice] %>
-				<div class="alert alert-warning col-lg-12" role="alert"><%= flash[:notice] %></div>
-			<% end %>
 			<%= form_for(@user, :class => "form-horizontal", :row => "form") do |f| %>
 				<% if @user.errors.any? %>
 					<div class="alert alert-danger" role="alert">
