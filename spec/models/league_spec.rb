@@ -14,6 +14,7 @@
 #  league_key      :string(255)
 #  league_password :string(255)
 #  draft_limit     :integer          default(5)
+#  expired         :boolean          default(FALSE)
 #
 
 require 'rails_helper'
