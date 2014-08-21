@@ -4617,7 +4617,7 @@ a.thumbnail.active {
 .thumbnail .caption {
   padding: 9px;
   color: #333;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .caption-sm {
