@@ -16,7 +16,7 @@ class RostersController < ApplicationController
 		contestant = Contestant.find(params[:contestant_id])
 		@roster.contestants << contestant unless @roster.contestants.include? contestant 
 		# i.e. do NOT append if roster already includes contestant
-		@selected_contestants = @roster.contestants
+		@selected_contestants = @roster.contestants.order(name: :asc)
 
 		render :partial => "current_roster"
 	end
@@ -38,7 +38,7 @@ class RostersController < ApplicationController
 				@available_contestants.push contestant
 			end
 		end
-
+		
 		render :partial => "current_available_contestants"
 
 	end

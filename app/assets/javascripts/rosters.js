@@ -3,6 +3,10 @@ $(document).ready(function () {
 	$contestantBoard = $('#contestantBoard');
 	$rosterBoard = $('#rosterBoard');
 
+
+	// ================== GLOBAL FUNCTIONS ================== //
+
+	// ----- BEGIN server-side ----- //
 	// sends data to server for addition to roster
 	var addContestantToRoster = function (contestantId, rosterId) {
 		$.ajax({
@@ -26,7 +30,9 @@ $(document).ready(function () {
 			}
 		});
 	};
+	// ----- END server-side ----- //
 
+	// ----- BEGIN client-side ----- //
 	// detects which operation to execute
 	var actionOperator = function (operation, contestantId, rosterId) {
 		if (operation == 'add') {
@@ -36,49 +42,53 @@ $(document).ready(function () {
 		};
 	};
 
-	console.log('this page is bomb');
-
-	// universal click listener
+	// ========= universal click listener ========= //
 	$(this).on('click', function (event) {
-		
+
 		// records which element is being clicked
 		$element = event.target;
-		var myClass = $element.className;
-		console.log($element);
-		console.log(myClass);
 
+		// set arguments for actionOperator
+		var myClass = $element.className;
+		var contestantId = $element.dataset.contestantId
+		var rosterId	= $element.dataset.rosterId
+
+		// sets operation based on myClass value
 		if (myClass == 'add-button fa fa-plus') {
 			var operation = 'add';
-			console.log('im about to add');
+			$element.offsetParent.remove();
 		} else if (myClass == 'remove-button fa fa-times') {
 			var operation = 'remove';
-			console.log('im about to remove');
+			$element.offsetParent.remove();
 		};
+
+		actionOperator(operation, contestantId, rosterId);
 	});
 
 
-	$(function () {
-		console.log('Initialized');
 
-		// clicking add-button for available_contestants
-		$('.add-button').on('click', function () {
-			var operation = 'add'
-			var $clickedElement = $(this);
-			$contestantId = $clickedElement.data().contestantId;
-			$rosterId = $clickedElement.data().rosterId;
-			actionOperator(operation, $contestantId, $rosterId);
-			$(this).closest('div.col-md-5').remove();
-		});
+	// $(function () {
+	// 	console.log('Initialized old stuff');
 
-		// clicking remove-button	for selected_contestants
-		$('.remove-button').on('click', function () {
-			var operation = 'remove'
-			var $clickedElement = $(this);
-			$contestantId = $clickedElement.data().contestantId;
-			$rosterId = $clickedElement.data().rosterId;
-			actionOperator(operation, $contestantId, $rosterId);
-			$(this).closest('div.col-md-3').remove();
-		});
-	});
+	// 	// clicking add-button for available_contestants
+	// 	$('.add-button').on('click', function () {
+	// 		var operation = 'add'
+	// 		var $clickedElement = $(this);
+	// 		$contestantId = $clickedElement.data().contestantId;
+	// 		$rosterId = $clickedElement.data().rosterId;
+	// 		actionOperator(operation, $contestantId, $rosterId);
+	// 		
+	// 	});
+
+	// 	// clicking remove-button	for selected_contestants
+	// 	$('.remove-button').on('click', function () {
+	// 		var operation = 'remove'
+	// 		var $clickedElement = $(this);
+	// 		$contestantId = $clickedElement.data().contestantId;
+	// 		$rosterId = $clickedElement.data().rosterId;
+	// 		actionOperator(operation, $contestantId, $rosterId);
+	// 		$(this).closest('div.col-md-3').remove();
+	// 	});
+	// });
 
 });
