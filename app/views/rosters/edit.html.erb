@@ -34,7 +34,7 @@
 					<% @selected_contestants.each do |contestant| %>
 						<div class="col-md-3">
 							<div class="thumbnail">
-								<i class="remove-button fa fa-times" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>"></i>
+								<i class="remove-button fa fa-times" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>" data-roster-id="<%= @roster.id %>"></i>
 								<%= image_tag contestant.image %>
 								<div class="caption">
 									<%= contestant.name %>
@@ -56,7 +56,7 @@
 	$contestantBoard = $('#contestantBoard');
 	$rosterBoard = $('#rosterBoard');
 
-	var thumbnailFactory = function (operation, contestantId, leagueId) {
+	var thumbnailFactory = function (operation, contestantId, leagueId, rosterId) {
 		if (operation == 'add') {
 			var $canvas = $rosterBoard;
 			var operation = operation;
@@ -71,13 +71,12 @@
 		var $secondLayer = $('<div>');										// Second layer def with .thumbnail
 		$secondLayer.addClass('thumbnail');	
 		var $thirdLayer = $('<i></i>');										// Third layer where the <i> lives
-		var $contestantImage 
-		console.log($contestantImage);
 		$thirdLayer.addClass(															//  - adding class to populate icon
 			operation + 
 			'-button fa fa-' + 
 			icon);						
 		jQuery.data($thirdLayer, 'contestantId', contestantId); // FIXME to be dynamic
+		console.log("hi");
 		$thirdLayer.appendTo($secondLayer);						// + append to layer 2, first item
 		var $contestantImage = $('<img>');								//	Image for contestant pic
 		$contestantImage.appendTo($secondLayer); 			// + append to layer 2, second item
@@ -101,7 +100,8 @@
 			var $clickedElement = $(this);
 			$contestantId = $clickedElement.data().contestantId;
 			$leagueId = $clickedElement.data().leagueId;
-			thumbnailFactory('add', $contestantId, $leagueID); //FIXME to be dynamic
+			$rosterId = $clickedElement.data().rosterId;
+			thumbnailFactory('add', $contestantId, $leagueId, $rosterId); //FIXME to be dynamic
 			$(this).closest('div.col-md-5').remove();
 		});
 		// clicking remove-button	for selected_contestants
@@ -110,6 +110,21 @@
 			$rosterBoard.children('.thumbnail').remove();
 			$(this).closest('div.thumbnail').remove();
 		});
+
+		var addContestantToRoster = function (contestantId, rosterId) {
+			$.ajax({
+				url: '/rosters/' + rosterId + "/" + contestantId,
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					cotestant_id: contestantId,
+					roster_id: roster_id
+				},
+				success: function (p) {
+					console.log("successfully added a new contestant to the roste");
+				}
+			});
+		};
 
 	});
 

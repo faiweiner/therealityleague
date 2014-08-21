@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20140820183600) do
     t.string  "image"
   end
 
-  create_table "contestants_rosters", force: true do |t|
+  create_table "contestants_rosters", force: true do |t| # FIXME! Rename to fit convention
     t.integer "contestant_id"
     t.integer "roster_id"
   end

@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 	resources :leagues
 	resources :users
 
-	post 'rosters/:league/:contestant' => 'roster#add', :as => :roster_add
+	post 'rosters/:roster/:contestant' => 'roster#add', :as => :roster_add
 	resources :rosters
 
 	resources :contestants

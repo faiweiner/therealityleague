@@ -11,6 +11,7 @@ class RostersController < ApplicationController
 	end
 
 	def add
+		# adding contestants to rosters, because when you join a league, a roster is automatically created for you.
 		roster.save
 	end
 	def edit
