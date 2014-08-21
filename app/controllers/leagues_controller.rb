@@ -1,7 +1,7 @@
 class LeaguesController < ApplicationController
 
 	before_action :check_if_logged_in, :except => [:index, :new, :create, :search]
-	before_action :save_login_state, :only => [:new, :create]
+	before_action :save_login_state, :only => [:new, :create, :search]
 
 	def index
 		if @current_user == nil
@@ -96,6 +96,12 @@ class LeaguesController < ApplicationController
 	end
 
 	def results
+		if params[:id]
+			raise "hi"
+		elsif 
+			raise "ho"
+		end
+			
 	end
 
 	def access

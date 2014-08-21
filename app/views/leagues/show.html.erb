@@ -46,7 +46,11 @@
 							<td><%= participant.username %></td>
 							<td>130</td>
 							<td>
-								<%= link_to "View Roster", roster_path(@participants_roster_id[participant.username]), class:"btn btn-default" %>
+								<% if participant.id == @current_user.id %>
+									<%= link_to "View Roster", roster_path(@participants_roster_id[participant.username]), class:"btn btn-primary" %>
+								<% else %>
+									<%= link_to "View Roster", roster_path(@participants_roster_id[participant.username]), class:"btn btn-default" %>
+								<% end %>
 							</td>
 						</tr>
 					<% end %>

@@ -11,24 +11,20 @@
 						<tr>
 							<th>League Name</th>
 							<th>Show</th>
-							<th></th>
 							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						<% @leagues.each do |league| %>
 							<tr>
-								<td><%= league.name %></td>
+								<td>
+									<% if league.commissioner_id == @current_user.id %>
+										<i class="fa fa-star"></i>
+									<% end %>
+									<%= league.name %></td>
 								<td>
 									<%= league.show.name %> 
 								</td>
-								<% if league.commissioner_id == @current_user.id %>
-									<td>
-										<var>Commissioner</var>
-									</td>
-								<% else %>
-									<td></td>
-								<% end %>
 								<td>
 									<%= link_to "View League", league_path(league.id), class:'btn btn-default' %>
 									<% if league.commissioner_id == @current_user.id %>

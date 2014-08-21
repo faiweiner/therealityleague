@@ -42,13 +42,24 @@
 </div>
 
 <script>
-	$box = $('#box');
+	// set up the contestantBoard and rosterBoard
 	$contestantBoard = $('#contestantBoard');
 	$rosterBoard = $('#rosterBoard');
 
 	var addContestantToRoster = function (contestantId, rosterId) {
 		$.ajax({
-			url: '/rosters/' + rosterId + "/" + contestantId,
+			url: '/rosters/' + rosterId + "/add" + "/" + contestantId,
+			type: 'POST',
+			success: function(msg) {
+				var partial = msg;
+				$rosterBoard.html(partial);
+			}
+		});
+	};
+
+	var removeContestantFromRoster = function (contestantId, rosterId) {
+		$.ajax({
+			url: '/rosters/' + rosterId + "/remove" + "/" + contestantId,
 			type: 'POST',
 			success: function(msg) {
 				var partial = msg;
@@ -61,11 +72,17 @@
 		if (operation == 'add') {
 			var $canvas = $rosterBoard;
 			var operation = operation;
-			var oppositeIcon = 'times';											// opposite because the re-redered 
+			var oppositeIcon = 'times';											// turn + to X, opposite because the re-redered 
 			var oppositeOperation = 'remove'; 							// element does different thing
 			var thumbnailColumnSize = 'col-md-3';
 			var thumbnailClass = 'thumbnail';
 		} else if (operation == 'remove') {
+			var $canvas = $contestantBoard;
+			var operation = operation;
+			var oppositeIcon = 'plus';											// turn X to +, opposite because the re-redered 
+			var oppositeOperation = 'remove'; 							// element does different thing
+			var thumbnailColumnSize = 'col-md-3';
+			var thumbnailClass = 'thumbnail';	
 			console.log('im deleting');
 		};
 		var $newThumbnail = $('<div>');										// Making the outermost div thumbnail
@@ -92,10 +109,6 @@
 	};
 
 	$(function () {
-
-		// set up the contestantBoard and rosterBoard
-		var $contestantBoard = $('#contestantBoard'),
-				$rosterBoard = $('#rosterBoard');
 		console.log('Initialized');
 
 		// clicking add-button for available_contestants
@@ -103,14 +116,17 @@
 			var $clickedElement = $(this);
 			$contestantId = $clickedElement.data().contestantId;
 			$rosterId = $clickedElement.data().rosterId;
-			thumbnailFactory('add', $contestantId, $rosterId); //FIXME to be dynamic
+			thumbnailFactory('add', $contestantId, $rosterId);
 			$(this).closest('div.col-md-5').remove();
 		});
+
 		// clicking remove-button	for selected_contestants
 		$('.remove-button').on('click', function() {
-			console.log('i want to delete ' + $(this).data('contestant-id'));
-			$rosterBoard.children('.thumbnail').remove();
-			$(this).closest('div.thumbnail').remove();
+			var $clickedElement = $(this);
+			$contestantId = $clickedElement.data().contestantId;
+			$rosterId = $clickedElement.data().rosterId;
+			thumbnailFactory('remove', $contestantId, $rosterId);
+			// $(this).closest('div.thumbnail').remove();
 		});
 
 	});

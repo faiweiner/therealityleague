@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821061147) do
+ActiveRecord::Schema.define(version: 20140821062426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20140821061147) do
     t.string   "league_key"
     t.string   "league_password"
     t.integer  "draft_limit",     default: 5
+    t.boolean  "expired",         default: false
   end
 
   create_table "leagues_users", id: false, force: true do |t|
