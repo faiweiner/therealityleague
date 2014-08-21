@@ -15,7 +15,11 @@ class LeaguesController < ApplicationController
 
 		if @current_user.present?
 			# List of participating leagues
-			@leagues = @current_user.leagues
+			@leagues = @current_user.leagues.where(:expired => false)
+			@past_leagues = @current_user.leagues.where(:expired => true)
+			if @past_leagues.nil?
+				flash[:notice] = "You have yet to compete in a league."
+			end
 			# List of leagues of which user is the commissioner
 			@comm_leagues = League.where(commissioner_id: @current_user.id)
 			# @league_players = @league.users

@@ -28,8 +28,9 @@ class Show < ActiveRecord::Base
 	validates :premiere_date, :presence => true, :on => :create
 
 	def self.top_three
-		# This model method is called in Pages#home to give list of the three latest shows
-    Show.last(3)
+		# This model method is called in Pages#home to give list of the three top shows
+    
+    Show.where(expired: false).order("premiere_date ASC").last(3)
   end
 
   def self.select_show

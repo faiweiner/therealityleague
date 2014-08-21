@@ -51,7 +51,40 @@
 				<h4>Past <%= pluralize_without_count(@current_user.leagues.count, "League", text = nil) %></h4> <!-- FIXME -->
 			</div>
 			<div class="panel-body">
-				Panel content
+				<table class="table table-striped" id="my_leagues_table">
+					<thead>
+						<tr>
+							<th>League Name</th>
+							<th>Show</th>
+							<th>Type</th>
+							<th><%= pluralize_without_count(@comm_leagues.count, "Action", text = nil) %></th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @past_leagues.each do |league| %>
+							<tr>
+								<td>
+									<% if league.commissioner_id == @current_user.id %>
+										<i class="fa fa-star"></i>
+									<% end %>
+									<%= league.name %></td>
+								<td>
+									<%= league.show.name %> 
+								</td>
+								<td>
+									<% if league.public_access == true %>
+										Public
+									<% else %>
+										Private 
+									<% end %>
+								</td>
+								<td>
+									<%= link_to "View League", league_path(league.id), class:'btn btn-default' %>
+								</td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

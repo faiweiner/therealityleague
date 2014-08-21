@@ -35,13 +35,13 @@
 				<% if @show.expired == true %>
 					Premiered:
 					<h4><%= @show.premiere_date.strftime("%B %d, %Y") %></h4>
+					<p><%= @show.description %></p>
 				<% else %>
 					Premieres:
 					<h4><%= @show.premiere_date.strftime("%B %d") %></h4>
+					<%= button_to "Find a league for this show", leagues_path, class:"btn btn-default" %> <!-- FIXME -->
 				<% end %>
 				<br>
-				<p><%= @show.description %></p>
-				<%= button_to "Find a league for this show", leagues_path, class:"btn btn-default" %> <!-- FIXME -->
 			</div>
 			<!-- end -->
 		</div>
