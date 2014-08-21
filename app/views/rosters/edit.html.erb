@@ -33,69 +33,6 @@
 	</div>
 </div>
 
-<script>
-	// set up the contestantBoard and rosterBoard
-	$contestantBoard = $('#contestantBoard');
-	$rosterBoard = $('#rosterBoard');
-
-	var addContestantToRoster = function (contestantId, rosterId) {
-		$.ajax({
-			url: '/rosters/' + rosterId + "/add" + "/" + contestantId,
-			type: 'POST',
-			success: function(msg) {
-				var partial = msg;
-				$rosterBoard.html(partial);
-			}
-		});
-	};
-
-	var removeContestantFromRoster = function (contestantId, rosterId) {
-		$.ajax({
-			url: '/rosters/' + rosterId + "/remove" + "/" + contestantId,
-			type: 'POST',
-			success: function(msg) {
-				var partial = msg;
-				$contestantBoard.html(partial);
-			}
-		});
-	};
-
-	var thumbnailFactory = function (operation, contestantId, rosterId) {
-		if (operation == 'add') {
-			addContestantToRoster(contestantId, rosterId);
-		} else if (operation == 'remove') {
-			removeContestantFromRoster(contestantId, rosterId);
-		};
-
-		console.log('finished');
-	};
-
-	$(function () {
-		console.log('Initialized');
-
-		// clicking add-button for available_contestants
-		$('.add-button').on('click', function() {
-			var operation = 'add'
-			var $clickedElement = $(this);
-			$contestantId = $clickedElement.data().contestantId;
-			$rosterId = $clickedElement.data().rosterId;
-			thumbnailFactory(operation, $contestantId, $rosterId);
-			$(this).closest('div.col-md-5').remove();
-		});
-
-		// clicking remove-button	for selected_contestants
-		$('.remove-button').on('click', function() {
-			var operation = 'remove'
-			var $clickedElement = $(this);
-			$contestantId = $clickedElement.data().contestantId;
-			$rosterId = $clickedElement.data().rosterId;
-			thumbnailFactory(operation, $contestantId, $rosterId);
-			$(this).closest('div.col-md-3').remove();
-		});
-	});
-
-</script>
-
 
 
 
