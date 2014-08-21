@@ -1,5 +1,5 @@
 class RostersController < ApplicationController
-	# before_action :check_if_logged_in, :except => [:index, :new, :create]
+	before_action :check_if_logged_in
 	# before_action :save_login_state, :only => [:new, :create]
 
 	def index
@@ -11,9 +11,7 @@ class RostersController < ApplicationController
 	end
 
 	def add
-		@roster = Roster.find(params[:roster_id])
-		# adding contestants to rosters, because when you join a league, a roster is automatically created for you.
-		roster.save
+		# adding contestants to rosters, because when you join a league, a roster is automatically created 
 	end
 	def edit
 		@roster = Roster.find(params[:id])

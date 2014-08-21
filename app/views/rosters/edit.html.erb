@@ -17,7 +17,7 @@
 			<% @available_contestants.each do |contestant| %>
 				<div class="col-md-5">
 					<div class="thumbnail">
-						<i class="add-button fa fa-plus" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>"></i>
+						<i class="add-button fa fa-plus" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>" data-roster-id="<%= @roster.id %>"></i>
 						<%= image_tag contestant.image %>
 						<div class="caption">
 							<%= contestant.name %>
@@ -29,54 +29,41 @@
 		<!-- END Contestant Board -->
 		<!-- Roster Board -->
 		<div class="col-sm-6 col-md-8">
-			<h3>Your Roster</h3>
-			<div class="row" id="rosterBoard">
-					<% @selected_contestants.each do |contestant| %>
-						<div class="col-md-3">
-							<div class="thumbnail">
-								<i class="remove-button fa fa-times" data-contestant-id="<%= contestant.id %>" data-league-id="<%= @roster.league.id %>" data-roster-id="<%= @roster.id %>"></i>
-								<%= image_tag contestant.image %>
-								<div class="caption">
-									<%= contestant.name %>
-								</div>
-							</div>
-						</div>
-					<% end %>
-			</div>
-			<div class="row" id="box">
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odit eius non, ratione ducimus magni consequatur eum quae quia quam itaque hic id provident obcaecati soluta fugiat doloribus ab aliquam?</p>
-			</div>
+			<%= render partial: "current_roster" %>
 		</div>
 		<!-- END Roster Board -->
 	</div>
 </div>
 
 <script>
+	$box = $('#box');
+	$contestantBoard = $('#contestantBoard');
+	$rosterBoard = $('#rosterBoard');
+
 	var addContestantToRoster = function (contestantId, rosterId) {
 		$.ajax({
 			url: '/rosters/' + rosterId + "/" + contestantId,
 			type: 'POST',
 			dataType: 'json',
-			data: {
-				cotestant_id: contestantId,
-				roster_id: roster_id
-			},
-			success: function (p) {
-				console.log("successfully added a new contestant to the roste");
-				// FIXME to call on the function to re-render the roster to reflect new changes
+			success: function(msg) {
+        $rosterBoard.fadeOut(800, function() {
+        	form.html(msg).fadeIn().delay(2000);
+        });
 			}
 		});
+
+		$(document).ajaxSuccess(function() {
+  		$( ".result" ).load( "ajax/test.html" );
+		});
+		console.log("I GOT THROUGH HERE!");
 	};
 
-	$box = $('#box');
-	$contestantBoard = $('#contestantBoard');
-	$rosterBoard = $('#rosterBoard');
-
-	var thumbnailFactory = function (operation, contestantId, leagueId, rosterId) {
+	var thumbnailFactory = function (operation, contestantId, rosterId) {
 		if (operation == 'add') {
 			var $canvas = $rosterBoard;
 			var operation = operation;
-			var icon = 'plus';
+			var oppositeIcon = 'times';											// opposite because the re-redered 
+			var oppositeOperation = 'remove'; 							// element does different thing
 			var thumbnailColumnSize = 'col-md-3';
 			var thumbnailClass = 'thumbnail';
 		} else if (operation == 'remove') {
@@ -88,11 +75,12 @@
 		$secondLayer.addClass('thumbnail');	
 		var $thirdLayer = $('<i></i>');										// Third layer where the <i> lives
 		$thirdLayer.addClass(															//  - adding class to populate icon
-			operation + 
+			oppositeOperation + 
 			'-button fa fa-' + 
-			icon);						
+			oppositeIcon);						
 		jQuery.data($thirdLayer, 'contestantId', contestantId); // FIXME to be dynamic
 		console.log("hi");
+		addContestantToRoster(contestantId, rosterId)
 		$thirdLayer.appendTo($secondLayer);						// + append to layer 2, first item
 		var $contestantImage = $('<img>');								//	Image for contestant pic
 		$contestantImage.appendTo($secondLayer); 			// + append to layer 2, second item
@@ -115,9 +103,8 @@
 		$('.add-button').on('click', function() {
 			var $clickedElement = $(this);
 			$contestantId = $clickedElement.data().contestantId;
-			$leagueId = $clickedElement.data().leagueId;
 			$rosterId = $clickedElement.data().rosterId;
-			thumbnailFactory('add', $contestantId, $leagueId, $rosterId); //FIXME to be dynamic
+			thumbnailFactory('add', $contestantId, $rosterId); //FIXME to be dynamic
 			$(this).closest('div.col-md-5').remove();
 		});
 		// clicking remove-button	for selected_contestants
