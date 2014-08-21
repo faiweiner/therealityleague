@@ -52,6 +52,22 @@
 </div>
 
 <script>
+	var addContestantToRoster = function (contestantId, rosterId) {
+		$.ajax({
+			url: '/rosters/' + rosterId + "/" + contestantId,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				cotestant_id: contestantId,
+				roster_id: roster_id
+			},
+			success: function (p) {
+				console.log("successfully added a new contestant to the roste");
+				// FIXME to call on the function to re-render the roster to reflect new changes
+			}
+		});
+	};
+
 	$box = $('#box');
 	$contestantBoard = $('#contestantBoard');
 	$rosterBoard = $('#rosterBoard');
@@ -110,21 +126,6 @@
 			$rosterBoard.children('.thumbnail').remove();
 			$(this).closest('div.thumbnail').remove();
 		});
-
-		var addContestantToRoster = function (contestantId, rosterId) {
-			$.ajax({
-				url: '/rosters/' + rosterId + "/" + contestantId,
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					cotestant_id: contestantId,
-					roster_id: roster_id
-				},
-				success: function (p) {
-					console.log("successfully added a new contestant to the roste");
-				}
-			});
-		};
 
 	});
 
