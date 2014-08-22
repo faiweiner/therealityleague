@@ -12,3 +12,7 @@ class Round < ActiveRecord::Base
 	belongs_to :episode
 	has_many :scores, inverse_of: :round, :dependent => :destroy
 end
+
+def pts_for_user
+	
+end

@@ -36,7 +36,7 @@ RSpec.describe Episode, :type => :model do
 
 	describe	'air_date' do
 		it 'should have air_date' do
-			expect(@episode1.air_date).to eq '13/05/14'
+			expect(@episode1.air_date).to eq '13/05/2014'
 		end
 
 		context 'when air date is not specified' do

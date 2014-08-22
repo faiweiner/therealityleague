@@ -101,6 +101,8 @@ class LeaguesController < ApplicationController
 			@participants_roster_id.store(participant_username, roster_id)
 		end
 
+		@league_rounds = Round.where(:league_id => @league.id)
+
 	end
 
 	def search
