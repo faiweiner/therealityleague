@@ -4,13 +4,13 @@ class LeaguesController < ApplicationController
 	before_action :save_login_state, :only => [:new, :search]
 
 	def index
+		raise "hi"
 		if @current_user == nil
 			flash[:notice] = "You must be a registered user to view leagues. Please sign up or sign in."
 			flash[:color] = "invalid"
 			redirect_to new_user_path
-		end		
+		end	
 
-		# List of all leagues for full app's admin
 		@all_leagues = League.all
 
 		if @current_user.present?
@@ -44,29 +44,33 @@ class LeaguesController < ApplicationController
 		@league.show_id = params[:league][:show]
 		show = Show.where(name: params[:league][:show])
 		
+		# 
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
 			@league.users << [@current_user]
 			# get customized text based on type
-			@access_type = nil
-			if @league.public_access == true
-				@access_type = "public"
-			else
-				@access_type = "private"
-			end
+			
+			
 			# automatically creates a league roster for the user
 			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
 			roster.save
 
+
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
-			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = "valid"
-			redirect_to league_path(@league.id)
 		else
 			flash[:notice] = "Something went wrong and we were unable to save your league"
 			flash[:color] = "invalid"
 			render :new
 		end
+
+		redirect_to league_path(@league.id) if @league.public_access == true
+		redirect_to league_invite_path(@league.id) if @league.public_access == false
+
+	end
+
+	def invite
+		@league = League.find(params[:id])
 	end
 
 	def edit
@@ -104,21 +108,11 @@ class LeaguesController < ApplicationController
 	end
 
 	def search
-
-		raise params
 		@public_leagues = League.where(:public_access => true).order("created_at DESC") # FIXME!
 		@private_leagues = League.where(:public_access => false)
 	end
 
 	def results
-
-		raise params
-		if params[:id]
-			raise "hi"
-		elsif 
-			raise "ho"
-		end
-			
 	end
 
 	def access
@@ -142,6 +136,9 @@ class LeaguesController < ApplicationController
 		end
 	end
 
+	def index
+		
+	end
 	def join
 		@league = League.find(params[:league])
 		@league.users << @current_user

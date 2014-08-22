@@ -5,8 +5,12 @@ class RostersController < ApplicationController
 	def index
 		if @current_user == nil
 			flash[:notice] = "You must be a registered user to explore the site. Please sign up or sign in."
-			flash[:color] = 'invalid'
+			flash[:color] = "invalid"
 			redirect_to new_user_path	
+		elsif @current_user.rosters.count == 0
+			flash[:notice] = "You must be a league member to have a roster. Please join a league."
+			flash[:color] = "invalid"	
+			redirect_to root_path
 		end	
 	end
 

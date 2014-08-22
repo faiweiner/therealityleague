@@ -21,6 +21,10 @@
 
 FactoryGirl.define do
   factory :league do
-    name "MyString"
+    name 'MyString'
+    commissioner_id { generate(:commissioner_id)}
+    show_id { generate(:show_id)}
+    public_access	:FALSE
+    draft_type ''
   end
 end

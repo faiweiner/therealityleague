@@ -1,3 +1,13 @@
+<% if flash[:notice] && flash[:color] == "invalid" %>
+	<div class="alert alert-danger">
+		<p><%= flash[:notice] %><p>
+	</div>
+<% elsif flash[:notice] && flash[:color] == "valid"%>
+	<div class="alert alert-success" role="alert">
+		<p><%= flash[:notice] %><p>
+	</div>
+<% end %>
+
 <div class="panel panel-default">
   <div class="panel panel-body">
 		<%= render partial: "public" %>
@@ -8,11 +18,6 @@
 		<h2>Private Leagues</h2>
 		<p>You must provide a league key and password in order to join or view a private league. To access a private league, please enter a league key and password as provided by the league's commissioner.</p>
 		<div class="signin_form col-md-10">
-			<% if flash[:notice] %>
-				<div class="alert alert-danger">
-					<p><%= flash[:notice] %><p>
-				</div>
-			<% end %>
 			<%= form_tag(league_access_path, method: "post", class:"form-horizontal", :row => "form") do %>
 				<div class="form-group">
 					<%= label_tag :league_key, 'League Key', class:'col-sm-2 control-label' %>

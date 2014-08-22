@@ -53,7 +53,6 @@ RSpec.describe Show, :type => :model do
 		context 'when premiere date is not specified' do
 			it { expect(@show3).to be_invalid }
 		end
-	end
 
 		context	'when draft close date is not specified' do
 			it { expect(@show3).to be_invalid }
