@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/user.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/user.rb": [
         null,
         null,
         null,
@@ -43,7 +43,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/league.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/league.rb": [
         null,
         null,
         null,
@@ -98,7 +98,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/roster.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/roster.rb": [
         null,
         null,
         null,
@@ -119,7 +119,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/contestant.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/contestant.rb": [
         null,
         null,
         null,
@@ -146,7 +146,7 @@
         1,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/show.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/show.rb": [
         null,
         null,
         null,
@@ -197,7 +197,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/round.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/round.rb": [
         null,
         null,
         null,
@@ -218,6 +218,6 @@
         null
       ]
     },
-    "timestamp": 1408676743
+    "timestamp": 1408964317
   }
 }

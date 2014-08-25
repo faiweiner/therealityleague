@@ -1,0 +1,27 @@
+<div class="panel panel-default">
+	<div class="panel-body panel">
+		<!-- determine Edit or Sign Up -->
+		<% if params[:id] %>
+			<h1>Edit User</h1>
+		<% else %>
+			<h1>Sign Up</h1>
+		<% end %>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-5 col-md-push-7">
+				<!-- Error Messages -->
+				<% if flash[:notice] && flash[:color] == "valid" %>
+					<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
+				<% elsif flash[:notice] && flash[:color] == "invalid" %>
+					<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
+				<% elsif flash[:notice] && flash[:color] == "prohibited"%>
+					<div class="alert alert-danger" role="alert"><%= flash[:notice] %></div>
+				<% end %>
+			</div>
+			<div class="col-md-7 col-md-pull-5">
+				HOHOHOHHOO	
+			</div>
+		</div>
+	</div>
+</div>

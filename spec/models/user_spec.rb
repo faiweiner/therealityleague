@@ -28,27 +28,25 @@ RSpec.describe User, :type => :model do
 	# ---- general model checks ---- #
 	# email
 	describe 'email field' do
-		# existence and uniqueness
+		# existence and validations
 		it 'shold have an email' do
 			user = FactoryGirl.create(:user)
 			user_email = user.email
 			expect(user.email).to eq user_email
 		end
 
+		it 'should validate the presence of email' do
+			new_user = FactoryGirl.build(:user)
+			expect(new_user).to validate_presence_of(:email)
+		end
+		
 		context 'when email is blank' do
 			it { expect(FactoryGirl.build(:user, email: '')).to be_invalid }
 		end
 
-		it 'shold have a unique email' do
+		it 'should validate uniqueness of email' do
 			new_user = FactoryGirl.build(:user, username: 'newuser')
 			expect(new_user).to validate_uniqueness_of(:email)
-		end
-
-		context 'when an email address is not unique' do
-			it 'should fail' do
-				user = FactoryGirl.create(:user)
-				expect(FactoryGirl.build(:user, email: 'username1@email.com')).to be_invalid
-			end
 		end
 
 		# format
@@ -81,19 +79,13 @@ RSpec.describe User, :type => :model do
 	describe 'username field' do
 
 		it 'should have a username' do
-			expect(FactoryGirl.create(:user).username).to eq FactoryGirl.attributes_for(:user)[:username]
+			user = FactoryGirl.create(:user)
+			user_username = user.username
+			expect(user.username).to eq user_username
 		end
 
 		it 'shold have a unique username' do
 			expect(FactoryGirl.create(:user)).to validate_uniqueness_of(:username)
-		end
-
-		context 'when username is not unique' do
-			it 'should be invalid' do
-				user = FactoryGirl.create(:user)
-				new_user = FactoryGirl.build(:user, email: 'new_user@email.com')
-				expect(new_user).to be_invalid
-			end
 		end
 
 		context 'when username is too short' do
