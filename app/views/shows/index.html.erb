@@ -1,4 +1,4 @@
-<% if @current_user.admin == true %>
+<% if @current_user.admin? %>
 	<%= render "admin" %>
 <% end %>
 <%= render "current_shows" %>

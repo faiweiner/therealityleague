@@ -101,3 +101,8 @@ div {
 .thumbnail a > img {
 	height: 100px;
 }
+
+.thumbnail-sm {
+	max-width: 75px;
+	max-height: 75px;
+}

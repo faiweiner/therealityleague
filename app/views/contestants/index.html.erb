@@ -1,1 +1,39 @@
-well you got here, didn't you?
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="panel-title">
+			<h3><%= @show.name %></h3>
+			<%= link_to "Back to Show", show_path(@show.id), class:"btn btn-default" %>
+			<%= link_to "edit path", root_path, class:"btn btn-default" %>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="panel-body">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Image</th>
+							<th>Name</th>
+							<th>Age</th>
+							<th>Occupation</th>
+							<th>Description</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @contestants.each do |contestant| %>
+							<tr>
+								<td><%= image_tag contestant.image, class:"img-thumbnail thumbnail-sm" %></td>
+								<td><%= contestant.name %></td>
+								<td><%= contestant.age %></td>
+								<td><%= contestant.occupation %></td>
+								<td><%= contestant.description %></td>
+								<td><%= link_to "Edit", edit_contestant_path(contestant.id), class:"btn btn-default" %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

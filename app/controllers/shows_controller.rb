@@ -1,5 +1,5 @@
 class ShowsController < ApplicationController
-
+	before_action :check_if_admin, :only => [:new, :edit]
 	def index
 		@shows = Show.where(:expired => :false).order("premiere_date ASC")
 		@past_shows = Show.where(:expired => :true).order("premiere_date DESC")
@@ -15,7 +15,7 @@ class ShowsController < ApplicationController
 		if @show.save
 			flash[:notice] = "You've successfully added a new show."
 			flash[:color] = "valid"
-			redirect_to shows_path
+			redirect_to new_contestant_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"
@@ -37,16 +37,17 @@ class ShowsController < ApplicationController
 		end
 	end
 
-	def edit
-		@show = Show.find(params[:id])
+	def destroy
+		@show = Show.find params[:id]
+		@show.destroy
+		redirect_to shows_path
 	end
-
 	def show
 		@show = Show.find(params[:id])
 		@contestants = @show.contestants
 		# raise
 	end
-
+	
 	private
 
 	def show_params

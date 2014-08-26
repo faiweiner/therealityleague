@@ -36,7 +36,7 @@ group :test, :development do
   gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
-	# gem 'debugger'
+	# gem 'debugger', '~> 1.6.8'
 	gem 'minitest'
 	gem 'shoulda-matchers'			# help with associations
 	gem 'simplecov', :require => false
@@ -48,6 +48,7 @@ group :production do
 	gem 'rails_12factor'
 end
 
+gem 'best_in_place'
 gem 'haml'
 # Use unicorn as the app server
 # gem 'unicorn'
@@ -55,6 +56,4 @@ gem 'haml'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
 

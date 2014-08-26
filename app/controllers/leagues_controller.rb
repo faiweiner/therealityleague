@@ -79,6 +79,11 @@ class LeaguesController < ApplicationController
 		redirect_to leagues_path
 	end
 
+	def destroy
+		@league = League.find params[:id]
+		@league.destroy
+		redirect_to leagues_path
+	end
 	def show
 		@league = League.find(params[:id])
 		@league_show = Show.find(@league.show)
@@ -150,7 +155,7 @@ class LeaguesController < ApplicationController
 	private
 
 	def league_params
-    params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :scoring_system, :league_key, :league_password)
-  end
+		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :scoring_system, :league_key, :league_password)
+	end
 
 end

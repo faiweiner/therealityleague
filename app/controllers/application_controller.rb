@@ -49,10 +49,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def check_if_admin
-		if @current_user && @current_user.admin?
-			flash[:notice] = "Coolbeans dude"
-			flash[:color] = "valid"
-		else
+		if @current_user && @current_user.admin? == false
 			redirect_to root_path
 		end
 	end
