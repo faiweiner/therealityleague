@@ -1,6 +1,5 @@
 class ShowsController < ApplicationController
 	def index
-		@all_shows = Show.all
 		@shows = Show.where(:expired => :false).order("premiere_date ASC")
 		@past_shows = Show.where(:expired => :true).order("premiere_date DESC")
 		@current_date = DateTime.now.strftime("%B %d, %Y")
@@ -29,8 +28,8 @@ class ShowsController < ApplicationController
 	end
 	
 	def update
-		@show
-		if @show.update(params, show_params)
+		@show = Show.find(params[:id])
+		if @show.update show_params
 			redirect_to shows_path
 		else
 			render :edit

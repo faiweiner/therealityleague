@@ -5,18 +5,20 @@
 			<%= link_to 'Add New Show', new_show_path, class:"btn btn-default" %>
 		</div>
 		<div class="panel-body">
-			<table class="table">
+			<table class="table table-hover">
+				<h4>Current Shows</h4>
 				<thead>
 					<tr>
 						<th>Show Name</th>
 						<th>League Status</th>
 						<th>Premiere</th>
 						<th>Actions</th>
-
+						<th>Contestants</th>
+						<th>Score Schemas</th>
 					</tr>
 				</thead>
 				<tbody>
-					<% @all_shows.each do |show| %>
+					<% @shows.each do |show| %>
 						<tr>
 							<td><%= link_to show.name, show_path(show.id) %></td>
 							<td>
@@ -43,6 +45,60 @@
 									<%= link_to 'Destroy', show, method: :delete, data: { confirm: 'Are you sure you want to delete this show?' }, class:"btn btn-sm btn-default" %>
 								<% end %>
 							</td>
+							<td>
+								<%= link_to 'Add', edit_show_path(show.id), class:"btn btn-sm btn-default" %>
+								<%= link_to 'Edit', edit_show_path(show.id), class:"btn btn-sm btn-default" %>
+							</td>
+							<td>
+								<%= link_to 'Add', edit_show_path(show.id), class:"btn btn-sm btn-default" %>
+								<%= link_to 'Edit', edit_show_path(show.id), class:"btn btn-sm btn-default" %>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<table class="table table-hover">
+				<h4>Past Shows</h4>
+				<thead>
+					<tr>
+						<th>Show Name</th>
+						<th>League Status</th>
+						<th>Premiere</th>
+						<th>Actions</th>
+						<th>Contestants</th>
+						<th>Score Schemas</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @past_shows.each do |show| %>
+						<tr>
+							<td><%= link_to show.name, show_path(show.id) %></td>
+							<td>
+								<% if show.expired == true %>
+									Completed
+								<% else %>
+									<% if show.premiere_date < @current_date %>
+										Commenced
+									<% else %>
+										Draft Open
+									<% end %> 
+								<% end %>
+							</td>
+							<td>
+								<%= show.premiere_date.strftime("%D") %>
+							</td>
+							<td>
+								<% if show.editable?(show.id) == true %>
+									<%= link_to 'Edit', edit_show_path(show.id), class:"btn btn-sm btn-default" %>
+								<% else %>
+									<%= link_to 'View', show_path(show.id), class:"btn btn-sm btn-default" %>
+								<% end %>
+								<% if show.destroyable?(show.id) == false %>
+									<%= link_to 'Destroy', show, method: :delete, data: { confirm: 'Are you sure you want to delete this show?' }, class:"btn btn-sm btn-default" %>
+								<% end %>
+							</td>
+							<td>Contestants</td>
+							<td>Score Schema</td>
 						</tr>
 					<% end %>
 				</tbody>
