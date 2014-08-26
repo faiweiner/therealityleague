@@ -1,17 +1,98 @@
-<%= form_for(@show) do |f| %>
-  <% if @show.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@show.errors.count, "error") %> prohibited this show from being saved:</h2>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="col-md-12">
+			<!-- Header dymanic - login or sign up -->
+			<% if params[:id] %>
+				<h2>Edit Show</h2>
+			<% else %>
+				<h2>Add New Show</h2>
+			<% end %>
+			<!-- Content dymanic - login or sign up -->
+				<div class="col-lg-4 col-md-6 col-sm-6" id="sign-up-form">
+					<%= form_for(@show, class:"form-horizontal", :role => "form") do |f| %>
+						<!-- Error Messages -->
+						<div class="row form-group">
+							<% if flash[:notice] && flash[:color] == "valid" %>
+								<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
+							<% elsif flash[:notice] && flash[:color] == "invalid" %>
+								<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
+							<% elsif flash[:notice] && flash[:color] == "prohibited"%>
+								<div class="alert alert-danger" role="alert">
+									<p><%= flash[:notice] %></p>
+									<% if @show.errors.any? %>
+										<p><%= pluralize(@show.errors.count, "error") %> prohibited this show from being saved:</p>
+										<ul>
+											<% @show.errors.full_messages.each do |message| %>
+												<li><%= message %></li>
+											<% end %>
+										</ul>
+									<% end %>
+								</div>
+							<% end %> 
+						</div>
+						<!-- End Error Messages --> 
+						<!-- Form Portion -->
 
-      <ul>
-      <% @show.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+						<div class="row form-group">
+							<%= f.label :name %>
+							<%= f.text_field :name, class:"form-control", placeholder: "Show\'s title" %>
+						</div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+						<div class="row form-group">
+							<%= f.label :premiere_date %>
+							<%= f.date_field :premiere_date, class:"form-control" %>
+						</div>
+
+						<div class="row form-group">
+							<%= f.label :finale_date %>
+							<%= f.date_field :finale_date, class:"form-control" %>
+						</div>
+
+						<div class="row form-group">
+							<%= f.label :country_origin %>
+							<%= f.text_field :country_origin, class:"form-control" %>
+						</div>
+
+						<div class="row form-group" id="password-update-group">
+							<%= f.label :type %>
+							<%= f.text_field :type, class:"form-control", :placeholder => "Romance, Drama, Race" %>
+						</div>
+
+
+						<div class="row form-group" id="password-update-group">
+							<%= f.label :description %>
+							<%= f.text_area :description, class:"form-control", :placeholder => "Enter description here", :rows => 5 %>
+						</div>
+
+
+						<div class="row form-group" id="password-update-group">
+							<%= f.label :image %>
+							<%= f.text_field :image, class:"form-control", :placeholder => "url" %>
+						</div>
+
+						<div class="row form-group" id="password-update-group">
+							<%= f.label :series_id %>
+							<%= f.number_field :series_id, class:"form-control", :placeholder => "Select series" %>
+						</div>
+
+						<div class="row form-group" id="password-update-group">
+							<%= f.label :episode_count %>
+							<%= f.number_field :episode_count, class:"form-control", :placeholder => 0 %>
+						</div>
+
+						<div class="row form-group actions">
+							<% if params[:id] %>
+								<%= f.submit "Update Show", class:"btn btn-primary btn-lg" %>
+								<%= link_to "Cancel", show_path(:id), class:"btn btn-default btn-lg" %>
+							<% else %>
+								<%= f.submit "Create New Show", class:"btn btn-primary btn-lg" %>
+								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
+							<% end %>
+						</div>
+						<!-- End Form portion --> 
+					<% end %>
+				</div> <!-- End sign-up-form -->
+
+		</div><!-- End col-md-12 -->
+	</div> <!-- End panel-body -->
+</div>  <!-- End panel panel-default -->

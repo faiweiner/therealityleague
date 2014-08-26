@@ -29,21 +29,39 @@ class Show < ActiveRecord::Base
 
 	def self.top_three
 		# This model method is called in Pages#home to give list of the three top shows
-    
-    Show.where(expired: false).order("premiere_date ASC").last(3)
-  end
+		
+		Show.where(expired: false).order("premiere_date ASC").last(3)
+	end
 
-  def self.select_show
-  	# This model method is for populating Create League's drop-down menu
-  	@shows_list = Show.where(expired: false).each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
-  end
+	def self.select_show
+		# This model method is for populating Create League's drop-down menu
+		@shows_list = Show.where(expired: false).each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
+	end
 
-  def self.get_show_name(show_id)
-  	show = Show.find(show_id)
-  	show.name
-  end
+	def self.get_show_name(show_id)
+		show = Show.find(show_id)
+		show.name
+	end
 
-  def self.expired
-  	
-  end
+	# check method if show can be destroyed
+	def destroyable?(show_id)
+		show = Show.find(show_id)
+		if show.expired == false
+			if show.premiere_date < DateTime.now
+				return true
+			else
+				return false
+			end
+		else
+			return true
+		end
+	end
+
+	# check method if show can be edited
+	def editable?(show_id)
+		show = Show.find(show_id)
+		if show.expired == false
+			return true
+		end
+	end
 end

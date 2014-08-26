@@ -3,17 +3,17 @@
 		<div class="col-md-12">
 			<!-- Header dymanic - login or sign up -->
 			<% if params[:id] %>
-				<h1>Edit User
+				<h2>Edit User
 				<% if @user.admin == true %>
 					- Master Admin
 				<% end %>
-				</h1>
+				</h2>
 			<% else %>
-				<h1>Sign Up</h1>
+				<h2>Sign Up</h2>
 			<% end %>
 			<!-- Content dymanic - login or sign up -->
 				<div class="col-lg-4 col-md-6 col-sm-6" id="sign-up-form">
-					<%= form_for(@user, :class => "form-horizontal", :role => "form") do |f| %>
+					<%= form_for(@user, class:"form-horizontal", :role => "form") do |f| %>
 						<!-- Error Messages -->
 						<div class="row form-group">
 							<% if flash[:notice] && flash[:color] == "valid" %>
@@ -37,38 +37,38 @@
 						<!-- End Error Messages -->	
 						<!-- Form Portion -->	
 						<div class="row form-group">
-							<%= f.label :email, :class => "control-label", :for => "inputSuccess2" %>
-							<%= f.text_field :email, :class => "form-control", placeholder: 'email@domain.com', :autofocus => true %>
+							<%= f.label :email, class:"control-label", :for => "inputSuccess2" %>
+							<%= f.text_field :email, class:"form-control", placeholder: 'email@domain.com', :autofocus => true %>
 						</div>
 
 						<div class="row form-group">
 							<%= f.label :username %>
-							<%= f.text_field :username, :class => "form-control", placeholder: 'username' %>
+							<%= f.text_field :username, class:"form-control", placeholder: 'username' %>
 						</div>
 
 						<% if params[:id] %>
 							<div class="row form-group">
 								<%= f.label :avatar %>
-								<%= f.text_field :avatar, :class => "form-control" %>
+								<%= f.text_field :avatar, class:"form-control" %>
 							</div>
 						<% end %>
 
 						<div class="row form-group">
 							<%= f.label :password %>
-							<%= f.password_field :password, :class => "form-control" %>
+							<%= f.password_field :password, class:"form-control" %>
 						</div>
 
 						<div class="row form-group" id="password-update-group">
 							<%= f.label :password_confirmation %>
-							<%= f.password_field :password_confirmation, :class => "form-control"%>
+							<%= f.password_field :password_confirmation, class:"form-control"%>
 						</div>
 
 						<div class="row form-group actions">
 							<% if params[:id] %>
-								<%= f.submit "Update", :class => "btn btn-primary btn-lg" %>
-								<%= link_to "Cancel", user_path(:id), :class => "btn btn-default btn-lg" %>
+								<%= f.submit "Update", class:"btn btn-primary btn-lg" %>
+								<%= link_to "Cancel", user_path(:id), class:"btn btn-default btn-lg" %>
 							<% else %>
-								<%= f.submit "Register", :class => "btn btn-primary btn-lg" %>
+								<%= f.submit "Register", class:"btn btn-primary btn-lg" %>
 								<br><br>
 								<p>Already signed up? <%= link_to "Sign in", login_path %></p>
 							<% end %>
