@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	console.log('Rosters initialized');
 	// sets up the contestantBoard and rosterBoard
 	$contestantBoard = $('#contestantBoard');
 	$rosterBoard = $('#rosterBoard');
@@ -44,7 +45,6 @@ $(document).ready(function () {
 
 	// ========= universal click listener ========= //
 	$(this).on('click', function (event) {
-
 		// records which element is being clicked
 		$element = event.target;
 
@@ -60,6 +60,8 @@ $(document).ready(function () {
 		} else if (myClass == 'remove-button fa fa-times') {
 			var operation = 'remove';
 			$element.offsetParent.remove();
+		} else {
+			return
 		};
 
 		actionOperator(operation, contestantId, rosterId);

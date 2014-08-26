@@ -1,7 +1,11 @@
-$(document).ready(function() {
-	$('.edit').on('click', function() {
-		var $item = $(this);
-		console.log('hi');
-		console.log($item);
+$(document).ready(function () {
+	console.log('Contestants initialized');
+
+	// ========= universal click listener ========= //
+	$('.edit').on('click', function (event) {
+		$element = event.target
+		$element.contentEditable = "true";
+
+		console.log($element);
 	});
 });
