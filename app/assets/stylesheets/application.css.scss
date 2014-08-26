@@ -14,6 +14,9 @@
  *= require_self
  */
 
+$primary-color: #ff8c00;
+$copy-primary: #333;
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
@@ -25,7 +28,7 @@
 body {
 	background-color: blue;
 	background: #cecece;
-	color: #333;
+	color: $copy-primary;
 	font-family: 'Open Sans', verdana, arial, helvetica, sans-serif;
 	font-size: 13px;
 	line-height: 18px;
@@ -91,5 +94,10 @@ div {
 }
 
 .thumbnail {
-	overflow: hidden;
+	overflow: scroll;
+	height: 300px;
+}
+
+.thumbnail a > img {
+	height: 100px;
 }
