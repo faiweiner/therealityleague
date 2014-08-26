@@ -1,7 +1,7 @@
 <div class="panel panel-default">
 	<div class="panel-body">
-		<div class="signin_form col-md-12">
-			<!-- determine Edit or Sign Up -->
+		<div class="col-md-12">
+			<!-- Header dymanic - login or sign up -->
 			<% if params[:id] %>
 				<h1>Edit User
 				<% if @user.admin == true %>
@@ -11,18 +11,11 @@
 			<% else %>
 				<h1>Sign Up</h1>
 			<% end %>
-		</div>
-		<div class="panel-body">
-			<div class="row">
-				<div class="col-md-6 col-md-push-6">
-					
-				</div>
-
-				<div class="col-md-6 col-md-pull-6">
-					<div class="panel-body">
+			<!-- Content dymanic - login or sign up -->
+				<div class="col-lg-4 col-md-6 col-sm-6" id="sign-up-form">
 					<%= form_for(@user, :class => "form-horizontal", :role => "form") do |f| %>
+						<!-- Error Messages -->
 						<div class="row form-group">
-							<!-- Error Messages -->
 							<% if flash[:notice] && flash[:color] == "valid" %>
 								<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
 							<% elsif flash[:notice] && flash[:color] == "invalid" %>
@@ -31,9 +24,7 @@
 								<div class="alert alert-danger" role="alert">
 									<p><%= flash[:notice] %></p>
 									<% if @user.errors.any? %>
-										<p>
-											<%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
-										</p>
+										<p><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</p>
 										<ul>
 											<% @user.errors.full_messages.each do |message| %>
 												<li><%= message %></li>
@@ -41,8 +32,10 @@
 										</ul>
 									<% end %>
 								</div>
-							<% end %>				
+							<% end %>	
 						</div>
+						<!-- End Error Messages -->	
+						<!-- Form Portion -->	
 						<div class="row form-group">
 							<%= f.label :email, :class => "control-label", :for => "inputSuccess2" %>
 							<%= f.text_field :email, :class => "form-control", placeholder: 'email@domain.com', :autofocus => true %>
@@ -69,6 +62,7 @@
 							<%= f.label :password_confirmation %>
 							<%= f.password_field :password_confirmation, :class => "form-control"%>
 						</div>
+
 						<div class="row form-group actions">
 							<% if params[:id] %>
 								<%= f.submit "Update", :class => "btn btn-primary btn-lg" %>
@@ -79,11 +73,10 @@
 								<p>Already signed up? <%= link_to "Sign in", login_path %></p>
 							<% end %>
 						</div>
+						<!-- End Form portion -->	
+					<% end %>
+				</div> <!-- End sign-up-form -->
 
-						<% end %>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>  <!-- end Panel -->
+		</div><!-- End col-md-12 -->
+	</div> <!-- End panel-body -->
+</div>  <!-- End panel panel-default -->

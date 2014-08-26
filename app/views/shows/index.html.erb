@@ -1,20 +1,19 @@
 <div class="panel panel-default">
 	<div class="panel-body">
-		<h2>Current Shows</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias placeat, soluta nihil minus quaerat et sit quae totam earum? Illo architecto ipsam dignissimos pariatur esse, sunt sed ducimus quod modi!
-		</p>
+		<div class="panel-heading">
+			<h2>Current Shows</h2>
+		</div>
 		<% @shows.each do |show| %>
 			<div class="col-sm-4 col-md-3">
-				<div class="thumbnail">
-					<div class="img-thumbnail-container">
-						<img src="<%= show.image %>" class="img-thumbnail">
-					</div>
+				<%= link_to image_tag(show.image, :alt => show.name), show_path(show.id), class:"thumbnail" %>
 					<div class="caption caption-lg">
 						<h4><%= show.name %></h4>
 						<p>Starts: <%= show.premiere_date.strftime("%B %d") %></p>
 						<p><%= link_to "Explore Show", show_path(show.id), class:"btn btn-primary" %></p>
 					</div>
-				</div>
+
+
+
 			</div>		
 		<% end %>
 	</div>
