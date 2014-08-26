@@ -8,7 +8,7 @@
 	<div class="panel-body">
 		<div class="signin_form col-md-12">
 			<h1>Sign In</h1>
-			
+			<br>
 			<%= form_tag('/login', method: "post", :class => "form-horizontal", :row => "form") do %>
 				<div class="form-group">
 					<%= label_tag :email, 'Email', class:'col-sm-2 control-label' %>
@@ -41,6 +41,8 @@
 						</div>
 					</div>
 				</div>
+				<p>By signing in you are agreeing to our Conditions of Use and our Privacy Notice</p>
+
 			<% end %>
 		</div>
 	</div>

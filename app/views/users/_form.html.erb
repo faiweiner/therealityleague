@@ -1,100 +1,87 @@
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-body">
-		<div class="panel-body panel">
+		<div class="signin_form col-md-12">
 			<!-- determine Edit or Sign Up -->
 			<% if params[:id] %>
-				<h1>Edit User</h1>
+				<h1>Edit User
+				<% if @user.admin == true %>
+					- Master Admin
+				<% end %>
+				</h1>
 			<% else %>
 				<h1>Sign Up</h1>
 			<% end %>
 		</div>
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-5 col-md-push-7">
-					<!-- Error Messages -->
-					<% if flash[:notice] && flash[:color] == "valid" %>
-						<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
-					<% elsif flash[:notice] && flash[:color] == "invalid" %>
-						<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
-					<% elsif flash[:notice] && flash[:color] == "prohibited"%>
-						<div class="alert alert-danger" role="alert"><%= flash[:notice] %></div>
-					<% end %>
-					<% if @user.errors.any? %>
-						<div class="alert alert-danger" role="alert">
-							<h4><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h4>
-							<ul>
-								<% @user.errors.full_messages.each do |message| %>
-								<li><%= message %></li>
-							<% end %>
-							</ul>
-						</div>
-					<% end %>
+				<div class="col-md-6 col-md-push-6">
+					
 				</div>
 
-				<div class="col-md-7 col-md-pull-5">
+				<div class="col-md-6 col-md-pull-6">
+					<div class="panel-body">
 					<%= form_for(@user, :class => "form-horizontal", :role => "form") do |f| %>
-
 						<div class="row form-group">
-							<div class="col-md-4 col-lg-4 col-md-4 col-sm-4 text-right">
-								<%= f.label :email %>
-							</div>
-							<div class="col-lg-8 col-md-8 col-sm-5">
-								<%= f.text_field :email, :class => "form-control", placeholder: 'email@domain.com', :autofocus => true %>
-							</div>
+							<!-- Error Messages -->
+							<% if flash[:notice] && flash[:color] == "valid" %>
+								<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
+							<% elsif flash[:notice] && flash[:color] == "invalid" %>
+								<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
+							<% elsif flash[:notice] && flash[:color] == "prohibited"%>
+								<div class="alert alert-danger" role="alert">
+									<p><%= flash[:notice] %></p>
+									<% if @user.errors.any? %>
+										<p>
+											<%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
+										</p>
+										<ul>
+											<% @user.errors.full_messages.each do |message| %>
+												<li><%= message %></li>
+											<% end %>
+										</ul>
+									<% end %>
+								</div>
+							<% end %>				
+						</div>
+						<div class="row form-group">
+							<%= f.label :email, :class => "control-label", :for => "inputSuccess2" %>
+							<%= f.text_field :email, :class => "form-control", placeholder: 'email@domain.com', :autofocus => true %>
 						</div>
 
 						<div class="row form-group">
-							<div class="col-lg-4 col-md-4 col-sm-4 text-right">
-								<%= f.label :username %>
-							</div>
-							<div class="col-lg-8 col-md-8 col-sm-5">
-								<%= f.text_field :username, :class => "form-control", placeholder: 'username' %>
-							</div>
+							<%= f.label :username %>
+							<%= f.text_field :username, :class => "form-control", placeholder: 'username' %>
 						</div>
 
-						<div class="row form-group">
-							<div class="col-lg-4 col-md-4 col-sm-4 text-right">
+						<% if params[:id] %>
+							<div class="row form-group">
 								<%= f.label :avatar %>
-							</div>
-							<div class="col-lg-8 col-md-8 col-sm-5">
 								<%= f.text_field :avatar, :class => "form-control" %>
 							</div>
-						</div>
+						<% end %>
 
 						<div class="row form-group">
-							<div class="col-lg-4 col-md-4 col-sm-4 text-right">
-								<%= f.label :password %>
-							</div>
-							<div class="col-lg-8 col-md-8 col-sm-5">
-								<%= f.password_field :password, :class => "form-control" %>
-							</div>
+							<%= f.label :password %>
+							<%= f.password_field :password, :class => "form-control" %>
 						</div>
 
 						<div class="row form-group" id="password-update-group">
-							<div class="col-lg-4 col-md-4 col-sm-4 text-right">
-								<%= f.label :password_confirmation %>
-							</div>
-							<div class="col-lg-8 col-md-8 col-sm-5">
-								<%= f.password_field :password_confirmation, :class => "form-control"%>
-							</div>
+							<%= f.label :password_confirmation %>
+							<%= f.password_field :password_confirmation, :class => "form-control"%>
 						</div>
 						<div class="row form-group actions">
-							<div class="col-lg-offset-4 col-md-offset-4 col-lg-12 col-sm-4 col-sm-offset-4">
 							<% if params[:id] %>
 								<%= f.submit "Update", :class => "btn btn-primary btn-lg" %>
+								<%= link_to "Cancel", user_path(:id), :class => "btn btn-default btn-lg" %>
 							<% else %>
 								<%= f.submit "Register", :class => "btn btn-primary btn-lg" %>
+								<br><br>
+								<p>Already signed up? <%= link_to "Sign in", login_path %></p>
 							<% end %>
-							</div>
 						</div>
-						<% if params[:id] == nil %>
-							<div class="row form-group actions">
-								<div class="col-lg-offset-4 col-md-offset-4 col-lg-12 col-sm-4 col-sm-offset-4">
-									<p>Already signed up? <%= link_to "Sign in", login_path %></p>
-								</div>
-							</div>
+
 						<% end %>
-					<% end %>
+					</div>
 				</div>
 			</div>
 		</div>

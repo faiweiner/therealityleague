@@ -1,9 +1,32 @@
-<p id="notice"><%= notice %></p>
+<div class="panel">
+	<div class="panel-body">
+		<div class="panel-heading">
+			<h1>Your Account</h1>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-3">
+					<h3 class="zero-top-margin">Settings</h3>
+				</div>
+				<div class="col-md-9">
+					<h4>Account Settings</h4>
+					<strong>Username: </strong><%= @current_user.username %><br>
+					<strong>Email: </strong><%= @current_user.email %><br>
+					<%= link_to "Change account settings", edit_user_path(@current_user.id) %><br>
+				</div>
+			</div>
+			
 
-<p>
-  <strong>Name:</strong>
-  <%= @current_user.username %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@current_user.id) %> |
-<%= link_to 'Back', users_path %>
+			<div class="row">
+				<div class="col-md-3">
+					<h3>Leagues</h3>
+				</div>
+				<div class="col-md-9">
+					<h4>Leagues Settings</h4>
+					<%= link_to "Change account settings", edit_user_path(@current_user.id) %>
+					<span class="help-block">Manage leagues and rosters</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
