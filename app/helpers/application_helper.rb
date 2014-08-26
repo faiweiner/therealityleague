@@ -3,7 +3,7 @@ module ApplicationHelper
 		links = ""
 		if @current_user.present?
 			links += "<li class='dropdown'>"
-			links += link_to("#{@current_user.username}", user_path(@current_user), :class => "dropdown-toggle", :data => {:toggle=>"dropdown"})
+			links += link_to("#{@current_user.username}", user_path(@current_user))
 			links += "</li>"
 			links += "<li>"
 			links += link_to("Logout", login_path, :data => {:method => :delete, :confirm => 'Really logout?'})
