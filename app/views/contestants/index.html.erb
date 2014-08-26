@@ -24,11 +24,10 @@
 						<% @contestants.each do |contestant| %>
 							<tr>
 								<td><%= image_tag contestant.image, class:"img-thumbnail thumbnail-sm" %></td>
-								<td><%= contestant.name %></td>
-								<td><%= contestant.age %></td>
-								<td><%= contestant.occupation %></td>
-								<td><%= contestant.description %></td>
-								<td><%= link_to "Edit", edit_contestant_path(contestant.id), class:"btn btn-default" %></td>
+								<td class="edit" id="name_cell" data="#{ contestant.id }"><%= contestant.name %></td>
+								<td class="edit" id="age_cell" data="#{ contestant.id }"><%= contestant.age %></td>
+								<td class="edit" id="occupation_cell" data="#{ contestant.id }"><%= contestant.occupation %></td>
+								<td class="edit" id="description_cell" data="#{ contestant.id }"><%= contestant.description %></td>
 							</tr>
 						<% end %>
 					</tbody>

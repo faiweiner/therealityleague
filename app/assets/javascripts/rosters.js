@@ -65,30 +65,4 @@ $(document).ready(function () {
 		actionOperator(operation, contestantId, rosterId);
 	});
 
-
-
-	// $(function () {
-	// 	console.log('Initialized old stuff');
-
-	// 	// clicking add-button for available_contestants
-	// 	$('.add-button').on('click', function () {
-	// 		var operation = 'add'
-	// 		var $clickedElement = $(this);
-	// 		$contestantId = $clickedElement.data().contestantId;
-	// 		$rosterId = $clickedElement.data().rosterId;
-	// 		actionOperator(operation, $contestantId, $rosterId);
-	// 		
-	// 	});
-
-	// 	// clicking remove-button	for selected_contestants
-	// 	$('.remove-button').on('click', function () {
-	// 		var operation = 'remove'
-	// 		var $clickedElement = $(this);
-	// 		$contestantId = $clickedElement.data().contestantId;
-	// 		$rosterId = $clickedElement.data().rosterId;
-	// 		actionOperator(operation, $contestantId, $rosterId);
-	// 		$(this).closest('div.col-md-3').remove();
-	// 	});
-	// });
-
 });

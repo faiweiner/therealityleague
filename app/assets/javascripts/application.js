@@ -12,6 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.purr
 //= require underscore
 //= require_tree .

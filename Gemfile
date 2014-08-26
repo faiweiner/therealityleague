@@ -47,8 +47,6 @@ end
 group :production do
 	gem 'rails_12factor'
 end
-
-gem 'best_in_place'
 gem 'haml'
 # Use unicorn as the app server
 # gem 'unicorn'
