@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 	resources :rosters
 
 	resources :contestants
-
+	
 	get '/login' => 'sessions#new'
 	post '/login' => 'sessions#login_attempt'
 	delete '/login' => 'sessions#logout'

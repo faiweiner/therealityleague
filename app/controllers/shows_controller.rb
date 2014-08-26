@@ -1,4 +1,5 @@
 class ShowsController < ApplicationController
+
 	def index
 		@shows = Show.where(:expired => :false).order("premiere_date ASC")
 		@past_shows = Show.where(:expired => :true).order("premiere_date DESC")

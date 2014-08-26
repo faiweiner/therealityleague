@@ -32,6 +32,7 @@
 				</div>
 			</div>
 			<div class="col-md-3 col-md-pull-9">
+				<%= image_tag @show.image, class:"img-thumbnail" %>
 				<% if @show.expired == true %>
 					Premiered:
 					<h4><%= @show.premiere_date.strftime("%B %d, %Y") %></h4>
@@ -42,6 +43,11 @@
 					<%= button_to "Find a league for this show", leagues_path, class:"btn btn-default" %> <!-- FIXME -->
 				<% end %>
 				<br>
+				<% if @current_user.admin == true %>
+					<%= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default" %>
+					<br><br>
+					<%= link_to "Edit Contestants", edit_contestant_path(@show.id), class:"btn btn-default" %>
+				<% end %>
 			</div>
 			<!-- end -->
 		</div>
