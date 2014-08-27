@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require bootstrap3-editable/bootstrap-editable
  *= require_self
  */
 
@@ -106,3 +107,4 @@ div {
 	max-width: 75px;
 	max-height: 75px;
 }
+

@@ -15,18 +15,23 @@ $(document).ready(function () {
 	$.extend($.fn.editable.defaults, defaults);
 
 	$('#contestants span[data-name="name"]').editable({
-			title: 'Enter name'
+		title: 'Enter name',
+		tpl: "<input type='text' style='width: 100px'>"
 	});
 
 	$('#contestants span[data-name="age"]').editable({
-			title: 'Enter age',
-			type: 'select',
-			source: [
-					{value: 1, text: '< 10'},
-					{value: 2, text: '10 - 20'},
-					{value: 3, text: '20 - 30'},
-					{value: 4, text: '> 30'}
-			]
+		tpl: "<input style='width: 55px'>"
+	});
+
+	$('#contestants span[data-name="occupation"]').editable({
+		title: 'Enter occupation',
+		tpl: "<input style='width: 100px'>",
+		type: 'textarea'
+	});
+
+$('#contestants span[data-name="description"]').editable({
+		title: 'Enter description',
+		type: 'textarea'
 	});
 
 	$('#contestants').on('click', '.edit', function(){
@@ -48,13 +53,13 @@ $(document).ready(function () {
 			$btn.hide().siblings('.edit').show();
 	});
 
-	//ajax emulation
-	$.mockjax({
-			url: '/post',
-			responseTime: 200,
-			response: function(settings) {
-				console.log(settings.data);   
-		 }
-	}); 
+	// //ajax emulation
+	// $.mockjax({
+	// 		url: '/post',
+	// 		responseTime: 200,
+	// 		response: function(settings) {
+	// 			console.log(settings.data);   
+	// 	 }
+	// }); 
 
 });
