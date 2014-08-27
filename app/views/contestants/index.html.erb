@@ -25,14 +25,22 @@
 						<% @contestants.each do |contestant| %>
 							<tr>
 								<td><%= image_tag contestant.image, class:"img-thumbnail thumbnail-sm" %></td>
+								<td><span href="#" data-name="name" data-pk="<%= contestant.id %>"><%= contestant.name %></span></td>
+								<td><span href="#" data-name="age" data-pk="<%= contestant.id %>"><%= contestant.age %></span></td>
+								<td><span href="#" data-name="occupation" data-pk="<%= contestant.id %>"><%= contestant.occupation %></span></td>
+								<td><span href="#" data-name="description" data-pk="<%= contestant.id %>"><%= contestant.description %></span></td>
+								<td><button class="btn edit">Edit</i></button><button class="btn btn-primary hide">Save</button></td>        
+							</tr>       
+
+							<!-- <tr>
 								<td>
 									<span data-name="name" data-pk="<%= contestant.id %>"><%= contestant.name %></span>
 								</td>
 								<td class="edit age-cell" data-pk="<%= contestant.id %>" data-type="integer" data-contestant-id="<%= contestant.id %>" data-url="/post" data-title="Enter age"><%= contestant.age %></td>
 								<td class="edit occupation-cell" data-pk="<%= contestant.id %>" data-type="text" data-contestant-id="<%= contestant.id %>" data-url="/post" data-title="Enter occupation"><%= contestant.occupation %></td>
 								<td class="edit description-cell" data-pk="<%= contestant.id %>" data-type="text" data-contestant-id="<%= contestant.id %>" data-url="/post" data-title="Enter description"><%= contestant.description %></td>
-								<td><%= button_to "Edit", class:"btn btn-default" %><%= button_to "Save", class:"btn btn-primary" %></td>
-							</tr>
+								<td><button class="btn edit">Edit</button><button class="btn btn-primary hide">save</button></td>
+							</tr> -->
 						<% end %>
 					</tbody>
 				</table>
