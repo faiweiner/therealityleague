@@ -1,19 +1,13 @@
-<% if flash[:notice] && flash[:color] == "valid" %>
-	<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
-<% elsif flash[:notice] && flash[:color] == "invalid"%>
-	<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
-<% end %>
-
 <div class="panel panel-default">
 	<div class="panel-body">
-		<div class="signin_form col-md-10">
+		<div class="signin_form col-md-12">
 			<h1>Sign In</h1>
-			
+			<br>
 			<%= form_tag('/login', method: "post", :class => "form-horizontal", :row => "form") do %>
 				<div class="form-group">
 					<%= label_tag :email, 'Email', class:'col-sm-2 control-label' %>
 					<div class="col-sm-4">
-						<%= text_field_tag 'email', nil, placeholder: 'email@domain.com', :class => "form-control" %>  
+						<%= text_field_tag 'email', nil, placeholder: 'email@domain.com', :class => "form-control", :autofocus => true %>  
 					</div>
 				</div>
 				<div class="form-group">
@@ -41,6 +35,8 @@
 						</div>
 					</div>
 				</div>
+				<p>By signing in you are agreeing to our Conditions of Use and our Privacy Notice</p>
+
 			<% end %>
 		</div>
 	</div>

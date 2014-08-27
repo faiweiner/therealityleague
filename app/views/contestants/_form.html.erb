@@ -1,0 +1,99 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="col-md-12">
+			<!-- Header dymanic - login or sign up -->
+			<% if params[:show_id] %>
+				<h2>Add New Contestant</h2>
+			<% else %>
+				<h2>Edit Contestant</h2>
+			<% end %>
+			<p><%= @show.name %></p>
+			<!-- Content dymanic - login or sign up -->
+				<div class="col-lg-4 col-md-6 col-sm-6" id="sign-up-form">
+					<%= form_for(@contestant, class:"form-horizontal", :role => "form") do |f| %>
+						<!-- Error Messages -->
+						<div class="row form-group">
+							<% if flash[:notice] && flash[:color] == "valid" %>
+								<div class="alert alert-success" role="alert"><%= flash[:notice] %></div>
+							<% elsif flash[:notice] && flash[:color] == "invalid" %>
+								<div class="alert alert-warning" role="alert"><%= flash[:notice] %></div>
+							<% elsif flash[:notice] && flash[:color] == "prohibited"%>
+								<div class="alert alert-danger" role="alert">
+									<p><%= flash[:notice] %></p>
+									<% if @contestant.errors.any? %>
+										<p><%= pluralize(@contestant.errors.count, "error") %> prohibited this contestant from being saved:</p>
+										<ul>
+											<% @contestant.errors.full_messages.each do |message| %>
+												<li><%= message %></li>
+											<% end %>
+										</ul>
+									<% end %>
+								</div>
+							<% end %> 
+						</div>
+						<!-- End Error Messages --> 
+						<!-- Form Portion -->
+
+						<div class="row form-group">
+							<%= f.label :contestant_name %>
+							<%= f.text_field :name, class:"form-control" %>
+						</div>
+						
+						<div class="row form-group hidden">
+							<%= f.label :show_id %>
+							<%= f.hidden_field :show_id, class:"form-control", :value => params[:show_id] %>
+						</div>
+
+						<div class="row form-group">
+							<%= f.label :age %>
+							<%= f.number_field :age, class:"form-control" %>
+						</div>
+
+						<div class="row form-group">
+							<%= f.label :gender %>
+							<%= f.text_field :gender, class:"form-control" %>
+						</div>
+
+						<div class="row form-group">
+							<%= f.label :occupation %>
+							<%= f.text_field :occupation, class:"form-control" %>
+						</div>
+
+
+						<div class="row form-group">
+							<%= f.label :description %>
+							<%= f.text_area :description, class:"form-control", :placeholder => "Enter description here", :rows => 5 %>
+						</div>
+
+
+						<div class="row form-group">
+							<%= f.label :status_on_show %>
+							<%= f.text_field :status_on_show, class:"form-control" %>
+						</div>
+
+						<div class="row form-group hidden">
+							<%= f.label :present %>
+							<%= f.hidden_field :present, class:"form-control", :default => 1 %>
+						</div>
+
+						<div class="row form-group">
+							<%= f.label :image %>
+							<%= f.text_field :image, class:"form-control" %>
+						</div>
+
+						<div class="row form-group actions">
+							<% if params[:show_id] %>
+								<%= f.submit "Add New Contestant", class:"btn btn-primary btn-lg" %>
+								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
+							<% else %>
+								<%= f.submit "Update Contestant", class:"btn btn-primary btn-lg" %>
+								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
+							<% end %>
+						</div>
+						<!-- End Form portion --> 
+					<% end %>
+				</div> <!-- End sign-up-form -->
+
+		</div><!-- End col-md-12 -->
+	</div> <!-- End panel-body -->
+</div>  <!-- End panel panel-default -->

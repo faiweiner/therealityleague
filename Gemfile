@@ -36,7 +36,7 @@ group :test, :development do
   gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
-	# gem 'debugger'
+	# gem 'debugger', '~> 1.6.8'
 	gem 'minitest'
 	gem 'shoulda-matchers'			# help with associations
 	gem 'simplecov', :require => false
@@ -47,12 +47,13 @@ end
 group :production do
 	gem 'rails_12factor'
 end
+gem 'haml'
+
+gem 'bootstrap-x-editable-rails'
 # Use unicorn as the app server
 # gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
 

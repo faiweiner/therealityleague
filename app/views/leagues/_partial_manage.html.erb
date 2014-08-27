@@ -1,12 +1,14 @@
 <div class="panel panel-default">
 	<div class="panel-body">
-		<h2>Dashboard</h2>
+		<div class="panel-title">
+			<h2>Dashboard</h2>		
+		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4><%= pluralize_without_count(@current_user.leagues.count, "League", text = nil) %></h4>
 			</div>
 			<div class="panel-body">
-				<table class="table table-striped" id="my_leagues_table">
+				<table class="table table-striped table-hover" id="my_leagues_table">
 					<thead>
 						<tr>
 							<th>League Name</th>

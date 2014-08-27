@@ -1,6 +1,6 @@
 <% @selected_contestants.each do |contestant| %>
 	<div class="col-md-3">
-		<div class="thumbnail">
+		<div class="thumbnail thumbnail-current-roster">
 			<i class="remove-button fa fa-times" data-contestant-id="<%= contestant.id %>" data-roster-id="<%= @roster.id %>"></i>
 			<%= image_tag contestant.image %>
 			<div class="caption">

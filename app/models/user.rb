@@ -36,5 +36,6 @@ class User < ActiveRecord::Base
 		roster = self.rosters.where(:league_id => league.id).first
 		roster || Roster.first
 	end
+
 end
 

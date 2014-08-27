@@ -32,11 +32,11 @@ class UsersController < ApplicationController
 
 	def update
 		if @current_user.update(user_params)
-      redirect_to user_path
-    else
-      @user = @current_user
-      render :edit
-    end
+			redirect_to user_path
+		else
+			@user = @current_user
+			render :edit
+		end
 	end
 
 	def show

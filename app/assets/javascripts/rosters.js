@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	console.log('Rosters initialized');
 	// sets up the contestantBoard and rosterBoard
 	$contestantBoard = $('#contestantBoard');
 	$rosterBoard = $('#rosterBoard');
@@ -44,7 +45,6 @@ $(document).ready(function () {
 
 	// ========= universal click listener ========= //
 	$(this).on('click', function (event) {
-
 		// records which element is being clicked
 		$element = event.target;
 
@@ -60,35 +60,11 @@ $(document).ready(function () {
 		} else if (myClass == 'remove-button fa fa-times') {
 			var operation = 'remove';
 			$element.offsetParent.remove();
+		} else {
+			return
 		};
 
 		actionOperator(operation, contestantId, rosterId);
 	});
-
-
-
-	// $(function () {
-	// 	console.log('Initialized old stuff');
-
-	// 	// clicking add-button for available_contestants
-	// 	$('.add-button').on('click', function () {
-	// 		var operation = 'add'
-	// 		var $clickedElement = $(this);
-	// 		$contestantId = $clickedElement.data().contestantId;
-	// 		$rosterId = $clickedElement.data().rosterId;
-	// 		actionOperator(operation, $contestantId, $rosterId);
-	// 		
-	// 	});
-
-	// 	// clicking remove-button	for selected_contestants
-	// 	$('.remove-button').on('click', function () {
-	// 		var operation = 'remove'
-	// 		var $clickedElement = $(this);
-	// 		$contestantId = $clickedElement.data().contestantId;
-	// 		$rosterId = $clickedElement.data().rosterId;
-	// 		actionOperator(operation, $contestantId, $rosterId);
-	// 		$(this).closest('div.col-md-3').remove();
-	// 	});
-	// });
 
 });

@@ -1,12 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/Fai/Desktop/deployment/reality_app/app/controllers/contestants_controller.rb": [
-        1,
-        null
-      ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/controllers/application_controller.rb": [
-        1,
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/user.rb": [
         null,
         null,
         1,
@@ -216,9 +211,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/controllers/pages_controller.rb": [
-        1,
-        1,
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/league.rb": [
         null,
         1,
         0,
@@ -401,11 +394,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/controllers/shows_controller.rb": [
-        1,
-        1,
-        1,
-        1,
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/roster.rb": [
         null,
         1,
         0,
@@ -475,7 +464,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/contestant.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/contestant.rb": [
         null,
         null,
         null,
@@ -502,140 +491,7 @@
         1,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/episode.rb": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        1,
-        1,
-        1,
-        null,
-        1,
-        1,
-        null
-      ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/league.rb": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        1,
-        null,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        null,
-        null,
-        null,
-        1,
-        null,
-        1,
-        1,
-        null,
-        1,
-        1,
-        15,
-        null,
-        null,
-        1,
-        15,
-        null,
-        null,
-        1,
-        30,
-        15,
-        15,
-        null,
-        null,
-        null,
-        null,
-        null
-      ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/roster.rb": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        null,
-        null
-      ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/round.rb": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        1,
-        1,
-        1,
-        1,
-        null,
-        null,
-        1,
-        null,
-        null
-      ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/score.rb": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        1,
-        1,
-        1,
-        null
-      ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/show.rb": [
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/show.rb": [
         null,
         null,
         null,
@@ -686,14 +542,7 @@
         null,
         null
       ],
-      "/Users/Fai/Desktop/deployment/reality_app/app/models/user.rb": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
+      "/Users/cotncandy05/Desktop/deployment/therealityleague/app/models/round.rb": [
         null,
         null,
         null,
@@ -729,6 +578,6 @@
         null
       ]
     },
-    "timestamp": 1408679729
+    "timestamp": 1408964317
   }
 }

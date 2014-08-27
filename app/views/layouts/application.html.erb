@@ -4,6 +4,7 @@
 	<title>The Reality League</title>
 	<link href='http://fonts.googleapis.com/css?family=Patua+One|Open+Sans' rel='stylesheet' type='text/css'>
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
 	<%= csrf_meta_tags %>
@@ -32,16 +33,32 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <span class="caret"></span></a> 
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
+								<li><a href="#">Action</a></li> <!-- FIXME -->
+								<li><a href="#">Another action</a></li> <!-- FIXME -->
+								<li><a href="#">Something else here</a></li> <!-- FIXME -->
 								<li class="divider"></li>
-								<li><a href="#">Separated link</a></li>
+								<li><a href="#">Separated link</a></li> <!-- FIXME -->
 								<li class="divider"></li>
-								<li><a href="#">One more separated link</a></li>
+								<li><a href="#">One more separated link</a></li> <!-- FIXME -->
 							</ul>
 						</li>
-						<li><a href="#">Message Board</a></li>
+						<% if @current_user && @current_user.admin? %>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a> 
+								<ul class="dropdown-menu" role="menu">
+									<li class="dropdown-header">New Show</li>
+									<li><a href="/shows/new">Add new show</a></li> <!-- FIXME -->
+									<li><a href="#">Add scoring schema</a></li> <!-- FIXME -->
+									<li class="divider"></li>
+									<li class="dropdown-header">Manage Shows</li>
+									<li><a href="/shows">View/Update shows</a></li> <!-- FIXME -->
+									<li><a href="#">View schemas</a></li> <!-- FIXME -->
+									<li class="divider"></li>
+									<li class="dropdown-header">Manage Users</li>
+									<li><a href="#">View all users</a></li> <!-- FIXME -->
+								</ul>
+							</li>
+						<% end %>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<%== smartnav %>

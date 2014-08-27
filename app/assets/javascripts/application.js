@@ -13,4 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require underscore
+//= require bootstrap.min
+//= require bootstrap3-editable/bootstrap-editable
 //= require_tree .

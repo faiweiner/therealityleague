@@ -11,8 +11,12 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require bootstrap3-editable/bootstrap-editable
  *= require_self
  */
+
+$primary-color: #ff8c00;
+$copy-primary: #333;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
@@ -25,7 +29,7 @@
 body {
 	background-color: blue;
 	background: #cecece;
-	color: #333;
+	color: $copy-primary;
 	font-family: 'Open Sans', verdana, arial, helvetica, sans-serif;
 	font-size: 13px;
 	line-height: 18px;
@@ -33,6 +37,7 @@ body {
 
 h1, h2, h3, h4, h5, h6, a.navbar-brand, th {
 	font-family: 'Patua One', cursive;
+	margin-top: 5;
 }
 
 p, ol, ul, td {
@@ -83,3 +88,28 @@ div {
 		margin-bottom: 10px;
 	}
 }
+
+.panel-center-stage {
+	background-color: blue;
+	width: 0 auto;
+}
+
+.thumbnail {
+	overflow: scroll;
+	height: 300px;
+}
+
+.thumbnail a > img {
+	height: 100px;
+}
+
+.thumbnail-current-roster {
+	min-height: auto;
+	max-height: 175px;
+}
+
+.thumbnail-available-contestants {
+	min-height: auto;
+	max-height: 145px;
+}
+
