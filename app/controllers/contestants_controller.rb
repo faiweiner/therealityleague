@@ -10,12 +10,20 @@ class ContestantsController < ApplicationController
 		@contestant = Contestant.find(params[:contestant_id])
 	end
 
-	def edit_batch
-		
+	def update
+		@contestant = Contestant.find(params[:id])
+		render json: @contestant
+		# if @contestant.update
+		# 	redirect_to contestants_path
+		# else
+		# 	render :edit
+		# end
 	end
 
 	def new
 		@show = Show.find(params[:show_id])
 	end
+
+	private
 
 end

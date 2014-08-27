@@ -24,12 +24,10 @@ Rails.application.routes.draw do
 	resources :rosters
 
 	get 'contestants/show/:show_id' => 'contestants#index', :as => :contestants_show
-	get 'contestants' => 'contestants#all'
 	post 'contestants' => 'contestants#create'
-	get 'contestants/:contestant_id/edit' => 'contestants#edit_single' , :as => :edit_contestant
 	get 'contestants/new/:show_id' => 'contestants#new', :as => :new_contestant
 	get 'contestants/:id' => 'contestants#show', :as => :contestant
-	patch 'contestants/:id' => 'contestants#update'
+	post 'contestants/:id' => 'contestants#update'
 	delete 'contestants/:id' => 'contestants#destroy'
 
 	get '/login' => 'sessions#new'

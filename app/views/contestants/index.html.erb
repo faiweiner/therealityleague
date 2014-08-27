@@ -10,9 +10,8 @@
 		<div class="row">
 			<div class="panel-body">
 
-				<a href="/pages/about" id="username" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">superuser</a>
 
-				<table class="table table-hover">
+				<table class="table table-hover" id="contestants">
 					<thead>
 						<tr>
 							<th>Image</th>
@@ -26,15 +25,13 @@
 						<% @contestants.each do |contestant| %>
 							<tr>
 								<td><%= image_tag contestant.image, class:"img-thumbnail thumbnail-sm" %></td>
-								<td class="edit name-cell" data-pk="<%= contestant.id %>" data-type="text" data-contestant-id="<%= contestant.id %>" data-url="/post" data-title="Enter name"><%= contestant.name %></td>
-
-
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam fugiat repudiandae ea eligendi illo explicabo sunt voluptatem, inventore eius non dolore incidunt iure! Optio veritatis, cupiditate ad! Enim, cupiditate, temporibus.
-
-
+								<td>
+									<span data-name="name" data-pk="<%= contestant.id %>"><%= contestant.name %></span>
+								</td>
 								<td class="edit age-cell" data-pk="<%= contestant.id %>" data-type="integer" data-contestant-id="<%= contestant.id %>" data-url="/post" data-title="Enter age"><%= contestant.age %></td>
 								<td class="edit occupation-cell" data-pk="<%= contestant.id %>" data-type="text" data-contestant-id="<%= contestant.id %>" data-url="/post" data-title="Enter occupation"><%= contestant.occupation %></td>
 								<td class="edit description-cell" data-pk="<%= contestant.id %>" data-type="text" data-contestant-id="<%= contestant.id %>" data-url="/post" data-title="Enter description"><%= contestant.description %></td>
+								<td><%= button_to "Edit", class:"btn btn-default" %><%= button_to "Save", class:"btn btn-primary" %></td>
 							</tr>
 						<% end %>
 					</tbody>
