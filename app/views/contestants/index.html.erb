@@ -3,7 +3,7 @@
 		<div class="panel-title">
 			<h3><%= @show.name %></h3>
 			<%= link_to "Back to Show", show_path(@show.id), class:"btn btn-default" %>
-			<%= link_to "edit path", root_path, class:"btn btn-default" %>
+			<%= link_to "Add New Contestant", new_contestant_path(@show.id), class:"btn btn-default" %>
 		</div>
 	</div>
 	<div class="panel-body">

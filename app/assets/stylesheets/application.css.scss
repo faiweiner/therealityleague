@@ -103,8 +103,13 @@ div {
 	height: 100px;
 }
 
-.thumbnail-sm {
-	max-width: 75px;
-	max-height: 75px;
+.thumbnail-current-roster {
+	min-height: auto;
+	max-height: 175px;
+}
+
+.thumbnail-available-contestants {
+	min-height: auto;
+	max-height: 145px;
 }
 

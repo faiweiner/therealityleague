@@ -2,14 +2,15 @@
 	<div class="panel-body">
 		<div class="col-md-12">
 			<!-- Header dymanic - login or sign up -->
-			<% if params[:id] %>
-				<h2>Edit Show</h2>
+			<% if params[:show_id] %>
+				<h2>Add New Contestant</h2>
 			<% else %>
-				<h2>Add New Show</h2>
+				<h2>Edit Contestant</h2>
 			<% end %>
+			<p><%= @show.name %></p>
 			<!-- Content dymanic - login or sign up -->
 				<div class="col-lg-4 col-md-6 col-sm-6" id="sign-up-form">
-					<%= form_for(@show, class:"form-horizontal", :role => "form") do |f| %>
+					<%= form_for(@contestant, class:"form-horizontal", :role => "form") do |f| %>
 						<!-- Error Messages -->
 						<div class="row form-group">
 							<% if flash[:notice] && flash[:color] == "valid" %>
@@ -19,10 +20,10 @@
 							<% elsif flash[:notice] && flash[:color] == "prohibited"%>
 								<div class="alert alert-danger" role="alert">
 									<p><%= flash[:notice] %></p>
-									<% if @show.errors.any? %>
-										<p><%= pluralize(@show.errors.count, "error") %> prohibited this show from being saved:</p>
+									<% if @contestant.errors.any? %>
+										<p><%= pluralize(@contestant.errors.count, "error") %> prohibited this contestant from being saved:</p>
 										<ul>
-											<% @show.errors.full_messages.each do |message| %>
+											<% @contestant.errors.full_messages.each do |message| %>
 												<li><%= message %></li>
 											<% end %>
 										</ul>
@@ -34,58 +35,58 @@
 						<!-- Form Portion -->
 
 						<div class="row form-group">
-							<%= f.label :name %>
-							<%= f.text_field :name, class:"form-control", placeholder: "Show\'s title" %>
+							<%= f.label :contestant_name %>
+							<%= f.text_field :name, class:"form-control" %>
+						</div>
+						
+						<div class="row form-group hidden">
+							<%= f.label :show_id %>
+							<%= f.hidden_field :show_id, class:"form-control", :value => params[:show_id] %>
 						</div>
 
 						<div class="row form-group">
-							<%= f.label :premiere_date %>
-							<%= f.date_field :premiere_date, class:"form-control" %>
+							<%= f.label :age %>
+							<%= f.number_field :age, class:"form-control" %>
 						</div>
 
 						<div class="row form-group">
-							<%= f.label :finale_date %>
-							<%= f.date_field :finale_date, class:"form-control" %>
+							<%= f.label :gender %>
+							<%= f.text_field :gender, class:"form-control" %>
 						</div>
 
 						<div class="row form-group">
-							<%= f.label :country_origin %>
-							<%= f.text_field :country_origin, class:"form-control" %>
-						</div>
-
-						<div class="row form-group" id="password-update-group">
-							<%= f.label :type %>
-							<%= f.text_field :type, class:"form-control", :placeholder => "Romance, Drama, Race" %>
+							<%= f.label :occupation %>
+							<%= f.text_field :occupation, class:"form-control" %>
 						</div>
 
 
-						<div class="row form-group" id="password-update-group">
+						<div class="row form-group">
 							<%= f.label :description %>
 							<%= f.text_area :description, class:"form-control", :placeholder => "Enter description here", :rows => 5 %>
 						</div>
 
 
-						<div class="row form-group" id="password-update-group">
+						<div class="row form-group">
+							<%= f.label :status_on_show %>
+							<%= f.text_field :status_on_show, class:"form-control" %>
+						</div>
+
+						<div class="row form-group hidden">
+							<%= f.label :present %>
+							<%= f.hidden_field :present, class:"form-control", :default => 1 %>
+						</div>
+
+						<div class="row form-group">
 							<%= f.label :image %>
-							<%= f.text_field :image, class:"form-control", :placeholder => "url" %>
-						</div>
-
-						<div class="row form-group" id="password-update-group">
-							<%= f.label :series_id %>
-							<%= f.number_field :series_id, class:"form-control", :placeholder => "Select series" %>
-						</div>
-
-						<div class="row form-group" id="password-update-group">
-							<%= f.label :episode_count %>
-							<%= f.number_field :episode_count, class:"form-control", :placeholder => 0 %>
+							<%= f.text_field :image, class:"form-control" %>
 						</div>
 
 						<div class="row form-group actions">
-							<% if params[:id] %>
-								<%= f.submit "Update Show", class:"btn btn-primary btn-lg" %>
-								<%= link_to "Cancel", show_path(@show.id), class:"btn btn-default btn-lg" %>
+							<% if params[:show_id] %>
+								<%= f.submit "Add New Contestant", class:"btn btn-primary btn-lg" %>
+								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
 							<% else %>
-								<%= f.submit "Create New Show", class:"btn btn-primary btn-lg" %>
+								<%= f.submit "Update Contestant", class:"btn btn-primary btn-lg" %>
 								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
 							<% end %>
 						</div>

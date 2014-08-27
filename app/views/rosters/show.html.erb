@@ -22,7 +22,7 @@
 			<h4>Available Contestants</h4>
 			<% @available_contestants.each do |contestant| %>
 				<div class="col-xs-3 col-sm-6 col-md-5">
-					<div class="thumbnail">
+					<div class="thumbnail thumbnail-available-contestants">
 						<%= image_tag contestant.image %>
 						<div class="caption">
 							<%= contestant.name %>
@@ -41,7 +41,7 @@
 			<div class="row" id="rosterBoard">
 					<% @selected_contestants.each do |contestant| %>
 						<div class="col-xs-3 col-sm-3 col-md-3">
-							<div class="thumbnail">
+							<div class="thumbnail thumbnail-current-roster">
 								<%= image_tag contestant.image %>
 								<div class="caption">
 									<%= contestant.name %>

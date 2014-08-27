@@ -66,8 +66,8 @@ class RostersController < ApplicationController
 	
 	def show
 		@roster = Roster.find(params[:id])
-		@all_contestants = Contestant.where(show_id: @roster.league.show)
-		@selected_contestants = @roster.contestants
+		@all_contestants = Contestant.where(show_id: @roster.league.show).order(name: :asc)
+		@selected_contestants = @roster.contestants.order(name: :asc)
 		@available_contestants = []
 		# iterate to pull list of non-selected contestants
 		@all_contestants.select do |contestant|
@@ -75,6 +75,7 @@ class RostersController < ApplicationController
 				@available_contestants.push contestant
 			end
 		end
+		@available_contestants
 	end
 
 end

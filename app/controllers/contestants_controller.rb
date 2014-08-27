@@ -22,8 +22,27 @@ class ContestantsController < ApplicationController
 
 	def new
 		@show = Show.find(params[:show_id])
+		@contestant = Contestant.new
+	end
+
+	def create
+		@show = Show.find(params[:contestant][:show_id])
+		@contestant = Contestant.new contestant_params
+		if @contestant.save
+			flash[:notice] = "You've successfully added a new contestant."
+			flash[:color] = "valid"
+			redirect_to contestants_show_path(@contestant.show_id)
+		else
+			flash[:notice] = "Something went wrong, please try again."
+			flash[:color] = "prohibited"
+			render :new
+		end
 	end
 
 	private
+
+	def contestant_params
+		params.require(:contestant).permit(:name, :show_id, :age, :gender, :occupation, :description, :status_on_show, :present, :image)
+	end
 
 end
