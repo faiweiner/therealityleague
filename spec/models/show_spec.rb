@@ -5,17 +5,17 @@
 #  id             :integer          not null, primary key
 #  name           :string(255)
 #  premiere_date  :datetime
+#  finale_date    :datetime
 #  country_origin :string(255)
 #  type           :string(255)
-#  created_at     :datetime
-#  updated_at     :datetime
 #  description    :text
+#  episode_count  :integer
 #  image          :string(255)
 #  series_id      :integer
-#  expired        :boolean          default(FALSE)
-#  episode_count  :integer
-#  finale_date    :datetime
-#  shows          :string(255)
+#  published      :boolean          default(FALSE)
+#  expired        :boolean
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 require 'rails_helper'

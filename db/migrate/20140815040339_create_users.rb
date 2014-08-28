@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration
 			t.string :avatar
 			t.string :oauth_token 
 			t.datetime :oauth_expires_at
+			t.boolean :admin, default: :false
 			t.timestamps
 		end
 	end

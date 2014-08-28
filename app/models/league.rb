@@ -8,13 +8,13 @@
 #  show_id         :integer
 #  public_access   :boolean          default(TRUE)
 #  draft_type      :string(255)
+#  draft_deadline  :datetime
 #  scoring_system  :integer
-#  created_at      :datetime
-#  updated_at      :datetime
 #  league_key      :string(255)
 #  league_password :string(255)
-#  draft_limit     :integer          default(5)
-#  expired         :boolean          default(FALSE)
+#  active          :boolean          default(TRUE)
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 class League < ActiveRecord::Base
@@ -24,7 +24,6 @@ class League < ActiveRecord::Base
 	before_destroy { users.clear }
 	has_many :rosters, through: :users
 	has_many :rounds
-	has_one :scoring
 
 # FIXME! Come bck to deal with dependencies please
 

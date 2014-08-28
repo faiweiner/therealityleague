@@ -155,7 +155,7 @@ class LeaguesController < ApplicationController
 	private
 
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :scoring_system, :league_key, :league_password)
+		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :league_key, :league_password, :active)
 	end
 
 end
