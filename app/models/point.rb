@@ -16,5 +16,7 @@ class Point < ActiveRecord::Base
 	belongs_to :event
 
 	validates :contestant_id, presence: true
+	validates :episode_id, presence: true
+	validates :event_id, presence: true
 end
 
