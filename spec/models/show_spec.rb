@@ -11,7 +11,8 @@
 #  description    :text
 #  episode_count  :integer
 #  image          :string(255)
-#  series_id      :integer
+#  franchise_id   :integer
+#  season         :integer
 #  published      :boolean          default(FALSE)
 #  expired        :boolean
 #  created_at     :datetime

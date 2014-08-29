@@ -9,7 +9,8 @@ class CreateShows < ActiveRecord::Migration
 			t.text			:description
 			t.integer		:episode_count
 			t.string		:image
-			t.integer		:series_id
+			t.integer		:franchise_id
+			t.integer		:season
 			t.boolean		:published, default: :false
 			t.boolean		:expired, deafult: :false
 			t.timestamps

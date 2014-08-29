@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820183600) do
+ActiveRecord::Schema.define(version: 20140828053731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,11 +31,26 @@ ActiveRecord::Schema.define(version: 20140820183600) do
     t.datetime "updated_at"
   end
 
+  create_table "contestants_points", id: false, force: true do |t|
+    t.integer "contestant_id"
+    t.integer "point_id"
+    t.integer "episode_id"
+  end
+
+  create_table "contestants_rosters", force: true do |t|
+    t.integer "roster_id"
+    t.integer "contestant_id"
+  end
+
   create_table "episodes", force: true do |t|
     t.integer  "show_id"
     t.datetime "air_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "franchises", force: true do |t|
+    t.string "name"
   end
 
   create_table "leagues", force: true do |t|
@@ -59,7 +74,8 @@ ActiveRecord::Schema.define(version: 20140820183600) do
   end
 
   create_table "points", force: true do |t|
-    t.integer  "show_id"
+    t.string   "type"
+    t.integer  "franchise_id"
     t.string   "event"
     t.integer  "points"
     t.datetime "created_at"
@@ -71,11 +87,6 @@ ActiveRecord::Schema.define(version: 20140820183600) do
     t.integer  "league_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "rosters_contestants", force: true do |t|
-    t.integer "roster_id"
-    t.integer "contestant_id"
   end
 
   create_table "rounds", force: true do |t|
@@ -94,7 +105,8 @@ ActiveRecord::Schema.define(version: 20140820183600) do
     t.text     "description"
     t.integer  "episode_count"
     t.string   "image"
-    t.integer  "series_id"
+    t.integer  "franchise_id"
+    t.integer  "season"
     t.boolean  "published",      default: false
     t.boolean  "expired"
     t.datetime "created_at"
