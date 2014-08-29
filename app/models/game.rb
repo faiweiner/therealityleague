@@ -11,10 +11,5 @@
 #  updated_at   :datetime
 #
 
-class Event < ActiveRecord::Base
-	belongs_to :franchise, inverse_of: :events
-
-	has_many :points
-	has_many :contestants, through: :points
-	has_many :episodes, through: :points
+class Game < Event
 end

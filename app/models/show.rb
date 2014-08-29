@@ -22,7 +22,7 @@
 class Show < ActiveRecord::Base
 	belongs_to :franchise, inverse_of: :shows
 	has_many :leagues, inverse_of: :show, dependent: :destroy
-	has_many :points, through: :franchise
+	has_many :events, through: :franchise
 	has_many :contestants
 	has_many :episodes
 	# belongs_to :score

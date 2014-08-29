@@ -1,8 +1,8 @@
 class CreateJointTableContestantsRosters < ActiveRecord::Migration
 	def change
-		create_table :contestants_rosters do |t|
-			t.integer :roster_id
+		create_join_table :contestants, :rosters, id: false do |t|
 			t.integer :contestant_id
+			t.integer :roster_id
 		end
 	end
 end

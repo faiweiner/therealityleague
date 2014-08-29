@@ -1,10 +1,10 @@
-class CreatePoints < ActiveRecord::Migration
+class CreateEvents < ActiveRecord::Migration
 	def change
-		create_table :points do |t|
+		create_table :events do |t|
 			t.string :type
 			t.integer :franchise_id
 			t.string :event
-			t.integer :points
+			t.integer :points_asgn
 			t.timestamps
 		end
 	end

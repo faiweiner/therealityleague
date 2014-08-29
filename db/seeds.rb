@@ -1,16 +1,16 @@
 # USERS
-User.destroy_all
-Show.destroy_all
-League.destroy_all
 Contestant.destroy_all
-Roster.destroy_all
-Round.destroy_all
 Episode.destroy_all
-Point.destroy_all
-Franchise.destroy_all
 Event.destroy_all
 Extracurricular.destroy_all
+Franchise.destroy_all
+League.destroy_all
+Point.destroy_all
+Roster.destroy_all
+Round.destroy_all
+Show.destroy_all
 Survival.destroy_all
+User.destroy_all
 
 last_month = DateTime.now - 31
 one_week = DateTime.now + 7
@@ -111,42 +111,52 @@ round8 = Round.create(:league_id => league4.id, :episode_id => episode8.id)
 round9 = Round.create(:league_id => league4.id, :episode_id => episode9.id)
 round10 = Round.create(:league_id => league4.id, :episode_id => episode10.id)
 
-survival1 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 1', :points => 10)
-survival2 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 2', :points => 20)
-survival3 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 3', :points => 30)
-survival4 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 4', :points => 40)
-survival5 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 5', :points => 50)
-survival6 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 6', :points => 60)
-survival7 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 7', :points => 70)
-survival8 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 8', :points => 80)
-survival9 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 9', :points => 90)
-survival10 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives the Final Rose', :points => 100)
-survival11 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 1', :points => 10)
-survival12 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 2', :points => 10)
-survival13 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 3', :points => 10)
-survival14 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 4', :points => 10)
-survival15 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 5', :points => 10)
-survival16 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 6', :points => 10)
-survival17 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 7', :points => 10)
-survival18 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 8', :points => 10)
-survival19 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 9', :points => 10)
-survival20 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in the Finale', :points => 10)
-survival21 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant is asked to leave by the producer', :points => 100)
+survival1 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 1', :points_asgn => 10)
+survival2 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 2', :points_asgn => 20)
+survival3 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 3', :points_asgn => 30)
+survival4 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 4', :points_asgn => 40)
+survival5 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 5', :points_asgn => 50)
+survival6 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 6', :points_asgn => 60)
+survival7 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 7', :points_asgn => 70)
+survival8 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 8', :points_asgn => 80)
+survival9 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives a rose in Week 9', :points_asgn => 90)
+survival10 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant receives the Final Rose', :points_asgn => 100)
+survival11 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 1', :points_asgn => 10)
+survival12 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 2', :points_asgn => 10)
+survival13 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 3', :points_asgn => 10)
+survival14 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 4', :points_asgn => 10)
+survival15 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 5', :points_asgn => 10)
+survival16 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 6', :points_asgn => 10)
+survival17 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 7', :points_asgn => 10)
+survival18 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 8', :points_asgn => 10)
+survival19 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in Week 9', :points_asgn => 10)
+survival20 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant leaves on her own accord in the Finale', :points_asgn => 10)
+survival21 = Survival.create(:franchise_id => franchise1.id, :event => 'Contestant is asked to leave by the producer', :points_asgn => 100)
 
-event1 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for 1-on-1 date', :points => 50)
-event2 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for group date', :points => 25)
-event3 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant gets in a helicopter', :points => 25)
-event4 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant gets a Fantasy Suite invitation', :points => 75)
-event5 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant rejects a Fantay Suite invitation', :points => 100)
-event6 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant meets the bachelor\'s family', :points => 50)
-event7 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for group date', :points => 25)
-event8 = Event.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for group date', :points => 25)
+game1 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for 1-on-1 date', :points_asgn => 50)
+game2 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
+game3 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant gets in a helicopter', :points_asgn => 25)
+game4 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant gets a Fantasy Suite invitation', :points_asgn => 75)
+game5 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant rejects a Fantay Suite invitation', :points_asgn => 100)
+game6 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant meets the bachelor\'s family', :points_asgn => 50)
+game7 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
+game8 = Game.create(:franchise_id => franchise1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
 
-extra1 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant kisses the bachelor', :points => 10)
-extra2 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets in the hot tub with the bachelor', :points => 20)
-extra3 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant cries', :points => 10)
-extra4 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets in a fight with another contestant', :points => 25)
-extra5 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant says she\'s "here for the right reason" ', :points => 15)
-extra6 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets inappropriately drunk', :points => 25)
-extra7 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets injured', :points => 25)
-extra8 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gives the bachelor a gift', :points => 10)
+extra1 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant kisses the bachelor', :points_asgn => 10)
+extra2 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets in the hot tub with the bachelor', :points_asgn => 20)
+extra3 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant cries', :points_asgn => 10)
+extra4 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets in a fight with another contestant', :points_asgn => 25)
+extra5 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant says she\'s "here for the right reason" ', :points_asgn => 15)
+extra6 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets inappropriately drunk', :points_asgn => 25)
+extra7 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gets injured', :points_asgn => 25)
+extra8 = Extracurricular.create(:franchise_id => franchise1.id, :event => 'Contestant gives the bachelor a gift', :points_asgn => 10)
+
+point1 = Point.create(:contestant_id => cont7, :event_id => survival1, :episode_id => episode1)
+point2 = Point.create(:contestant_id => cont8, :event_id => survival1, :episode_id => episode1)
+point3 = Point.create(:contestant_id => cont9, :event_id => survival1, :episode_id => episode1)
+point4 = Point.create(:contestant_id => cont10, :event_id => survival1, :episode_id => episode1)
+point5 = Point.create(:contestant_id => cont11, :event_id => survival1, :episode_id => episode1)
+point6 = Point.create(:contestant_id => cont7, :event_id => survival20, :episode_id => episode10)
+point7 = Point.create(:contestant_id => cont7, :event_id => extra1, :episode_id => episode10)
+point8 = Point.create(:contestant_id => cont10, :event_id => survival3, :episode_id => episode3)
+point9 = Point.create(:contestant_id => cont10, :event_id => extra3, :episode_id => episode3)

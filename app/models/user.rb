@@ -27,10 +27,10 @@ class User < ActiveRecord::Base
 	# FIXME! Come bck to deal with dependencies please
 
 	has_secure_password
-	validates :email, :presence => true, :uniqueness => true, :length => { :minimum => 6 }, :on => :create
+	validates :email, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create
 	validates_format_of :email, :with => EmailRegex
-	validates :username, :presence => true, :uniqueness => true, :length => { :minimum => 6 }, :on => :create
-	validates :password, length: { in: 6..20 }, :confirmation => true
+	validates :username, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create
+	validates :password, length: { in: 6..20 }, confirmation: true
 
 	def roster_for_league(league)
 		roster = self.rosters.where(:league_id => league.id).first

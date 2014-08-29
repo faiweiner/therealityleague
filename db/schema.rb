@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140828053731) do
+ActiveRecord::Schema.define(version: 20140829055926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,15 +31,9 @@ ActiveRecord::Schema.define(version: 20140828053731) do
     t.datetime "updated_at"
   end
 
-  create_table "contestants_points", id: false, force: true do |t|
+  create_table "contestants_rosters", id: false, force: true do |t|
     t.integer "contestant_id"
-    t.integer "point_id"
-    t.integer "episode_id"
-  end
-
-  create_table "contestants_rosters", force: true do |t|
     t.integer "roster_id"
-    t.integer "contestant_id"
   end
 
   create_table "episodes", force: true do |t|
@@ -49,8 +43,19 @@ ActiveRecord::Schema.define(version: 20140828053731) do
     t.datetime "updated_at"
   end
 
+  create_table "events", force: true do |t|
+    t.string   "type"
+    t.integer  "franchise_id"
+    t.string   "event"
+    t.integer  "points_asgn"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "franchises", force: true do |t|
-    t.string "name"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "leagues", force: true do |t|
@@ -74,10 +79,9 @@ ActiveRecord::Schema.define(version: 20140828053731) do
   end
 
   create_table "points", force: true do |t|
-    t.string   "type"
-    t.integer  "franchise_id"
-    t.string   "event"
-    t.integer  "points"
+    t.integer  "contestant_id"
+    t.integer  "episode_id"
+    t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
