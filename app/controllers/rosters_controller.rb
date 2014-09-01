@@ -76,6 +76,8 @@ class RostersController < ApplicationController
 			end
 		end
 		@available_contestants    
+
+		# show 
 	end
 
 end

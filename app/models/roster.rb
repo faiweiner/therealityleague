@@ -17,11 +17,11 @@ class Roster < ActiveRecord::Base
 	validates :user_id, :presence => true
 	validates :league_id, :presence => true
 
-	def calculate_roster_score
+	def calculate_total_roster_points			# takes a collection of contestants within one roster
 		contestants = self.contestants
 		roster_total_score = 0
 		contestants.each do |contestant|
-			roster_total_score += contestant.points_total
+			roster_total_score += contestant.calculate_total_points
 		end
 		return roster_total_score
 	end

@@ -87,7 +87,7 @@ class LeaguesController < ApplicationController
 	def show
 		@league = League.find(params[:id])
 		@league_show = Show.find(@league.show)
-		@league_rosters = @league.rosters
+		# @league_rosters = @league.rosters
 		@participants = @league.users
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
@@ -107,8 +107,6 @@ class LeaguesController < ApplicationController
 		end
 
 		@league_rounds = Round.where(:league_id => @league.id)
-
-		raise
 	end
 
 	def search

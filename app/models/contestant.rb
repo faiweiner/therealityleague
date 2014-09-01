@@ -30,12 +30,15 @@ class Contestant < ActiveRecord::Base
 	validates :show_id, :presence => true, :on => :create
 
 
-	def points_per_episode(episode_id)
+	def calculate_points_per_episode(episode_id)
 		Point.joins(:event).where(contestant_id: self.id, episode_id: episode_id).sum("events.points_asgn")
 	end
 
-	def points_total
+	def calculate_total_points		# takes one contestant of a roster to get his/her total score
 		Point.joins(:event).where(contestant_id: self.id).sum("events.points_asgn")
 	end
 
+	def status
+		return "(eliminated)" if self.present == false
+	end
 end
