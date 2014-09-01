@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(version: 20140829055926) do
     t.integer  "franchise_id"
     t.integer  "season"
     t.boolean  "published",      default: false
-    t.boolean  "expired"
+    t.boolean  "expired",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

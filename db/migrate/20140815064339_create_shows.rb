@@ -12,7 +12,7 @@ class CreateShows < ActiveRecord::Migration
 			t.integer		:franchise_id
 			t.integer		:season
 			t.boolean		:published, default: :false
-			t.boolean		:expired, deafult: :false
+			t.boolean		:expired, default: :false
 			t.timestamps
 		end
 	end
