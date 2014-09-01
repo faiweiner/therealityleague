@@ -28,20 +28,28 @@
 				<p><%= @league_show.description %></p>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur unde odio cumque autem totam enim debitis minima illo dicta corporis excepturi rem laborum voluptates deserunt eum minus, quod commodi accusamus.</p>
 			</div>
-			<div class="row">
-				<span class="col-md-6">
-					<h4 class="small">League Key: </h4>
-					<span class="btn btn-default disabled">
-						<%= @league.league_key %>
-					</span> 
-				</span>
-				<span class="col-md-6">
-					<h4 class="small">League Password: </h4>
-					<span class="btn btn-default disabled">
-						<%= @league.league_password %>		
-					</span>	
-				</span>
-			</div>
+			<% if @league.public_access == true %>
+				<div class="row">
+					<span class="col-md-6">
+						<h4 class="small">This is a public league.</h4>
+					</span>
+				</div>
+			<% else %>
+				<div class="row">
+					<span class="col-md-6">
+						<h4 class="small">League Key: </h4>
+						<span class="btn btn-default disabled">
+							<%= @league.league_key %>
+						</span> 
+					</span>
+					<span class="col-md-6">
+						<h4 class="small">League Password: </h4>
+						<span class="btn btn-default disabled">
+							<%= @league.league_password %>		
+						</span>	
+					</span>
+				</div>
+			<% end %>
 		</div>
 		<!-- right column -->
 		<div class="col-md-8">

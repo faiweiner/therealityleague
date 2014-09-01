@@ -108,6 +108,7 @@ class LeaguesController < ApplicationController
 
 		@league_rounds = Round.where(:league_id => @league.id)
 
+		raise
 	end
 
 	def search

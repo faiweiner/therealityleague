@@ -30,14 +30,12 @@ class Contestant < ActiveRecord::Base
 	validates :show_id, :presence => true, :on => :create
 
 
-	def self.points_per_episode(contestant_id, episode_id)
-		contestant = Contestant.find(contestant_id)
-		points_collection = contestant.points.where(episode_id: episode_id)
-		return points_collection
+	def points_per_episode(episode_id)
+		Point.joins(:event).where(contestant_id: self.id, episode_id: episode_id).sum("events.points_asgn")
 	end
 
-	def self.points_total
-		
+	def points_total
+		Point.joins(:event).where(contestant_id: self.id).sum("events.points_asgn")
 	end
 
 end
