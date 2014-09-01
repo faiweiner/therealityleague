@@ -1,3 +1,0 @@
-class FranchisesController < ApplicationController
-	
-end

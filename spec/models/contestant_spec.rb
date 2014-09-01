@@ -4,7 +4,7 @@
 #
 #  id             :integer          not null, primary key
 #  name           :string(255)
-#  show_id        :integer
+#  season_id      :integer
 #  image          :string(255)
 #  age            :integer
 #  gender         :string(255)

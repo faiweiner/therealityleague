@@ -5,10 +5,9 @@ Rails.application.routes.draw do
   resources :points
 
 	get 'pages/about' => 'pages#about'
-	get 'shows/search' => 'shows#search'
+	get 'seasons/search' => 'seasons#search'
+	resources :seasons
 	resources :shows
-
-
 
 
 	get 'leagues/search' => 'leagues#search'

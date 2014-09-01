@@ -4,7 +4,7 @@
 #
 #  id             :integer          not null, primary key
 #  name           :string(255)
-#  show_id        :integer
+#  season_id      :integer
 #  image          :string(255)
 #  age            :integer
 #  gender         :string(255)
@@ -18,7 +18,7 @@
 #
 
 class Contestant < ActiveRecord::Base
-	belongs_to :show
+	belongs_to :season
 	has_and_belongs_to_many :rosters, inverse_of: :contestants
 	before_destroy { rosters.clear }
 	
@@ -27,7 +27,7 @@ class Contestant < ActiveRecord::Base
 	has_many :events, through: :points
 
 	validates :name, :presence => true, :on => :create
-	validates :show_id, :presence => true, :on => :create
+	validates :season_id, :presence => true, :on => :create
 
 
 	def calculate_points_per_episode(episode_id)

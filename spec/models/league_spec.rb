@@ -5,7 +5,7 @@
 #  id              :integer          not null, primary key
 #  name            :string(255)
 #  commissioner_id :integer
-#  show_id         :integer
+#  season_id       :integer
 #  public_access   :boolean          default(TRUE)
 #  draft_type      :string(255)
 #  draft_deadline  :datetime

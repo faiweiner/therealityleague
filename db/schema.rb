@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20140829055926) do
 
   create_table "contestants", force: true do |t|
     t.string   "name"
-    t.integer  "show_id"
+    t.integer  "season_id"
     t.string   "image"
     t.integer  "age"
     t.string   "gender"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20140829055926) do
   end
 
   create_table "episodes", force: true do |t|
-    t.integer  "show_id"
+    t.integer  "season_id"
     t.datetime "air_date"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -45,15 +45,9 @@ ActiveRecord::Schema.define(version: 20140829055926) do
 
   create_table "events", force: true do |t|
     t.string   "type"
-    t.integer  "franchise_id"
+    t.integer  "show_id"
     t.string   "event"
     t.integer  "points_asgn"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "franchises", force: true do |t|
-    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -61,7 +55,7 @@ ActiveRecord::Schema.define(version: 20140829055926) do
   create_table "leagues", force: true do |t|
     t.string   "name"
     t.integer  "commissioner_id"
-    t.integer  "show_id"
+    t.integer  "season_id"
     t.boolean  "public_access",   default: true
     t.string   "draft_type"
     t.datetime "draft_deadline"
@@ -100,8 +94,10 @@ ActiveRecord::Schema.define(version: 20140829055926) do
     t.datetime "updated_at"
   end
 
-  create_table "shows", force: true do |t|
+  create_table "seasons", force: true do |t|
     t.string   "name"
+    t.integer  "number"
+    t.integer  "show_id"
     t.datetime "premiere_date"
     t.datetime "finale_date"
     t.string   "country_origin"
@@ -109,10 +105,15 @@ ActiveRecord::Schema.define(version: 20140829055926) do
     t.text     "description"
     t.integer  "episode_count"
     t.string   "image"
-    t.integer  "franchise_id"
-    t.integer  "season"
     t.boolean  "published",      default: false
     t.boolean  "expired",        default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "shows", force: true do |t|
+    t.string   "name"
+    t.string   "image"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

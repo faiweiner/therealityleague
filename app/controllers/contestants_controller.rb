@@ -2,8 +2,8 @@ class ContestantsController < ApplicationController
 	before_action :check_if_admin
 
 	def index
-		@show = Show.find(params[:show_id])
-		@contestants = Contestant.where(show_id: params[:show_id])
+		@season = Season.find(params[:season_id])
+		@contestants = Contestant.where(season_id: params[:season_id])
 	end
 
 	def edit_single
@@ -21,17 +21,17 @@ class ContestantsController < ApplicationController
 	end
 
 	def new
-		@show = Show.find(params[:show_id])
+		@season = Season.find(params[:season_id])
 		@contestant = Contestant.new
 	end
 
 	def create
-		@show = Show.find(params[:contestant][:show_id])
+		@season = season.find(params[:contestant][:season_id])
 		@contestant = Contestant.new contestant_params
 		if @contestant.save
 			flash[:notice] = "You've successfully added a new contestant."
 			flash[:color] = "valid"
-			redirect_to contestants_show_path(@contestant.show_id)
+			redirect_to contestants_season_path(@contestant.season_id)
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"
@@ -42,7 +42,7 @@ class ContestantsController < ApplicationController
 	private
 
 	def contestant_params
-		params.require(:contestant).permit(:name, :show_id, :age, :gender, :occupation, :description, :status_on_show, :present, :image)
+		params.require(:contestant).permit(:name, :season_id, :age, :gender, :occupation, :description, :status_on_season, :present, :image)
 	end
 
 end

@@ -2,21 +2,11 @@
 #
 # Table name: shows
 #
-#  id             :integer          not null, primary key
-#  name           :string(255)
-#  premiere_date  :datetime
-#  finale_date    :datetime
-#  country_origin :string(255)
-#  type           :string(255)
-#  description    :text
-#  episode_count  :integer
-#  image          :string(255)
-#  franchise_id   :integer
-#  season         :integer
-#  published      :boolean          default(FALSE)
-#  expired        :boolean
-#  created_at     :datetime
-#  updated_at     :datetime
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  image      :string(255)
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

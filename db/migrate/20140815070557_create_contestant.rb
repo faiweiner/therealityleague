@@ -2,7 +2,7 @@ class CreateContestant < ActiveRecord::Migration
   def change
 		create_table :contestants do |t|
 			t.string 	:name
-			t.integer :show_id
+			t.integer :season_id
 			t.string	:image
 			t.integer	:age
 			t.string	:gender
