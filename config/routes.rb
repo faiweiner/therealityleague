@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-  resources :scores
+  resources :events
+  resources :points
 
 	get 'pages/about' => 'pages#about'
 	get 'shows/search' => 'shows#search'
