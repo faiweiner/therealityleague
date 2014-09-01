@@ -1,7 +1,7 @@
 <% @available_contestants.each do |contestant| %>
 	<div class="col-md-5">
 		<div class="thumbnail thumbnail-available-contestants">
-			<i class="add-button fa fa-plus" data-contestant-id="<%= contestant.id %>" data-roster-id="<%= @roster.id %>"></i>
+			<i class="add-button fa fa-plus overlap-button" data-contestant-id="<%= contestant.id %>" data-roster-id="<%= @roster.id %>"></i>
 			<%= image_tag contestant.image %>
 			<div class="caption">
 				<%= contestant.name %>

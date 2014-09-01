@@ -2,6 +2,7 @@
 	<div class="panel-body">
 		<div class="col-md-6">
 			<h2><%= @show.name %></h2>
+			<h3><%= @show.franchise.name %></h3>
 		</div>
 		<div class="col-md-6 text-right text-bottom">
 			<% if @current_user.admin? %>
@@ -11,26 +12,19 @@
 			<% end %>
 		</div>
 		<div class="panel-body">
-			<div class="row">
-				<div class="col-md-9 col-md-push-3">
-					<div class="panel-body">
+			<div class="col-md-9 col-md-push-3">
+				<div class="panel-body">
+					<h2>Contestants</h2>
 						<% @contestants.each do |contestant| %>
 							<div class="col-sm-6 col-md-4">
-								<div class="thumbnail">
+								<div class="thumbnail tmbn-contestant">
 									<%= image_tag contestant.image %>
-									<div class="caption caption-header">
-										<h3><%= contestant.name %></h3>
-										Age: <%= contestant.age %>
-											<br>
-										<%= contestant.occupation %>
-									</div>
-									<div class="caption caption-sm">
-										<p><%= contestant.description %></p>
-									</div>
-			<!-- 						<br>
 									<div class="caption">
-										<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-									</div> -->
+										<h4><%= contestant.name %><%= contestant.status %></h4>
+										Age: <%= contestant.age %>
+										<br>
+										Occupation: <%= contestant.occupation %>
+									</div>	
 								</div>
 							</div>
 
@@ -62,7 +56,6 @@
 					</div>
 				</div>
 				<!-- end -->
-			</div>
 		</div>
 	</div>
 </div>

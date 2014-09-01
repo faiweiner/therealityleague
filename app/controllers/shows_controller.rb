@@ -39,12 +39,12 @@ class ShowsController < ApplicationController
 
 	def destroy
 		@show = Show.find params[:id]
-		@show.destroy
 		redirect_to shows_path
 	end
 	def show
 		@show = Show.find(params[:id])
-		@contestants = @show.contestants
+		@rules = @show.franchise.events
+		@contestants = @show.contestants.order("name ASC")
 		# raise
 	end
 	
