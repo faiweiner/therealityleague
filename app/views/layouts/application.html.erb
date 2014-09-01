@@ -34,7 +34,7 @@
 							<a href="/shows" class="dropdown-toggle" data-toggle="dropdown">Shows <span class="caret"></span></a> 
 							<ul class="dropdown-menu" role="menu">
 								<% @shows.each do |show| %>
-									<li><a href="#"><%= show.name %></a></li> <!-- FIXME -->
+									<li><%= link_to show.name, show_path(show.id) %></li>
 								<% end %>
 							</ul>
 						</li>

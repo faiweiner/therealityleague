@@ -5,7 +5,7 @@
 			<h3><%= @show.franchise.name %></h3>
 		</div>
 		<div class="col-md-6 text-right text-bottom">
-			<% if @current_user.admin? %>
+			<% if @current_user && @current_user.admin? %>
 				<%= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default" %>
 				<%= link_to "Edit Contestants", contestants_show_path(@show.id), class:"btn btn-default" %>
 				<%= link_to "Back to Shows", shows_path, class:"btn btn-default" %>
