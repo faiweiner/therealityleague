@@ -5,43 +5,56 @@
 				<h2>Manage Point Schemas</h2>
 			</div>
 		</div>
-		<div class="col-md-4">
-			<% @shows.each do |show| %>
-				<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= show.id %>">
-					<button class="btn btn-md btn-primary btn-block">
-						<%= show.name %>
-					</button>
-				</a>
-				<br>
-			<% end %>
-			
-		</div>
-		<div class="col-md-8">
-			<div class="panel-group">
-
+		<div class="panel-body">
+			<div class="col-md-3">
+				<% @shows.each do |show| %>
+					<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= show.id %>">
+						<button class="btn btn-md btn-primary btn-block">
+							<%= show.name %>
+						</button>
+					</a>
+					<br>
+				<% end %>
 			</div>
-			<div class="panel-group" id="accordion">
-	
+			<div class="col-md-9">
+				<div class="panel-group" id="accordion">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapse">
-									HHIHIHIHI
-								</a>
+									Click a show to view
 							</h4>
 						</div>
-						<div id="collapse" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-12">
-										<h4>Description:</h4>
-		
-										<h4>Contestants:</h4>
+						<% @shows.each do |show| %>
+							<div id="collapse<%= show.id %>" class="panel-collapse collapse">
+								<div class="panel-heading">
+									<h4 class="panel-title"><%= show.name %></h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-lg-12">
+											<table class="table table-striped">
+												<thead>
+													<th>Type</th>
+													<th>Event</th>
+													<th>Points</th>
+												</thead>
+												<% show.events.each do |event| %>
+													<tr>
+														<td><%= event.type %></td>
+														<td><%= event.event %></td>
+														<td><%= event.points_asgn %></td>
+													</tr>
+												<% end %>
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						<% end %>
 					</div>
+				</div>
+
+
 
 			</div>
 		</div>

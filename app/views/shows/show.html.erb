@@ -20,6 +20,7 @@
 								<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>">
 									Season <%= season.number%>: <%= season.name %>
 								</a>
+								<%= link_to "View season", season_path(season.id), class:"btn btn-default" %>
 							</h4>
 						</div>
 						<div id="collapse<%= index %>" class="panel-collapse collapse">
