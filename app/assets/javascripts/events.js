@@ -7,13 +7,11 @@ $(document).ready(function () {
 
 	$newEventForm = $('#new-event');
 	$newEventSubmitButton = $('#new-event-submit');
+	$eventsBoard = $('#events-board');
 	$eventsDisplayBox = $('#events-display-box');
-	$eventsDisplayBox.css("display", "none");
 // ================== IN-LINE EDITING ================== //
 
 	$.extend($.fn.editable.defaults, defaults);
-
-	
 
 	$eventsDisplayBox.find('span[data-name="type"]').editable({
 		// title: 'Enter type',
@@ -114,7 +112,7 @@ $(document).ready(function () {
 			type: 'GET',
 			success: function (msg) {
 				var partial = msg;
-				$eventsDisplayBox.html(partial);
+				$eventsBoard.html(partial);
 				hideActionButtons();
 			}
 		});
@@ -130,17 +128,10 @@ $(document).ready(function () {
 
 	$('.btn-primary').on('click', function (event) {
 		$element = event.target;
-		$eventsDisplayBox.toggle();
 		populateEventsTable($element.id);
 	});
 
-	$('.edit').on('click', function (event) {
-		showActionButtons();
+	$('.edit').click(function () {
+		debugger
 	});
-
-
-
-
-
-
 });
