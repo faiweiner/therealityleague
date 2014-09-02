@@ -13,11 +13,13 @@ $(document).ready(function () {
 
 	$.extend($.fn.editable.defaults, defaults);
 
-	var makeElementsReloadable = function () {
+	var makeElementsReloadable = function (eventTypeValue) {
 
 		$eventsBoard.find('span[data-name="type"]').editable({
 			type: 'select',
 			tpl: '<select style="width: 100px">',
+			display: 'value',
+			value: eventTypeValue,
 			source: [
 				{'value': 'Survival', 'text': 'Survival'},
 				{'value': 'Game', 'text': 'Game'},
@@ -32,7 +34,12 @@ $(document).ready(function () {
 
 		$eventsBoard.find('span[data-name="points_asgn"]').editable({
 			title: 'Enter points',
-			tpl: "<input style='width: 50px'>"
+			tpl: "<input style='width: 50px'>",
+			validate: function (value) {
+				if ($.trim(value) == '') {
+					return 'This field is required';
+				}
+			}	
 		});
 	};
 
@@ -126,7 +133,9 @@ $(document).ready(function () {
 	});
 
 	$eventsBoard.on('click', '.edit', function () {
-		makeElementsReloadable();
+		// Get value of event type to be populated in X-editable
+		var eventTypeValue = $(this).closest('tr').find('span[data-name="type"]').text();
+		makeElementsReloadable(eventTypeValue);	
 		$eventsBoard.find('.editable-open').editable('hide');
 		$(this).hide().siblings('.btn-primary').show();
 		$(this).siblings('.btn-danger').show();
