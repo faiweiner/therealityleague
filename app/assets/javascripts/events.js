@@ -52,10 +52,10 @@ $(document).ready(function () {
 			response: function(settings) {
 				console.log(settings.data);   
 		 	}
-			success: function (msg) {
-				var partial = msg;
-				$rosterBoard.html(partial);
-			}
+			// success: function (msg) {
+			// 	var partial = msg;
+			// 	$rosterBoard.html(partial);
+			// }
 		});
 
 		$btn.closest('tr').find('.editable').editable('hide');
@@ -99,9 +99,34 @@ $(document).ready(function () {
 			}
 		});
 	};
+
+	var populateEventsTable = function (show_id) {
+		console.log(show_id);
+	};
+
 	// ----- END server-side ----- //
 
 	$newEventSubmitButton.on('click', function () {
 		addEventToShow();
 	});
+
+	$(this).on('click', function (event) {
+		$element = event.target;
+		populateEventsTable($element.id);
+
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });

@@ -9,11 +9,9 @@
 			<div class="col-md-3">
 				<div class="row">
 					<% @shows.each do |show| %>
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= show.id %>">
-							<button class="btn btn-md btn-primary btn-block">
-								<%= show.name %>
-							</button>
-						</a>
+						<button class="btn btn-md btn-primary btn-block" id="<%= show.id%>">
+							<%= show.name %>
+						</button>
 						<br>
 					<% end %>
 				</div>
@@ -39,44 +37,22 @@
 							</h4>
 						</div>
 						<!-- Iterate over all shows -->
-						<% @shows.each do |show| %>
-							<div id="collapse<%= show.id %>" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-lg-12">
-											<table class="table table-hover events-table">
-												<thead>
-													<th data-field="type" data-sortable="true" class="col-lg-2">Type</th>
-													<th data-field="event" data-sortable="true" class="col-lg-6">Event</th>
-													<th data-field="points_asgn" data-sortable="true" class="col-lg-1">Points</th>
-													<th class="col-lg-1">Actions</th>
-												</thead>
-												<!-- Iterate over event instances -->
-												<% show.events.each do |event| %>
-													<tr>
-														<td>
-															<span data-name"type" data-pk="<%= event.id %>"><%= event.type %>
-															</span>
-														</td>
-														<td>
-															<span data-name"event" data-pk="<%= event.id %>"><%= event.event %>
-															</span>
-														</td>
-														<td>
-															<span data-name"points_asgn" data-pk="<%= event.id %>"><%= event.points_asgn %>
-															</span>
-														</td>
-														<td><button class="btn btn-default edit">Edit</i></button><button class="btn btn-primary save">Save</button></td>
-													</tr>
-												<% end %>
-												<!-- END event instances iteration-->
-											</table>
-										</div>
+						<div id="collapse" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<table class="table table-hover events-table">
+											<thead>
+												<th data-field="type" data-sortable="true" class="col-lg-2">Type</th>
+												<th data-field="event" data-sortable="true" class="col-lg-6">Event</th>
+												<th data-field="points_asgn" data-sortable="true" class="col-lg-1">Points</th>
+												<th class="col-lg-1">Actions</th>
+											</thead>
+										</table>
 									</div>
 								</div>
 							</div>
-						<% end %>
-						<!-- END shows iteration-->
+						</div>
 					</div>
 				</div>
 			</div>

@@ -2,6 +2,10 @@ class EventsController < ApplicationController
 	def index
 		@shows = Show.all.order("name DESC")	
 		@event = Event.new
+		respond_to do |format|
+			format.html # index.html.erb
+			format.json { render json: @shows }
+		end
 	end
 
 	def create
