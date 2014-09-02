@@ -7,19 +7,15 @@ $(document).ready(function () {
 
 	$newEventForm = $('#new-event');
 	$newEventSubmitButton = $('#new-event-submit');
-	$eventsDisplayBox = $('#event-display-box');
-
-	// ================== IN-LINE EDITING ================== //
+	$eventsDisplayBox = $('#events-display-box');
+	$eventsDisplayBox.css("display", "none");
+// ================== IN-LINE EDITING ================== //
 
 	$.extend($.fn.editable.defaults, defaults);
 
-	$eventsDisplayBox.find('.save').hide();
+	
 
-	$('.edit').on('click', function () {
-		console.log('clicked me');
-	});
-
-	$('#event-display-box span[data-name="type"]').editable({
+	$eventsDisplayBox.find('span[data-name="type"]').editable({
 		// title: 'Enter type',
 		// tpl: "<input type='text' style='width: 100px'>"
 	});
@@ -88,6 +84,17 @@ $(document).ready(function () {
 		});
 	};
 
+	var hideActionButtons = function () {
+		$eventsDisplayBox.find('.save').hide();
+		$eventsDisplayBox.find('.destroy').hide();
+	};
+
+	var showActionButtons = function () {
+		$eventsDisplayBox.find('.edit').hide();
+		$eventsDisplayBox.find('.save').show();
+		$eventsDisplayBox.find('.destroy').show();
+	};
+
 	// sends data to server for removal from roster
 	var updateEvent = function (contestantId, rosterId) {
 		$.ajax({
@@ -102,6 +109,16 @@ $(document).ready(function () {
 
 	var populateEventsTable = function (show_id) {
 		console.log(show_id);
+		$.ajax({
+			url: '/events/' + show_id,
+			type: 'GET',
+			success: function (msg) {
+				var partial = msg;
+				$eventsDisplayBox.html(partial);
+				hideActionButtons();
+			}
+		});
+		console.log('got here');
 	};
 
 	// ----- END server-side ----- //
@@ -110,19 +127,16 @@ $(document).ready(function () {
 		addEventToShow();
 	});
 
-	$(this).on('click', function (event) {
-		$element = event.target;
-		populateEventsTable($element.id);
 
+	$('.btn-primary').on('click', function (event) {
+		$element = event.target;
+		$eventsDisplayBox.toggle();
+		populateEventsTable($element.id);
 	});
 
-
-
-
-
-
-
-
+	$('.edit').on('click', function (event) {
+		showActionButtons();
+	});
 
 
 

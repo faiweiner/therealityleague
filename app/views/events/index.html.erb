@@ -7,53 +7,24 @@
 		</div>
 		<div class="panel-body">
 			<div class="col-md-3">
-				<div class="row">
-					<% @shows.each do |show| %>
-						<button class="btn btn-md btn-primary btn-block" id="<%= show.id%>">
-							<%= show.name %>
-						</button>
-						<br>
-					<% end %>
-				</div>
-				<div class="row">
-					<button type="button" class="btn btn-danger btn-block" data-toggle="collapse" data-target="#demo">
-					  Add new points schema
+				<% @shows.each do |show| %>
+					<button class="btn btn-md btn-primary btn-block" id="<%= show.id%>">
+						<%= show.name %>
 					</button>
+				<% end %>
+				<button type="button" class="btn btn-danger btn-block" data-toggle="collapse" data-target="#demo">
+				  Add new points schema
+				</button>
 
-					<div id="demo" class="collapse">
-						<div class="panel-group">
-							<br>
-							<%= render "form" %>						
-						</div>
+				<div id="demo" class="collapse">
+					<div class="panel-group">
+						<br>
+						<%= render "form" %>						
 					</div>
 				</div>
 			</div>
 			<div class="col-md-9">
-				<div class="panel-group" id="event-display-box">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title" id="panel-title-dynamic">
-									Click a show to view
-							</h4>
-						</div>
-						<!-- Iterate over all shows -->
-						<div id="collapse" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-lg-12">
-										<table class="table table-hover events-table">
-											<thead>
-												<th data-field="type" data-sortable="true" class="col-lg-2">Type</th>
-												<th data-field="event" data-sortable="true" class="col-lg-6">Event</th>
-												<th data-field="points_asgn" data-sortable="true" class="col-lg-1">Points</th>
-												<th class="col-lg-1">Actions</th>
-											</thead>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="panel panel-default" id="events-display-box">
 				</div>
 			</div>
 		</div>

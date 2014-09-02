@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
+	get 'events/:show_id' => 'events#display', :as => :event
   resources :events
   resources :points
 
