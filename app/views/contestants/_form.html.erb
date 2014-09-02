@@ -2,12 +2,12 @@
 	<div class="panel-body">
 		<div class="col-md-12">
 			<!-- Header dymanic - login or sign up -->
-			<% if params[:show_id] %>
+			<% if params[:season_id] %>
 				<h2>Add New Contestant</h2>
 			<% else %>
 				<h2>Edit Contestant</h2>
 			<% end %>
-			<p><%= @show.name %></p>
+			<p><%= @season.show.name %> Season <% @season.number %>: <%= @season.name %></p>
 			<!-- Content dymanic - login or sign up -->
 				<div class="col-lg-4 col-md-6 col-sm-6" id="sign-up-form">
 					<%= form_for(@contestant, class:"form-horizontal", :role => "form") do |f| %>
@@ -40,8 +40,8 @@
 						</div>
 						
 						<div class="row form-group hidden">
-							<%= f.label :show_id %>
-							<%= f.hidden_field :show_id, class:"form-control", :value => params[:show_id] %>
+							<%= f.label :season_id %>
+							<%= f.hidden_field :season_id, class:"form-control", :value => params[:season_id] %>
 						</div>
 
 						<div class="row form-group">
@@ -82,12 +82,12 @@
 						</div>
 
 						<div class="row form-group actions">
-							<% if params[:show_id] %>
+							<% if params[:season_id] %>
 								<%= f.submit "Add New Contestant", class:"btn btn-primary btn-lg" %>
-								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
+								<%= link_to "Cancel", seasons_path, class:"btn btn-default btn-lg" %>
 							<% else %>
 								<%= f.submit "Update Contestant", class:"btn btn-primary btn-lg" %>
-								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
+								<%= link_to "Cancel", seasons_path, class:"btn btn-default btn-lg" %>
 							<% end %>
 						</div>
 						<!-- End Form portion --> 

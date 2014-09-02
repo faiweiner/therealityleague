@@ -3,13 +3,13 @@
 		<div class="col-md-12">
 			<!-- Header dymanic - login or sign up -->
 			<% if params[:id] %>
-				<h2>Edit Show</h2>
+				<h2>Edit Season</h2>
 			<% else %>
-				<h2>Add New Show</h2>
+				<h2>Add New Season</h2>
 			<% end %>
 			<!-- Content dymanic - login or sign up -->
 				<div class="col-lg-4 col-md-6 col-sm-6" id="sign-up-form">
-					<%= form_for(@show, class:"form-horizontal", :role => "form") do |f| %>
+					<%= form_for(@season, class:"form-horizontal", :role => "form") do |f| %>
 						<!-- Error Messages -->
 						<div class="row form-group">
 							<% if flash[:notice] && flash[:color] == "valid" %>
@@ -19,10 +19,10 @@
 							<% elsif flash[:notice] && flash[:color] == "prohibited"%>
 								<div class="alert alert-danger" role="alert">
 									<p><%= flash[:notice] %></p>
-									<% if @show.errors.any? %>
-										<p><%= pluralize(@show.errors.count, "error") %> prohibited this show from being saved:</p>
+									<% if @season.errors.any? %>
+										<p><%= pluralize(@season.errors.count, "error") %> prohibited this season from being saved:</p>
 										<ul>
-											<% @show.errors.full_messages.each do |message| %>
+											<% @season.errors.full_messages.each do |message| %>
 												<li><%= message %></li>
 											<% end %>
 										</ul>
@@ -33,9 +33,20 @@
 						<!-- End Error Messages --> 
 						<!-- Form Portion -->
 
+						<div class="row form-group" id="password-update-group">
+							<%= f.label :show_id %>
+							<%= f.select(:show_id, options_for_select(Show.select_show), {}, {:class => "form-control"}) %>
+						</div>
+
 						<div class="row form-group">
-							<%= f.label :name %>
-							<%= f.text_field :name, class:"form-control", placeholder: "Show\'s title" %>
+							<%= f.label :title %>
+							<%= f.text_field :name, class:"form-control", placeholder: "Season\'s title" %>
+						</div>
+
+
+						<div class="row form-group">
+							<%= f.label :season_number %>
+							<%= f.number_field :number, class:"form-control", placeholder: 0 %>
 						</div>
 
 						<div class="row form-group">
@@ -71,22 +82,17 @@
 						</div>
 
 						<div class="row form-group" id="password-update-group">
-							<%= f.label :franchise_id %>
-							<%= f.number_field :franchise_id, class:"form-control", :placeholder => "Select series" %>
-						</div>
-
-						<div class="row form-group" id="password-update-group">
 							<%= f.label :episode_count %>
-							<%= f.number_field :episode_count, class:"form-control", :placeholder => 0 %>
+							<%= f.number_field :episode_count, class:"form-control", :placeholder => 10 %>
 						</div>
 
 						<div class="row form-group actions">
 							<% if params[:id] %>
 								<%= f.submit "Update Show", class:"btn btn-primary btn-lg" %>
-								<%= link_to "Cancel", show_path(@show.id), class:"btn btn-default btn-lg" %>
+								<%= link_to "Cancel", season_path(@season.id), class:"btn btn-default btn-lg" %>
 							<% else %>
 								<%= f.submit "Create New Show", class:"btn btn-primary btn-lg" %>
-								<%= link_to "Cancel", shows_path, class:"btn btn-default btn-lg" %>
+								<%= link_to "Cancel", seasons_path, class:"btn btn-default btn-lg" %>
 							<% end %>
 						</div>
 						<!-- End Form portion --> 
