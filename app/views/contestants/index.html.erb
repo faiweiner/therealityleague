@@ -14,22 +14,23 @@
 				<table class="table table-hover" id="contestants">
 					<thead>
 						<tr>
-							<th>Image</th>
-							<th>Name</th>
-							<th>Age</th>
-							<th>Occupation</th>
-							<th>Description</th>
+							<th class="col-lg-1">Image</th>
+							<th class="col-lg-2">Name</th>
+							<th class="col-lg-1">Age</th>
+							<th class="col-lg-3">Occupation</th>
+							<th class="col-lg-4">Description</th>
+							<th class="col-lg-1"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<% @contestants.each do |contestant| %>
 							<tr>
 								<td><%= image_tag contestant.image, class:"img-thumbnail thumbnail-sm" %></td>
-								<td><span href="#" data-name="name" data-pk="<%= contestant.id %>"><%= contestant.name %></span></td>
-								<td><span href="#" data-name="age" data-pk="<%= contestant.id %>"><%= contestant.age %></span></td>
-								<td><span href="#" data-name="occupation" data-pk="<%= contestant.id %>"><%= contestant.occupation %></span></td>
-								<td><span href="#" data-name="description" data-pk="<%= contestant.id %>"><%= contestant.description %></span></td>
-								<td><button class="btn edit">Edit</i></button><button class="btn btn-primary">Save</button></td>
+								<td><span data-name="name" data-pk="<%= contestant.id %>"><%= contestant.name %></span></td>
+								<td><span data-name="age" data-pk="<%= contestant.id %>"><%= contestant.age %></span></td>
+								<td><span data-name="occupation" data-pk="<%= contestant.id %>"><%= contestant.occupation %></span></td>
+								<td><span data-name="description" data-pk="<%= contestant.id %>"><%= contestant.description %></span></td>
+								<td><button class="btn btn-default edit">Edit</i></button><button class="btn btn-primary">Save</button></td>
 							</tr>
 						<% end %>
 					</tbody>

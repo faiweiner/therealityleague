@@ -60,9 +60,8 @@ class RostersController < ApplicationController
 		end
 	end
 
-	def create
-		
-	end
+	# def create
+	# end
 	
 	def show
 		@roster = Roster.find(params[:id])

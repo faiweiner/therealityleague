@@ -16,3 +16,19 @@
 //= require bootstrap.min
 //= require bootstrap3-editable/bootstrap-editable
 //= require_tree .
+
+
+
+var defaults = {
+	mode: 'inline', 
+	toggle: 'manual',
+	showbuttons: false,
+	onblur: 'ignore',
+	inputclass: 'input-small',
+	savenochange: true,
+	success: function() {
+		return false;
+	}    
+};
+
+console.log('X-Editable defaults initialized');

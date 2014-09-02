@@ -1,25 +1,18 @@
 $(document).ready(function () {
+
+	if ($('#contestants').length == 0) {
+		return;
+	};
+
 	console.log('Contestants initialized');
 
-	var defaults = {
-		mode: 'inline', 
-		toggle: 'manual',
-		showbuttons: false,
-		onblur: 'ignore',
-		inputclass: 'input-small',
-		savenochange: true,
-		success: function() {
-			return false;
-		}    
-	};
+	// ================== IN-LINE EDITING ================== //
 
 	$('#contestants').find('.btn-primary').hide();
 
-	$.extend($.fn.editable.defaults, defaults);
-
 	$('#contestants span[data-name="name"]').editable({
 		title: 'Enter name',
-		tpl: "<input type='text' style='width: 100px'>"
+		tpl: "<input type='text' style='width: 125px'>"
 	});
 
 	$('#contestants span[data-name="age"]').editable({
@@ -28,12 +21,13 @@ $(document).ready(function () {
 
 	$('#contestants span[data-name="occupation"]').editable({
 		title: 'Enter occupation',
-		tpl: "<input style='width: 100px'>",
+		tpl: "<input style='width: 185px'>",
 	});
 
 $('#contestants span[data-name="description"]').editable({
 		title: 'Enter description',
-		type: 'textarea'
+		type: 'textarea',
+		rows: 2,
 	});
 
 	$('#contestants').on('click', '.edit', function (){
@@ -65,19 +59,8 @@ $('#contestants span[data-name="description"]').editable({
 			// }
 		});
 
-		console.log('got here');
-
 		$btn.closest('tr').find('.editable').editable('hide');
 		$btn.hide().siblings('.edit').show();
 	});
-
-	// //ajax emulation
-	// $.mockjax({
-	// 		url: '/post',
-	// 		responseTime: 200,
-	// 		response: function(settings) {
-	// 			console.log(settings.data);   
-	// 	 }
-	// }); 
 
 });

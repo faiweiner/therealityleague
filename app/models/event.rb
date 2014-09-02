@@ -17,4 +17,10 @@ class Event < ActiveRecord::Base
 	has_many :points
 	has_many :contestants, through: :points
 	has_many :episodes, through: :points
+
+	private
+
+	def self.select_type
+		@type_list = ["Survival", "Game", "Extracurricular"]
+	end
 end
