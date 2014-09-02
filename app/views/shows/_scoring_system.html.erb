@@ -1,0 +1,33 @@
+<!-- Large modal -->
+<button class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">View scoring system</button>
+
+<div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myMediumModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			 <div class="modal-header text-center">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel"><%= @show.name %>'s Scoring System</h4>
+			</div>
+			<div class="modal-body">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis a dolor at aut in. Error incidunt unde dignissimos, voluptas quos ab numquam exercitationem vitae eius, magnam ipsam voluptates quaerat. Molestiae.
+				<table class="table table-striped" id="score-system-table">
+					<thead>
+						<th>Event</th>
+						<th>Points</th>
+					</thead>
+					<tbody>
+						<% @show.events.each do |event| %>
+							<tr>
+								<td><%= event.event %></td>
+								<td><%= event.points_asgn %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -34,7 +34,7 @@ class RostersController < ApplicationController
 			@roster.contestants.destroy(contestant)
 		end
 
-		all_contestants = Contestant.where(show_id: @roster.league.show)
+		all_contestants = Contestant.where(season_id: @roster.league.season)
 		selected_contestants = @roster.contestants
 		@available_contestants = []
 		all_contestants.select do |contestant|
@@ -49,7 +49,7 @@ class RostersController < ApplicationController
 	
 	def edit
 		@roster = Roster.find(params[:id])
-		@all_contestants = Contestant.where(show_id: @roster.league.show).order(name: :asc)
+		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
 		@selected_contestants = @roster.contestants
 		@available_contestants = []
 		# iterate to pull list of non-selected contestants
@@ -66,7 +66,7 @@ class RostersController < ApplicationController
 	
 	def show
 		@roster = Roster.find(params[:id])
-		@all_contestants = Contestant.where(show_id: @roster.league.show).order(name: :asc)
+		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		@available_contestants = []
 		# iterate to pull list of non-selected contestants
@@ -77,7 +77,7 @@ class RostersController < ApplicationController
 		end
 		@available_contestants    
 
-		# show 
+		# season 
 	end
 
 end

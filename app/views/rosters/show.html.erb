@@ -3,11 +3,11 @@
 		<div class="panel-title row">
 			<span class="col-md-9">
 				<h3><%= @roster.league.name %></h3>
-				<p><%= @roster.league.show.name %></p>
+				<p><%= @roster.league.season.name %></p>
 			</span>
 			<span>
 				<% if @roster.user_id == @current_user.id %>
-					<h4 class="small">Deadline: <%= @roster.league.show.premiere_date.strftime("%B %d") %></h4>
+					<h4 class="small">Deadline: <%= @roster.league.season.premiere_date.strftime("%B %d") %></h4>
 					<%= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary" %>
 				<% else %>
 					<h4 class="small"><%= @roster.user.username %></h4>
@@ -23,7 +23,7 @@
 				<h3>Weekly Score</h3>
 				<thead>
 					<th class="col-md-2">Contestants</th>
-					<% @roster.league.show.episode_count.times do |i| %>
+					<% @roster.league.season.episode_count.times do |i| %>
 						<th class="col-md-1"><%= i+1 %></th>
 					<% end %>
 					<th class="col-md-1">Total</th>
@@ -32,12 +32,12 @@
 					<% @roster.contestants.order(name: :asc).each do |contestant| %>
 						<tr>
 							<td><%= contestant.name %></td>	
-							<% @roster.league.show.episodes.each do |episode| %>
+							<% @roster.league.season.episodes.each do |episode| %>
 								<td><%= contestant.calculate_points_per_episode(episode.id) %></td>
 							<% end %>
-							<% if @roster.league.show.episodes.count < @roster.league.show.episode_count %>
+							<% if @roster.league.season.episodes.count < @roster.league.season.episode_count %>
 								<!-- FIXME! -->
-								<% @roster.league.show.episode_count.times do |i| %>
+								<% @roster.league.season.episode_count.times do |i| %>
 									<td>-</td>
 								<% end %>
 							<% end %>
@@ -46,7 +46,7 @@
 					<% end %>
 					<tr>
 						<td></td>
-						<% @roster.league.show.episode_count.times do |i| %>
+						<% @roster.league.season.episode_count.times do |i| %>
 							<td></td>
 						<% end %>
 						<td><%= @roster.calculate_total_roster_points %></td>

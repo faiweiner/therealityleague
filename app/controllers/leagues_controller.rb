@@ -86,7 +86,7 @@ class LeaguesController < ApplicationController
 	end
 	def show
 		@league = League.find(params[:id])
-		@league_show = Show.find(@league.show)
+		@league_season = Season.find(@league.season)
 		# @league_rosters = @league.rosters
 		@participants = @league.users
 		@a_participant = nil

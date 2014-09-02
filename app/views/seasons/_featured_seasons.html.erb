@@ -4,16 +4,16 @@
 			<h1>Featured Shows</h1>
 			<p>Here are some of the most popular shows at the moment:</p>
 			<div class="row">
-				<% @featured_seasons.each do |show| %>
+				<% @featured_seasons.each do |season| %>
 					<div class="col-sm-4 col-md-3">
 						<div class="thumbnail">
 							<div class="img-thumbnail-container">
-								<img src="<%= show.image %>" class="img-thumbnail"/>						
+								<%= link_to image_tag(season.image, class:"img-thumbnail"), {:class => 'dock-item'} %>
 							</div>
 							<div class="caption">
-								<h4><%= show.name %></h4>
-								<p>Starts: <%= show.premiere_date.strftime("%B %d") %></p>
-								<p><%= link_to(content_tag(:button, "Explore Show", class:'btn btn-primary'), show_path(show.id)) %></p>
+								<h4><%= season.name %></h4>
+								<p>Starts: <%= season.premiere_date.strftime("%B %d") %></p>
+								<p><%= link_to(content_tag(:button, "Explore season", class:'btn btn-primary'), season_path(season.id)) %></p>
 							</div>
 						</div>
 					</div>
