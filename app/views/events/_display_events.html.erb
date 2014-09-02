@@ -12,18 +12,18 @@
 						<th data-field="type" data-sortable="true" class="col-lg-2">Type</th>
 						<th data-field="event" data-sortable="true" class="col-lg-6">Event</th>
 						<th data-field="points_asgn" data-sortable="true" class="col-lg-1">Points</th>
-						<th class="col-lg-2">Actions</th>
+						<th class="col-lg-3">Actions</th>
 					</thead>
 					<tbody>
 						<% @events.each do |event| %>
 							<tr>
 								<td><span data-name="type" data-pk="<%= event.id %>"><%= event.type %></td>
-								<td><%= event.event %></td>
-								<td><%= event.points_asgn %></td>
+								<td><span data-name="event" data-pk="<%= event.id %>"><%= event.event %></td>
+								<td><span data-name="points_asgn" data-pk="<%= event.id %>"><%= event.points_asgn %></td>
 								<td>
 									<%= button_tag("Edit", class:"btn btn-sm btn-default edit") %>
 									<%= button_tag("Save", class:"btn btn-sm btn-primary save") %>
-									<%= button_tag("Destroy", class:"btn btn-sm btn-danger destroy") %>
+									<%= button_tag("Delete", class:"btn btn-sm btn-danger destroy") %>
 								</td>
 							</tr>
 						<% end %>

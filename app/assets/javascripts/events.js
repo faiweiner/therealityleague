@@ -13,28 +13,28 @@ $(document).ready(function () {
 
 	$.extend($.fn.editable.defaults, defaults);
 
-	$eventsDisplayBox.find('span[data-name="type"]').editable({
-		// title: 'Enter type',
-		// tpl: "<input type='text' style='width: 100px'>"
-	});
+	var makeElementsReloadable = function () {
 
-	$('#event-display-box span[data-name="event"]').editable({
-		// title: 'Enter event',
-		// tpl: "<input type='text' style='width: 100px'>"
-	});
+		$eventsBoard.find('span[data-name="type"]').editable({
+			type: 'select',
+			tpl: '<select style="width: 100px">',
+			source: [
+				{'value': 'Survival', 'text': 'Survival'},
+				{'value': 'Game', 'text': 'Game'},
+				{'value': 'Extracurricular', 'text': 'Extracurricular'}
+			]
+		});
 
-	$('#event-display-box span[data-name="points_asgn"]').editable({
-		title: 'Enter points',
-		tpl: "<input style='width: 100px'>"
-	});
+		$eventsBoard.find('span[data-name="event"]').editable({
+			title: 'Enter event',
+			tpl: "<input type='text' style='width: 200px'>"
+		});
 
-	$('#event-display-box').on('click', '.edit', function (){
-		$('#event-display-box').find('.editable-open').editable('hide');
-		$('#event-display-box').find('.btn-primary').hide();
-		$('#event-display-box').find('.edit').show();
-		$(this).hide().siblings('.btn-primary').show();
-		$(this).closest('tr').find('.editable').editable('show');
-	});
+		$eventsBoard.find('span[data-name="points_asgn"]').editable({
+			title: 'Enter points',
+			tpl: "<input style='width: 50px'>"
+		});
+	};
 
 	$('#event-display-box').on('click', '.save', function() {
 		var $btn = $(this);
@@ -45,7 +45,7 @@ $(document).ready(function () {
 			responseTime: 200,
 			response: function(settings) {
 				console.log(settings.data);   
-		 	}
+			}
 			// success: function (msg) {
 			// 	var partial = msg;
 			// 	$rosterBoard.html(partial);
@@ -65,7 +65,7 @@ $(document).ready(function () {
 			url: '/events/',
 			type: 'POST',
 			success: function () {
-				window.location.reload(true);
+				$eventsBoard.reload(true);
 			}
 		});
 	};
@@ -85,12 +85,6 @@ $(document).ready(function () {
 	var hideActionButtons = function () {
 		$eventsBoard.find('.save').hide();
 		$eventsBoard.find('.destroy').hide();
-	};
-
-	var showActionButtons = function () {
-		$eventsDisplayBox.find('.edit').hide();
-		$eventsDisplayBox.find('.save').show();
-		$eventsDisplayBox.find('.destroy').show();
 	};
 
 	// sends data to server for removal from roster
@@ -132,6 +126,10 @@ $(document).ready(function () {
 	});
 
 	$eventsBoard.on('click', '.edit', function () {
-		debugger
+		makeElementsReloadable();
+		$eventsBoard.find('.editable-open').editable('hide');
+		$(this).hide().siblings('.btn-primary').show();
+		$(this).siblings('.btn-danger').show();
+		$(this).closest('tr').find('.editable').editable('show');
 	});
 });

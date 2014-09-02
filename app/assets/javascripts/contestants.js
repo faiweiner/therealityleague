@@ -32,7 +32,7 @@ $(document).ready(function () {
 		rows: 2,
 	});
 
-	$('#contestants').on('click', '.edit', function (){
+	$('#contestants').on('click', '.edit', function () {
 		$('#contestants').find('.editable-open').editable('hide');
 		$('#contestants').find('.btn-primary').hide();
 		$('#contestants').find('.edit').show();
