@@ -1,9 +1,9 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<div class="panel-title">
-			<h3><%= @show.name %> Contestants</h3>
-			<%= link_to "Back to Show", show_path(@show.id), class:"btn btn-default" %>
-			<%= link_to "Add New Contestant", new_contestant_path(@show.id), class:"btn btn-default" %>
+			<h3><%= @season.name %> Contestants</h3>
+			<%= link_to "Back to Season", season_path(@season.id), class:"btn btn-default" %>
+			<%= link_to "Add New Contestant", new_contestant_path(@season.id), class:"btn btn-default" %>
 		</div>
 	</div>
 	<div class="panel-body">

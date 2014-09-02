@@ -26,7 +26,7 @@ class ContestantsController < ApplicationController
 	end
 
 	def create
-		@season = season.find(params[:contestant][:season_id])
+		@season = Season.find(params[:contestant][:season_id])
 		@contestant = Contestant.new contestant_params
 		if @contestant.save
 			flash[:notice] = "You've successfully added a new contestant."

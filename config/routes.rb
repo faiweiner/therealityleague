@@ -6,7 +6,6 @@ Rails.application.routes.draw do
 
 	get 'pages/about' => 'pages#about'
 
-
 	get 'seasons/search' => 'seasons#search'
 	get 'seasons' => 'seasons#index', :as => :seasons
 	post 'seasons' => 'seasons#create'
