@@ -12,6 +12,7 @@ class SeasonsController < ApplicationController
 
 	def create
 		@season = Season.new season_params
+		raise params
 		if @season.save
 			flash[:notice] = "You've successfully added a new season."
 			flash[:color] = "valid"
@@ -51,7 +52,7 @@ class SeasonsController < ApplicationController
 	private
 
 	def season_params
-		params.require(:season).permit(:name, :premiere_date, :country_origin, :type, :description, :image, :show_id, :expired, :episode_count, :finale_date)
+		params.require(:season).permit(:name, :number, :show_id, :premiere_date, :country_origin, :type, :description, :image, :expired, :episode_count, :finale_date)
 	end
 
 end
