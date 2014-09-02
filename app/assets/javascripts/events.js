@@ -83,8 +83,8 @@ $(document).ready(function () {
 	};
 
 	var hideActionButtons = function () {
-		$eventsDisplayBox.find('.save').hide();
-		$eventsDisplayBox.find('.destroy').hide();
+		$eventsBoard.find('.save').hide();
+		$eventsBoard.find('.destroy').hide();
 	};
 
 	var showActionButtons = function () {
@@ -131,7 +131,7 @@ $(document).ready(function () {
 		populateEventsTable($element.id);
 	});
 
-	$('.edit').click(function () {
+	$eventsBoard.on('click', '.edit', function () {
 		debugger
 	});
 });
