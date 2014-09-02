@@ -8,6 +8,8 @@ $(document).ready(function () {
 
 	// ================== IN-LINE EDITING ================== //
 
+	$.extend($.fn.editable.defaults, defaults);
+
 	$('#contestants').find('.btn-primary').hide();
 
 	$('#contestants span[data-name="name"]').editable({
@@ -24,7 +26,7 @@ $(document).ready(function () {
 		tpl: "<input style='width: 185px'>",
 	});
 
-$('#contestants span[data-name="description"]').editable({
+	$('#contestants span[data-name="description"]').editable({
 		title: 'Enter description',
 		type: 'textarea',
 		rows: 2,

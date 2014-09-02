@@ -25,12 +25,30 @@
 					<tbody>
 						<% @contestants.each do |contestant| %>
 							<tr>
-								<td><%= image_tag contestant.image, class:"img-thumbnail thumbnail-sm" %></td>
-								<td><span data-name="name" data-pk="<%= contestant.id %>"><%= contestant.name %></span></td>
-								<td><span data-name="age" data-pk="<%= contestant.id %>"><%= contestant.age %></span></td>
-								<td><span data-name="occupation" data-pk="<%= contestant.id %>"><%= contestant.occupation %></span></td>
-								<td><span data-name="description" data-pk="<%= contestant.id %>"><%= contestant.description %></span></td>
-								<td><button class="btn btn-default edit">Edit</i></button><button class="btn btn-primary">Save</button></td>
+								<td>
+									<%= image_tag contestant.image, class:"img-thumbnail thumbnail-sm" %>
+								</td>
+								<td>
+									<span data-name="name" data-pk="<%= contestant.id %>">
+										<%= contestant.name %>
+									</span>
+								</td>
+								<td>
+									<span data-name="age" data-pk="<%= contestant.id %>"><%= contestant.age %>
+									</span>
+								</td>
+								<td>
+									<span data-name="occupation" data-pk="<%= contestant.id %>"> 
+										<%= contestant.occupation %>
+									</span>
+								</td>
+								<td>
+									<span data-name="description" data-pk="<%= contestant.id %>">
+										<%= contestant.description %>
+									</span>
+								</td>
+								<td>
+									<button class="btn btn-default edit">Edit</i></button><button class="btn btn-primary">Save</button></td>
 							</tr>
 						<% end %>
 					</tbody>

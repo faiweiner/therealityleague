@@ -1,4 +1,9 @@
 $(document).ready(function () {
+
+	if ($('#contestantBoard').length == 0) {
+		return;
+	};
+	
 	console.log('Rosters initialized');
 	// sets up the contestantBoard and rosterBoard
 	$contestantBoard = $('#contestantBoard');
