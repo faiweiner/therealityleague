@@ -83,8 +83,8 @@ roster9 = Fantasy.create(:user_id => user3.id, :league_id => league1.id)
 
 roster10 = Bracket.create(:user_id => user1.id, :league_id => league4.id)
 roster11 = Bracket.create(:user_id => user2.id, :league_id => league4.id)
-roster10.contestants << [cont7, cont17, cont20, cont25, cont9, cont11]
-roster11.contestants << [cont8, cont10, cont13, cont19, cont20, cont25]
+roster10.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, cont14, cont15, cont16, cont17, cont18, cont19, cont20, cont21, cont22, cont23, cont24, cont25]
+roster11.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, cont14, cont15, cont16, cont17, cont18, cont19, cont20, cont21, cont22, cont23, cont24, cont25]
 
 # Roster for Edelman's Bachelor League (The Bachelor)
 roster1.contestants << [cont1, cont2, cont3, cont4]
@@ -102,16 +102,34 @@ episode8 = Episode.create(:season_id => season3.id, :air_date => '18/02/2013')
 episode9 = Episode.create(:season_id => season3.id, :air_date => '25/02/2013')
 episode10 = Episode.create(:season_id => season3.id, :air_date => '11/03/2013')
 
-round1 = Round.create(:roster_id => roster1.id, :episode_id => episode1.id)
-round2 = Round.create(:roster_id => roster1.id, :episode_id => episode2.id)
-round3 = Round.create(:roster_id => roster1.id, :episode_id => episode3.id)
-round4 = Round.create(:roster_id => roster1.id, :episode_id => episode4.id)
-round5 = Round.create(:roster_id => roster1.id, :episode_id => episode5.id)
-round6 = Round.create(:roster_id => roster2.id, :episode_id => episode1.id)
-round7 = Round.create(:roster_id => roster2.id, :episode_id => episode2.id)
-round8 = Round.create(:roster_id => roster2.id, :episode_id => episode3.id)
-round9 = Round.create(:roster_id => roster2.id, :episode_id => episode4.id)
-round10 = Round.create(:roster_id => roster2.id, :episode_id => episode5.id)
+round1 = Round.create(:roster_id => roster10.id, :episode_id => episode1.id)
+round1.contestants << roster10.contestants.clone
+round2 = Round.create(:roster_id => roster10.id, :episode_id => episode2.id)
+round2.contestants << roster10.contestants.clone
+round2.contestants.delete(cont23, cont24, cont25)
+round3 = Round.create(:roster_id => roster10.id, :episode_id => episode3.id)
+round3.contestants << roster10.contestants.clone
+round3.contestants.delete(cont23, cont24, cont25, cont20, cont21, cont22)
+round4 = Round.create(:roster_id => roster10.id, :episode_id => episode4.id)
+round4.contestants << roster10.contestants.clone
+round4.contestants.delete(cont23, cont24, cont25, cont20, cont21, cont22, cont18, cont19)
+round5 = Round.create(:roster_id => roster10.id, :episode_id => episode5.id)
+round5.contestants << roster10.contestants.clone
+round5.contestants.delete(cont23, cont24, cont25, cont20, cont21, cont22, cont18, cont19, cont16, cont17)
+round6 = Round.create(:roster_id => roster11.id, :episode_id => episode1.id)
+round6.contestants << roster11.contestants.clone
+round7 = Round.create(:roster_id => roster11.id, :episode_id => episode2.id)
+round7.contestants << roster11.contestants.clone
+round7.contestants.delete(cont13, cont16, cont23)
+round8 = Round.create(:roster_id => roster11.id, :episode_id => episode3.id)
+round8.contestants << roster11.contestants.clone
+round8.contestants.delete(cont13, cont16, cont23, cont19, cont20, cont21)
+round9 = Round.create(:roster_id => roster11.id, :episode_id => episode4.id)
+round9.contestants << roster11.contestants.clone
+round9.contestants.delete(cont13, cont16, cont23, cont19, cont20, cont21, cont8, cont17)
+round10 = Round.create(:roster_id => roster11.id, :episode_id => episode5.id)
+round10.contestants << roster11.contestants.clone
+round10.contestants.delete(cont13, cont16, cont23, cont19, cont20, cont21, cont8, cont17, cont7, cont10)
 
 survival1 = Survival.create(:show_id => show1.id, :event => 'Contestant receives a rose in Week 1', :points_asgn => 10)
 survival2 = Survival.create(:show_id => show1.id, :event => 'Contestant receives a rose in Week 2', :points_asgn => 20)

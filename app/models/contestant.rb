@@ -20,6 +20,7 @@
 class Contestant < ActiveRecord::Base
 	belongs_to :season
 	has_and_belongs_to_many :rosters, inverse_of: :contestants
+	has_and_belongs_to_many :rounds, inverse_of: :contestants
 	before_destroy { rosters.clear }
 	
 	has_many :points
