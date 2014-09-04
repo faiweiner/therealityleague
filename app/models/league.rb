@@ -5,26 +5,24 @@
 #  id              :integer          not null, primary key
 #  name            :string(255)
 #  commissioner_id :integer
-#  show_id         :integer
+#  season_id       :integer
 #  public_access   :boolean          default(TRUE)
 #  draft_type      :string(255)
+#  draft_deadline  :datetime
 #  scoring_system  :integer
-#  created_at      :datetime
-#  updated_at      :datetime
 #  league_key      :string(255)
 #  league_password :string(255)
-#  draft_limit     :integer          default(5)
-#  expired         :boolean          default(FALSE)
+#  active          :boolean          default(TRUE)
+#  created_at      :datetime
+#  updated_at      :datetime
 #
 
 class League < ActiveRecord::Base
 
-	belongs_to :show, inverse_of: :leagues
+	belongs_to :season, inverse_of: :leagues
 	has_and_belongs_to_many :users, inverse_of: :leagues
 	before_destroy { users.clear }
 	has_many :rosters, through: :users
-	has_many :rounds
-	has_one :scoring
 
 # FIXME! Come bck to deal with dependencies please
 
@@ -49,5 +47,4 @@ class League < ActiveRecord::Base
 		end
 	end
 	
-
 end

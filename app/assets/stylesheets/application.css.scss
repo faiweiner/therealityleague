@@ -96,20 +96,41 @@ div {
 
 .thumbnail {
 	overflow: scroll;
-	height: 300px;
 }
 
 .thumbnail a > img {
 	height: 100px;
 }
 
+.thumbnail.tmbn-contestant {
+	height: 290px;
+}
+
 .thumbnail-current-roster {
 	min-height: auto;
-	max-height: 175px;
+	max-height: 160px;
 }
 
 .thumbnail-available-contestants {
 	min-height: auto;
-	max-height: 145px;
+	max-height: 130px;
 }
 
+.overlap-button {
+	position: fixed;
+}
+
+.overlap-button:hover {
+	color: grey;
+}
+
+.modal-dialog.modal-md {
+	left: auto;
+	margin-left: auto;
+}
+
+// X-editable fields
+
+input.form-control.input-small {
+	width: 100px;
+}

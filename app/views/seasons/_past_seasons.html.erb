@@ -3,14 +3,14 @@
 		<div class="panel-heading">
 			<h2>Past Shows</h2>
 		</div>
-		<% @past_shows.each do |show| %>
+		<% @past_seasons.each do |show| %>
 			<div class="col-sm-4 col-md-3">
 				<div class="thumbnail">
 					<img src="<%= show.image %>" class="img-thumbnail">
 					<div class="caption caption-lg">
 						<h4><%= show.name %></h4>
 						<p>Premiered: <%= show.premiere_date.strftime("%B %d, %Y") %></p>
-						<p><%= link_to "Explore Show", show_path(show.id), class:"btn btn-primary" %></p>
+						<p><%= link_to "Explore Show", season_path(show.id), class:"btn btn-primary" %></p>
 					</div>
 				</div>
 			</div>    

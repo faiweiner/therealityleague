@@ -3,13 +3,17 @@ class ApplicationController < ActionController::Base
 	# For APIs, you may want to use :null_session instead.
 	protect_from_forgery with: :exception
 	
-	before_action :set_current_user
+	before_action :set_current_user, :get_shows
 	before_action :save_login_state, :only => [:new, :login_attempt]
 
 	private 
 
-	def featured_shows
-		@featured_shows = Show.top_three
+	def featured_seasons
+		@featured_seasons = Season.top_three
+	end
+
+	def get_shows
+		@shows = Show.all
 	end
 
 	def check_if_logged_in

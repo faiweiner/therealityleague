@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
-	before_action :featured_shows
+	before_action :featured_seasons
 
 	def home
-		featured_shows 		# Model method from Show
+		featured_seasons		# Model method from Season
 		# user_leagues_list	# Model method from User
 	end
 

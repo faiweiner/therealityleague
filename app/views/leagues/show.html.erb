@@ -3,7 +3,7 @@
 		<div class="panel-title row">
 			<span class="col-md-10">
 				<h3><%= @league.name %></h3>
-				<p><%= @league_show.name %></p>
+				<p><%= @league_season.name %></p>
 			</span>
 
 			<!-- FIXME with jQuery -->
@@ -21,31 +21,39 @@
 	<div class="panel-body">
 		<!-- left column -->
 		<div class="media col-md-4">
-			<%= link_to (content_tag(:img, nil, :src => @league.show.image, class:"media-object img-thumbnail")), show_path(@league_show.id) %>
+			<%= link_to (content_tag(:img, nil, :src => @league.season.image, class:"media-object img-thumbnail")), season_path(@league_season.id) %>
 			<br>
 			<div class="media-body">
-				<h4 class="media-heading"><%= @league_show.name %></h4>
-				<p><%= @league_show.description %></p>
+				<h4 class="media-heading"><%= @league_season.name %></h4>
+				<p><%= @league_season.description %></p>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur unde odio cumque autem totam enim debitis minima illo dicta corporis excepturi rem laborum voluptates deserunt eum minus, quod commodi accusamus.</p>
 			</div>
-			<div class="row">
-				<span class="col-md-6">
-					<h4 class="small">League Key: </h4>
-					<span class="btn btn-default disabled">
-						<%= @league.league_key %>
-					</span> 
-				</span>
-				<span class="col-md-6">
-					<h4 class="small">League Password: </h4>
-					<span class="btn btn-default disabled">
-						<%= @league.league_password %>		
-					</span>	
-				</span>
-			</div>
+			<% if @league.public_access == true %>
+				<div class="row">
+					<span class="col-md-6">
+						<h4 class="small">This is a public league.</h4>
+					</span>
+				</div>
+			<% else %>
+				<div class="row">
+					<span class="col-md-6">
+						<h4 class="small">League Key: </h4>
+						<span class="btn btn-default disabled">
+							<%= @league.league_key %>
+						</span> 
+					</span>
+					<span class="col-md-6">
+						<h4 class="small">League Password: </h4>
+						<span class="btn btn-default disabled">
+							<%= @league.league_password %>		
+						</span>	
+					</span>
+				</div>
+			<% end %>
 		</div>
 		<!-- right column -->
 		<div class="col-md-8">
-			<table class="table table-striped">
+			<table class="table table-hover">
 				<h3>Ranking</h3>
 				<thead>
 					<th>Rank</th>
@@ -71,11 +79,11 @@
 				</tbody>
 			</table>
 
-			<table class="table table-striped">
+			<table class="table table-hover">
 				<h3>Weekly Score</h3>
 				<thead>
 					<th>Participants</th>
-					<% @league_show.episode_count.times do |i| %>
+					<% @league_season.episode_count.times do |i| %>
 						<th><%= i+1 %></th>
 					<% end %>
 					<th>Total</th>
@@ -94,7 +102,7 @@
 							<td>100</td>
 							<td>100</td>
 							<td>100</td>
-							<td>2400</td>
+							<td><%= %></td>
 						</tr>
 					<% end %>
 				</tbody>

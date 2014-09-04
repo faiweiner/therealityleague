@@ -15,8 +15,8 @@ class LeaguesController < ApplicationController
 
 		if @current_user.present?
 			# List of participating leagues
-			@leagues = @current_user.leagues.where(:expired => false)
-			@past_leagues = @current_user.leagues.where(:expired => true)
+			@leagues = @current_user.leagues.where(:active => true)
+			@past_leagues = @current_user.leagues.where(:active => false)
 			if @past_leagues.nil?
 				flash[:notice] = "You have yet to compete in a league."
 			end
@@ -86,8 +86,8 @@ class LeaguesController < ApplicationController
 	end
 	def show
 		@league = League.find(params[:id])
-		@league_show = Show.find(@league.show)
-		@league_rosters = @league.rosters
+		@league_season = Season.find(@league.season)
+		# @league_rosters = @league.rosters
 		@participants = @league.users
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
@@ -107,7 +107,6 @@ class LeaguesController < ApplicationController
 		end
 
 		@league_rounds = Round.where(:league_id => @league.id)
-
 	end
 
 	def search
@@ -155,7 +154,7 @@ class LeaguesController < ApplicationController
 	private
 
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :scoring_system, :league_key, :league_password)
+		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :league_key, :league_password, :active)
 	end
 
 end

@@ -5,6 +5,8 @@
 #  id         :integer          not null, primary key
 #  league_id  :integer
 #  episode_id :integer
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 require 'rails_helper'

@@ -4,22 +4,27 @@
 #
 #  id             :integer          not null, primary key
 #  name           :string(255)
-#  show_id        :integer
+#  season_id      :integer
+#  image          :string(255)
 #  age            :integer
 #  gender         :string(255)
 #  occupation     :string(255)
 #  description    :text
 #  status_on_show :string(255)
 #  present        :boolean          default(TRUE)
-#  image          :string(255)
+#  episode_id     :integer
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 require 'rails_helper'
 
 RSpec.describe Contestant, :type => :model do
 	# ---- associations ---- #
-	it { is_expected.to belong_to(:show) }
+	it { is_expected.to belong_to(:season) }
 	it { is_expected.to have_and_belong_to_many(:rosters) }
+	it { is_expected.to have_many(:points) }
+	it { is_expected.to have_many(:episodes) }
 
 	# ---- dummy data ---- #
 	before do

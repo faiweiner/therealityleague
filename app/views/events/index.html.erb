@@ -1,0 +1,30 @@
+<div class="panel panel-default" id="manage-events">
+	<div class="panel-body">
+		<div class="panel-header">
+			<div class="col-md-12">
+				<h2>Manage Point Schemas</h2>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-3">
+				<% @shows.each do |show| %>
+					<button class="btn btn-md btn-primary btn-block" id="<%= show.id%>">
+						<%= show.name %>
+					</button>
+				<% end %>
+				<button type="button" class="btn btn-danger btn-block" data-toggle="collapse" data-target="#demo">
+				  New points schema
+				</button>
+
+				<div id="demo" class="collapse">
+					<div class="panel-group">
+						<br>
+						<%= render "form" %>						
+					</div>
+				</div>
+			</div>
+			<div class="col-md-9" id="events-board">
+			</div>
+		</div>
+	</div>
+</div>

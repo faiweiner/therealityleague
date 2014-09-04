@@ -1,13 +1,22 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-  resources :scores
+	get 'events/:show_id' => 'events#display', :as => :event
+  resources :events
+  resources :points
 
 	get 'pages/about' => 'pages#about'
-	get 'shows/search' => 'shows#search'
+
+	get 'seasons/search' => 'seasons#search'
+	get 'seasons' => 'seasons#index', :as => :seasons
+	post 'seasons' => 'seasons#create'
+	get 'seasons/new' => 'seasons#new', :as => :new_season
+	get 'seasons/:id/edit' => 'seasons#edit', :as => :edit_season
+	get 'seasons/:id' => 'seasons#display', :as => :season
+	patch 'seasons/:id' => 'seasons#update'
+	put 'seasons/:id' => 'seasons#update'
+	delete 'seasons/:id' => 'seasons#destroy'
 	resources :shows
-
-
 
 
 	get 'leagues/search' => 'leagues#search'
@@ -23,10 +32,10 @@ Rails.application.routes.draw do
 	post 'rosters/:roster_id/remove/:contestant_id' => 'rosters#remove', :as => :roster_remove
 	resources :rosters
 
-	get 'contestants/show/:show_id' => 'contestants#index', :as => :contestants_show
+	get 'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season
 	post 'contestants' => 'contestants#create'
-	get 'contestants/new/:show_id' => 'contestants#new', :as => :new_contestant
-	get 'contestants/:id' => 'contestants#show', :as => :contestant
+	get 'contestants/new/:season_id' => 'contestants#new', :as => :new_contestant
+	get 'contestants/:id' => 'contestants#display', :as => :contestant
 	post 'contestants/:id' => 'contestants#update'
 	delete 'contestants/:id' => 'contestants#destroy'
 

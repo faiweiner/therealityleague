@@ -2,9 +2,11 @@
 #
 # Table name: episodes
 #
-#  id       :integer          not null, primary key
-#  show_id  :integer
-#  air_date :datetime
+#  id         :integer          not null, primary key
+#  season_id  :integer
+#  air_date   :datetime
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 require 'rails_helper'
