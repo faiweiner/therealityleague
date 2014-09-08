@@ -8,6 +8,9 @@
 		.col-md-8
 			.panel-group
 				= render "scoring_system"
+				- if @current_user && @current_user.admin?
+					= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default"
+					= link_to "Back to Shows", shows_path, class:"btn btn-default"
 			#accordion.panel-group
 				- @show.seasons.order("number DESC").each_with_index do |season, index|
 					.panel.panel-default
@@ -23,9 +26,3 @@
 										%h4 Description:
 										= season.description
 										%h4 Contestants:
-%span.col-md-12.text-right
-	- if @current_user && @current_user.admin?
-		= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default"
-		= link_to "Back to Shows", shows_path, class:"btn btn-default"
-	%br/
-	%br/

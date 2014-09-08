@@ -125,14 +125,16 @@ div {
 	max-height: 130px;
 }
 
-.overlap-button {
+.remove-button, .add-button {
 	position: fixed;
+	padding-right: 4px;
+	padding-bottom: 4px;
+	border-bottom-right-radius: 2px;
+	background-color: white;
+	:hover {
+		color: grey;
+	}
 }
-
-.overlap-button:hover {
-	color: grey;
-}
-
 .modal-dialog.modal-md {
 	left: auto;
 	margin-left: auto;
