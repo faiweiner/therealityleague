@@ -1,0 +1,10 @@
+.panel.panel-default
+	.panel-body
+		.col-md-7
+			%br
+			%p Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.
+		.col-md-5
+			- if @current_user && @current_user.leagues.present?
+				= link_to "Manage Your Leagues", leagues_path, class:"btn btn-primary btn-lg btn-block"
+			= link_to "Create League", new_league_path, class:"btn btn-primary btn-lg btn-block"
+			= link_to 'Join League', leagues_search_path, class:"btn btn-primary btn-lg btn-block"

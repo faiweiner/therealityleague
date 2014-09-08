@@ -1,0 +1,15 @@
+.col-md-12
+	%h2 Private Leagues
+	%div
+		%table
+			%thead
+				%tr
+					%th League Name
+					%th Action
+			%tbody
+				- @private_leagues.each do |league|
+					%tr
+						%td
+							= league.name
+						%td
+							= link_to(content_tag(:button, "View League"), league_path(league.id))

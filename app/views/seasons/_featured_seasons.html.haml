@@ -1,0 +1,17 @@
+.panel.panel-default
+  .panel-body
+    .col-md-12
+      %h1 Featured Shows
+      %p Here are some of the most popular shows at the moment:
+      .row
+        - @featured_seasons.each do |season|
+          .col-sm-4.col-md-3
+            .thumbnail
+              .img-thumbnail-container
+                = link_to image_tag(season.image, class:"img-thumbnail"), {:class => 'dock-item'}
+              .caption
+                %h4= season.name
+                %p
+                  Starts: #{season.premiere_date.strftime("%B %d")}
+                %p= link_to(content_tag(:button, "Explore season", class:'btn btn-primary'), season_path(season.id))
+      = link_to('Browse All Shows', seasons_path, class: "btn btn-default btn-lg")
