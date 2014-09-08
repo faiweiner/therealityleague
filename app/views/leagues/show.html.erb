@@ -93,8 +93,8 @@
 						<tr>
 							<td><%= participant.username %></td>
 							<% @league_season.episode_count.times do |i| %>
-								<% if @participants_performance[participant.username][:roster_rounds][i] %>
-									<td><%= @participants_performance[participant.username][:roster_rounds][i][:id] %></td>
+								<% if @participants_performance[participant.username][:roster_rounds_id][i] %>
+									<td><%= @participants_performance[participant.username][:roster_rounds_id][i] %></td>
 								<% else %>
 									<td>--</td>
 								<% end %>
