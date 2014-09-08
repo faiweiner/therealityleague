@@ -21,7 +21,6 @@ class RostersController < ApplicationController
 		@roster.contestants << contestant unless @roster.contestants.include? contestant 
 		# i.e. do NOT append if roster already includes contestant
 		@selected_contestants = @roster.contestants.order(name: :asc)
-
 		render :partial => "current_roster"
 	end
 
@@ -42,15 +41,19 @@ class RostersController < ApplicationController
 				@available_contestants.push contestant
 			end
 		end
-		
 		render :partial => "current_available_contestants"
-
 	end
 	
+	def ajax_load_events
+		respond_to do |format|
+			format.js
+		end    
+	end
+
 	def edit
 		@roster = Roster.find(params[:id])
 		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-		@selected_contestants = @roster.contestants
+		@selected_contestants = @roster.contestants.order(name: :asc)
 		@available_contestants = []
 		# iterate to pull list of non-selected contestants
 		@all_contestants.select do |contestant|
@@ -74,9 +77,7 @@ class RostersController < ApplicationController
 				@available_contestants.push contestant
 			end
 		end
-		@available_contestants    
-
-		# season 
+		@available_contestants.sort
 	end
 
 end
