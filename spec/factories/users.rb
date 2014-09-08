@@ -16,13 +16,12 @@
 
 FactoryGirl.define do
 	factory :user do
-		email { generate(:email) }
-		username { generate(:username) }
-		password 'chicken'
+		email 								{ generate(:email) }
+		username 							{ generate(:username) }
+		avatar 								'placeholder'
+		password 							'chicken'
 		password_confirmation 'chicken'
+		admin 								false
 	end
 
-	trait :bad do
-		email '@'
-	end
 end

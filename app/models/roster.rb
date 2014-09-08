@@ -13,6 +13,7 @@ class Roster < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :league
 	has_and_belongs_to_many :contestants, inverse_of: :rosters
+	has_many :rounds
 	
 	validates :user_id, :presence => true
 	validates :league_id, :presence => true

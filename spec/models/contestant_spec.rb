@@ -21,8 +21,10 @@ require 'rails_helper'
 
 RSpec.describe Contestant, :type => :model do
 	# ---- associations ---- #
-	it { is_expected.to belong_to(:show) }
+	it { is_expected.to belong_to(:season) }
 	it { is_expected.to have_and_belong_to_many(:rosters) }
+	it { is_expected.to have_many(:points) }
+	it { is_expected.to have_many(:episodes) }
 
 	# ---- dummy data ---- #
 	before do
