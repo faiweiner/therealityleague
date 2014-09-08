@@ -99,14 +99,17 @@ class LeaguesController < ApplicationController
 		end
 	
 		# get roster ID
-		@participants_roster_id = {}
+		@participants_performance = {}
 		@participants.each do |participant|
 			participant_username = participant.username
-			roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)
-			@participants_roster_id.store(participant_username, roster_id)
+			participant_id = participant.id
+			roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
+			roster_total = Roster.find(roster_id).calculate_total_roster_points
+			roster_rounds = Roster.find(roster_id).rounds
+			@participants_performance.store(participant_username, {roster_id: roster_id, roster_total: roster_total, roster_rounds: roster_rounds })
 		end
 
-		@league_rounds = Round.where(:league_id => @league.id)
+
 	end
 
 	def search
