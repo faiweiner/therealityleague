@@ -98,16 +98,27 @@ class LeaguesController < ApplicationController
 			@a_participant = false
 		end
 	
-		# get roster ID
-		@participants_performance = {}
+		# assign hashes
+		@participants_roster = {}
+		@participants_roster_total = {}
+		@participants_roster_weekly = {}
+
+		# assign values to hashes
 		@participants.each do |participant|
 			participant_username = participant.username
 			participant_id = participant.id
+			# get Roster ID
 			roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
+			@participants_roster.store(participant_username, roster_id) 
+			# get Roster Total
 			roster_total = Roster.find(roster_id).calculate_total_roster_points
+			@participants_roster_total.store(participant_username, roster_total)
+			# get Roster Rounds
 			roster_rounds = Roster.find(roster_id).rounds.pluck(:id)
-			@participants_performance.store(participant_username, {roster_id: roster_id, roster_total: roster_total, roster_rounds_id: roster_rounds })
+			@participants_roster_weekly.store(participant_username, {roster_rounds_id: roster_rounds})
 		end
+
+		@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
 	end
 
 	def search
@@ -158,4 +169,9 @@ class LeaguesController < ApplicationController
 		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :league_key, :league_password, :active)
 	end
 
+	def get_id(username)
+		user = User.where(username: username).first
+		return user.id
+	end
+	
 end

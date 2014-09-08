@@ -62,16 +62,16 @@
 					<th>Action</th>
 				</thead>
 				<tbody>
-					<% @participants.each_with_index do |participant, i| %>
+					<% @participants_roster_total_sorted.each_with_index do |participant, i| %>
 						<tr>
 							<td><%= i + 1 %></td>
-							<td><%= participant.username %></td>
-							<td>130</td>
+							<td><%= participant[0] %></td>
+							<td><%= participant[1] %> </td>
 							<td>
-								<% if participant.id == @current_user.id %>
-									<%= link_to "View Roster", roster_path(@participants_performance[participant.username][:roster_id]), class:"btn btn-primary" %>
+								<% if User.where(username: participant[0]).first.id == @current_user.id %>
+									<%= link_to "View Roster", roster_path(@participants_roster[participant[0]]), class:"btn btn-primary" %>
 								<% else %>
-									<%= link_to "View Roster", roster_path(@participants_performance[participant.username][:roster_id]), class:"btn btn-default" %>
+									<%= link_to "View Roster", roster_path(@participants_roster[participant[0]]), class:"btn btn-default" %>
 								<% end %>
 							</td>
 						</tr>
@@ -93,13 +93,13 @@
 						<tr>
 							<td><%= participant.username %></td>
 							<% @league_season.episode_count.times do |i| %>
-								<% if @participants_performance[participant.username][:roster_rounds_id][i] %>
-									<td><%= @participants_performance[participant.username][:roster_rounds_id][i] %></td>
+								<% if @participants_roster[participant.username] %>
+									<td><%= @participants_roster[participant.username] %></td>
 								<% else %>
 									<td>--</td>
 								<% end %>
 							<% end %>
-							<td><%= @participants_performance[participant.username][:roster_total] %></td>
+							<td><%= @participants_roster_total[participant.username] %></td>
 						</tr>
 					<% end %>
 				</tbody>
