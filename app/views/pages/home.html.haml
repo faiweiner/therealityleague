@@ -11,31 +11,31 @@
 	/ IF CURRENT USER DOES NOT EXIST
 	/ ====================================================
 	.jumbotron
-		%h3 Welcome to the best place to play
-		%h1 Fantasy Reality TV
-		%br/
+		%h1 Welcome to The Reality League 
+		%h3 The best place to play Fantasy Reality TV
 		.row
 			.col-md-12
-				%p Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.
+				%p Play "fantasy" games with your favorite reality TV shows. Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.
 		.row
 			.col-sm-4.col-md-4.col-lg-4
-				.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
-					%h3 Step 1:
-					%h2 Create a League
-					%caption OR join an existing one.
-					%h2
+				%a{:href => "/leagues/new"}
+					.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
+						%h4 Step 1:
+						%h2 Create a League
+						%caption OR join an existing one.
+						%h2
+			.col-sm-4.col-md-4.col-lg-4
+				%a{:href => "/shows"}
+					.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
+						%h4 Step 2:
+						%h2 Pick Your Team
+						%caption Choose contestants wisely.
+						%h2
 			.col-sm-4.col-md-4.col-lg-4
 				.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
-					%h3 Step 2:
-					%h2 Pick Your Team
-					%caption Choose contestants wisely.
-					%h2
-			.col-sm-4.col-md-4.col-lg-4
-				.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
-					%h3 Step 3:
+					%h4 Step 3:
 					%h2 Score Points
 					%caption Sit back and enjoy the show!
 					%h2
-	= render partial: "leagues/nav_league_access"
 	= render partial: "/seasons/featured_seasons"
 	= render partial: "instructions"
