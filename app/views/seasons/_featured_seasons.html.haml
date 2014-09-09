@@ -10,7 +10,9 @@
               .img-thumbnail-container
                 = link_to image_tag(season.image, class:"img-thumbnail"), {:class => 'dock-item'}
               .caption
-                %h4= season.name
+                %h4
+                  = season.show.name + ": "
+                  = season.name
                 %p
                   Starts: #{season.premiere_date.strftime("%B %d")}
                 %p= link_to(content_tag(:button, "Explore season", class:'btn btn-primary'), season_path(season.id))

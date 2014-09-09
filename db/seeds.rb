@@ -29,10 +29,14 @@ user6 = User.create(:email => 'user4@gmail.com', :username => 'username4', :avat
 
 show1 = Show.create(:name => 'The Bachelor', :image => '/assets/the_bachelor/logo.jpg')
 show2 = Show.create(:name => 'The Bachelorette', :image => '/assets/the_bachelorette/logo.png')
+show3 = Show.create(:name => 'The Voice', :image => '/assets/the_voice/thevoice.jpg')
+show4 = Show.create(:name => 'Bachelor in Paradise', :image => '/assets/bachelor_paradise/bachelor_paradise.jpg')
+show5 = Show.create(:name => 'Master Chef', :image => '/assets/master_chef/masterchef.jpg')
+show6 = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')
 
-season1 = Season.create(:name => 'Juan Pablo', :number => 18, :show_id => show1.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'With his Spanish accent, good looks, salsa moves and undying devotion for his daughter, Juan Pablo, 32, was a fan favorite. Sadly, Desiree Hartsock couldn\'t see a future with Juan Pablo and sent him home from Barcelona.', :episode_count => 10)
-season2 = Season.create(:name => 'Desiree', :number => 9, :show_id => show2.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'This season features 27-year-old Desiree Hartsock, a bridal stylist from Colorado. Twenty-five men, all aged 26-34, will be competing for Desiree\'s heart.', :episode_count => 10)
-season3 = Season.create(:name => 'Sean Lowe', :number => 17, :show_id => show1.id, :premiere_date => '01/07/2013', :finale_date => '01/12/2013', :description	=> 'The best bachelor ever - Sean Lowe is the man!', :image => '/assets/the_bachelor/logo.jpg', :episode_count => 10, :expired => true)
+season1 = Season.create(:name => 'Juan Pablo', :number => 18, :show_id => show1.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'With his Spanish accent, good looks, salsa moves and undying devotion for his daughter, Juan Pablo, 32, was a fan favorite. Sadly, Desiree Hartsock couldn\'t see a future with Juan Pablo and sent him home from Barcelona.', :episode_count => 10, :image => '/assets/the_bachelor/juanpablo.jpg')
+season2 = Season.create(:name => 'Desiree', :number => 9, :show_id => show2.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'This season features 27-year-old Desiree Hartsock, a bridal stylist from Colorado. Twenty-five men, all aged 26-34, will be competing for Desiree\'s heart.', :episode_count => 10, :image => '/assets/the_bachelorette/desiree.jpg')
+season3 = Season.create(:name => 'Sean Lowe', :number => 17, :show_id => show1.id, :premiere_date => '01/07/2013', :finale_date => '01/12/2013', :description	=> 'The best bachelor ever - Sean Lowe is the man!', :image => '/assets/the_bachelor/logo.jpg', :episode_count => 10, :expired => true, :image => '/assets/the_bachelor/seanlowe.jpg')
 
 league1 = League.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :draft_type => 'Fantasy', :public_access => true)
 league2 = League.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :draft_type => 'Fantasy', :public_access => false)

@@ -7,7 +7,9 @@
 				.thumbnail
 					%img.img-thumbnail{:src => season.image}/
 					.caption.caption-lg
-						%h4= season.name
+						%h4
+							= season.show.name + ": "
+							= season.name
 						%p
 							Starts: #{season.premiere_date.strftime("%B %d")}
 						%p= link_to "Explore Season", season_path(season.id), class:"btn btn-primary"
