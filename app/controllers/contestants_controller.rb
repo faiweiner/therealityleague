@@ -12,12 +12,8 @@ class ContestantsController < ApplicationController
 
 	def update
 		@contestant = Contestant.find(params[:id])
+		@contestant.update contestant_params
 		render json: @contestant
-		# if @contestant.update
-		# 	redirect_to contestants_path
-		# else
-		# 	render :edit
-		# end
 	end
 
 	def new

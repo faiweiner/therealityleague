@@ -14,22 +14,24 @@ $(document).ready(function () {
 
 	$('#contestants span[data-name="name"]').editable({
 		title: 'Enter name',
-		tpl: "<input type='text' style='width: 125px'>"
+		tpl: "<input type='text' id='contestant_name' name='contestant[name]' style='width: 125px'>"
 	});
 
 	$('#contestants span[data-name="age"]').editable({
-		tpl: "<input style='width: 55px'>"
+		tpl: "<input style='width: 55px' id='contestant_age' name='contestant[age]'>"
 	});
 
 	$('#contestants span[data-name="occupation"]').editable({
 		title: 'Enter occupation',
-		tpl: "<input style='width: 185px'>",
+		tpl: "<input style='width: 185px' id='contestant_occupation' name='contestant[occupation]'>",
 	});
 
 	$('#contestants span[data-name="description"]').editable({
 		title: 'Enter description',
 		type: 'textarea',
-		rows: 2,
+		escape: 'true',
+		tpl: "<textarea id='contestant_description' name='contestant[description]'>",
+		row: 2
 	});
 
 	$('#contestants').on('click', '.edit', function () {
@@ -40,6 +42,12 @@ $(document).ready(function () {
 		$(this).closest('tr').find('.editable').editable('show');
 	});
 
+	$('.input').keypress(function (e) {
+		if (e.which == 13) {
+			$('form#login').submit();
+		}
+	});
+
 	$('#contestants').on('click', '.btn-primary', function() {
 		var $btn = $(this);
 		/*
@@ -48,19 +56,19 @@ $(document).ready(function () {
 		 Need investigation.
 		*/
 		var contestantId = jQuery(this).closest('tr').find('span')[0].dataset.pk
+		console.log(contestantId);
 		$.ajax({
 			url: '/contestants/' + contestantId,
 			type: 'POST',
-			responseTime: 200,
-			response: function(settings) {
-				console.log(settings.data);   
-		 	}
-			// success: function (msg) {
-			// 	var partial = msg;
-			// 	$rosterBoard.html(partial);
-			// }
+			data: {
+				name:  'name',  //name of field (column in db)
+				pk:    contestantId,            //primary key (record id)
+				value: 'superuser!' //new value
+			},
+			success: function(response, newValue) {
+				if(response.status == 'error') return response.msg; //msg will be shown in editable form
+			}
 		});
-
 		$btn.closest('tr').find('.editable').editable('hide');
 		$btn.hide().siblings('.edit').show();
 	});
