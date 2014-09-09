@@ -6,7 +6,4 @@ class PagesController < ApplicationController
 		# user_leagues_list	# Model method from User
 	end
 
-	def sign_in
-		
-	end
 end

@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def admin?
-		user = User.find(@current_user.id)	
+		user = User.find(@current_user.id)
 		return true if user.admin == true
 	end
 

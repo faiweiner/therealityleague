@@ -16,8 +16,16 @@
  */
 
 $primary-color: #ff8c00;
-$copy-primary: #333;
+$copy-primary: black;
 
+/* SPORTS-THEMED COLORS */
+$sports-main-dark: #000339;
+$sports-main-medium: #000363;
+$sports-main-light: #00049E;
+$sports-main-contrast: #00CCFF;
+$sports-highlight-dark: #E82C0C;
+$sports-highlight-light: #FF530D;
+$sports-highlight-subtle: #22024A; 	/* purple */
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
@@ -27,8 +35,9 @@ $copy-primary: #333;
 }
 
 body {
-	background-color: blue;
-	background: #cecece;
+	background-image: url('/assets/blurryBG.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
 	color: $copy-primary;
 	font-family: 'Open Sans', verdana, arial, helvetica, sans-serif;
 	font-size: 13px;
@@ -95,6 +104,7 @@ div {
 }
 
 .thumbnail {
+	position: relative;
 	overflow: scroll;
 }
 
@@ -116,14 +126,12 @@ div {
 	max-height: 130px;
 }
 
-.overlap-button {
-	position: fixed;
-}
-
-.overlap-button:hover {
-	color: grey;
-}
-
+// .remove-button, .add-button {
+// 	padding-right: 4px;
+// 	padding-bottom: 4px;
+// 	border-bottom-right-radius: 2px;
+// 	background-color: white;
+// }
 .modal-dialog.modal-md {
 	left: auto;
 	margin-left: auto;
@@ -134,3 +142,30 @@ div {
 input.form-control.input-small {
 	width: 100px;
 }
+
+
+// /* BOOTSTRAP OVERRIDE */
+
+// .navbar.navbar-default {
+// 	background-color: $sports-highlight-subtle;
+// 	.navbar-nav > li > a {
+// 		color: white;
+// 	}
+// 	.navbar-brand {
+// 		color: $sports-highlight-light;
+// 	}
+// }
+
+// .btn-primary {
+// 	background-color: $sports-main-dark;
+// 	border-color: $sports-main-light;
+// }
+// .btn-primary:hover {background-color: $sports-main-medium}
+
+// .panel-default {
+// 	> .panel-heading {
+// 		background-color: #004F37;
+// 		color: #FFFFFF;
+// 	}
+// 	background-color: rgba( $sports-main-dark, .4 );
+// }

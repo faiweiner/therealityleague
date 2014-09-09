@@ -1,0 +1,60 @@
+.panel.panel-default
+	.panel-body
+		.col-md-12
+			/ Header dymanic - login or sign up
+			- if params[:id]
+				%h2
+					Edit User
+					- if @user.admin == true
+						\- Master Admin
+			- else
+				%h2 Sign Up
+			/ Content dymanic - login or sign up
+			#sign-up-form.col-lg-4.col-md-6.col-sm-6
+				= form_for(@user, class:"form-horizontal", :role => "form") do |f|
+					/ Error Messages
+					- if flash[:notice] && flash[:color] == "valid"
+						.row.form-group
+							.alert.alert-success{:role => "alert"}= flash[:notice]
+					- elsif flash[:notice] && flash[:color] == "invalid"
+						.row.form-group
+							.alert.alert-warning{:role => "alert"}= flash[:notice]
+					- elsif flash[:notice] && flash[:color] == "prohibited"
+						.row.form-group
+							.alert.alert-danger{:role => "alert"}
+								%p= flash[:notice]
+								- if @user.errors.any?
+									%p
+										= pluralize(@user.errors.count, "error")
+										prohibited this user from being saved:
+									%ul
+										- @user.errors.full_messages.each do |message|
+											%li= message
+					/ End Error Messages
+					/ Form Portion
+					.row.form-group
+						= f.label :email, class:"control-label"
+						= f.text_field :email, class:"form-control", placeholder: 'email@domain.com', :autofocus => true
+					.row.form-group
+						= f.label :username
+						= f.text_field :username, class:"form-control", placeholder: 'username'
+					- if params[:id]
+						.row.form-group
+							= f.label :avatar
+							= f.text_field :avatar, class:"form-control"
+					.row.form-group
+						= f.label :password
+						= f.password_field :password, class:"form-control"
+					#password-update-group.row.form-group
+						= f.label :password_confirmation
+						= f.password_field :password_confirmation, class:"form-control"
+					.row.form-group.actions
+						- if params[:id]
+							= f.submit "Update", class:"btn btn-primary btn-lg"
+							= link_to "Cancel", user_path(:id), class:"btn btn-default btn-lg"
+						- else
+							= f.submit "Register", class:"btn btn-primary btn-lg"
+							%br/
+							%br/
+							%p
+								Already signed up? #{link_to "Sign in", login_path}

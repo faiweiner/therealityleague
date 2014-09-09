@@ -1,0 +1,41 @@
+- if flash[:notice] && flash[:color] == "valid"
+	.alert.alert-success{:role => "alert"}= flash[:notice]
+- elsif flash[:notice] && flash[:color] == "invalid"
+	.alert.alert-warning{:role => "alert"}= flash[:notice]
+- if @current_user.present?
+	/ CURRENT USER PRESENT
+	/ ====================================================
+	= render partial: "leagues/nav_league_access"
+	= render partial: "/seasons/featured_seasons"
+- else
+	/ IF CURRENT USER DOES NOT EXIST
+	/ ====================================================
+	.jumbotron
+		%h1 Welcome to The Reality League 
+		%h3 The best place to play Fantasy Reality TV
+		.row
+			.col-md-12
+				%p Play "fantasy" games with your favorite reality TV shows. Create or join a league and challenge your friends to play! Manage your team with daily scoring, player stats, season reports, news, and expert advice.
+		.row
+			.col-sm-4.col-md-4.col-lg-4
+				%a{:href => "/leagues/new"}
+					.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
+						%h4 Step 1:
+						%h2 Create a League
+						%caption OR join an existing one.
+						%h2
+			.col-sm-4.col-md-4.col-lg-4
+				%a{:href => "/shows"}
+					.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
+						%h4 Step 2:
+						%h2 Pick Your Team
+						%caption Choose contestants wisely.
+						%h2
+			.col-sm-4.col-md-4.col-lg-4
+				.branding-box.btn.btn-default.col-xs-12.col-sm-12.col-md-12.col-lg-12
+					%h4 Step 3:
+					%h2 Score Points
+					%caption Sit back and enjoy the show!
+					%h2
+	= render partial: "/seasons/featured_seasons"
+	= render partial: "instructions"

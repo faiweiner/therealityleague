@@ -1,0 +1,28 @@
+.panel.panel-default
+	.panel-body
+		.panel-header
+			.col-md-12
+				%h2= @show.name
+		.col-md-4
+			= image_tag(@show.image, class:"thumbnail")
+		.col-md-8
+			.panel-group
+				= render "scoring_system"
+				- if @current_user && @current_user.admin?
+					= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default"
+					= link_to "Back to Shows", shows_path, class:"btn btn-default"
+			#accordion.panel-group
+				- @show.seasons.order("number DESC").each_with_index do |season, index|
+					.panel.panel-default
+						.panel-heading
+							%h4.panel-title
+								%a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapse#{index}"}
+									Season #{season.number}: #{season.name}
+								= link_to "View season", season_path(season.id), class:"btn btn-default"
+						.panel-collapse.collapse{:id => "collapse#{index}"}
+							.panel-body
+								.row
+									.col-md-12
+										%h4 Description:
+										= season.description
+										%h4 Contestants:

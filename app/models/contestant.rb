@@ -35,7 +35,13 @@ class Contestant < ActiveRecord::Base
 		Point.joins(:event).where(contestant_id: self.id, episode_id: episode_id).sum("events.points_asgn")
 	end
 
-	def total_points		# takes one contestant of a roster to get his/her total score
+	def calculate_points_per_round(round_id)
+		round = Round.find(round_id)
+		episode = Episode.find(round.episode_id)
+		Point.joins(:event).where(contestant_id: self.id, episode_id: episode.id).sum("events.points_asgn")
+	end
+
+	def calculate_total_points		# takes one contestant of a roster to get his/her total score
 		Point.joins(:event).where(contestant_id: self.id).sum("events.points_asgn")
 	end
 

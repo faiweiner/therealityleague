@@ -1,0 +1,15 @@
+.panel.panel-default
+	.panel-body
+		.panel-heading
+			%h2 Past Seasons
+		- @past_seasons.each do |season|
+			.col-sm-4.col-md-3
+				.thumbnail
+					%img.img-thumbnail{:src => season.image}/
+					.caption.caption-lg
+						%h4
+							= season.show.name + ": "
+							= season.name
+						%p
+							Premiered: #{season.premiere_date.strftime("%B %d, %Y")}
+						%p= link_to "Explore Season", season_path(season.id), class:"btn btn-primary"

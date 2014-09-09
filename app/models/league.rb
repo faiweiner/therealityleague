@@ -32,6 +32,7 @@ class League < ActiveRecord::Base
 	validates :commissioner_id, :presence => true
 
 	private
+
 	def gen_league_key
 		self.league_key = SecureRandom.hex(5)
 	end

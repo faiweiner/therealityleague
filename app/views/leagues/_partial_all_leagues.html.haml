@@ -1,0 +1,13 @@
+%div
+	%table#all_leagues_table.hidden
+		%thead
+			%tr
+				%th Name
+				%th{:colspan => "3"}
+		%tbody
+			- @all_leagues.each do |league|
+				%tr
+					%td= league.name
+					%td= link_to 'Show', league
+					%td= link_to 'Edit', edit_league_path(league)
+					%td= link_to 'Destroy', league, method: :delete, data: { confirm: 'Are you sure?' }

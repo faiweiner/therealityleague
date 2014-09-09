@@ -35,14 +35,14 @@ class LeaguesController < ApplicationController
 			flash[:color] = "invalid"
 			redirect_to new_user_path
 		end
-
+		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
 	end
 	
 	def create
 		@league = League.new league_params
-		@league.show_id = params[:league][:show]
-		show = Show.where(name: params[:league][:show])
+		@league.season_id = params[:league][:season]
+		season = Show.where(name: params[:league][:season])
 		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
@@ -71,6 +71,9 @@ class LeaguesController < ApplicationController
 
 	def edit
 		@league = League.find(params[:id])
+		@league_season_id = @league.season_id
+		@league_draft_type = @league.draft_type
+		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
 	end
 
 	def update
@@ -86,6 +89,7 @@ class LeaguesController < ApplicationController
 	end
 	def show
 		@league = League.find(params[:id])
+		@league_type = @league.draft_type
 		@league_season = Season.find(@league.season)
 		# @league_rosters = @league.rosters
 		@participants = @league.users
@@ -98,15 +102,66 @@ class LeaguesController < ApplicationController
 			@a_participant = false
 		end
 	
-		# get roster ID
+		# assign hashes
 		@participants_roster_id = {}
-		@participants.each do |participant|
-			participant_username = participant.username
-			roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)
-			@participants_roster_id.store(participant_username, roster_id)
-		end
+		@participants_roster_total = {}
+		@participants_roster_weekly = {}
 
-		@league_rounds = Round.where(:league_id => @league.id)
+		case @league_type
+
+		# FOR BRACKETS ROSTERS ---- assign values to hashes --- 
+		when "Bracket"
+			@participants.each do |participant|
+				# get Roster ID
+				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
+				@participants_roster_id.store(participant.username, roster_id)
+
+				# get Rounds Total
+				roster_rounds_total = Roster.find(roster_id).calculate_total_rounds_points
+				@participants_roster_total.store(participant.username, roster_rounds_total)
+
+				# get Rounds Weekly
+				roster_rounds_points = []
+				roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
+				roster_rounds.each do |id| 
+					round = Round.find(id)
+					roster_rounds_points << [id, round.calculate_round_points]
+				end
+				@participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
+			end
+		
+			# sort roster to reflect current leads
+			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
+
+		# FOR FANTASY ROSTERS ---- assign values to hashes --- 
+		when "Fantasy"
+			@participants.each do |participant|
+				# get Roster ID
+				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
+				@participants_roster_id.store(participant.username, roster_id)
+
+				# get Roster Total
+				roster_total = Roster.find(roster_id).calculate_total_roster_points
+				@participants_roster_total.store(participant.username, roster_total)
+
+				# get Roster Rounds
+				roster_rounds_points = []
+				roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
+				roster_rounds.each do |id| 
+					round = Round.find(id)
+					roster_rounds_points << [id, round.calculate_round_points]
+				end
+				@participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
+			end
+
+			# sort roster to reflect current leads
+			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
+			
+		
+		# IF NO ROSTER TYPE ASSIGNED
+		else
+			raise "need to fix this"
+		end
 	end
 
 	def search
@@ -155,6 +210,11 @@ class LeaguesController < ApplicationController
 
 	def league_params
 		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :league_key, :league_password, :active)
+	end
+
+	def get_id(username)
+		user = User.where(username: username).first
+		return user.id
 	end
 
 end

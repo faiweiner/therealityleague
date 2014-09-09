@@ -1,0 +1,7 @@
+- @available_contestants.each do |contestant|
+	.col-md-5
+		.thumbnail.thumbnail-available-contestants
+			%i.add-button.fa.fa-plus{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+			= image_tag contestant.image
+			.caption
+				= contestant.name

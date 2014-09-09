@@ -1,5 +1,5 @@
 class SeasonsController < ApplicationController
-	before_action :check_if_admin, :only => [:new, :edit]
+	before_action :check_if_admin, :only => [:index, :new, :edit]
 	def index
 		@seasons = Season.where(:expired => :false).order("premiere_date ASC")
 		@past_seasons = Season.where(:expired => :true).order("premiere_date DESC")

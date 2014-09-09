@@ -1,4 +1,4 @@
-<% if @current_user.admin? %>
+<% if @current_user && @current_user.admin? %>
 	<%= render "admin" %>
 <% end %>
 <%= render "current_seasons" %>

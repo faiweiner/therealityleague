@@ -9,7 +9,6 @@ $(document).ready(function () {
 	$contestantBoard = $('#contestantBoard');
 	$rosterBoard = $('#rosterBoard');
 
-
 	// ================== GLOBAL FUNCTIONS ================== //
 
 	// ----- BEGIN server-side ----- //
@@ -52,12 +51,10 @@ $(document).ready(function () {
 	$(this).on('click', function (event) {
 		// records which element is being clicked
 		$element = event.target;
-
 		// set arguments for actionOperator
 		var myClass = $element.className;
 		var contestantId = $element.dataset.contestantId
 		var rosterId	= $element.dataset.rosterId
-
 		// sets operation based on myClass value
 		if (myClass == 'add-button fa fa-plus') {
 			var operation = 'add';

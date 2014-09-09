@@ -1,0 +1,29 @@
+- if flash[:notice] && flash[:color] == "invalid"
+	.alert.alert-danger
+		%p= flash[:notice]
+		%p
+- elsif flash[:notice] && flash[:color] == "valid"
+	.alert.alert-success{:role => "alert"}
+		%p= flash[:notice]
+		%p
+.panel.panel-default
+	.panel.panel-body
+		= render partial: "public"
+.panel.panel-default
+	.panel-body
+		.col-md-12
+			%h2 Private Leagues
+			%p You must provide a league key and password in order to join or view a private league. To access a private league, please enter a league key and password as provided by the league's commissioner.
+			.signin_form.col-md-10
+				= form_tag(league_access_path, method: "post", class:"form-horizontal", :row => "form") do
+					.form-group
+						= label_tag :league_key, 'League Key', class:'col-sm-2 control-label'
+						.col-sm-4
+							= text_field_tag 'league_key', nil, class:"form-control"
+					.form-group
+						= label_tag(:league_password, 'Password', class:"col-sm-2 control-label")
+						.col-sm-4
+							= password_field_tag :password, nil, class:"form-control"
+					.form-group
+						.col-sm-offset-2.col-sm-4
+							= submit_tag("Access Private League", class:"form_submit btn btn-default")
