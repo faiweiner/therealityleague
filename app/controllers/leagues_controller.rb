@@ -35,14 +35,14 @@ class LeaguesController < ApplicationController
 			flash[:color] = "invalid"
 			redirect_to new_user_path
 		end
-
+		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
 	end
 	
 	def create
 		@league = League.new league_params
-		@league.show_id = params[:league][:show]
-		show = Show.where(name: params[:league][:show])
+		@league.season_id = params[:league][:season]
+		season = Show.where(name: params[:league][:season])
 		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
@@ -71,6 +71,9 @@ class LeaguesController < ApplicationController
 
 	def edit
 		@league = League.find(params[:id])
+		@league_season_id = @league.season_id
+		@league_draft_type = @league.draft_type
+		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
 	end
 
 	def update

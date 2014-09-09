@@ -38,7 +38,8 @@ class Season < ActiveRecord::Base
 
 	def self.select_season
 		# This model method is for populating Create League's drop-down menu
-		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
+		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id] }
+		@seasons_list.unshift(["Select a season", nil])
 	end
 
 	def self.get_show_name(season_id)
