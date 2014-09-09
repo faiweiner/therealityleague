@@ -86,6 +86,7 @@ class LeaguesController < ApplicationController
 	end
 	def show
 		@league = League.find(params[:id])
+		@league_type = @league.draft_type
 		@league_season = Season.find(@league.season)
 		# @league_rosters = @league.rosters
 		@participants = @league.users
@@ -103,28 +104,63 @@ class LeaguesController < ApplicationController
 		@participants_roster_total = {}
 		@participants_roster_weekly = {}
 
-		# ---- assign values to hashes
-		@participants.each do |participant|
-			# get Roster ID
-			roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
-			@participants_roster_id.store(participant.username, roster_id)
-			# get Roster Total
-			roster_total = Roster.find(roster_id).calculate_total_roster_points
-			@participants_roster_total.store(participant.username, roster_total)
-			# get Roster Rounds
-			roster_rounds_points = []
-			roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
-			roster_rounds.each do |id| 
-				round = Round.find(id)
-				roster_rounds_points << [id, round.calculate_round_points]
+		case @league_type
+
+		# FOR BRACKETS ROSTERS ---- assign values to hashes --- 
+		when "Bracket"
+			@participants.each do |participant|
+
+				# get Roster ID
+				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
+				@participants_roster_id.store(participant.username, roster_id)
+
+				# get Rounds Total
+				roster_rounds_total = Roster.find(roster_id).calculate_total_rounds_points
+				@participants_roster_total.store(participant.username, roster_rounds_total)
+
+				# get Rounds Weekly
+				roster_rounds_points = []
+				roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
+				roster_rounds.each do |id| 
+					round = Round.find(id)
+					roster_rounds_points << [id, round.calculate_round_points]
+				end
+				@participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
 			end
-			@participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
+		
+			# sort roster to reflect current leads
+			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
+
+		# FOR FANTASY ROSTERS ---- assign values to hashes --- 
+		when "Fantasy"
+			@participants.each do |participant|
+
+				# get Roster ID
+				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
+				@participants_roster_id.store(participant.username, roster_id)
+
+				# get Roster Total
+				roster_total = Roster.find(roster_id).calculate_total_roster_points
+				@participants_roster_total.store(participant.username, roster_total)
+
+				# get Roster Rounds
+				roster_rounds_points = []
+				roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
+				roster_rounds.each do |id| 
+					round = Round.find(id)
+					roster_rounds_points << [id, round.calculate_round_points]
+				end
+				@participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
+			end
+
+			# sort roster to reflect current leads
+			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
+			
+		
+		# IF NO ROSTER TYPE ASSIGNED
+		else
+			raise "need to fix this"
 		end
-
-		# sort roster to reflect current leads
-		@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
-
-		# weekly roster
 	end
 
 	def search
