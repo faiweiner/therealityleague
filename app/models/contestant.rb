@@ -20,8 +20,8 @@
 class Contestant < ActiveRecord::Base
 	belongs_to :season
 	has_and_belongs_to_many :rosters, inverse_of: :contestants
-	has_and_belongs_to_many :rounds, inverse_of: :contestants
 	before_destroy { rosters.clear }
+	has_and_belongs_to_many :rounds, inverse_of: :contestants
 	
 	has_many :points
 	has_many :episodes, through: :points
@@ -31,11 +31,11 @@ class Contestant < ActiveRecord::Base
 	validates :season_id, :presence => true, :on => :create
 
 
-	def calculate_points_per_episode(episode_id)
+	def points_per_episode(episode_id)
 		Point.joins(:event).where(contestant_id: self.id, episode_id: episode_id).sum("events.points_asgn")
 	end
 
-	def calculate_total_points		# takes one contestant of a roster to get his/her total score
+	def total_points		# takes one contestant of a roster to get his/her total score
 		Point.joins(:event).where(contestant_id: self.id).sum("events.points_asgn")
 	end
 
