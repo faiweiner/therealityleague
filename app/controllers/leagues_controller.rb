@@ -112,7 +112,7 @@ class LeaguesController < ApplicationController
 		# FOR BRACKETS ROSTERS ---- assign values to hashes --- 
 		when "Bracket"
 			@participants.each do |participant|
-
+				raise
 				# get Roster ID
 				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
 				@participants_roster_id.store(participant.username, roster_id)
@@ -137,11 +137,11 @@ class LeaguesController < ApplicationController
 		# FOR FANTASY ROSTERS ---- assign values to hashes --- 
 		when "Fantasy"
 			@participants.each do |participant|
-
+				raise
 				# get Roster ID
 				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
 				@participants_roster_id.store(participant.username, roster_id)
-				
+
 				# get Roster Total
 				roster_total = Roster.find(roster_id).calculate_total_roster_points
 				@participants_roster_total.store(participant.username, roster_total)
