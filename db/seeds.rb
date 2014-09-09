@@ -30,14 +30,14 @@ user6 = User.create(:email => 'user4@gmail.com', :username => 'username4', :avat
 show1 = Show.create(:name => 'The Bachelor', :image => '/assets/the_bachelor/logo.jpg')
 show2 = Show.create(:name => 'The Bachelorette', :image => '/assets/the_bachelorette/logo.png')
 
-season1 = Season.create(:name => 'The Bachelor: Juan Pablo', :number => 18, :show_id => show1.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'With his Spanish accent, good looks, salsa moves and undying devotion for his daughter, Juan Pablo, 32, was a fan favorite. Sadly, Desiree Hartsock couldn\'t see a future with Juan Pablo and sent him home from Barcelona.', :episode_count => 10)
-season2 = Season.create(:name => 'The Bachelorette: Desiree', :number => 12, :show_id => show2.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat perspiciatis sequi culpa tempora et reprehenderit dolores, amet quos fugit numquam veritatis cupiditate fuga possimus ab sit alias, sunt, vitae. Iure.', :episode_count => 10)
-season3 = Season.create(:name => 'The Bachelor: Sean Lowe', :number => 17, :show_id => show1.id, :premiere_date => '01/07/2013', :finale_date => '01/12/2013', :description	=> 'The best bachelor ever - Sean Lowe is the man!', :image => '/assets/the_bachelor/logo.jpg', :episode_count => 10, :expired => true)
+season1 = Season.create(:name => 'Juan Pablo', :number => 18, :show_id => show1.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'With his Spanish accent, good looks, salsa moves and undying devotion for his daughter, Juan Pablo, 32, was a fan favorite. Sadly, Desiree Hartsock couldn\'t see a future with Juan Pablo and sent him home from Barcelona.', :episode_count => 10)
+season2 = Season.create(:name => 'Desiree', :number => 12, :show_id => show2.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat perspiciatis sequi culpa tempora et reprehenderit dolores, amet quos fugit numquam veritatis cupiditate fuga possimus ab sit alias, sunt, vitae. Iure.', :episode_count => 10)
+season3 = Season.create(:name => 'Sean Lowe', :number => 17, :show_id => show1.id, :premiere_date => '01/07/2013', :finale_date => '01/12/2013', :description	=> 'The best bachelor ever - Sean Lowe is the man!', :image => '/assets/the_bachelor/logo.jpg', :episode_count => 10, :expired => true)
 
 league1 = League.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :draft_type => 'Fantasy', :public_access => true)
 league2 = League.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :draft_type => 'Fantasy', :public_access => false)
-league3 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :draft_type => 'Fantasy', :public_access => false)
-league4 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :draft_type => 'Fantasy', :public_access => false)
+league3 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :draft_type => 'Bracket', :public_access => false)
+league4 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :draft_type => 'Bracket', :public_access => false)
 
 league1.users << [user1, user2, user3]
 league2.users << [user3, user4, user5]
@@ -71,9 +71,9 @@ cont23 = Contestant.create(:name => 'Brooke', :season_id => season3.id, :age => 
 cont24 = Contestant.create(:name => 'Diana', :season_id => season3.id, :age => 31, :gender => 'Female', :occupation => 'Salon Owner', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', :image => '/assets/woman_placeholder.png')
 cont25 = Contestant.create(:name => 'Katie', :season_id => season3.id, :age => 27, :gender => 'Female', :occupation => 'Yoga Instructor', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', :image => '/assets/woman_placeholder.png')
 
-roster1 = Fantasy.create(:user_id => user1.id, :league_id => league3.id)
-roster2 = Fantasy.create(:user_id => user4.id, :league_id => league3.id)
-roster3 = Fantasy.create(:user_id => user5.id, :league_id => league3.id)
+roster1 = Bracket.create(:user_id => user1.id, :league_id => league3.id)
+roster2 = Bracket.create(:user_id => user4.id, :league_id => league3.id)
+roster3 = Bracket.create(:user_id => user5.id, :league_id => league3.id)
 roster4 = Fantasy.create(:user_id => user3.id, :league_id => league2.id)
 roster5 = Fantasy.create(:user_id => user4.id, :league_id => league2.id)
 roster6 = Fantasy.create(:user_id => user5.id, :league_id => league2.id)
@@ -105,31 +105,39 @@ episode10 = Episode.create(:season_id => season3.id, :air_date => '11/03/2013')
 round1 = Round.create(:roster_id => roster10.id, :episode_id => episode1.id)
 round1.contestants << roster10.contestants.clone
 round2 = Round.create(:roster_id => roster10.id, :episode_id => episode2.id)
-round2.contestants << roster10.contestants.clone
+round2.contestants << round1.contestants.clone
 round2.contestants.delete(cont23, cont24, cont25)
 round3 = Round.create(:roster_id => roster10.id, :episode_id => episode3.id)
-round3.contestants << roster10.contestants.clone
-round3.contestants.delete(cont23, cont24, cont25, cont20, cont21, cont22)
+round3.contestants << round2.contestants.clone
+round3.contestants.delete(cont20, cont21, cont22)
 round4 = Round.create(:roster_id => roster10.id, :episode_id => episode4.id)
-round4.contestants << roster10.contestants.clone
-round4.contestants.delete(cont23, cont24, cont25, cont20, cont21, cont22, cont18, cont19)
+round4.contestants << round3.contestants.clone
+round4.contestants.delete(cont18, cont19)
 round5 = Round.create(:roster_id => roster10.id, :episode_id => episode5.id)
-round5.contestants << roster10.contestants.clone
-round5.contestants.delete(cont23, cont24, cont25, cont20, cont21, cont22, cont18, cont19, cont16, cont17)
+round5.contestants << round4.contestants.clone
+round5.contestants.delete(cont16, cont17)
+round11 = Round.create(:roster_id => roster10.id, :episode_id => episode6.id)
+round12 = Round.create(:roster_id => roster10.id, :episode_id => episode7.id)
+round13 = Round.create(:roster_id => roster10.id, :episode_id => episode8.id)
+round14 = Round.create(:roster_id => roster10.id, :episode_id => episode9.id)
+round15 = Round.create(:roster_id => roster10.id, :episode_id => episode10.id)
+
+
+
 round6 = Round.create(:roster_id => roster11.id, :episode_id => episode1.id)
 round6.contestants << roster11.contestants.clone
 round7 = Round.create(:roster_id => roster11.id, :episode_id => episode2.id)
-round7.contestants << roster11.contestants.clone
+round7.contestants << round6.contestants.clone
 round7.contestants.delete(cont13, cont16, cont23)
 round8 = Round.create(:roster_id => roster11.id, :episode_id => episode3.id)
-round8.contestants << roster11.contestants.clone
-round8.contestants.delete(cont13, cont16, cont23, cont19, cont20, cont21)
+round8.contestants << round7.contestants.clone
+round8.contestants.delete(cont19, cont20, cont21)
 round9 = Round.create(:roster_id => roster11.id, :episode_id => episode4.id)
-round9.contestants << roster11.contestants.clone
-round9.contestants.delete(cont13, cont16, cont23, cont19, cont20, cont21, cont8, cont17)
+round9.contestants << round8.contestants.clone
+round9.contestants.delete(cont8, cont17)
 round10 = Round.create(:roster_id => roster11.id, :episode_id => episode5.id)
-round10.contestants << roster11.contestants.clone
-round10.contestants.delete(cont13, cont16, cont23, cont19, cont20, cont21, cont8, cont17, cont7, cont10)
+round10.contestants << round9.contestants.clone
+round10.contestants.delete(cont7, cont10)
 
 survival1 = Survival.create(:show_id => show1.id, :event => 'Contestant receives a rose in Week 1', :points_asgn => 10)
 survival2 = Survival.create(:show_id => show1.id, :event => 'Contestant receives a rose in Week 2', :points_asgn => 20)
@@ -152,31 +160,38 @@ survival18 = Survival.create(:show_id => show1.id, :event => 'Contestant leaves 
 survival19 = Survival.create(:show_id => show1.id, :event => 'Contestant leaves on her own accord in Week 9', :points_asgn => 10)
 survival20 = Survival.create(:show_id => show1.id, :event => 'Contestant leaves on her own accord in the Finale', :points_asgn => 10)
 survival21 = Survival.create(:show_id => show1.id, :event => 'Contestant is asked to leave by the producer', :points_asgn => 100)
+survival38 = Survival.create(:show_id => show1.id, :event => 'Contestant gets eliminated', :points_asgn => 0)
 
-game1 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for 1-on-1 date', :points_asgn => 50)
-game2 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
-game3 = Game.create(:show_id => show1.id, :event => 'Contestant gets in a helicopter', :points_asgn => 25)
-game4 = Game.create(:show_id => show1.id, :event => 'Contestant gets a Fantasy Suite invitation', :points_asgn => 75)
-game5 = Game.create(:show_id => show1.id, :event => 'Contestant rejects a Fantay Suite invitation', :points_asgn => 100)
-game6 = Game.create(:show_id => show1.id, :event => 'Contestant meets the bachelor\'s family', :points_asgn => 50)
-game7 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
-game8 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
+game22 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for 1-on-1 date', :points_asgn => 50)
+game23 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
+game24 = Game.create(:show_id => show1.id, :event => 'Contestant gets in a helicopter', :points_asgn => 25)
+game25 = Game.create(:show_id => show1.id, :event => 'Contestant gets a Fantasy Suite invitation', :points_asgn => 75)
+game26 = Game.create(:show_id => show1.id, :event => 'Contestant rejects a Fantay Suite invitation', :points_asgn => 100)
+game27 = Game.create(:show_id => show1.id, :event => 'Contestant meets the bachelor\'s family', :points_asgn => 50)
+game28 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
+game29 = Game.create(:show_id => show1.id, :event => 'Contestant is chosen for group date', :points_asgn => 25)
 
-extra1 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant kisses the bachelor', :points_asgn => 10)
-extra2 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets in the hot tub with the bachelor', :points_asgn => 20)
-extra3 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant cries', :points_asgn => 10)
-extra4 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets in a fight with another contestant', :points_asgn => 25)
-extra5 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant says she\'s "here for the right reason" ', :points_asgn => 15)
-extra6 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets inappropriately drunk', :points_asgn => 25)
-extra7 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets injured', :points_asgn => 25)
-extra8 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gives the bachelor a gift', :points_asgn => 10)
+extra30 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant kisses the bachelor', :points_asgn => 10)
+extra31 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets in the hot tub with the bachelor', :points_asgn => 20)
+extra32 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant cries', :points_asgn => 10)
+extra33 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets in a fight with another contestant', :points_asgn => 25)
+extra34 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant says she\'s "here for the right reason" ', :points_asgn => 15)
+extra35 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets inappropriately drunk', :points_asgn => 25)
+extra36 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets injured', :points_asgn => 25)
+extra37 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gives the bachelor a gift', :points_asgn => 10)
 
 point1 = Point.create!(:contestant_id => cont7.id, :event_id => survival1.id, :episode_id => episode1.id)
-point2 = Point.create!(:contestant_id => cont8.id, :event_id => survival1.id, :episode_id => episode1.id)
-point3 = Point.create!(:contestant_id => cont9.id, :event_id => survival1.id, :episode_id => episode1.id)
-point4 = Point.create!(:contestant_id => cont10.id, :event_id => survival1.id, :episode_id => episode1.id)
-point5 = Point.create!(:contestant_id => cont11.id, :event_id => survival1.id, :episode_id => episode1.id)
-point6 = Point.create!(:contestant_id => cont7.id, :event_id => survival20.id, :episode_id => episode10.id)
-point7 = Point.create!(:contestant_id => cont7.id, :event_id => extra1.id, :episode_id => episode10.id)
-point8 = Point.create!(:contestant_id => cont10.id, :event_id => survival3.id, :episode_id => episode3.id)
-point9 = Point.create!(:contestant_id => cont10.id, :event_id => extra3.id, :episode_id => episode3.id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

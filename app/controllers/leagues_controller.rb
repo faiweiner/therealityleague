@@ -99,26 +99,32 @@ class LeaguesController < ApplicationController
 		end
 	
 		# assign hashes
-		@participants_roster = {}
+		@participants_roster_id = {}
 		@participants_roster_total = {}
 		@participants_roster_weekly = {}
 
-		# assign values to hashes
+		# ---- assign values to hashes
 		@participants.each do |participant|
-			participant_username = participant.username
-			participant_id = participant.id
 			# get Roster ID
 			roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
-			@participants_roster.store(participant_username, roster_id) 
+			@participants_roster_id.store(participant.username, roster_id)
 			# get Roster Total
 			roster_total = Roster.find(roster_id).calculate_total_roster_points
-			@participants_roster_total.store(participant_username, roster_total)
+			@participants_roster_total.store(participant.username, roster_total)
 			# get Roster Rounds
-			roster_rounds = Roster.find(roster_id).rounds.pluck(:id)
-			@participants_roster_weekly.store(participant_username, {roster_rounds_id: roster_rounds})
+			roster_rounds_points = []
+			roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
+			roster_rounds.each do |id| 
+				round = Round.find(id)
+				roster_rounds_points << [id, round.calculate_round_points]
+			end
+			@participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
 		end
 
+		# sort roster to reflect current leads
 		@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
+
+		# weekly roster
 	end
 
 	def search
@@ -173,5 +179,5 @@ class LeaguesController < ApplicationController
 		user = User.where(username: username).first
 		return user.id
 	end
-	
+
 end

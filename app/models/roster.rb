@@ -26,13 +26,5 @@ class Roster < ActiveRecord::Base
 		end
 		return roster_total_score
 	end
-
-	def calculate_weekly_roster_points(round_id)
-		contestants = self.contestants
-		roster_weekly_score = 0
-		contestants.each do |contestant|
-			roster_weekly_score += contestant.calculate_points_per_episode(episode_id)
-		end
-		return roster_weekly_score
-	end
+	
 end
