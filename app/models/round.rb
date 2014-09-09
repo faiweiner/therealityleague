@@ -3,7 +3,7 @@
 # Table name: rounds
 #
 #  id         :integer          not null, primary key
-#  league_id  :integer
+#  roster_id  :integer
 #  episode_id :integer
 #  created_at :datetime
 #  updated_at :datetime
@@ -16,13 +16,12 @@ class Round < ActiveRecord::Base
 
 	def calculate_round_points
 		contestants = self.contestants
-		episode_id = self.episode_id
+		round_id = self.id
 		round_score = 0
 		contestants.each do |contestant|
-			round_score += contestant.calculate_points_per_episode(episode_id)
+			round_score += contestant.calculate_points_per_round(round_id)
 		end
 		return round_score
 	end
-
 end
 

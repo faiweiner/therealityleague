@@ -116,28 +116,51 @@ round4.contestants.delete(cont18, cont19)
 round5 = Round.create(:roster_id => roster10.id, :episode_id => episode5.id)
 round5.contestants << round4.contestants.clone
 round5.contestants.delete(cont16, cont17)
-round11 = Round.create(:roster_id => roster10.id, :episode_id => episode6.id)
-round12 = Round.create(:roster_id => roster10.id, :episode_id => episode7.id)
-round13 = Round.create(:roster_id => roster10.id, :episode_id => episode8.id)
-round14 = Round.create(:roster_id => roster10.id, :episode_id => episode9.id)
-round15 = Round.create(:roster_id => roster10.id, :episode_id => episode10.id)
-
-
-
-round6 = Round.create(:roster_id => roster11.id, :episode_id => episode1.id)
-round6.contestants << roster11.contestants.clone
-round7 = Round.create(:roster_id => roster11.id, :episode_id => episode2.id)
+round6 = Round.create(:roster_id => roster10.id, :episode_id => episode6.id)
+round6.contestants << round5.contestants.clone
+round6.contestants.delete(cont13, cont15)
+round7 = Round.create(:roster_id => roster10.id, :episode_id => episode7.id)
 round7.contestants << round6.contestants.clone
-round7.contestants.delete(cont13, cont16, cont23)
-round8 = Round.create(:roster_id => roster11.id, :episode_id => episode3.id)
+round7.contestants.delete(cont10, cont14)
+round8 = Round.create(:roster_id => roster10.id, :episode_id => episode8.id)
 round8.contestants << round7.contestants.clone
-round8.contestants.delete(cont19, cont20, cont21)
-round9 = Round.create(:roster_id => roster11.id, :episode_id => episode4.id)
+round8.contestants.delete(cont9, cont11)
+round9 = Round.create(:roster_id => roster10.id, :episode_id => episode9.id)
 round9.contestants << round8.contestants.clone
-round9.contestants.delete(cont8, cont17)
-round10 = Round.create(:roster_id => roster11.id, :episode_id => episode5.id)
+round9.contestants.delete(cont8)
+round10 = Round.create(:roster_id => roster10.id, :episode_id => episode10.id)
 round10.contestants << round9.contestants.clone
-round10.contestants.delete(cont7, cont10)
+round10.contestants.delete(cont12)
+
+round11 = Round.create(:roster_id => roster11.id, :episode_id => episode1.id)
+round11.contestants << roster11.contestants.clone
+round12 = Round.create(:roster_id => roster11.id, :episode_id => episode2.id)
+round12.contestants << round11.contestants.clone
+round12.contestants.delete(cont13, cont16, cont23)
+round13 = Round.create(:roster_id => roster11.id, :episode_id => episode3.id)
+round13.contestants << round12.contestants.clone
+round13.contestants.delete(cont19, cont20, cont21)
+round14 = Round.create(:roster_id => roster11.id, :episode_id => episode4.id)
+round14.contestants << round13.contestants.clone
+round14.contestants.delete(cont8, cont17)
+round15 = Round.create(:roster_id => roster11.id, :episode_id => episode5.id)
+round15.contestants << round14.contestants.clone
+round15.contestants.delete(cont7, cont10)
+round16 = Round.create(:roster_id => roster11.id, :episode_id => episode6.id)
+round16.contestants << round15.contestants.clone
+round16.contestants.delete(cont25, cont24)
+round17 = Round.create(:roster_id => roster11.id, :episode_id => episode7.id)
+round17.contestants << round16.contestants.clone
+round17.contestants.delete(cont22, cont18)
+round18 = Round.create(:roster_id => roster11.id, :episode_id => episode8.id)
+round18.contestants << round17.contestants.clone
+round18.contestants.delete(cont12, cont14)
+round19 = Round.create(:roster_id => roster11.id, :episode_id => episode9.id)
+round19.contestants << round18.contestants.clone
+round19.contestants.delete(cont15)
+round20 = Round.create(:roster_id => roster11.id, :episode_id => episode10.id)
+round20.contestants << round19.contestants.clone
+round20.contestants.delete(cont11)
 
 survival1 = Survival.create(:show_id => show1.id, :event => 'Contestant receives a rose in Week 1', :points_asgn => 10)
 survival2 = Survival.create(:show_id => show1.id, :event => 'Contestant receives a rose in Week 2', :points_asgn => 20)
@@ -180,18 +203,106 @@ extra35 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant get
 extra36 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gets injured', :points_asgn => 25)
 extra37 = Extracurricular.create(:show_id => show1.id, :event => 'Contestant gives the bachelor a gift', :points_asgn => 10)
 
-point1 = Point.create!(:contestant_id => cont7.id, :event_id => survival1.id, :episode_id => episode1.id)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+point1 = Point.create!(:contestant_id => cont12.id, :event_id => survival1.id, :episode_id => episode1.id)
+point2 = Point.create!(:contestant_id => cont10.id, :event_id => survival1.id, :episode_id => episode1.id)
+point3 = Point.create!(:contestant_id => cont9.id, :event_id => survival1.id, :episode_id => episode1.id)
+point4 = Point.create!(:contestant_id => cont14.id, :event_id => survival1.id, :episode_id => episode1.id)
+point5 = Point.create!(:contestant_id => cont16.id, :event_id => survival1.id, :episode_id => episode1.id)
+point6 = Point.create!(:contestant_id => cont25.id, :event_id => survival1.id, :episode_id => episode1.id)
+point7 = Point.create!(:contestant_id => cont7.id, :event_id => survival1.id, :episode_id => episode1.id)
+point8 = Point.create!(:contestant_id => cont17.id, :event_id => survival1.id, :episode_id => episode1.id)
+point9 = Point.create!(:contestant_id => cont19.id, :event_id => survival1.id, :episode_id => episode1.id)
+point10 = Point.create!(:contestant_id => cont24.id, :event_id => survival1.id, :episode_id => episode1.id)
+point11 = Point.create!(:contestant_id => cont23.id, :event_id => survival1.id, :episode_id => episode1.id)
+point12 = Point.create!(:contestant_id => cont15.id, :event_id => survival1.id, :episode_id => episode1.id)
+point13 = Point.create!(:contestant_id => cont18.id, :event_id => survival1.id, :episode_id => episode1.id)
+point14 = Point.create!(:contestant_id => cont11.id, :event_id => survival1.id, :episode_id => episode1.id)
+point15 = Point.create!(:contestant_id => cont22.id, :event_id => survival1.id, :episode_id => episode1.id)
+point16 = Point.create!(:contestant_id => cont20.id, :event_id => survival1.id, :episode_id => episode1.id)
+point17 = Point.create!(:contestant_id => cont13.id, :event_id => survival1.id, :episode_id => episode1.id)
+point18 = Point.create!(:contestant_id => cont21.id, :event_id => survival1.id, :episode_id => episode1.id)
+point19 = Point.create!(:contestant_id => cont8.id, :event_id => survival1.id, :episode_id => episode1.id)
+point20 = Point.create!(:contestant_id => cont15.id, :event_id => survival2.id, :episode_id => episode2.id)
+point21 = Point.create!(:contestant_id => cont22.id, :event_id => survival2.id, :episode_id => episode2.id)
+point22 = Point.create!(:contestant_id => cont10.id, :event_id => survival2.id, :episode_id => episode2.id)
+point23 = Point.create!(:contestant_id => cont9.id, :event_id => survival2.id, :episode_id => episode2.id)
+point24 = Point.create!(:contestant_id => cont8.id, :event_id => survival2.id, :episode_id => episode2.id)
+point25 = Point.create!(:contestant_id => cont16.id, :event_id => survival2.id, :episode_id => episode2.id)
+point26 = Point.create!(:contestant_id => cont17.id, :event_id => survival2.id, :episode_id => episode2.id)
+point27 = Point.create!(:contestant_id => cont11.id, :event_id => survival2.id, :episode_id => episode2.id)
+point28 = Point.create!(:contestant_id => cont14.id, :event_id => survival2.id, :episode_id => episode2.id)
+point29 = Point.create!(:contestant_id => cont7.id, :event_id => survival2.id, :episode_id => episode2.id)
+point30 = Point.create!(:contestant_id => cont20.id, :event_id => survival2.id, :episode_id => episode2.id)
+point31 = Point.create!(:contestant_id => cont19.id, :event_id => survival2.id, :episode_id => episode2.id)
+point32 = Point.create!(:contestant_id => cont12.id, :event_id => survival2.id, :episode_id => episode2.id)
+point33 = Point.create!(:contestant_id => cont21.id, :event_id => survival2.id, :episode_id => episode2.id)
+point34 = Point.create!(:contestant_id => cont13.id, :event_id => survival2.id, :episode_id => episode2.id)
+point35 = Point.create!(:contestant_id => cont18.id, :event_id => survival2.id, :episode_id => episode2.id)
+point36 = Point.create!(:contestant_id => cont23.id, :event_id => survival38.id, :episode_id => episode2.id)
+point37 = Point.create!(:contestant_id => cont24.id, :event_id => survival38.id, :episode_id => episode2.id)
+point38 = Point.create!(:contestant_id => cont25.id, :event_id => survival12.id, :episode_id => episode2.id)
+point39 = Point.create!(:contestant_id => cont11.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont8.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont9.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont12.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont19.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont7.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont13.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont16.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont14.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont15.id, :event_id => survival3.id, :episode_id => episode3.id)
+point40 = Point.create!(:contestant_id => cont17.id, :event_id => survival3.id, :episode_id => episode3.id)
+point50 = Point.create!(:contestant_id => cont18.id, :event_id => survival3.id, :episode_id => episode3.id)
+point51 = Point.create!(:contestant_id => cont10.id, :event_id => survival3.id, :episode_id => episode3.id)
+point51 = Point.create!(:contestant_id => cont10.id, :event_id => survival3.id, :episode_id => episode3.id)
+point52 = Point.create!(:contestant_id => cont20.id, :event_id => survival38.id, :episode_id => episode3.id)
+point53 = Point.create!(:contestant_id => cont21.id, :event_id => survival38.id, :episode_id => episode3.id)
+point54 = Point.create!(:contestant_id => cont22.id, :event_id => survival38.id, :episode_id => episode3.id)
+point55 = Point.create!(:contestant_id => cont14.id, :event_id => survival4.id, :episode_id => episode4.id)
+point56 = Point.create!(:contestant_id => cont12.id, :event_id => survival4.id, :episode_id => episode4.id)
+point57 = Point.create!(:contestant_id => cont7.id, :event_id => survival4.id, :episode_id => episode4.id)
+point58 = Point.create!(:contestant_id => cont10.id, :event_id => survival4.id, :episode_id => episode4.id)
+point59 = Point.create!(:contestant_id => cont8.id, :event_id => survival4.id, :episode_id => episode4.id)
+point60 = Point.create!(:contestant_id => cont11.id, :event_id => survival4.id, :episode_id => episode4.id)
+point61 = Point.create!(:contestant_id => cont16.id, :event_id => survival4.id, :episode_id => episode4.id)
+point62 = Point.create!(:contestant_id => cont9.id, :event_id => survival4.id, :episode_id => episode4.id)
+point63 = Point.create!(:contestant_id => cont15.id, :event_id => survival4.id, :episode_id => episode4.id)
+point64 = Point.create!(:contestant_id => cont17.id, :event_id => survival4.id, :episode_id => episode4.id)
+point65 = Point.create!(:contestant_id => cont13.id, :event_id => survival4.id, :episode_id => episode4.id)
+point66 = Point.create!(:contestant_id => cont18.id, :event_id => survival38.id, :episode_id => episode4.id)
+point67 = Point.create!(:contestant_id => cont19.id, :event_id => survival38.id, :episode_id => episode4.id)
+point68 = Point.create!(:contestant_id => cont8.id, :event_id => survival5.id, :episode_id => episode5.id)
+point69 = Point.create!(:contestant_id => cont13.id, :event_id => survival5.id, :episode_id => episode5.id)
+point70 = Point.create!(:contestant_id => cont12.id, :event_id => survival5.id, :episode_id => episode5.id)
+point71 = Point.create!(:contestant_id => cont14.id, :event_id => survival5.id, :episode_id => episode5.id)
+point72 = Point.create!(:contestant_id => cont7.id, :event_id => survival5.id, :episode_id => episode5.id)
+point73 = Point.create!(:contestant_id => cont11.id, :event_id => survival5.id, :episode_id => episode5.id)
+point74 = Point.create!(:contestant_id => cont9.id, :event_id => survival5.id, :episode_id => episode5.id)
+point75 = Point.create!(:contestant_id => cont15.id, :event_id => survival5.id, :episode_id => episode5.id)
+point76 = Point.create!(:contestant_id => cont10.id, :event_id => survival5.id, :episode_id => episode5.id)
+point77 = Point.create!(:contestant_id => cont16.id, :event_id => survival38.id, :episode_id => episode5.id)
+point78 = Point.create!(:contestant_id => cont17.id, :event_id => survival38.id, :episode_id => episode5.id)
+point79 = Point.create!(:contestant_id => cont7.id, :event_id => survival6.id, :episode_id => episode6.id)
+point80 = Point.create!(:contestant_id => cont11.id, :event_id => survival6.id, :episode_id => episode6.id)
+point81 = Point.create!(:contestant_id => cont10.id, :event_id => survival6.id, :episode_id => episode6.id)
+point82 = Point.create!(:contestant_id => cont8.id, :event_id => survival6.id, :episode_id => episode6.id)
+point83 = Point.create!(:contestant_id => cont9.id, :event_id => survival6.id, :episode_id => episode6.id)
+point84 = Point.create!(:contestant_id => cont12.id, :event_id => survival6.id, :episode_id => episode6.id)
+point85 = Point.create!(:contestant_id => cont13.id, :event_id => survival38.id, :episode_id => episode6.id)
+point86 = Point.create!(:contestant_id => cont14.id, :event_id => survival38.id, :episode_id => episode6.id)
+point87 = Point.create!(:contestant_id => cont15.id, :event_id => survival38.id, :episode_id => episode6.id)
+point88 = Point.create!(:contestant_id => cont8.id, :event_id => survival7.id, :episode_id => episode7.id)
+point89 = Point.create!(:contestant_id => cont10.id, :event_id => survival7.id, :episode_id => episode7.id)
+point90 = Point.create!(:contestant_id => cont7.id, :event_id => survival7.id, :episode_id => episode7.id)
+point91 = Point.create!(:contestant_id => cont9.id, :event_id => survival7.id, :episode_id => episode7.id)
+point92 = Point.create!(:contestant_id => cont11.id, :event_id => survival7.id, :episode_id => episode7.id)
+point93 = Point.create!(:contestant_id => cont12.id, :event_id => survival38.id, :episode_id => episode7.id)
+point94 = Point.create!(:contestant_id => cont9.id, :event_id => survival8.id, :episode_id => episode8.id)
+point95 = Point.create!(:contestant_id => cont8.id, :event_id => survival8.id, :episode_id => episode8.id)
+point96 = Point.create!(:contestant_id => cont7.id, :event_id => survival8.id, :episode_id => episode8.id)
+point97 = Point.create!(:contestant_id => cont10.id, :event_id => survival38.id, :episode_id => episode8.id)
+point98 = Point.create!(:contestant_id => cont8.id, :event_id => survival9.id, :episode_id => episode9.id)
+point99 = Point.create!(:contestant_id => cont7.id, :event_id => survival9.id, :episode_id => episode9.id)
+point100 = Point.create!(:contestant_id => cont9.id, :event_id => survival38.id, :episode_id => episode9.id)
+point101 = Point.create!(:contestant_id => cont7.id, :event_id => survival10.id, :episode_id => episode10.id)
+point102 = Point.create!(:contestant_id => cont8.id, :event_id => survival38.id, :episode_id => episode10.id)
