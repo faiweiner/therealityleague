@@ -31,7 +31,7 @@ class Contestant < ActiveRecord::Base
 	validates :season_id, :presence => true, :on => :create
 
 
-	def points_per_episode(episode_id)
+	def calculate_points_per_episode(episode_id)
 		Point.joins(:event).where(contestant_id: self.id, episode_id: episode_id).sum("events.points_asgn")
 	end
 
