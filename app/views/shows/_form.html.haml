@@ -1,0 +1,19 @@
+.panel.panel-default
+	.panel-body.panel
+		.col-md-12
+			- if params[:id]
+				%h1 Edit show
+			- else
+				%h1 Create New Show
+	.panel-body
+		.col-md-12
+			= form_for(@show) do |f|
+				/ Errors Message
+				- if  @show.errors.any?
+					.row.form-group.alert.alert-danger{:role => "alert"}
+						%h4
+							= pluralize(@show.errors.count, 'error')
+							prohibited this show from being saved:
+						%ul
+							-  @show.errors.full_messages.each do |message|
+								%li= message

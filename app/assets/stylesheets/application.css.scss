@@ -146,15 +146,37 @@ input.form-control.input-small {
 
 // /* BOOTSTRAP OVERRIDE */
 
-// .navbar.navbar-default {
-// 	background-color: $sports-highlight-subtle;
-// 	.navbar-nav > li > a {
-// 		color: white;
-// 	}
-// 	.navbar-brand {
-// 		color: $sports-highlight-light;
-// 	}
-// }
+.btn.btn-primary {
+	border: solid #024532 1px;
+	background-color: #076349;
+}
+.btn.btn-primary:hover {
+	background-color: #003325;
+}
+.col-md-3 > .btn.btn-primary:hover {
+	background-color: #499000;
+}
+
+
+.btn.btn-danger {
+	background-color: #b64415;
+}
+
+.btn.btn-danger:hover {
+	background-color: #ee4c0a;
+}
+
+.navbar.navbar-default {
+	background-color: #003034;
+	border: none;
+	.navbar-nav > li > a {
+		color: white;
+	}
+	.navbar-brand {
+		font-size: 2.25em;
+		color: $sports-highlight-light;
+	}
+}
 
 // .btn-primary {
 // 	background-color: $sports-main-dark;
