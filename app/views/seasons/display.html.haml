@@ -5,11 +5,10 @@
 				= @season.show.name
 				\:
 				= @season.name
-		.col-md-6.text-right.text-bottom
-			- if @current_user && @current_user.admin?
-				= link_to "Edit Show", edit_season_path(@season.id), class:"btn btn-default"
-				= link_to "Edit Contestants", contestants_season_path(@season.id), class:"btn btn-default"
-				= link_to "Back to Shows", seasons_path, class:"btn btn-default"
+				- if @current_user && @current_user.admin?
+					= link_to "Edit Show", edit_season_path(@season.id), class:"btn btn-default"
+					= link_to "Edit Contestants", contestants_season_path(@season.id), class:"btn btn-default"
+					= link_to "Back to Shows", seasons_path, class:"btn btn-default"
 		.panel-body
 			.col-md-9.col-md-push-3
 				.panel-body
@@ -38,7 +37,6 @@
 						- if @season.expired == true
 							%h4
 								Premiered: #{@season.premiere_date.strftime("%B %d, %Y")}
-							%p= @season.description
 						- else
 							%h4
 								Premieres: #{@season.premiere_date.strftime("%B %d")}

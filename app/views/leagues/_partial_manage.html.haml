@@ -23,17 +23,17 @@
 									%td.col-lg-1
 										- if league.commissioner_id == @current_user.id
 											%i.fa.fa-star
-									%td
+									%td.col-lg-2
 										= league.season.name
-									%td
+									%td.col-lg-1
 										- if league.public_access == true
 											Public
 										- else
 											Private
-									%td
-										= link_to "View League", league_path(league.id), class:'btn btn-default'
+									%td.col-lg-3
+										= link_to "View", league_path(league.id), class:'btn btn-default'
 										- if league.commissioner_id == @current_user.id
-											= link_to(content_tag(:div, "Edit League", class:'btn btn-default'), edit_league_path(league))
+											= link_to(content_tag(:div, "Edit", class:'btn btn-default'), edit_league_path(league))
 			.panel.panel-default
 				.panel-heading
 					%h4
@@ -43,17 +43,20 @@
 					%table#my_leagues_table.table.table-hover
 						%thead
 							%tr
-								%th League Name
-								%th Show
-								%th Type
-								%th= pluralize_without_count(@comm_leagues.count, "Action", text = nil)
+								%th.col-lg-4 League Name
+								%th.col-lg-1 
+								%th.col-lg-2 Show
+								%th.col-lg-1 Type
+								%th.col-lg-3
+									= pluralize_without_count(@comm_leagues.count, "Action", text = nil)
 						%tbody
 							- @past_leagues.each do |league|
 								%tr
 									%td
+										= league.name
+									%td
 										- if league.commissioner_id == @current_user.id
 											%i.fa.fa-star
-										= league.name
 									%td
 										= league.season.name
 									%td
@@ -62,4 +65,4 @@
 										- else
 											Private
 									%td
-										= link_to "View League", league_path(league.id), class:'btn btn-default'
+										= link_to "View", league_path(league.id), class:'btn btn-default'
