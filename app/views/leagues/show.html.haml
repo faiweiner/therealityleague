@@ -2,13 +2,16 @@
 	.panel-heading
 		.panel-title.row
 			%span.col-md-10
-				%h3= @league.name
-				%p= @league_season.name
+				%h3= @league.name 
+				%p
+					= @league.season.show.name + ": "
+					= @league_season.name
 			/ FIXME with jQuery
 			- if @comm_this_league == true
 				%span.col-offset-md-2
 					%h4.small Commissioner
-					= link_to"Edit League", edit_league_path, class:"btn btn-default"
+					- if @league.active == true 
+						= link_to"Edit League", edit_league_path, class:"btn btn-default" 
 			- elsif @a_participant == false
 				= button_to "Join League", league_join_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
 	.panel-body
@@ -22,8 +25,8 @@
 				%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur unde odio cumque autem totam enim debitis minima illo dicta corporis excepturi rem laborum voluptates deserunt eum minus, quod commodi accusamus.
 			- if @league.public_access == true
 				.row
-					%span.col-md-6
-						%h4.small This is a public league.
+				%span.col-md-6
+					%h4.small This is a public league.
 			- else
 				.row
 					%span.col-md-6
@@ -36,8 +39,8 @@
 							= @league.league_password
 		/ right column
 		.col-md-8
+			%h3 Ranking
 			%table.table.table-hover
-				%h3 Ranking
 				%thead
 					%th Rank
 					%th Participants
