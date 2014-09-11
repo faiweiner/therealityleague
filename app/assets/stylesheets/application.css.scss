@@ -36,8 +36,12 @@ $sports-highlight-subtle: #22024A; 	/* purple */
 
 body {
 	background-image: url('/assets/blurryBG.jpg');
+	display: block;
+	height: 1000px;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-attachment: fixed;
 	color: $copy-primary;
 	font-family: 'Open Sans', verdana, arial, helvetica, sans-serif;
 	font-size: 13px;
