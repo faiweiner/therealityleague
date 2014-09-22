@@ -42,4 +42,6 @@ Rails.application.routes.draw do
 	get '/login' => 'sessions#new'
 	post '/login' => 'sessions#login_attempt'
 	delete '/login' => 'sessions#logout'
+
+	get 'admin' => 'admin#home'
 end

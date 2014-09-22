@@ -1,11 +1,89 @@
 !!!
 %html
-  %head
-    %title The Reality League
-    %link{:href => "http://fonts.googleapis.com/css?family=Patua+One|Open+Sans", :rel => "stylesheet", :type => "text/css"}/
-    %link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", :rel => "stylesheet"}/
-    %link{:href => "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css", :rel => "stylesheet"}/
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-    = javascript_include_tag 'application', 'data-turbolinks-track' => false
-    = csrf_meta_tags
-  %body
+	%head
+		%title The Reality League
+		%link{:href => "http://fonts.googleapis.com/css?family=Patua+One|Open+Sans", :rel => "stylesheet", :type => "text/css"}/
+		%link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", :rel => "stylesheet"}/
+		%link{:href => "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css", :rel => "stylesheet"}/
+		= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+		= javascript_include_tag 'application', 'data-turbolinks-track' => false
+		= csrf_meta_tags
+	%body
+		.wrapper
+			%nav.navbar.navbar-default{:role => "navigation"}
+				.container-fluid
+					.navbar-header
+						= link_to "The Reality League", root_path, {:class => "navbar-brand"}
+					.collapse.navbar-collapse
+						%ul.nav.navbar-nav
+							%li
+								%a{:href => "/pages/about"} About
+							%li.dropdown
+								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "/leagues"}
+									Leagues
+									%span.caret
+								- if @current_user
+									%ul.dropdown-menu{:role => "menu"}
+										%li
+											%a{:href => "/leagues"} My Dashboard
+										%li.divider
+										%li
+											%a{:href => "/leagues/new"} Create New League
+										%li
+											%a{:href => "/leagues/search"} Search Leagues
+							%li.dropdown
+								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "/shows"}
+									Shows
+									%span.caret
+								%ul.dropdown-menu{:role => "menu"}
+									- @shows.each do |show|
+										%li= link_to show.name, show_path(show.id)
+							- if @current_user && @current_user.admin?
+								%li.dropdown
+									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+										Admin
+										%span.caret
+									%ul.dropdown-menu{:role => "menu"}
+										%li.dropdown-header Manage Shows
+										%li
+											%a{:href => "/shows/new"} Add new show
+										/ FIXME
+										%li
+											%a{:href => "/shows"} View/Update shows
+										/ FIXME
+										%li
+											%a{:href => "/events"} Add/View schemas
+										/ FIXME
+										%li.divider
+										%li.dropdown-header Manage Seasons
+										%li
+											%a{:href => "/seasons/new"} Add new season
+										/ FIXME
+										%li
+											%a{:href => "/seasons"} View/Update seasons
+										/ FIXME
+										%li.divider
+										%li.dropdown-header Manage Users
+										%li
+											%a{:href => "#"} View all users
+										/ FIXME
+										%li.divider
+										%li.dropdown-header Manage Leagues
+										%li
+											%a{:href => "#"} View all leagues
+										/ FIXME
+						%ul.nav.navbar-nav.navbar-right
+							- if @current_user.present?
+								%li
+									%a{:href => user_path(@current_user)}
+										= @current_user.username
+								%li
+									%a{:href => "/login", :data => {:method => :delete, :confirm => 'Really logout?'}} Logout
+							- else
+								%li
+									%a{:href => "/users/new"} Sign Up
+								%li
+									%a{:href => "/login"} Sign In
+			= yield
+			.copyright
+				Built by Fai Weiner for GA's WDI-5

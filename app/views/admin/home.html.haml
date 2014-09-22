@@ -1,0 +1,16 @@
+.panel.panel-default
+	.panel-body
+		.col-lg-12
+			= @raise
+			%h1 All Seasons
+			- @shows.each do |show|
+				%p
+					= show.name
+			%h1 All Leagues
+			- @leagues.each do |league|
+				%p
+					= league.name
+			%h1 All Users
+			- @users.each do |user|
+				%p
+					= user.username
