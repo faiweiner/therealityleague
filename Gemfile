@@ -47,7 +47,9 @@ end
 group :production do
 	gem 'rails_12factor'
 end
+
 gem 'haml'
+gem 'devise'
 
 gem 'bootstrap-x-editable-rails'
 # Use unicorn as the app server

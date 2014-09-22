@@ -8,12 +8,11 @@ class SessionsController	< ApplicationController
 	end
 
 	def login_attempt
-		raise params
 		user = User.find_by(:email => params[:email])
 		if user.present? && user.authenticate(params[:password])
 			session[:user_id] = user.id
 			if user.leagues.count > 0
-				flash[:notice] = "Welcome back!"
+				flash[:notice] = "Welcome back, #{user.username}!"
 				flash[:color] = "valid"
 				redirect_to leagues_path
 			else
