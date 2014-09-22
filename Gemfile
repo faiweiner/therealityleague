@@ -47,6 +47,7 @@ end
 group :production do
 	gem 'rails_12factor'
 end
+
 gem 'haml'
 
 gem 'bootstrap-x-editable-rails'

@@ -8,7 +8,6 @@ class SessionsController	< ApplicationController
 	end
 
 	def login_attempt
-		raise params
 		user = User.find_by(:email => params[:email])
 		if user.present? && user.authenticate(params[:password])
 			session[:user_id] = user.id
