@@ -1,0 +1,21 @@
+!!!
+%html
+	%head
+		%title The Reality League
+		%link{:href => "http://fonts.googleapis.com/css?family=Patua+One|Open+Sans", :rel => "stylesheet", :type => "text/css"}/
+		%link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", :rel => "stylesheet"}/
+		%link{:href => "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css", :rel => "stylesheet"}/
+		= javascript_include_tag 'application', 'data-turbolinks-track' => false
+		= csrf_meta_tags
+	%body
+		.wrapper
+			%nav.navbar.navbar-default{:role => "navigation"}
+				%ul
+					- if @current_user.present?
+						%li
+							%a{:href => user_path(@current_user)}
+								= @current_user.username
+						%li
+							%a{:href => "/login", :data => {:method => :delete, :confirm => 'Really logout?'}} Logout
+			%h1 Admin Dashboard
+			= yield

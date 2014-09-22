@@ -40,10 +40,13 @@
 										%li= link_to show.name, show_path(show.id)
 							- if @current_user && @current_user.admin?
 								%li.dropdown
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "/admin"}
 										Admin
 										%span.caret
 									%ul.dropdown-menu{:role => "menu"}
+										%li
+											%a{:href => "/admin"} Admin Dashboard
+										%li.divider
 										%li.dropdown-header Manage Shows
 										%li
 											%a{:href => "/shows/new"} Add new show
