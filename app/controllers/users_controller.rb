@@ -20,9 +20,11 @@ class UsersController < ApplicationController
 			flash[:color] = "valid"
 			redirect_to root_path
 		else
-			flash[:notice] = "Unsuccessful sign up, please try again."
-			flash[:color] = "prohibited"
-			render :new
+			if @user.id == nil
+				flash[:notice] = "Unsuccessful sign up, please try again."
+				flash[:color] = "invalid"
+				render :new
+			end
 		end
 	end
 

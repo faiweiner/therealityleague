@@ -15,6 +15,7 @@ class Show < ActiveRecord::Base
 	has_many :episodes, through: :seasons
 	has_many :points, through: :events
 
+	validates :name, :presence => true, :on => :create
 	private
 
 	def self.select_show

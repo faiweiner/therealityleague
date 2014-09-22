@@ -22,7 +22,7 @@ RSpec.describe User, :type => :model do
 	it { is_expected.to have_and_belong_to_many(:leagues) }
 	it { is_expected.to have_many(:rosters) }
 	it { is_expected.to have_many(:contestants) } # Through rosters
-	it { is_expected.to have_many(:shows) } # Through leagues
+	it { is_expected.to have_many(:seasons) } # Through leagues
 	it { is_expected.to have_many(:rounds) } # Through leagues
 
 	# ---- general model checks ---- #
@@ -65,14 +65,13 @@ RSpec.describe User, :type => :model do
 		context 'when an invalid email address' do
 			it 'should be invalid' do
 				@user = FactoryGirl.create(:user)
-				addresses = %w[user@foo,com user_at_foo.org example.user@foo. foo@bar_baz.com foo@bar+baz.com]
+				addresses = %w[user@foo,com user_at_foo.org example.user@foo. foo@bar_baz.com foo@bar+baz.com foobar]
 				addresses.each do |invalid_address|
 					@user.email = invalid_address
 					expect(@user).to be_invalid
 				end
 			end
 		end
-
 	end
 
 	# username
@@ -139,4 +138,12 @@ RSpec.describe User, :type => :model do
 			it { expect(FactoryGirl.build(:user, password: 'turkey', password_confirmation: 'chicken')).to be_invalid }
 		end
 	end
+
+	describe	'.roster_for_league' do
+		context 'when a league is found' do
+			it 'responds with 200'
+			it 'shows roster'
+		end
+	end
+
 end

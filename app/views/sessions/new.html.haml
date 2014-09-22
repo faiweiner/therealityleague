@@ -3,6 +3,14 @@
 		.col-md-12
 			%h2 Sign In
 			#sign-in-form.col-lg-4.col-md-6.col-sm-6
+				/ Error Messages
+				- if flash[:notice] && flash[:color] == "valid"
+					.row.form-group
+						.alert.alert-success{:role => "alert"}= flash[:notice]
+				- elsif flash[:notice] && flash[:color] == "invalid"
+					.row.form-group
+						.alert.alert-warning{:role => "alert"}= flash[:notice]
+				/ End Error Messages
 				= form_tag("/login", method: "post", :role => "form") do
 					.row.form-group
 						= label_tag :email, "Email", class:"control-label"
@@ -17,9 +25,12 @@
 						Remember me
 					.row.form-group
 						= submit_tag("Sign in", :class => "form_submit btn btn-default")
-					.row.form-group
-						= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in", class:"btn btn-primary", disabled:'disabled'
-					.row.form-group
-						%p
-							By signing in you are agreeing to our
-							%a{:href => "/pages/about"} Term and Services.
+						%span.help-block
+							%a{:href => "#"} Forgot password?
+					/ .row.form-group
+					/ 	= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in", class:"btn btn-primary", disabled:'disabled'
+					.row
+						%p 
+							New to the site?
+							%a{:href => "/users/new"} Sign Up
+			#sign-in-message.col-lg-8.col-md-6.col-sm-6
