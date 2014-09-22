@@ -1,16 +1,74 @@
-.panel.panel-default
+.panel
 	.panel-body
+		%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde dignissimos aliquam autem, iure sit, iusto, molestias corrupti accusamus magni doloremque harum officiis quas nisi quos beatae eos et! Sunt, soluta!
 		.col-lg-12
-			= @raise
 			%h1 All Seasons
-			- @shows.each do |show|
-				%p
-					= show.name
+			.input-group
+				%span.input-group-addon
+					Filter
+				%input#filter
+					= form_tag
+			%table.table.table-bordered
+				%thead
+					%tr
+						%th Show
+						%th Season
+						%th #
+						%th Expired
+						%th Premiere
+						%th Finale
+						%th Published
+				%tbody
+				- @shows.each do |show|
+					- show.seasons.each do |season|	
+						%tr
+							%td
+								= show.name
+							%td
+								= season.name
+							%td 
+								= season.number
+							%td
+								- if season.expired == true
+									True
+							%td
+								= season.premiere_date
+							%td
+								= season.finale_date
+							%td
+								= season.published			
 			%h1 All Leagues
 			- @leagues.each do |league|
 				%p
 					= league.name
 			%h1 All Users
-			- @users.each do |user|
-				%p
-					= user.username
+			%table
+				%tbody
+					%tr
+						%td User Count
+						%td 
+							= @users.count
+					%tr
+						%td Active Users
+						%td ??
+					%tr
+						%td Avg. league/user
+						%td ??
+			%table.table.table-hover
+				%thead
+					%tr
+						%th Username
+						%th Email
+						%th Joined On
+						%th Last Updated
+				%tbody
+					- @users.each do |user|
+						%tr
+							%td
+								= user.username
+							%td
+								= user.email
+							%td
+								= user.created_at
+							%td 
+								= user.updated_at
