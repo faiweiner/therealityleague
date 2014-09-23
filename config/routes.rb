@@ -3,8 +3,10 @@ Rails.application.routes.draw do
 
 	get 'events/:show_id' => 'events#display', :as => :event
   resources :events
+  get 'points/display'
+  get 'points/get_seasons' => 'points#seasons', :as => :get_seasons
   resources :points
-
+  
 	get 'pages/about' => 'pages#about'
 
 	get 'seasons/search' => 'seasons#search'
@@ -17,7 +19,6 @@ Rails.application.routes.draw do
 	put 'seasons/:id' => 'seasons#update'
 	delete 'seasons/:id' => 'seasons#destroy'
 	resources :shows
-
 
 	get 'leagues/search' => 'leagues#search'
 	post 'leagues/search/:search' => 'leagues#results'

@@ -1,0 +1,36 @@
+.row
+	.col-lg-2= form_tag("/search", method: "get")
+= form_for(:point_entry, :url => {:action => "display"}, :html => {:method => "get"}, class:"form-horizontal", :role => "form") do |f|
+	/ Error Messages
+	.row.form-group
+		- if flash[:notice] && flash[:color] == "valid"
+			.alert.alert-success{:role => "alert"}= flash[:notice]
+		- elsif flash[:notice] && flash[:color] == "invalid"
+			.alert.alert-warning{:role => "alert"}= flash[:notice]
+		- elsif flash[:notice] && flash[:color] == "prohibited"
+			.alert.alert-danger{:role => "alert"}
+				%p= flash[:notice]
+				- if @contestant.errors.any?
+					%p
+						= pluralize(@contestant.errors.count, "error")
+						prohibited this contestant from being saved:
+					%ul
+						- @contestant.errors.full_messages.each do |message|
+							%li= message
+	/ End Error Messages
+	/ Form Portion
+	.row.form-group
+		.col-lg-2= f.label :show
+		.col-lg-5= f.select :show_select, options_for_select(Show.select_show, 'id'), {}, class:"form-control"
+	.row.form-group
+		.col-lg-2= f.label :season
+		.col-lg-5= f.select :season_select, options_for_select(Season.select_season, 'id'), {}, class:"form-control"
+	.row.form-group
+		.col-lg-2= f.label :contestant_id
+		.col-lg-5= f.number_field :contestant_id, class:"form-control"
+	.row.form-group
+		.col-lg-2= f.label :episode_id
+		.col-lg-5= f.number_field :episode_id, class:"form-control"
+	.row.form-group
+		.col-lg-2= f.label :event_id
+		.col-lg-5= f.number_field :event_id, class:"form-control"
