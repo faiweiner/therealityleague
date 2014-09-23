@@ -22,9 +22,9 @@ $copy-primary: black;
 $sports-main-dark: #000339;
 $sports-main-medium: #000363;
 $sports-main-light: #00049E;
-$sports-main-contrast: #00CCFF;
+$sports-main-contrast: white;
 $sports-highlight-dark: #E82C0C;
-$sports-highlight-light: #FF530D;
+$sports-highlight-light: white;
 $sports-highlight-subtle: #22024A; 	/* purple */
 @import "bootstrap-sprockets";
 @import "bootstrap";
@@ -35,7 +35,7 @@ $sports-highlight-subtle: #22024A; 	/* purple */
 }
 
 body {
-	background-image: url('/assets/blurryBG.jpg');
+	background-color: white;
 	display: block;
 	height: 1000px;
 	-webkit-background-size: cover;

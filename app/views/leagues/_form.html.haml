@@ -18,14 +18,20 @@
 			/ Form
 			.row
 				= f.hidden_field :commissioner_id, value: @current_user.id
-			/ Select reality show
+			/ Select show to filter season
 			.row.form-group
 				.col-md-3.text-right
-					= f.label :reality_show
+					= label_tag :show
+				.col-md-6
+					= select_tag(:show_list, options_for_select(Show.select_show, 'id'), {class:"form-control", :data => {:toggle => "popover", :trigger => "focus", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"})
+			/ Select reality show's season
+			.row.form-group
+				.col-md-3.text-right
+					= f.label :season
 					%br/
 				.col-md-6
 					- if @league_season_id
-						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {}, {:class => "form-control"})
+						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {}, {class:"form-control"})
 					- else
 						= f.select(:season, options_for_select(Season.select_season), {}, {:class => "form-control"})
 			/ Name of League
@@ -33,24 +39,25 @@
 				.col-md-3.text-right
 					= f.label :league_name
 					%br/
-				.col-md-6
-					= f.text_field :name, :class => "form-control"
+				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
+					= f.text_field :name, class:"form-control", :placeholder => "Enter name here"
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :league_access
-				.col-md-3
-					= f.radio_button :public_access, true
-					= f.label(:public, 'Public league')
-				.col-md-3
-					= f.radio_button(:public_access, false)
-					= f.label(:private, 'Private league')
+				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "Go 'Public' if you want others to search and join your league. Select 'Private' if you want an exclusive 'invite-only' league."}, :title => "Public vs. Private"}
+					.col-md-6
+						= f.radio_button :public_access, true
+						= f.label(:public, 'Public league')
+					.col-md-6
+						= f.radio_button(:public_access, false)
+						= f.label(:private, 'Private league')
 			/	Draft Type
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :draft_type
 					%br/
-				.col-md-6
+				.col-md-6{:id => "draft_type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
 					- if @league_draft_type	
 						= f.select(:draft_type, options_for_select(@draft_type, @league_draft_type), {}, {:class => "form-control"})
 					- else
@@ -60,12 +67,13 @@
 				.col-md-3.text-right
 					= f.label :scoring_system
 					%br/
-				.col-md-3
-					= f.radio_button :scoring_system, true
-					= f.label(:standard, 'Standard')
-				.col-md-3
-					= f.radio_button(:scoring_system, false)
-					= f.label(:custom, 'Custom')
+				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Choose between standard scoring system for a show's contestant, or customize your league's scoring schema."}, :title => "Select Scoring System"}
+					.col-md-6
+						= f.radio_button :scoring_system, true
+						= f.label(:standard, 'Standard')
+					.col-md-6
+						= f.radio_button(:scoring_system, false)
+						= f.label(:custom, 'Custom')
 			/ Submit
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9

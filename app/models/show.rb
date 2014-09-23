@@ -21,5 +21,6 @@ class Show < ActiveRecord::Base
 	def self.select_show
 		# This model method is for populating Create League's drop-down menu
 		@shows_list = Show.all.each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
+		@shows_list.unshift(["Select a show", nil])
 	end
 end

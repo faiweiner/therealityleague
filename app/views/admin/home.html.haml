@@ -4,10 +4,9 @@
 		.col-lg-12
 			%h1 All Seasons
 			.input-group
-				%span.input-group-addon
-					Filter
-				%input#filter
-					= form_tag
+				.input-header Filters
+				= select_tag "Show", options_from_collection_for_select(@shows, "id", "name"), class:"form-control"
+				= select_tag "Published", options_for_select("true" "false"), class:"form-control"
 			%table.table.table-bordered
 				%thead
 					%tr
@@ -18,7 +17,7 @@
 						%th Premiere
 						%th Finale
 						%th Published
-				%tbody
+				%tbody.searchable
 				- @shows.each do |show|
 					- show.seasons.each do |season|	
 						%tr
@@ -37,6 +36,8 @@
 								= season.finale_date
 							%td
 								= season.published			
+			%h1 Live Tracking
+			= link_to("Points", points_path)
 			%h1 All Leagues
 			- @leagues.each do |league|
 				%p

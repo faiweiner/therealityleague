@@ -1,0 +1,22 @@
+.panel.panel-default
+	.panel-body
+		.col-lg-12.col-md-12
+			%h2 All Points
+			%table
+				%thead
+				%tbody
+					- @points.each do |point|
+						%tr
+							%td= point.id
+							%td
+								= point.contestant.name
+								= point.event.event
+							%td= point.episode.id
+			%table
+				%thead
+				%tbody
+					- @points_info_table.each do |event, points|
+						%tr
+							%td= event
+							%td= points	
+

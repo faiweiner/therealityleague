@@ -3,6 +3,7 @@ class LeaguesController < ApplicationController
 	before_action :check_if_logged_in, :except => [:index, :new, :search]
 	before_action :save_login_state, :only => [:new, :search]
 	before_action :private_restriction, :only => [:show]
+	before_action :commissioner_restriction?, :only => [:edit]
 
 	def index
 		if @current_user == nil
@@ -71,6 +72,11 @@ class LeaguesController < ApplicationController
 	end
 
 	def edit
+		if commissioner_restriction? == false
+			flash[:notice] = "This account is not authorized to edit the current league."
+			flash[:color] = "prohibited"
+			redirect_to league_path(params[:id])
+		end
 		@league = League.find(params[:id])
 		@league_season_id = @league.season_id
 		@league_draft_type = @league.draft_type
@@ -230,4 +236,13 @@ class LeaguesController < ApplicationController
 		end
 	end
 
+	def commissioner_restriction?
+		@league = League.find(params[:id])
+		@commissioner_id = @league.commissioner_id
+		if @current_user.id == @commissioner_id
+			return true
+		else
+			return false
+		end
+	end
 end
