@@ -2,6 +2,8 @@ class LeaguesController < ApplicationController
 
 	before_action :check_if_logged_in, :except => [:index, :new, :search]
 	before_action :save_login_state, :only => [:new, :search]
+	before_action :private_restriction, :only => [:show]
+	before_action :commissioner_restriction?, :only => [:edit]
 
 	def index
 		if @current_user == nil
@@ -70,6 +72,11 @@ class LeaguesController < ApplicationController
 	end
 
 	def edit
+		if commissioner_restriction? == false
+			flash[:notice] = "This account is not authorized to edit the current league."
+			flash[:color] = "prohibited"
+			redirect_to league_path(params[:id])
+		end
 		@league = League.find(params[:id])
 		@league_season_id = @league.season_id
 		@league_draft_type = @league.draft_type
@@ -88,11 +95,9 @@ class LeaguesController < ApplicationController
 		redirect_to leagues_path
 	end
 	def show
-		@league = League.find(params[:id])
+		@participants = @league.users
 		@league_type = @league.draft_type
 		@league_season = Season.find(@league.season)
-		# @league_rosters = @league.rosters
-		@participants = @league.users
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
 		@comm_this_league = true if @league.commissioner_id == @current_user.id
@@ -217,4 +222,27 @@ class LeaguesController < ApplicationController
 		return user.id
 	end
 
+	def private_restriction
+		@league = League.find(params[:id])
+		if @league.public_access == false
+			if @league.users.include? @current_user
+				flash[:notice] = "You are currently viewing a private league"
+				flash[:color] = "valid"
+			else
+				flash[:notice] = "You do not have permission to access this private league."
+				flash[:color] = "prohibited"
+				redirect_to leagues_path
+			end
+		end
+	end
+
+	def commissioner_restriction?
+		@league = League.find(params[:id])
+		@commissioner_id = @league.commissioner_id
+		if @current_user.id == @commissioner_id
+			return true
+		else
+			return false
+		end
+	end
 end

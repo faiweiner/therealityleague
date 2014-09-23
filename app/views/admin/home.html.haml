@@ -1,0 +1,75 @@
+.panel
+	.panel-body
+		%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde dignissimos aliquam autem, iure sit, iusto, molestias corrupti accusamus magni doloremque harum officiis quas nisi quos beatae eos et! Sunt, soluta!
+		.col-lg-12
+			%h1 All Seasons
+			.input-group
+				.input-header Filters
+				= select_tag "Show", options_from_collection_for_select(@shows, "id", "name"), class:"form-control"
+				= select_tag "Published", options_for_select("true" "false"), class:"form-control"
+			%table.table.table-bordered
+				%thead
+					%tr
+						%th Show
+						%th Season
+						%th #
+						%th Expired
+						%th Premiere
+						%th Finale
+						%th Published
+				%tbody.searchable
+				- @shows.each do |show|
+					- show.seasons.each do |season|	
+						%tr
+							%td
+								= show.name
+							%td
+								= season.name
+							%td 
+								= season.number
+							%td
+								- if season.expired == true
+									True
+							%td
+								= season.premiere_date
+							%td
+								= season.finale_date
+							%td
+								= season.published			
+			%h1 Live Tracking
+			= link_to("Points", points_path)
+			%h1 All Leagues
+			- @leagues.each do |league|
+				%p
+					= league.name
+			%h1 All Users
+			%table
+				%tbody
+					%tr
+						%td User Count
+						%td 
+							= @users.count
+					%tr
+						%td Active Users
+						%td ??
+					%tr
+						%td Avg. league/user
+						%td ??
+			%table.table.table-hover
+				%thead
+					%tr
+						%th Username
+						%th Email
+						%th Joined On
+						%th Last Updated
+				%tbody
+					- @users.each do |user|
+						%tr
+							%td
+								= user.username
+							%td
+								= user.email
+							%td
+								= user.created_at
+							%td 
+								= user.updated_at

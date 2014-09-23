@@ -68,4 +68,14 @@ class Season < ActiveRecord::Base
 			return true
 		end
 	end
+
+	def get_points_by_season(season_id)
+		season = Season.find(season_id)
+		episodes_list = Episode.where(season_id: season_id)
+		@points_season = []
+		episode_list.each do |episode|
+			@points_season << episode.points
+		end
+		return @points_season
+	end
 end

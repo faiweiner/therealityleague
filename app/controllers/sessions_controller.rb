@@ -11,8 +11,10 @@ class SessionsController	< ApplicationController
 		user = User.find_by(:email => params[:email])
 		if user.present? && user.authenticate(params[:password])
 			session[:user_id] = user.id
-			if user.leagues.count > 0
-				flash[:notice] = "Welcome back, #{user.username}!"
+			if user.admin?
+				redirect_to admin_path
+			elsif	user.leagues.count > 0
+				flash[:notice] = "Welcome back, #{@current_user}!"
 				flash[:color] = "valid"
 				redirect_to leagues_path
 			else
