@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
 	validates_format_of :email, :with => EmailRegex
 	validates :username, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create
 	validates :password, length: { in: 6..20 }, confirmation: true
+	validates :password_confirmation, presence: true, :on => :update, :unless => lambda{ |user| user.password.blank? }
 
 	def roster_for_league(league)
 		roster = self.rosters.where(:league_id => league.id).first

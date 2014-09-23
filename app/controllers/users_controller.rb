@@ -33,10 +33,13 @@ class UsersController < ApplicationController
 	end
 
 	def update
-		if @current_user.update(user_params)
+		if @current_user.update(user_short_params)
+			flash[:notice] = "You've successfully updated."
 			redirect_to user_path
 		else
 			@user = @current_user
+			flash[:notice] = "Something went wrong."
+			flash[:color] = "invalid"
 			render :edit
 		end
 	end
@@ -46,6 +49,10 @@ class UsersController < ApplicationController
 	end
 	
 	private
+
+	def user_short_params
+		params.require(:user).permit(:email, :username, :avatar)
+	end
 
 	def user_params
 		params.require(:user).permit(:email, :username, :avatar, :password, :password_confirmation)
