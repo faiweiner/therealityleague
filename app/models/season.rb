@@ -30,6 +30,8 @@ class Season < ActiveRecord::Base
 	validates :name, :presence => true, :on => :create
 	validates :premiere_date, :presence => true, :on => :create
 
+	private
+	
 	def self.top_three
 		# This model method is called in Pages#home to give list of the three top shows
 		

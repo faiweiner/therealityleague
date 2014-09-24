@@ -1,6 +1,5 @@
 .row
-	.col-lg-2= form_tag("/search", method: "get")
-= form_for(:point_entry, :url => {:action => "display"}, :html => {:method => "get"}, class:"form-horizontal", :role => "form") do |f|
+= form_for(:point_entry, :url => {:action => "create"}, :html => {:method => "post"}, class:"form-horizontal", :role => "form") do |f|
 	/ Error Messages
 	.row.form-group
 		- if flash[:notice] && flash[:color] == "valid"
@@ -20,17 +19,25 @@
 	/ End Error Messages
 	/ Form Portion
 	.row.form-group
-		.col-lg-2= f.label :show
+		.col-lg-2= f.label :show_id
 		.col-lg-5= f.select :show_select, options_for_select(Show.select_show, 'id'), {}, class:"form-control"
 	.row.form-group
-		.col-lg-2= f.label :season
+		.col-lg-2= f.label :season_id
 		.col-lg-5= f.select :season_select, options_for_select(Season.select_season, 'id'), {}, class:"form-control"
 	.row.form-group
 		.col-lg-2= f.label :contestant_id
-		.col-lg-5= f.number_field :contestant_id, class:"form-control"
+		.col-lg-5= f.select :contestant_select, options_for_select(Contestant.select_contestant, 'id'), {}, class:"form-control"
 	.row.form-group
 		.col-lg-2= f.label :episode_id
-		.col-lg-5= f.number_field :episode_id, class:"form-control"
+		.col-lg-5= f.select :episode_select, options_for_select(Episode.select_episode, 'id'), {}, class:"form-control"
+	.row.form-group
+		.col-lg-2= f.label :event_type
+		.col-lg-5= f.select :event_type_select, options_for_select(Event.select_type), {}, class:"form-control"
 	.row.form-group
 		.col-lg-2= f.label :event_id
-		.col-lg-5= f.number_field :event_id, class:"form-control"
+		.col-lg-5= f.select :event_select, options_for_select(Event.select_event, 'id'), {}, class:"form-control"
+	.row.form-group
+		.col-lg-2
+		.col-lg-5
+			= f.submit "Save New Point", class:"btn btn-primary btn-md"
+			= link_to "Cancel", points_path, class:"btn btn-default btn-md"

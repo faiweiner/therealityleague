@@ -30,6 +30,11 @@ class Contestant < ActiveRecord::Base
 	validates :name, :presence => true, :on => :create
 	validates :season_id, :presence => true, :on => :create
 
+	def self.select_contestant
+		# This model method is for populating Create League's drop-down menu
+		@contestants_list = Contestant.where(present: true).each.map {|c| [c.name, c.id] }
+		@contestants_list.unshift(["Select a contestant", nil])
+	end
 
 	def calculate_points_per_episode(episode_id)
 		Point.joins(:event).where(contestant_id: self.id, episode_id: episode_id).sum("events.points_asgn")

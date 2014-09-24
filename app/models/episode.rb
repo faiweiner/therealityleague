@@ -19,4 +19,9 @@ class Episode < ActiveRecord::Base
 
 	validates :season_id, :presence => true
 	validates :air_date, :presence => true
+
+	def self.select_episode
+		@episodes_list = Episode.all.each_with_index.map {|e| [e.air_date.strftime("%m/%d/%Y"), e.id] }
+		@episodes_list.unshift(["Select an episode", nil])
+	end
 end

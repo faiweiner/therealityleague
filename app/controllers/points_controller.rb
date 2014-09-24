@@ -21,8 +21,37 @@ class PointsController < ApplicationController
 	end
 
 	def create
-		@point = Point.new point_param
+		#====== check for bad entry ======#
+		point_show = Show.find(params[:point_entry][:show_select])
+		point_season = Season.find(params[:point_entry][:season_select])
+		point_contestant = Contestant.find(params[:point_entry][:contestant_select])
+		point_event = Event.find(params[:point_entry][:event_select])
+		if point_season.show_id != point_show.id
+			#---- if selected season doesn't belong to the show
+			flash[:notice] = "Invalid entry: selected season does not belong to the selected show."
+			flash[:color] = "invalid"
+			render :new
+		elsif point_season.contestants.exclude? point_contestant
+			#---- if selected contestant does not belong to the season
+			flash[:notice] = "Invalid entry: selected contestant does not belong to the selected season."
+			flash[:color] = "invalid"
+			render :new
+		elsif point_show.events.exclude? point_event
+			#---- if event does not belong to the show
+			flash[:notice] = "Invalid entry: selected contestant does not belong to the selected season."
+			flash[:color] = "invalid"
+			render :new
+		else
+			#---- if all is good
+			new_params = {
+				:contestant_id => params[:point_entry][:contestant_select], 
+				:episode_id => params[:point_entry][:episode_select], 
+				:event_id => params[:point_entry][:event_select]}
+			@point = Point.new new_params
+		end
+
 		if @point.save
+			raise "what are you saving?"
 			redirect_to points_path
 		else
 			render :new
@@ -59,11 +88,9 @@ class PointsController < ApplicationController
 		return string
 	end
 
-	# Generate a 
+	# Generate
 	def points_by_season(season_id)
 		episodes_season_list = Episode.where(season_id: season_id)
 		@points_all.where(episode_id: season_id)
 	end
-
-
 end
