@@ -8,11 +8,18 @@ class PointsController < ApplicationController
 		@points_all = Point.all
 		@points_info_table = {}
 		@points_all.each do |point|
+			season = point.episode.season
+			episode = point.episode
 			contestant = point.contestant.name
 			event = generate_half_sentence(point.event.event)
 			pts = point.event.points_asgn
-			points_description = contestant + event
-			@points_info_table[points_description] = pts
+			point_description = contestant + event
+			point_data = {
+				:season => season,
+				:episode => episode,
+				:event => point_description,
+				:points_assigned => pts}
+			@points_info_table[point.id] = point_data
 		end
 	end
 
@@ -63,7 +70,7 @@ class PointsController < ApplicationController
 	end
 
 	def delete
-		
+		raise "got to delete"
 	end
 
 	def display

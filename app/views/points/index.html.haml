@@ -5,14 +5,22 @@
 			= link_to "Add New Occurrence", new_point_path
 		.col-lg-12.col-md-12
 			%h2 All Points
-			%table
+			%table.table.table-bordered
 				%thead
 					%tr
-						%th Events
-						%th Points Assigned
+						%th.col-lg-4 Season
+						%th.col-lg-5 Events
+						%th.col-lg-1 Pts Assigned
+						%th Actions
 				%tbody
-					- @points_info_table.each do |event, points|
+					- @points_info_table.each do |id, point|
 						%tr
-							%td= event
-							%td= points	
+							%td
+								= point[:season].show.name + ": "
+								= point[:season].name
+							%td= point[:event]
+							%td= point[:points_assigned]
+							%td.col-lg-3
+								= link_to "Edit", edit_point_path(id), class:"btn btn-default btn-sm"
+								= link_to "Delete", point_path(id), :action => "destroy", :method => "post",  class:"btn btn-default btn-sm"
 
