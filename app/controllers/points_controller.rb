@@ -28,6 +28,7 @@ class PointsController < ApplicationController
 	end
 
 	def create
+		if params[:point_entry][:show_select] == ""
 		#====== check for bad entry ======#
 		point_show = Show.find(params[:point_entry][:show_select])
 		point_season = Season.find(params[:point_entry][:season_select])
