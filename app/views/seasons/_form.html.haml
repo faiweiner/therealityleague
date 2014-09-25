@@ -1,71 +1,89 @@
 .panel.panel-default
-  .panel-body
-    .col-md-12
-      / Header dymanic - login or sign up
-      - if params[:id]
-        %h2 Edit Season
-      - else
-        %h2 Add New Season
-      / Content dymanic - login or sign up
-      #sign-up-form.col-lg-4.col-md-6.col-sm-6
-        = form_for(@season, class:"form-horizontal", :role => "form") do |f|
-          / Error Messages
-          .row.form-group
-            - if flash[:notice] && flash[:color] == "valid"
-              .alert.alert-success{:role => "alert"}= flash[:notice]
-            - elsif flash[:notice] && flash[:color] == "invalid"
-              .alert.alert-warning{:role => "alert"}= flash[:notice]
-            - elsif flash[:notice] && flash[:color] == "prohibited"
-              .alert.alert-danger{:role => "alert"}
-                %p= flash[:notice]
-                - if @season.errors.any?
-                  %p
-                    = pluralize(@season.errors.count, "error")
-                    prohibited this season from being saved:
-                  %ul
-                    - @season.errors.full_messages.each do |message|
-                      %li= message
-          / End Error Messages
-          / Form Portion
-          #password-update-group.row.form-group
-            = f.label :show_id
-            = f.select(:show_id, options_for_select(Show.select_show), {}, {class:"form-control"})
-          .row.form-group
-            = f.label :title
-            = f.text_field :name, class:"form-control", placeholder: "Season\'s title"
-          .row.form-group
-            = f.label :season_number
-            = f.number_field :number, class:"form-control", placeholder: 0
-          .row.form-group
-            = f.label :premiere_date
-            = f.date_field :premiere_date, class:"form-control"
-          .row.form-group
-            = f.label :finale_date
-            = f.date_field :finale_date, class:"form-control"
-          .row.form-group
-            = f.label :country_origin
-            = f.text_field :country_origin, class:"form-control"
-          #password-update-group.row.form-group
-            = f.label :type
-            = f.text_field :type, class:"form-control", :placeholder => "Romance, Drama, Race"
-          #password-update-group.row.form-group
-            = f.label :description
-            = f.text_area :description, class:"form-control", :placeholder => "Enter description here", :rows => 5
-          #password-update-group.row.form-group
-            = f.label :image
-            = f.text_field :image, class:"form-control", :placeholder => "url"
-          #password-update-group.row.form-group
-            = f.label :episode_count
-            = f.number_field :episode_count, class:"form-control", :placeholder => 10
-          .row.form-group.actions
-            - if params[:id]
-              = f.submit "Update Show", class:"btn btn-primary btn-lg"
-              = link_to "Cancel", season_path(@season.id), class:"btn btn-default btn-lg"
-            - else
-              = f.submit "Create New Show", class:"btn btn-primary btn-lg"
-              = link_to "Cancel", seasons_path, class:"btn btn-default btn-lg"
-          / End Form portion
-      / End sign-up-form
-    / End col-md-12
-  / End panel-body
+	.panel-body
+		.col-md-12
+			/ Header dymanic - login or sign up
+			- if params[:id]
+				%h2 Edit Season
+			- else
+				%h2 Add New Season
+			/ Content dymanic - login or sign up
+			#sign-up-form.col-lg-4.col-md-6.col-sm-6
+				= form_for(@season, class:"form-horizontal", :role => "form") do |f|
+					/ Error Messages
+					.row.form-group
+						- if flash[:notice] && flash[:color] == "valid"
+							.alert.alert-success{:role => "alert"}= flash[:notice]
+						- elsif flash[:notice] && flash[:color] == "invalid"
+							.alert.alert-warning{:role => "alert"}= flash[:notice]
+						- elsif flash[:notice] && flash[:color] == "prohibited"
+							.alert.alert-danger{:role => "alert"}
+								%p= flash[:notice]
+								- if @season.errors.any?
+									%p
+										= pluralize(@season.errors.count, "error")
+										prohibited this season from being saved:
+									%ul
+										- @season.errors.full_messages.each do |message|
+											%li= message
+					/ End Error Messages
+					/ Form Portion
+					#password-update-group.row.form-group
+						- if @season.id
+							= f.label :show_id
+							= f.select(:show_id, options_for_select(Show.select_show, @season.show.id), {}, {class:"form-control", :required => true})
+						- else
+							= f.label :show_id
+							= f.select(:show_id, options_for_select(Show.select_show), {:include_blank => "Select a show"}, {class:"form-control", :required => true})
+					.row.form-group
+						= f.label :title
+						= f.text_field :name, class:"form-control", :required => true,placeholder: "Enter season\'s title"
+					.row.form-group
+						= f.label :season_number
+						= f.number_field :number, class:"form-control", :required => true,placeholder: 0
+					.row.form-group
+						= f.label :premiere_date
+						= f.date_field :premiere_date, class:"form-control"
+					.row.form-group
+						= f.label :finale_date
+						= f.date_field :finale_date, class:"form-control"
+					.row.form-group
+						= f.label :country_origin
+						= f.text_field :country_origin, class:"form-control"
+					.row.form-group
+						= f.label :type
+						= f.text_field :type, class:"form-control", :placeholder => "Romance, Drama, Race"
+					.row.form-group
+						= f.label :description
+						= f.text_area :description, class:"form-control", :placeholder => "Enter description here", :rows => 5
+					.row.form-group
+						= f.label :image
+						= f.text_field :image, class:"form-control", :placeholder => "url"
+					.row.form-group
+						= f.label :episode_count
+						= f.number_field :episode_count, class:"form-control", :placeholder => 10
+					.row.form-group
+						- if @season.id
+							= f.check_box :published
+							= f.label :published
+						- else		
+							= f.check_box :published, :value => true
+							= f.label :publish_now?
+					.row.form-group
+						- if @season.id
+							= f.check_box :expired
+						- else
+							= f.check_box :expired, :display => "none", :value => false
+						
+						= f.label :expired
+					.row.form-group.actions
+						- if params[:id]
+							= f.submit "Update Show", class:"btn btn-primary btn-md"
+							= link_to "Cancel", seasons_path, class:"btn btn-default btn-md"
+						- else
+							= f.submit "Create New Show", class:"btn btn-primary btn-md"
+							= link_to "Cancel", seasons_path, class:"btn btn-default btn-md"
+					/ End Form portion
+			/ End sign-up-form
+		/ End col-md-12
+	/ End panel-body
 / End panel panel-default

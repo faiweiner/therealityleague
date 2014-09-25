@@ -7,7 +7,7 @@
 			%ul
 				- @event.errors.full_messages.each do |message|
 					%li= message
-	.field
+	.field.has-success.has-feedback
 		= f.label :show_id
 		%br/
 		= f.select(:show_id, options_for_select(Show.select_show), {}, {class:"form-control"})

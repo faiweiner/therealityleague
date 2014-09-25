@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 	post 'seasons' => 'seasons#create'
 	get 'seasons/new' => 'seasons#new', :as => :new_season
 	get 'seasons/:id/edit' => 'seasons#edit', :as => :edit_season
+	patch 'seasons/:id/publish' => 'seasons#publish', :as => :publish_season
+	patch 'seasons/:id/unpublish' => 'seasons#unpublish', :as => :unpublish_season
 	get 'seasons/:id' => 'seasons#display', :as => :season
 	patch 'seasons/:id' => 'seasons#update'
 	put 'seasons/:id' => 'seasons#update'

@@ -37,7 +37,7 @@ class LeaguesController < ApplicationController
 			flash[:color] = "invalid"
 			redirect_to new_user_path
 		end
-		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
+		@draft_type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
 	end
 	
@@ -78,6 +78,7 @@ class LeaguesController < ApplicationController
 			redirect_to league_path(params[:id])
 		end
 		@league = League.find(params[:id])
+		@league_show_id = @league.season.show_id
 		@league_season_id = @league.season_id
 		@league_draft_type = @league.draft_type
 		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		

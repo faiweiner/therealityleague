@@ -28,7 +28,6 @@ class PointsController < ApplicationController
 	end
 
 	def create
-		if params[:point_entry][:show_select] == ""
 		#====== check for bad entry ======#
 		point_show = Show.find(params[:point_entry][:show_select])
 		point_season = Season.find(params[:point_entry][:season_select])
@@ -58,8 +57,7 @@ class PointsController < ApplicationController
 			@point = Point.new new_params
 		end
 
-		if @point.save
-			raise "what are you saving?"
+		if @point && @point.save
 			redirect_to points_path
 		else
 			render :new

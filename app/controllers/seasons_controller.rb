@@ -15,7 +15,6 @@ class SeasonsController < ApplicationController
 		if @season.save
 			flash[:notice] = "You've successfully added a new season."
 			flash[:color] = "valid"
-			raise params
 			redirect_to new_contestant_path(@season.id)
 		else
 			flash[:notice] = "Something went wrong, please try again."
@@ -23,7 +22,6 @@ class SeasonsController < ApplicationController
 			render :new
 		end
 	end
-
 
 	def edit
 		@season = Season.find(params[:id])
@@ -35,6 +33,36 @@ class SeasonsController < ApplicationController
 			redirect_to seasons_path
 		else
 			render :edit
+		end
+	end
+
+	def publish
+		@season = Season.find(params[:id])
+		if @season.update(published: true)
+			flash[:notice] = "#{@season.show.name}: #{@season.name} is now published."
+			flash[:color] = "valid"
+			redirect_to seasons_path
+		else
+			flash[:notice] = "Something went wrong, please try again."
+			flash[:color] = "prohibited"
+			redirect_to seasons_path
+		end
+	end
+
+	def unpublish
+		@season = Season.find(params[:id])
+		if @season.leagues.count > 0
+			flash[:notice] = "#{@season.show.name}: #{@season.name} cannot be unpublished because leagues for this season already exist."
+			flash[:color] = "prohibited"
+			redirect_to seasons_path
+		elsif @season.update(published: false)
+				flash[:notice] = "#{@season.show.name}: #{@season.name} is now hidden from the public."
+				flash[:color] = "valid"
+				redirect_to seasons_path
+		else
+			flash[:notice] = "Something went wrong, please try again."
+			flash[:color] = "prohibited"
+			redirect_to seasons_path
 		end
 	end
 
@@ -52,7 +80,7 @@ class SeasonsController < ApplicationController
 	private
 
 	def season_params
-		params.require(:season).permit(:name, :number, :show_id, :premiere_date, :country_origin, :type, :description, :image, :expired, :episode_count, :finale_date)
+		params.require(:season).permit(:name, :number, :show_id, :premiere_date, :finale_date, :country_origin, :type, :description, :episode_count, :image, :published, :expired)
 	end
 
 end
