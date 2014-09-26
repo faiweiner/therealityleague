@@ -11,9 +11,9 @@
 
 class Show < ActiveRecord::Base
 	has_many :seasons, inverse_of: :show, dependent: :destroy
-	has_many :events, inverse_of: :show, dependent: :destroy
+	has_many :schemas, inverse_of: :show, dependent: :destroy
 	has_many :episodes, through: :seasons
-	has_many :points, through: :events
+	has_many :events, through: :schemas
 
 	validates :name, :presence => true, :on => :create
 	private

@@ -22,7 +22,7 @@
 class Season < ActiveRecord::Base
 	belongs_to :show, inverse_of: :seasons
 	has_many :leagues, inverse_of: :season, dependent: :destroy
-	has_many :events, through: :show
+	has_many :schemas, through: :show
 	has_many :contestants
 	has_many :episodes
 	# belongs_to :score

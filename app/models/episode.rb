@@ -13,9 +13,9 @@ class Episode < ActiveRecord::Base
 	belongs_to :season
 	has_many :rounds
 
-	has_many :points
-	has_many :contestants, through: :points
-	has_many :events, through: :points
+	has_many :events
+	has_many :contestants, through: :events
+	has_many :schemas, through: :events
 
 	validates :season_id, :presence => true
 	validates :air_date, :presence => true

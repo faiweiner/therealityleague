@@ -23,9 +23,9 @@ class Contestant < ActiveRecord::Base
 	before_destroy { rosters.clear }
 	has_and_belongs_to_many :rounds, inverse_of: :contestants
 	
-	has_many :points
-	has_many :episodes, through: :points
-	has_many :events, through: :points
+	has_many :events
+	has_many :episodes, through: :events
+	has_many :schemas, through: :events
 
 	validates :name, :presence => true, :on => :create
 	validates :season_id, :presence => true, :on => :create
