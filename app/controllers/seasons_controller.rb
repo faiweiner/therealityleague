@@ -1,9 +1,14 @@
 class SeasonsController < ApplicationController
-	before_action :check_if_admin, :only => [:index, :new, :edit]
+	before_action :check_if_admin, :only => [:new, :edit, :update, :publish, :unpublish, :destroy]
 	def index
-		@seasons = Season.where(:expired => :false).order("premiere_date ASC")
+		@current_seasons = Season.where(:expired => :false).order("premiere_date ASC")
 		@past_seasons = Season.where(:expired => :true).order("premiere_date DESC")
 		@current_date = DateTime.now.strftime("%B %d, %Y")
+		if @current_user.admin?
+			render layout: "admin"
+		else
+			render :index
+		end
 	end
 
 	def new
@@ -56,9 +61,9 @@ class SeasonsController < ApplicationController
 			flash[:color] = "prohibited"
 			redirect_to seasons_path
 		elsif @season.update(published: false)
-				flash[:notice] = "#{@season.show.name}: #{@season.name} is now hidden from the public."
-				flash[:color] = "valid"
-				redirect_to seasons_path
+			flash[:notice] = "#{@season.show.name}: #{@season.name} is now hidden from the public."
+			flash[:color] = "valid"
+			redirect_to seasons_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"
@@ -68,8 +73,21 @@ class SeasonsController < ApplicationController
 
 	def destroy
 		@season = Season.find params[:id]
-		redirect_to seasons_path
+		if @season.leagues.count > 0
+			flash[:notice] = "#{@season.show.name}: #{@season.name} cannot be deleted because leagues for this season already exist."
+			flash[:color] = "prohibited"
+			redirect_to seasons_path
+		elsif	@season.destroy
+			flash[:notice] = "#{@season.show.name}: #{@season.name} has been successfully deleted."
+			flash[:color] = "valid"
+			redirect_to seasons_path
+		else
+			flash[:notice] = "Something went wrong, please try again."
+			flash[:color] = "prohibited"
+			redirect_to seasons_path
+		end
 	end
+
 	def display
 		@season = Season.find(params[:id])
 		@rules = @season.show.events
