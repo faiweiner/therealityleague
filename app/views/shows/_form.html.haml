@@ -1,20 +1,41 @@
 .panel.panel-default
-	.panel-body.panel
-		.col-md-12
-			- if params[:id]
-				%h1 Edit show
-			- else
-				%h1 Add New Show
 	.panel-body
-		.col-md-12
-			= form_for(@show) do |f|
-				/ Errors Message
-				- if  @show.errors.any?
-					.row.form-group.alert.alert-danger{:role => "alert"}
-						%h4
-							= pluralize(@show.errors.count, 'error')
-							prohibited this show from being saved:
-						%ul
-							-  @show.errors.full_messages.each do |message|
-								%li= message
-			hihih
+		.col-lg-12.col-md-12.col-sm-12
+			- if params[:id]
+				%h2 Edit show
+			- else
+				%h2 Add New Show
+		.panel-body
+			#new-show-form.col-lg-4.col-md-6.col-sm-6
+				= form_for(@show, class:"form-horizontal", :role => "form") do |f|
+					/ Errors Message
+					.row.form-group
+						- if flash[:notice] && flash[:color] == "valid"
+							.alert.alert-success{:role => "alert"}= flash[:notice]
+						- elsif flash[:notice] && flash[:color] == "invalid"
+							.alert.alert-warning{:role => "alert"}= flash[:notice]
+						- elsif flash[:notice] && flash[:color] == "prohibited"
+							.alert.alert-danger{:role => "alert"}
+								%p= flash[:notice]
+								- if @season.errors.any?
+									%p
+										= pluralize(@season.errors.count, "error")
+										prohibited this season from being saved:
+									%ul
+										- @season.errors.full_messages.each do |message|
+											%li= message
+					/ End Error Messages
+					/ Form Portion
+					.row.form-group
+						= f.label :name
+						= f.text_field :name, class:"form-control", required: :true, placeholder: "Enter show name"
+					.row.form-group
+						= f.label :image
+						= f.text_field :image, class:"form-control", required: :true, placeholder: "Image URL"
+					.row.form-group.actions
+						- if params[:id]
+							= f.submit "Update show", class:"btn btn-primary btn-md"
+							= link_to "Cancel", shows_path, class:"btn btn-default btn-md"
+						- else
+							= f.submit "Save show", class:"btn btn-primary btn-md"
+							= link_to "Cancel", shows_path, class:"btn btn-default btn-md"

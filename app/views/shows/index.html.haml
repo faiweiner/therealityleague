@@ -1,17 +1,26 @@
 .panel.panel-default
-	.panel-heading
-		.panel-title.row
-			.col-lg-10
-				%h2 All Shows
-			.col-lg-2.text-right
-				- if @current_user.admin?
-					= link_to "Add new show", new_show_path, class:"btn btn-default btn-sm"
 	.panel-body
-		%table.table.table-hover
-			%tbody
-				- @shows.each do |show|
+		.col-lg-8
+			%h2 All Shows
+		.col-lg-4.text-right
+			- if @current_user.admin?
+				= link_to "Add new show", new_show_path, class:"btn btn-default btn-sm"
+		.panel-body
+			%table.table.table-hover
+				%thead
 					%tr
-						%td
-							%a{:href => show_path(show.id)}
-								%div
-									%p= show.name
+						%th.col-lg-3 Shows List
+						%th.col-lg-9
+				%tbody
+					- @shows.each do |show|
+						%tr
+							%td
+								%a{:href => show_path(show.id)}
+									%div
+										%p= show.name
+							%td
+								- show.seasons.each do |season|
+									- if season.expired
+										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-default btn-xs"
+									- else
+										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-primary btn-xs"
