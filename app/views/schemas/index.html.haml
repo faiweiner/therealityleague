@@ -2,31 +2,16 @@
 	.panel-body
 		.panel-header
 			.col-md-12
-				%h2 Manage Points and Occurences
+				%h2 Manage Point Schemas
 		.panel-body
 			.col-md-3
 				- @shows.each do |show|
 					%button.btn.btn-md.btn-primary.btn-block{:id => show.id}
 						= show.name
 				%button.btn.btn-danger.btn-block{"data-target" => "#demo", "data-toggle" => "collapse", :type => "button"}
-					Track Event
+					New points schema
 				#demo.collapse
 					.panel-group
 						%br/
 						= render "form"
 			#events-board.col-md-9
-
-
-
-.panel.panel-default
-	.panel-body
-		.col-lg-12.col-md-12
-			%h2 Command Center
-			= link_to "Add New Occurrence", new_point_path
-		.col-lg-12.col-md-12
-			%h2 All Points
-			#demo.collapse
-				.panel-group
-					= render "form"
-
-
