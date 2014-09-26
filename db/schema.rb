@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20140904084454) do
   create_table "events", force: true do |t|
     t.integer  "contestant_id"
     t.integer  "episode_id"
-    t.integer  "schema_id"
+    t.integer  "scheme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 20140904084454) do
     t.datetime "updated_at"
   end
 
-  create_table "schemas", force: true do |t|
+  create_table "schemes", force: true do |t|
     t.string   "type"
     t.integer  "show_id"
     t.string   "description"

@@ -1,12 +1,10 @@
 .panel.panel-default
 	.panel-body
 		.col-md-12
-			/ Header dymanic - login or sign up
 			- if params[:id]
 				%h2 Edit Season
 			- else
 				%h2 Add New Season
-			/ Content dymanic - login or sign up
 			#sign-up-form.col-lg-4.col-md-6.col-sm-6
 				= form_for(@season, class:"form-horizontal", :role => "form") do |f|
 					/ Error Messages

@@ -11,13 +11,13 @@ class EventsController < ApplicationController
 			season = event.episode.season
 			episode = event.episode
 			contestant = event.contestant.name
-			description = generate_half_sentence(event.schema.description)
-			pts = event.schema.points_asgn
+			description = generate_half_sentence(event.scheme.description)
+			pts = event.scheme.points_asgn
 			event_description = contestant + description
 			event_data = {
 				:season => season,
 				:episode => episode,
-				:schema => event_description,
+				:scheme => event_description,
 				:points_assigned => pts}
 			@events_info_table[event.id] = event_data
 		end
@@ -32,7 +32,7 @@ class EventsController < ApplicationController
 		event_show = Show.find(params[:point_entry][:show_select])
 		event_season = Season.find(params[:point_entry][:season_select])
 		event_contestant = Contestant.find(params[:point_entry][:contestant_select])
-		event_schema = Event.find(params[:point_entry][:schema_select])
+		event_scheme = Event.find(params[:point_entry][:scheme_select])
 		if event_season.show_id != event_show.id
 			#---- if selected season doesn't belong to the show
 			flash[:notice] = "Invalid entry: selected season does not belong to the selected show."
@@ -43,7 +43,7 @@ class EventsController < ApplicationController
 			flash[:notice] = "Invalid entry: selected contestant does not belong to the selected season."
 			flash[:color] = "invalid"
 			render :new
-		elsif event_show.schemas.exclude? event_schema
+		elsif event_show.schemes.exclude? event_scheme
 			#---- if event does not belong to the show
 			flash[:notice] = "Invalid entry: selected contestant does not belong to the selected season."
 			flash[:color] = "invalid"
@@ -53,7 +53,7 @@ class EventsController < ApplicationController
 			new_params = {
 				:contestant_id => params[:point_entry][:contestant_select], 
 				:episode_id => params[:point_entry][:episode_select], 
-				:event_id => params[:point_entry][:schema_select]}
+				:event_id => params[:point_entry][:scheme_select]}
 			@event = Event.new new_params
 		end
 
@@ -86,7 +86,7 @@ class EventsController < ApplicationController
 	private
 
 	def event_param
-		params.require(:events).permit(:contestant_id, :episode_id, :schema_id)
+		params.require(:events).permit(:contestant_id, :episode_id, :scheme_id)
 	end
 
 	def generate_half_sentence(string)

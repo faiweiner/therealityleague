@@ -1,6 +1,7 @@
 class ShowsController < ApplicationController
+	before_action :check_if_admin, :only => [:new, :create, :edit, :update, :destroy]
 	def index
-		
+		@shows = Show.all
 	end
 
 	def new
@@ -13,9 +14,9 @@ class ShowsController < ApplicationController
 
 	def show
 		@show = Show.find(params[:id])
-		@rules_survival = @show.events.where(type: "Survival")
-		@rules_game = @show.events.where(type: "Game")
-		@rules_extra = @show.events.where(type: "Extracurricular")
+		@rules_survival = @show.schemes.where(type: "Survival")
+		@rules_game = @show.schemes.where(type: "Game")
+		@rules_extra = @show.schemes.where(type: "Extracurricular")
 	end
 
 	def edit

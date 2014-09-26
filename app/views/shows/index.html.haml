@@ -1,4 +1,17 @@
 .panel.panel-default
+	.panel-heading
+		.panel-title.row
+			.col-lg-10
+				%h2 All Shows
+			.col-lg-2.text-right
+				- if @current_user.admin?
+					= link_to "Add new show", new_show_path, class:"btn btn-default btn-sm"
 	.panel-body
-		.panel-heading
-			%h1 View Shows
+		%table.table.table-hover
+			%tbody
+				- @shows.each do |show|
+					%tr
+						%td
+							%a{:href => show_path(show.id)}
+								%div
+									%p= show.name

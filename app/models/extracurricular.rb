@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: schemas
+# Table name: schemes
 #
 #  id          :integer          not null, primary key
 #  type        :string(255)
@@ -11,6 +11,6 @@
 #  updated_at  :datetime
 #
 
-class Extracurricular < Schema
+class Extracurricular < Scheme
 
 end

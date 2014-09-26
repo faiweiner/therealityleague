@@ -25,7 +25,7 @@ class Contestant < ActiveRecord::Base
 	
 	has_many :events
 	has_many :episodes, through: :events
-	has_many :schemas, through: :events
+	has_many :schemes, through: :events
 
 	validates :name, :presence => true, :on => :create
 	validates :season_id, :presence => true, :on => :create

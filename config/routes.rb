@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-	get 'schemas/:show_id' => 'schemas#display', :as => :event
-  resources :schemas
+	get 'schemes/:show_id' => 'schemes#display', :as => :event
+  resources :schemes
   get 'events/display'
   get 'events/get_seasons' => 'events#seasons', :as => :get_seasons
   resources :events

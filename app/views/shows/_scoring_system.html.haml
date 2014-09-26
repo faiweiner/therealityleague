@@ -19,7 +19,7 @@
 					%tbody
 						- @rules_survival.each do |rule|
 							%tr
-								%td= rule.event
+								%td= rule.description
 								%td= rule.points_asgn
 				%h4 Show/Game
 				%table#score-system-table.table.table-striped
@@ -29,7 +29,7 @@
 					%tbody
 						- @rules_game.each do |rule|
 							%tr
-								%td= rule.event
+								%td= rule.description
 								%td= rule.points_asgn
 				%h4 Extracurricular
 				%table#score-system-table.table.table-striped
@@ -39,7 +39,7 @@
 					%tbody
 						- @rules_extra.each do |rule|
 							%tr
-								%td= rule.event
+								%td= rule.description
 								%td= rule.points_asgn
 			.modal-footer
 				%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

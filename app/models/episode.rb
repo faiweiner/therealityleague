@@ -15,7 +15,7 @@ class Episode < ActiveRecord::Base
 
 	has_many :events
 	has_many :contestants, through: :events
-	has_many :schemas, through: :events
+	has_many :schemes, through: :events
 
 	validates :season_id, :presence => true
 	validates :air_date, :presence => true

@@ -1,11 +1,11 @@
-= form_for(@schema) do |f|
-	- if @schema.errors.any?
+= form_for(@scheme) do |f|
+	- if @scheme.errors.any?
 		#error_explanation
 			%h2
-				= pluralize(@schema.errors.count, "error")
+				= pluralize(@scheme.errors.count, "error")
 				prohibited this score from being saved:
 			%ul
-				- @schema.errors.full_messages.each do |message|
+				- @scheme.errors.full_messages.each do |message|
 					%li= message
 	.field.has-success.has-feedback
 		= f.label :show_id
@@ -14,7 +14,7 @@
 	.field
 		= f.label :type
 		%br/
-		= f.select(:type, options_for_select(Schema.select_type), {}, {class:"form-control"})
+		= f.select(:type, options_for_select(Scheme.select_type), {}, {class:"form-control"})
 	.field
 		= f.label :event
 		%br/
@@ -24,4 +24,4 @@
 		%br/
 		= f.number_field :points_asgn, class:"form-control", :placeholder => 0
 	.actions
-		= f.submit "Add new schema", class:"btn btn-block btn-default", :id => "new-event-submit"
+		= f.submit "Add new scheme", class:"btn btn-block btn-default", :id => "new-event-submit"

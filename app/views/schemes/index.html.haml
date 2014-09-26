@@ -2,14 +2,14 @@
 	.panel-body
 		.panel-header
 			.col-md-12
-				%h2 Manage Point Schemas
+				%h2 Manage Point Schemes
 		.panel-body
 			.col-md-3
 				- @shows.each do |show|
 					%button.btn.btn-md.btn-primary.btn-block{:id => show.id}
 						= show.name
 				%button.btn.btn-danger.btn-block{"data-target" => "#demo", "data-toggle" => "collapse", :type => "button"}
-					New points schema
+					New points scheme
 				#demo.collapse
 					.panel-group
 						%br/

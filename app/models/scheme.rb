@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: schemas
+# Table name: schemes
 #
 #  id          :integer          not null, primary key
 #  type        :string(255)
@@ -11,8 +11,8 @@
 #  updated_at  :datetime
 #
 
-class Schema < ActiveRecord::Base
-	belongs_to :show, inverse_of: :schemas
+class Scheme < ActiveRecord::Base
+	belongs_to :show, inverse_of: :schemes
 
 	has_many :events
 	has_many :contestants, through: :events
@@ -20,9 +20,9 @@ class Schema < ActiveRecord::Base
 
 	private
 
-	def self.select_schema
-		@schemas_list = Event.all.each.map {|s| [s.description, s.type, s.id]}
-		@schemas_list.unshift(["Select a schema", nil])
+	def self.select_scheme
+		@schemes_list = Event.all.each.map {|s| [s.description, s.type, s.id]}
+		@schemes_list.unshift(["Select a scheme", nil])
 	end
 
 	def self.select_type

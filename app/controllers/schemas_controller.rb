@@ -1,19 +1,19 @@
-class SchemasController < ApplicationController
+class SchemesController < ApplicationController
 	def index
 		@shows = Show.all.order("name DESC")	
-		@schema = Schema.new
+		@scheme = Scheme.new
 	end
 
 	def display
 		@show = Show.find(params[:show_id])
-		@schemas = @show.schemas
-		render :partial => "display_schemas"
+		@schemes = @show.schemes
+		render :partial => "display_schemes"
 	end
 
 	def create
-		@schema = Schema.new schema_params
-		if @schema.save
-			redirect_to schemas_path
+		@scheme = Scheme.new scheme_params
+		if @scheme.save
+			redirect_to schemes_path
 		else
 			raise "no sorry"
 		end
@@ -21,7 +21,7 @@ class SchemasController < ApplicationController
 
 	private
 
-	def schema_params
-		params.require(:schema).permit(:id, :type, :show_id, :description, :points_asgn)
+	def scheme_params
+		params.require(:scheme).permit(:id, :type, :show_id, :description, :points_asgn)
 	end
 end
