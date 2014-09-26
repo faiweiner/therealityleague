@@ -9,9 +9,12 @@ Rails.application.routes.draw do
   
 	get 'pages/about' => 'pages#about'
 
+	get 'shows/:id' => 'shows#display', :as => :show
+	resources :shows
 	get 'seasons/search' => 'seasons#search'
 	get 'seasons' => 'seasons#index', :as => :seasons
 	post 'seasons' => 'seasons#create'
+	get 'seasons/new/:show_id' => 'seasons#new', :as => :new_season_show
 	get 'seasons/new' => 'seasons#new', :as => :new_season
 	get 'seasons/:id/edit' => 'seasons#edit', :as => :edit_season
 	patch 'seasons/:id/publish' => 'seasons#publish', :as => :publish_season
@@ -20,7 +23,7 @@ Rails.application.routes.draw do
 	patch 'seasons/:id' => 'seasons#update'
 	put 'seasons/:id' => 'seasons#update'
 	delete 'seasons/:id' => 'seasons#destroy'
-	resources :shows
+
 
 	get 'leagues/search' => 'leagues#search'
 	post 'leagues/search/:search' => 'leagues#results'

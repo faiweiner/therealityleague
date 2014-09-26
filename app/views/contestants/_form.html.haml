@@ -1,6 +1,8 @@
 .panel.panel-default
 	.panel-body
 		.col-md-12
+			- if flash[:notice_show]
+				.alert.alert-success{:role => "alert"}= flash[:notice_show]
 			/ Header dymanic - login or sign up
 			- if params[:season_id]
 				%h2 Add New Contestant
@@ -61,11 +63,12 @@
 						= f.text_field :image, class:"form-control"
 					.row.form-group.actions
 						- if params[:season_id]
-							= f.submit "Add New Contestant", class:"btn btn-primary btn-lg"
-							= link_to "Cancel", seasons_path, class:"btn btn-default btn-lg"
+							= f.submit "Add New Contestant", class:"btn btn-primary btn-md"
+						- elsif flash[:notice_show]
+							= link_to "Skip Step", season_path(@season.id), class:"btn btn-primary-btn-md"
 						- else
-							= f.submit "Update Contestant", class:"btn btn-primary btn-lg"
-							= link_to "Cancel", seasons_path, class:"btn btn-default btn-lg"
+							= f.submit "Update Contestant", class:"btn btn-primary btn-md"
+						= link_to "Cancel", seasons_path, class:"btn btn-default btn-md"
 					/ End Form portion
 			/ End sign-up-form
 		/ End col-md-12

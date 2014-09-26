@@ -1,14 +1,16 @@
 .panel.panel-default
 	.panel-body
 		.col-lg-6.col-md-6
-			%h2= @show.name
+			%h2
+				= @show.name
+				= render "scoring_system"
 		.col-lg-6.text-right
 			.panel-group
-				= render "scoring_system"
 				- if @current_user && @current_user.admin?
-					= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default btn-sm disabled"
+					= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default btn-sm"
+					= link_to "Add New Season", new_season_show_path(@show.id), class:"btn btn-default btn-sm"
 					= link_to "Back to Shows", shows_path, class:"btn btn-default btn-sm"
-	.panel.panel-body
+	.panel-body
 		#accordion.panel-group
 			- @show.seasons.order("number DESC").each_with_index do |season, index|
 				.panel.panel-default
@@ -22,6 +24,5 @@
 							.row
 								.col-md-12
 									%h4 Description:
-									= season.description
-									%h4 Contestants:
-									= link_to "View season", season_path(season.id), class:"btn btn-default btn-sm"
+									%p= season.description
+									= link_to "View Contestants", season_path(season.id), class:"btn btn-default btn-sm"

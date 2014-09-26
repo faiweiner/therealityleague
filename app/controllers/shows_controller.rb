@@ -12,7 +12,7 @@ class ShowsController < ApplicationController
 		
 	end
 
-	def show
+	def display
 		@show = Show.find(params[:id])
 		@rules_survival = @show.schemes.where(type: "Survival")
 		@rules_game = @show.schemes.where(type: "Game")
@@ -20,6 +20,17 @@ class ShowsController < ApplicationController
 	end
 
 	def edit
-		
+		@show = Show.find(params[:id])
+	end
+
+	def update
+		@show = Show.find(params[:id])
+		@show.update show_params
+		redirect_to show_path(@show.id)
+	end
+
+	private
+	def show_params
+		params.require(:show).permit(:name, :image)
 	end
 end

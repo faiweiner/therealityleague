@@ -1,0 +1,39 @@
+.panel.panel-default
+	.panel-heading
+		.panel-title
+			%h3
+				= @season.name
+				Contestants
+			= link_to "Back to Season", season_path(@season.id), class:"btn btn-default"
+			= link_to "Add New Contestant", new_contestant_path(@season.id), class:"btn btn-default"
+	.panel-body
+		.row
+			.panel-body
+				%table#contestants.table.table-hover
+					%thead
+						%tr
+							%th.col-lg-1 Image
+							%th.col-lg-2 Name
+							%th.col-lg-1 Age
+							%th.col-lg-3 Occupation
+							%th.col-lg-4 Description
+							%th.col-lg-1
+					%tbody
+						- @contestants.each do |contestant|
+							%tr
+								%td
+									= image_tag contestant.image, class:"img-thumbnail thumbnail-sm"
+								%td
+									%span{"data-name" => "name", "data-pk" => contestant.id}
+										= contestant.name
+								%td
+									%span{"data-name" => "age", "data-pk" => contestant.id}= contestant.age
+								%td
+									%span{"data-name" => "occupation", "data-pk" => contestant.id}
+										= contestant.occupation
+								%td
+									%span{"data-name" => "description", "data-pk" => contestant.id}
+										= contestant.description
+								%td
+									%button.btn.btn-default.edit Edit
+									%button.btn.btn-primary Save

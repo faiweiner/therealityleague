@@ -12,13 +12,13 @@ class SeasonsController < ApplicationController
 	end
 
 	def new
-		@season = Season.new
+		@season = Season.new(:show_id => params[:show_id])
 	end
 
 	def create
 		@season = Season.new season_params
 		if @season.save
-			flash[:notice] = "You've successfully added a new season."
+			flash[:notice_show] = "You've successfully added #{@season.show.name}: #{@season.name}."
 			flash[:color] = "valid"
 			redirect_to new_contestant_path(@season.id)
 		else

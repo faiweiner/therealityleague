@@ -14,12 +14,9 @@
 				%tbody
 					- @shows.each do |show|
 						%tr
+							%td= link_to show.name, show_path(show.id)
 							%td
-								%a{:href => show_path(show.id)}
-									%div
-										%p= show.name
-							%td
-								- show.seasons.each do |season|
+								- show.seasons.order("number DESC").each do |season|
 									- if season.expired
 										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-default btn-xs"
 									- else

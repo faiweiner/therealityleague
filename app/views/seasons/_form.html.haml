@@ -26,11 +26,12 @@
 					/ End Error Messages
 					/ Form Portion
 					.row.form-group
+						= f.label :show_id
 						- if @season.id
-							= f.label :show_id
 							= f.select(:show_id, options_for_select(Show.select_show, @season.show.id), {}, {class:"form-control", :required => true})
+						- elsif @season.show_id
+							= f.select(:show_id, options_for_select(Show.select_show, @season.show.id), {:selected => @season.show.id}, {class:"form-control", :required => true})
 						- else
-							= f.label :show_id
 							= f.select(:show_id, options_for_select(Show.select_show), {:include_blank => "Select a show"}, {class:"form-control", :required => true})
 					.row.form-group
 						= f.label :title
