@@ -16,16 +16,14 @@
 						= link_to "The Reality League", root_path, {:class => "navbar-brand"}
 					.collapse.navbar-collapse
 						%ul.nav.navbar-nav
-							%li
-								%a{:href => "/pages/about"} About
+							%li= link_to "About", pages_about_path
 							%li.dropdown
 								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "/leagues"}
 									Leagues
 									%span.caret
 								- if @current_user
 									%ul.dropdown-menu{:role => "menu"}
-										%li
-											%a{:href => "/leagues"} My Dashboard
+										%li= link_to "My Dashboard", leagues_path
 										%li.divider
 										%li
 											%a{:href => "/leagues/new"} Create New League
@@ -48,12 +46,8 @@
 											%a{:href => "/admin"} Admin Dashboard
 										%li.divider
 										%li.dropdown-header Manage Shows
-										%li
-											%a{:href => "/shows/new"} Add new show
-										/ FIXME
-										%li
-											%a{:href => "/shows"} View/Update shows
-										/ FIXME
+										%li= link_to "Add new show", new_show_path
+										%li= link_to "View/update show", shows_path
 										%li
 											%a{:href => "/events"} Add/View schemas
 										/ FIXME
