@@ -56,7 +56,7 @@ class LeaguesController < ApplicationController
 	def create
 		@league = League.new league_params
 		@league.season_id = params[:league][:season]
-		season = Show.where(name: params[:league][:season])
+		season = Season.where(name: params[:league][:season])
 		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
@@ -107,10 +107,10 @@ class LeaguesController < ApplicationController
 		@league.destroy
 		redirect_to leagues_path
 	end
+
 	def show
 		@participants = @league.users
 		@league_type = @league.draft_type
-		@league_season = Season.find(@league.season)
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
 		@comm_this_league = true if @league.commissioner_id == @current_user.id
@@ -190,6 +190,10 @@ class LeaguesController < ApplicationController
 	def results
 	end
 
+	def invite
+		@league = League.find params[:id]
+	end
+
 	def access
 		if params[:league_key].empty? || params[:password].empty?
 			flash[:notice] = "Private league key and password empty. Please try again."
@@ -227,7 +231,7 @@ class LeaguesController < ApplicationController
 	private
 
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :league_key, :league_password, :active)
+		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :draft_type, :league_key, :league_password, :active)
 	end
 
 	def get_id(username)
@@ -238,14 +242,19 @@ class LeaguesController < ApplicationController
 	def private_restriction
 		@league = League.find(params[:id])
 		if @league.public_access == false
-			if @league.users.include? @current_user
-				flash[:notice] = "You are currently viewing a private league"
-				flash[:color] = "valid"
-			else
+			if @league.users.include? @current_user == false
 				flash[:notice] = "You do not have permission to access this private league."
 				flash[:color] = "prohibited"
 				redirect_to leagues_path
 			end
+		end
+	end
+
+	def self.inactive?
+		if self.active
+			return false
+		else
+			return true
 		end
 	end
 

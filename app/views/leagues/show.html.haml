@@ -1,4 +1,4 @@
-.panel.panel-default
+.panel.panel-default#league_view
 	.panel-heading
 		.panel-title.row
 			%span.col-lg-8
@@ -7,20 +7,20 @@
 				- else
 					%h3= @league.name  + " (private)"
 				%p
-					= @league.season.show.name
-					= @league_season.name		
+					= @league.season.show.name + ": "
+					= @league.season.name		
 			%span.col-lg-4.text-right
 				.div
 					%button.btn.btn-default.btn-sm{"data-target" => "#about_league", "data-toggle" => "collapse", :type => "button"}
 						About Show
 					- if @comm_this_league == true
-						- if @league.active == true 
+						- if @league.active?
 							= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
 							.div
+								%h4.small League Key:
+								%span.btn.btn-default.disabled
+									= @league.league_key
 								- if @league.public_access == false
-									%h4.small League Key:
-									%span.btn.btn-default.disabled
-										= @league.league_key
 									%h4.small League Password:
 									%span.btn.btn-default.disabled
 										= @league.league_password
@@ -29,7 +29,11 @@
 				%br/
 				.div
 					%h6 League rules
-					%h6 Commence date
+					%h6
+						- if @league.active?
+							Commence date
+						- else
+							Concluded
 					%h6 what else do you need
 	.panel-body
 		.col-lg-12
@@ -49,30 +53,37 @@
 							%td
 								- if User.where(username: participant[0]).first.id == @current_user.id
 									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
-									= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
+									- if @league.active?
+										= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
 								- else
 									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default btn-sm"
-			%table.table.table-hover
-				%h3 Weekly Score
-				%thead
-					%th Participants
-					- @league_season.episode_count.times do |i|
-						%th= i+1
-					%th Total
-				%tbody
-					- @participants.each_with_index do |participant, index|
-						%tr
-							%td= participant.username
-							- @league_season.episode_count.times do |i|
-								- if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
-									%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
-								- else
-									%td --
-							%td= @participants_roster_total[participant.username]
+			- if @league.season.episode_count
+				%table.table.table-hover
+					%h3 Weekly Score
+					%thead
+						%th Participants
+						- @league.season.episode_count.times do |i|
+							%th= i+1
+						%th Total
+					%tbody
+						- @participants.each_with_index do |participant, index|
+							%tr
+								%td= participant.username
+								- @league.season.episode_count.times do |i|
+									- if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
+										%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
+									- else
+										%td --
+								%td= @participants_roster_total[participant.username]
 
-
-
-
-
-
+.modal.fade.bs-example-modal-md#participants_prompt{"aria-hidden" => "true", "aria-labelledby" => "mySmallModalLabel", :role => "dialog", :tabindex => "-1"}
+	.modal-dialog.modal-md
+		.modal-content
+			.modal-body
+				%h2 Spread the word!
+				%p Invite other participants to join this league and get the game started!
+				%p Would you like to do this now?
+			.modal-footer
+				%button.btn.btn-default.btn-sm{"data-dismiss" => "modal", :type => "button"} Not now
+				%a.btn.btn-primary.btn-sm{:href => league_invite_path} Let's do it!
 

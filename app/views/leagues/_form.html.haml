@@ -27,7 +27,7 @@
 					/ New league will get popup description of fields
 					- if @league_show_id
 						.div#popupDisabler.hidden= @league_show_id
-						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control step1", :disabled => true})
+						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control step1"})
 					- else
 						= select_tag(:show_list, (), {:prompt => "Select a show", class:"form-control step1", :required => true})
 			/ Select reality show's season
@@ -37,7 +37,7 @@
 					%br/
 				.col-md-6
 					- if @league_season_id
-						= f.select(:season, [], {}, {class:"form-control step2"})
+						= f.select(:season, [], {:include_blank => "Select a season"}, {class:"form-control step2"})
 					- else
 						= f.select(:season, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
 			/ Name of League

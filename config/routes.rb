@@ -27,8 +27,8 @@ Rails.application.routes.draw do
 
 	get 'leagues/search' => 'leagues#search'
 	post 'leagues/search/:search' => 'leagues#results'
+	get 'leagues/:id/invite' => 'leagues#invite', :as => :league_invite
 	resources :leagues
-	get 'leagues/invite/:invite' => 'leagues#invite', :as => :league_invite
 	post 'leagues/access' => 'leagues#access', :as => :league_access 
 	post 'leagues/join/:league' => 'leagues#join', :as => :league_join
 

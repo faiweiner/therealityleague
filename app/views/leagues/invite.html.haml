@@ -1,0 +1,32 @@
+- if flash[:notice] && flash[:color] == "valid"
+	.alert.alert-success{:role => "alert"}= flash[:notice]
+- elsif flash[:notice] && flash[:color] == "invalid"
+	.alert.alert-warning{:role => "alert"}= flash[:notice]
+.panel.panel-default
+	.panel-body
+		.row.text-center
+			%h2= @league.name
+			%h4
+				= @league.season.show.name + ": "
+				= @league.season.name
+		.row
+			.col-md-offset-4.col-md-4
+				#user-widget
+					= link_to "Invite users", "/auth/facebook", id: "sign_in", class:'btn btn-primary btn-block', disabled:'disabled'
+		.row.text-center
+			%h3 or
+		.row.text-center
+			%p Copy and paste the below league key and password and share with friends!
+		.row
+			.col-md-offset-3.col-md-3
+				.panel.panel-default
+					.panel-heading
+						%h3.panel-title League Key:
+					.panel-body
+						%p= @league.league_key
+			.col-md-3
+				.panel.panel-default
+					.panel-heading
+						%h3.panel-title League Password:
+					.panel-body
+						%p= @league.league_password

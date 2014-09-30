@@ -94,7 +94,6 @@
 				the JavaScript SDK to present a graphical Login button that triggers
 				the FB.login() function when clicked.
 			%login-button{:onlogin => "checkLoginState();", :scope => "public_profile,email"}
-		#status
 		.wrapper
 			%nav.navbar.navbar-default{:role => "navigation"}
 				.container-fluid
@@ -164,3 +163,4 @@
 			= yield
 			.copyright
 				Built by Fai Weiner for GA's WDI-5
+				#status
