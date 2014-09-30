@@ -4,7 +4,7 @@
 			%h1 Edit league
 		- else
 			%h1 Start a league
-	.panel-body
+	.panel-body#league_creation
 		= form_for(@league) do |f|
 			/ Errors Message
 			- if @league.errors.any?
@@ -23,9 +23,11 @@
 				.col-md-3.text-right
 					= label_tag :show
 				.col-md-6
+					/ Disable popup description if editing league;
+					/ New league will get popup description of fields
 					- if @league_show_id
 						.div#popupDisabler.hidden= @league_show_id
-						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control", :disabled => true})
+						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control step1", :disabled => true})
 					- else
 						= select_tag(:show_list, options_for_select(Show.select_show), {:prompt => "Select a show", class:"form-control", :required => true})
 			/ Select reality show's season

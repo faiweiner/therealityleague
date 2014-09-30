@@ -3,7 +3,7 @@ $(document).ready(function () {
 	if ($('#manage-events').length == 0) {
 		return;
 	};
-	console.log('Events initialized');
+	console.log('Schemes initialized');
 
 	$newEventForm = $('#new-event');
 	$newEventSubmitButton = $('#new-event-submit');
@@ -47,7 +47,7 @@ $(document).ready(function () {
 		var $btn = $(this);
 		var eventId = jQuery(this).closest('tr').find('span')[0].dataset.pk;
 		$.ajax({
-			url: '/events/' + eventId,
+			url: '/schemes/' + eventId,
 			type: 'POST',
 			responseTime: 200,
 			response: function(settings) {
@@ -69,7 +69,7 @@ $(document).ready(function () {
 	// sends data to server for addition to events
 	var addEventToShow = function () {
 		$.ajax({
-			url: '/events/',
+			url: '/schemes/',
 			type: 'POST',
 			success: function () {
 				$eventsBoard.reload(true);
@@ -109,7 +109,7 @@ $(document).ready(function () {
 	var populateEventsTable = function (show_id) {
 		console.log(show_id);
 		$.ajax({
-			url: '/events/' + show_id,
+			url: '/schemes/' + show_id,
 			type: 'GET',
 			success: function (msg) {
 				var partial = msg;

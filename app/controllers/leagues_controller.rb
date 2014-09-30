@@ -39,6 +39,18 @@ class LeaguesController < ApplicationController
 		end
 		@draft_type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
+		@export_season_list = Season.where(expired: false)
+		@export_show_list = Show.all
+		respond_to do |format|
+			format.html
+			format.json { 		
+				render :json => {
+					:exportSeasons => @export_season_list,
+					:exportShows => @export_show_list
+				} 
+			}
+		end
+
 	end
 	
 	def create

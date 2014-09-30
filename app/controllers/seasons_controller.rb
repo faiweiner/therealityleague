@@ -20,7 +20,7 @@ class SeasonsController < ApplicationController
 		if @season.save
 			flash[:notice_show] = "You've successfully added #{@season.show.name}: #{@season.name}."
 			flash[:color] = "valid"
-			redirect_to new_contestant_path(@season.id)
+			redirect_to contestants_season_path(@season.id)
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"

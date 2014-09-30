@@ -16,12 +16,12 @@
 		%br/
 		= f.select(:type, options_for_select(Scheme.select_type), {}, {class:"form-control"})
 	.field
-		= f.label :event
+		= f.label :description
 		%br/
-		= f.text_area :event, class:"form-control"
+		= f.text_area :description, class:"form-control"
 	.field
 		= f.label :points_asgn, "Points assignment"
 		%br/
 		= f.number_field :points_asgn, class:"form-control", :placeholder => 0
 	.actions
-		= f.submit "Add new scheme", class:"btn btn-block btn-default", :id => "new-event-submit"
+		= f.submit "Add new scheme", class:"btn btn-block btn-default", :id => "new-scheme-submit"

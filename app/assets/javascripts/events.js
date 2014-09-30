@@ -1,7 +1,7 @@
 console.log('points js executed');
 
 $(document).on('change', function(event) {
-	$.ajax 'update_cities',
+	$.ajax 'update_events',
 		type: 'GET'
 		dataType: 'script'
 		data: {

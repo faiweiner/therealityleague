@@ -13,7 +13,10 @@
 		.col-lg-6.text-right
 			- if @current_user && @current_user.admin?
 				= link_to "Edit Season", edit_season_path(@season.id), class:"btn btn-default btn-sm"
-				= link_to "Edit Contestants", contestants_season_path(@season.id), class:"btn btn-default btn-sm"
+				- if @season.contestants.count > 0
+					= link_to "Edit Contestants", contestants_season_path(@season.id), class:"btn btn-default btn-sm"
+				- else
+					= link_to "Add Contestants", new_contestant_path(@season.id), class:"btn btn-default btn-sm"
 	.panel-body
 		.col-lg-12
 			%h4 Contestants
