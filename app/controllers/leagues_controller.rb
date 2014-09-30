@@ -37,11 +37,12 @@ class LeaguesController < ApplicationController
 			flash[:color] = "invalid"
 			redirect_to new_user_path
 		end
+		
 		@draft_type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
 		@export_season_list = Season.where(expired: false)
 		@export_show_list = Show.all
-		# raise params.inspect if params[:]
+
 		respond_to do |format|
 			format.html
 			format.json { 		
@@ -179,6 +180,15 @@ class LeaguesController < ApplicationController
 		# IF NO ROSTER TYPE ASSIGNED
 		else
 			raise "need to fix this"
+		end
+
+		respond_to do |format|
+			format.html
+			format.json { 		
+				render :json => {
+					:exportParticipants => @participants
+				} 
+			}
 		end
 	end
 

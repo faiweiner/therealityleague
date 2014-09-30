@@ -4,7 +4,7 @@
 			%h1 Edit league
 		- else
 			%h1 Start a league
-	.panel-body#league_creation
+	.panel-body{:id => ("league_creation" unless params[:id])}
 		= form_for(@league) do |f|
 			/ Errors Message
 			- if @league.errors.any?
@@ -37,7 +37,7 @@
 					%br/
 				.col-md-6
 					- if @league_season_id
-						= f.select(:season, [], {:include_blank => "Select a season"}, {class:"form-control step2"})
+						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class:"form-control step2"})
 					- else
 						= f.select(:season, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
 			/ Name of League

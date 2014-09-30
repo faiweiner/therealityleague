@@ -1,3 +1,7 @@
+- if flash[:notice] && flash[:color] == "valid"
+	.alert.alert-success{:role => "alert"}= flash[:notice]
+- elsif flash[:notice] && flash[:color] == "invalid"
+	.alert.alert-warning{:role => "alert"}= flash[:notice]
 .panel.panel-default#league_view
 	.panel-heading
 		.panel-title.row
@@ -80,8 +84,8 @@
 	.modal-dialog.modal-md
 		.modal-content
 			.modal-body
-				%h2 Spread the word!
-				%p Invite other participants to join this league and get the game started!
+				%h3 Invite Participants!
+				%p Invite friends in your network to join this league and get the game started!
 				%p Would you like to do this now?
 			.modal-footer
 				%button.btn.btn-default.btn-sm{"data-dismiss" => "modal", :type => "button"} Not now

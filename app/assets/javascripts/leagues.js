@@ -79,8 +79,17 @@ $(document).ready(function () {
 			]
 		});
 	} else if ($leagueViewDiv.length > 0) {
-		setTimeout(function () {
-    	$("#participants_prompt").modal();
-  	}, 1000);
+		var participantCount = $.getJSON( "/leagues/1", function (data) {
+			participantCount = data.exportParticipants.length;
+			console.log("This is" + participantCount);
+		})
+		.done(function () {
+			console.log("Got here!" + participantCount);
+			if (participantCount > 1) {
+				setTimeout(function (response) {
+					$("#participants_prompt").modal();
+				}, 1000);			
+			};
+		});
 	};
 });
