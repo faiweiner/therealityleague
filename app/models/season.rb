@@ -43,12 +43,11 @@ class Season < ActiveRecord::Base
 		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id, s.show_id]}
 	end
 
-	def self.get_show_name(season_id)
-		season = Season.find(season_id)
-		season.name
-	end
-
 	# check method if season can be edited
+
+	def self.list_by_show(show_id)
+		seasons_show = Season.where(show_id: show_id)	
+	end
 
 	def get_points_by_season(season_id)
 		season = Season.find(season_id)

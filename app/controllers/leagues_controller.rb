@@ -41,16 +41,16 @@ class LeaguesController < ApplicationController
 		@league = League.new 
 		@export_season_list = Season.where(expired: false)
 		@export_show_list = Show.all
+		# raise params.inspect if params[:]
 		respond_to do |format|
 			format.html
 			format.json { 		
 				render :json => {
-					:exportSeasons => @export_season_list,
+					:exportSeasons => @export_season_list.where(show_id: params[:show_list]),
 					:exportShows => @export_show_list
 				} 
 			}
 		end
-
 	end
 	
 	def create

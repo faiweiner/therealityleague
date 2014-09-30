@@ -19,60 +19,59 @@ $(document).ready(function () {
 		$leagueDraftInput.popover('hide');
 	}
 
-	var seasonList = [];
-	var showList = [];
-	
-	$.ajax({
-		type: "GET",
-		url: "/leagues/new",
-		dataType: "json",
-		success: function (data) {
-			for (var i = 0; i < data.exportSeasons.length; i++) {
-				seasonList.push(
-					{ name: 		data.exportSeasons[i].name, 
-						id: 			data.exportSeasons[i].id, 
-						show_id: 	data.exportSeasons[i].show_id 
-					}
-				);
-			};
-			for (var i = 0; i < data.exportShows.length; i++) {
-				showList.push(
-					{ name: 		data.exportShows[i].name, 
-						id: 			data.exportShows[i].id
-					}
-				);
-			};
-		}
-	});
-
 	$('#league_creation').cascadingDropdown({
 		selectBoxes: [
 			{
 				selector: '.step1',
-				source: [
-					{ label: '4.0"', value: 4 },
-					{ label: '4.3"', value: 4.3 },
-					{ label: '4.7"', value: 4.7 },
-					{ label: '5.0"', value: 5 }
-				]
-			},
-			{
-				selector: '.step2',
-				requires: ['.step1'],
-				source: function (request, response) {
-					$.getJSON('/api/resolutions', request, function(data) {
-						var selectOnlyOption = data.length <= 1;
-						response($.map(data, function(item, index) {
+				source: function(request, response) {
+					$.getJSON('/leagues/new', request, function (data) {
+						response($.map(data.exportShows, function (item, index) {
 							return {
-									label: item + 'p',
-									value: item,
-									selected: selectOnlyOption // Select if only option
-							};
+								label: item.name,
+								value: item.id
+							}
 						}));
 					});
 				},
 				onChange: function (event, value, requiredValues) {
-					// do stuff
+					console.log(value);
+					console.log(requiredValues);
+					selectBoxes: [
+						{
+							selector: '.step2',
+							requires: ['.step1'],
+							paramName: 'showId',
+							source: function (request, response) {
+								$.getJSON('/leagues/new', request, function (data) {
+									var selectOnlyOption = data.length <= 1;
+									response($.map(data.exportSeasons, function (item, index) {
+										return {
+												label: item.name,
+												value: item.id,
+												selected: selectOnlyOption // Select if only option
+										};
+									}));
+								});
+							}
+						}
+					]
+				}
+			},
+			{
+				selector: '.step2',
+				requires: ['.step1'],
+				paramName: 'showId',
+				source: function (request, response) {
+					$.getJSON('/leagues/new', request, function (data) {
+						var selectOnlyOption = data.length <= 1;
+						response($.map(data.exportSeasons, function (item, index) {
+							return {
+									label: item.name,
+									value: item.id,
+									selected: selectOnlyOption // Select if only option
+							};
+						}));
+					});
 				}
 			}
 		]

@@ -29,7 +29,7 @@
 						.div#popupDisabler.hidden= @league_show_id
 						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control step1", :disabled => true})
 					- else
-						= select_tag(:show_list, options_for_select(Show.select_show), {:prompt => "Select a show", class:"form-control", :required => true})
+						= select_tag(:show_list, (), {:prompt => "Select a show", class:"form-control step1", :required => true})
 			/ Select reality show's season
 			.row.form-group
 				.col-md-3.text-right
@@ -37,9 +37,9 @@
 					%br/
 				.col-md-6
 					- if @league_season_id
-						= f.select(:season, options_for_select(Season.select_season), {}, {class:"form-control"})
+						= f.select(:season, [], {}, {class:"form-control step2"})
 					- else
-						= f.select(:season, options_for_select(Season.select_season), {:include_blank => "Select a season"}, class:"form-control", :required => true)
+						= f.select(:season, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
 			/ Name of League
 			.row.form-group
 				.col-md-3.text-right
