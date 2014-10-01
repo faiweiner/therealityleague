@@ -136,7 +136,8 @@ div {
 // 	border-bottom-right-radius: 2px;
 // 	background-color: white;
 // }
-.modal-dialog.modal-md, .modal-dialog.modal-sm {
+
+body.modal-open, .modal-dialog.modal-md, .modal-dialog.modal-sm {
 	left: auto;
 	margin-left: auto;
 }

@@ -22,6 +22,7 @@ class LeaguesController < ApplicationController
 			if @past_leagues.nil?
 				flash[:notice] = "You have yet to compete in a league."
 			end
+			
 			# List of leagues of which user is the commissioner
 			@comm_leagues = League.where(commissioner_id: @current_user.id)
 			# @league_players = @league.users
@@ -114,13 +115,22 @@ class LeaguesController < ApplicationController
 		@league_type = @league.draft_type
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
-		@comm_this_league = true if @league.commissioner_id == @current_user.id
+		
 		if p_id.include? @current_user.id
 			@a_participant = true
 		else
 			@a_participant = false
 		end
-	
+		
+		if @league.draft_deadline
+			@league_deadline_set = true
+			@league_commenced = true if @league.draft_deadline <= Date.today
+		else
+			@league_deadline_set = false
+		end
+
+		@comm_this_league = true if @league.commissioner_id == @current_user.id
+
 		# assign hashes
 		@participants_roster_id = {}
 		@participants_roster_total = {}
@@ -158,7 +168,6 @@ class LeaguesController < ApplicationController
 				# get Roster ID
 				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
 				@participants_roster_id.store(participant.username, roster_id)
-
 				# get Roster Total
 				roster_total = Roster.find(roster_id).calculate_total_roster_points
 				@participants_roster_total.store(participant.username, roster_total)
@@ -184,7 +193,7 @@ class LeaguesController < ApplicationController
 
 		respond_to do |format|
 			format.html
-			format.json { 		
+			format.js { 		
 				render :json => {
 					:leagueId => @league.id,
 					:exportParticipants => @participants
@@ -261,18 +270,13 @@ class LeaguesController < ApplicationController
 		end
 	end
 
-	def self.inactive?
-		if self.active
-			return false
-		else
-			return true
-		end
+	def bar
+		return "hello"
 	end
 
 	def commissioner_restriction?
 		@league = League.find(params[:id])
-		@commissioner_id = @league.commissioner_id
-		if @current_user.id == @commissioner_id
+		if @current_user.id == @league.commissioner_id
 			return true
 		else
 			return false

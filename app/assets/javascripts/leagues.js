@@ -1,5 +1,4 @@
 $(document).ready(function () {
-	console.log('Leagues JS initiated');
 	$leagueCrationDiv = $('#league_creation');
 	$leagueViewDiv = $('#league_view');
 
@@ -79,7 +78,8 @@ $(document).ready(function () {
 				}
 			]
 		});
-	} else {
+	} else if ($leagueViewDiv.length > 0) {
+		console.log('Leagues JS for viewing a league initiated');
 		var getUrlParameter = function () {
 			var sPageURL = window.location.pathname;
 			var sURLVariables = sPageURL.split('/');
@@ -91,9 +91,16 @@ $(document).ready(function () {
 			}
 		};   
 
-		var participantCount = $.getJSON( "/leagues/" + getUrlParameter(), function (data) {
-			participantCount = data.exportParticipants.length;
-			console.log('yoo hoo');
+		var leagueUrl = '/leagues/' + getUrlParameter();
+
+		var participantCount = 0;
+		var leagueShowData = $.ajax({
+			url: leagueUrl,
+			data: {format: 'js'},
+			dataType: 'json',
+			success: function(data) {
+				participantCount = data.exportParticipants.length;
+			}
 		})
 		.done(function () {
 			if (participantCount <= 1) {

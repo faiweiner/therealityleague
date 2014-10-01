@@ -38,10 +38,10 @@ season1 = Season.create(:name => 'Juan Pablo', :number => 18, :show_id => show1.
 season2 = Season.create(:name => 'Desiree', :number => 9, :show_id => show2.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'This season features 27-year-old Desiree Hartsock, a bridal stylist from Colorado. Twenty-five men, all aged 26-34, will be competing for Desiree\'s heart.', :episode_count => 10, :image => '/assets/the_bachelorette/desiree.jpg', :published => true)
 season3 = Season.create(:name => 'Sean Lowe', :number => 17, :show_id => show1.id, :premiere_date => '01/07/2013', :finale_date => '01/12/2013', :description	=> 'The best bachelor ever - Sean Lowe is the man!', :episode_count => 10, :expired => true, :image => '/assets/the_bachelor/seanlowe.jpg', :published => true)
 
-league1 = League.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :draft_type => 'Fantasy', :public_access => true)
-league2 = League.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :draft_type => 'Fantasy', :public_access => false)
-league3 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :draft_type => 'Fantasy', :public_access => false)
-league4 = League.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :draft_type => 'Bracket', :public_access => false, :active => false)
+league1 = Fantasy.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :type => 'Fantasy', :public_access => true)
+league2 = Fantasy.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :type => 'Fantasy', :public_access => false)
+league3 = Fantasy.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :type => 'Fantasy', :public_access => false)
+league4 = Bracket.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :type => 'Bracket', :public_access => false, :active => false)
 
 league1.users << [user1, user2, user3]
 league2.users << [user1, user3, user4, user5]

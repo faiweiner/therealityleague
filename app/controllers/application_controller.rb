@@ -58,5 +58,9 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	def bar
+		return "hello"
+	end
+	
 	helper_method :current_user
 end

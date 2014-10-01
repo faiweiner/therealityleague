@@ -49,4 +49,5 @@ class League < ActiveRecord::Base
 			gen_league_password
 		end
 	end
+
 end

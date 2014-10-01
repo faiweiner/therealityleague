@@ -10,31 +10,34 @@
 					%table#my_leagues_table.table.table-hover
 						%thead
 							%tr
-								%th.col-lg-4 League Name
-								%th.col-lg-1
-								%th Season
-								%th Type
-								%th= pluralize_without_count(@comm_leagues.count, "Action", text = nil)
+								%th.col-lg-3 League Name
+								%th.col-lg-3 Season
+								%th.col-lg-1 Type
+								%th.col-lg-2 Status
+								%th.col-lg-2= pluralize_without_count(@comm_leagues.count, "Action", text = nil)
 						%tbody
 							- @leagues.each do |league|
 								%tr
-									%td.col-lg-4
+									%td
 										= league.name
-									%td.col-lg-1
 										- if league.commissioner_id == @current_user.id
-											%i.fa.fa-star
-									%td.col-lg-2
+											%img{:src => "/assets/ref.png"}
+									%td
 										= league.season.show.name + ": "
 										= league.season.name
-									%td.col-lg-1
-										- if league.public_access == true
+									%td
+										- if league.public_access?
 											Public
 										- else
 											Private
-									%td.col-lg-3
-										= link_to "View", league_path(league.id), class:'btn btn-default'
+									%td
+										Status of league
+									%td
+										= link_to "View", league_path(league.id), class:'btn btn-default btn-sm'
 										- if league.commissioner_id == @current_user.id
-											= link_to(content_tag(:div, "Edit", class:'btn btn-default'), edit_league_path(league))
+											= link_to(content_tag(:div, "Edit", class:'btn btn-default btn-sm'), edit_league_path(league))
+					%p
+						= image_tag("/assets/ref.png") + " Commissioner"
 			.panel.panel-default
 				.panel-heading
 					%h4
@@ -44,7 +47,7 @@
 					%table#my_leagues_table.table.table-hover
 						%thead
 							%tr
-								%th.col-lg-4 League Name
+								%th.col-lg-3 League Name
 								%th.col-lg-1 
 								%th.col-lg-2 Show
 								%th.col-lg-1 Type
@@ -57,13 +60,16 @@
 										= league.name
 									%td
 										- if league.commissioner_id == @current_user.id
-											%i.fa.fa-star
+											%img{:src => "/assets/megaphone_black.png", class:"icon"}
 									%td
 										= league.season.name
 									%td
-										- if league.public_access == true
+										- if league.public_access?
 											Public
 										- else
 											Private
 									%td
-										= link_to "View", league_path(league.id), class:'btn btn-default'
+										-
+										= link_to "View", league_path(league.id), class:'btn btn-default btn-sm'
+					%p
+						= image_tag("/assets/megaphone_black.png") + "   Commissioner"
