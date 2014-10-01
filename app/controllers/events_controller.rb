@@ -43,25 +43,23 @@ class EventsController < ApplicationController
 			flash[:notice] = "Invalid entry: selected contestant does not belong to the selected season."
 			flash[:color] = "invalid"
 			render :new
-		elsif event_show.schemes.exclude? event_scheme
-			#---- if event does not belong to the show
-			flash[:notice] = "Invalid entry: selected contestant does not belong to the selected season."
-			flash[:color] = "invalid"
-			render :new
 		else
 			#---- if all is good
 			new_params = {
 				:contestant_id => params[:point_entry][:contestant_select], 
 				:episode_id => params[:point_entry][:episode_select], 
-				:event_id => params[:point_entry][:scheme_select]}
+				:scheme_id => params[:point_entry][:scheme_select]
+			}
+
 			@event = Event.new new_params
+
+			if @event && @event.save
+				redirect_to events_path
+			else
+				render :new
+			end
 		end
 
-		if @event && @event.save
-			redirect_to events_path
-		else
-			render :new
-		end
 	end
 
 	def update

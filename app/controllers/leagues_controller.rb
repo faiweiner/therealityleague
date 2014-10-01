@@ -39,7 +39,7 @@ class LeaguesController < ApplicationController
 			redirect_to new_user_path
 		end
 		
-		@draft_type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
+		@type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
 		@export_season_list = Season.where(expired: false)
 		@export_show_list = Show.all
@@ -94,8 +94,8 @@ class LeaguesController < ApplicationController
 		@league = League.find(params[:id])
 		@league_show_id = @league.season.show_id
 		@league_season_id = @league.season_id
-		@league_draft_type = @league.draft_type
-		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
+		@league_type = @league.type
+		@type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
 	end
 
 	def update
@@ -112,7 +112,7 @@ class LeaguesController < ApplicationController
 
 	def show
 		@participants = @league.users
-		@league_type = @league.draft_type
+		@league_type = @league.type
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
 		
@@ -251,7 +251,7 @@ class LeaguesController < ApplicationController
 	private
 
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :draft_type, :league_key, :league_password, :active)
+		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :league_key, :league_password, :active)
 	end
 
 	def get_id(username)

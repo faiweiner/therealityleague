@@ -10,6 +10,6 @@
 #  updated_at :datetime
 #
 
-class Bracket < Roster
+class Bracket < League
 
 end

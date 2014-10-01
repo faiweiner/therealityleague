@@ -5,7 +5,7 @@ class CreateLeagues < ActiveRecord::Migration
 			t.integer 	:commissioner_id
 			t.integer 	:season_id
 			t.boolean 	:public_access, :default => true
-			t.string		:draft_type
+			t.string		:type
 			t.datetime	:draft_deadline
 			t.integer		:scoring_system
 			t.string 		:league_key

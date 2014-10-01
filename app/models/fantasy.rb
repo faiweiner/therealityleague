@@ -10,6 +10,6 @@
 #  updated_at :datetime
 #
 
-class Fantasy < Roster
+class Fantasy < League
 
 end
