@@ -7,7 +7,7 @@
 #  commissioner_id :integer
 #  season_id       :integer
 #  public_access   :boolean          default(TRUE)
-#  draft_type      :string(255)
+#  type            :string(255)
 #  draft_deadline  :datetime
 #  scoring_system  :integer
 #  league_key      :string(255)

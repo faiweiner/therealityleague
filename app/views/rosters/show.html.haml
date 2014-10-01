@@ -16,7 +16,7 @@
 				= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default"
 		/ FIXME with jQuery
 	.panel-body
-		- if @roster.league.season.episodes.count > 0
+		- if @roster.contestants.count > 0
 			#roster-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
 				%table#rosterScoreBoard.table.table-hover
 					%h3 Weekly Score

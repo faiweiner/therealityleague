@@ -21,7 +21,7 @@ class Scheme < ActiveRecord::Base
 	private
 
 	def self.select_scheme
-		@schemes_list = Event.all.each.map {|s| [s.description, s.type, s.id]}
+		@schemes_list = Scheme.all.each.map {|s| [s.description, s.type, s.id]}
 		@schemes_list.unshift(["Select a scheme", nil])
 	end
 

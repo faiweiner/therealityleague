@@ -32,11 +32,11 @@
 			= f.label :episode_id
 			= f.select :episode_select, options_for_select(Episode.select_episode, 'id'), {}, class:"form-control", :required => true
 		.row.form-group.field.has-feedback
-			= f.label :event_type
-			= f.select :event_type_select, options_for_select(Event.select_type), {}, class:"form-control", :required => true
+			= f.label :scheme_type
+			= f.select :scheme_type_select, options_for_select(Scheme.select_type), {}, class:"form-control", :required => true
 		.row.form-group.field.has-feedback
-			= f.label :event_id
-			= f.select :event_select, options_for_select(Event.select_event, 'id'), {}, class:"form-control", :required => true
+			= f.label :scheme_id
+			= f.select :scheme_select, options_for_select(Scheme.select_scheme, 'id'), {}, class:"form-control", :required => true
 		.row.form-group.actions
 			= f.submit "Save", class:"btn btn-primary btn-md"
-			= link_to "Cancel", points_path, class:"btn btn-default btn-md"
+			= link_to "Cancel", events_path, class:"btn btn-default btn-md"
