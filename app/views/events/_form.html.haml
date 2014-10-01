@@ -21,10 +21,10 @@
 		.row.form-group.field.has-feedback
 			= f.label :show_id
 			%br/
-			= f.select :show_select, options_for_select(Show.select_show, 'id'), {:selected => "Select one"}, class:"form-control", :required => true
+			= f.select :show_select, [], {:selected => "Select one"}, class:"form-control step1", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :season_id
-			= f.select :season_select, options_for_select(Season.select_season, 'id'), {}, class:"form-control", :required => true
+			= f.select :season_select, options_for_select(Season.select_season, 'id'), {}, class:"form-control step2", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :contestant_id
 			= f.select :contestant_select, options_for_select(Contestant.select_contestant, 'id'), {}, class:"form-control", :required => true
