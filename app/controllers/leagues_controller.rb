@@ -41,15 +41,15 @@ class LeaguesController < ApplicationController
 		
 		@type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
-		@export_season_list = Season.where(expired: false)
 		@export_show_list = Show.all
+		@export_season_list = Season.where(expired: false)
 
 		respond_to do |format|
 			format.html
 			format.json { 		
 				render :json => {
-					:exportSeasons => @export_season_list.where(show_id: params[:show_list]),
-					:exportShows => @export_show_list
+					:exportShows => @export_show_list,
+					:exportSeasons => @export_season_list.where(show_id: params[:show_list])
 				} 
 			}
 		end

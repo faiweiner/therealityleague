@@ -62,5 +62,21 @@ class ApplicationController < ActionController::Base
 		return "hello"
 	end
 	
+	def export_show_season_lists
+		@export_show_list = Show.all
+		@export_season_list = Season.where(expired: false)
+
+		respond_to do |format|
+			format.html
+			format.js { 		
+				render :json => {
+					:exportShows => @export_show_list,
+					:exportSeasons => @export_season_list.where(show_id: params[:show_list])
+				} 
+			}
+		end
+
+	end
+
 	helper_method :current_user
 end

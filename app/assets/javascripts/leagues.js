@@ -19,7 +19,7 @@ $(document).ready(function () {
 			$leagueDraftInput.popover('hide');
 		}
 
-		$('#league_creation').cascadingDropdown({
+		$leagueCrationDiv.cascadingDropdown({
 			selectBoxes: [
 				{
 					selector: '.step1',
