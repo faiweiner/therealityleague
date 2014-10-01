@@ -19,32 +19,32 @@ $(document).ready(function () {
 		$modalDirBtn1 = $('#modal-page-1');
 		$modalDirBtn2 = $('#modal-page-2');
 		$modalDirBtn3 = $('#modal-page-3');
+	
+		var showPage = function (element, elementBtn) {
+			element.removeClass('hidden');
+			elementBtn.parent('li').addClass('active');
+		};
+
+		var hidePage = function (element, elementBtn) {
+			element.addClass('hidden')
+			elementBtn.parent('li').removeClass('active');
+		};
+
+		$modalDirBtn1.on('click', function () {
+			showPage($modalDir1, $modalDirBtn1);
+			hidePage($modalDir2, $modalDirBtn2);
+			hidePage($modalDir3, $modalDirBtn3);
+		});
+		$modalDirBtn2.on('click', function () {
+			hidePage($modalDir1, $modalDirBtn1);
+			showPage($modalDir2, $modalDirBtn2);
+			hidePage($modalDir3, $modalDirBtn3);
+		});
+		$modalDirBtn3.on('click', function () {
+			hidePage($modalDir1, $modalDirBtn1);
+			hidePage($modalDir2, $modalDirBtn2);
+			showPage($modalDir3, $modalDirBtn3);
+		});
+		
 	};
-
-	var showPage = function (element, elementBtn) {
-		element.removeClass('hidden');
-		elementBtn.parent('li').addClass('active');
-	};
-
-	var hidePage = function (element, elementBtn) {
-		element.addClass('hidden')
-		elementBtn.parent('li').removeClass('active');
-	};
-
-	$modalDirBtn1.on('click', function () {
-		showPage($modalDir1, $modalDirBtn1);
-		hidePage($modalDir2, $modalDirBtn2);
-		hidePage($modalDir3, $modalDirBtn3);
-	});
-	$modalDirBtn2.on('click', function () {
-		hidePage($modalDir1, $modalDirBtn1);
-		showPage($modalDir2, $modalDirBtn2);
-		hidePage($modalDir3, $modalDirBtn3);
-	});
-	$modalDirBtn3.on('click', function () {
-		hidePage($modalDir1, $modalDirBtn1);
-		hidePage($modalDir2, $modalDirBtn2);
-		showPage($modalDir3, $modalDirBtn3);
-	});
-
 });

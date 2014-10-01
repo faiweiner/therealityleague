@@ -1,9 +1,10 @@
 $(document).ready(function () {
+	console.log('Leagues JS initiated');
 	$leagueCrationDiv = $('#league_creation');
 	$leagueViewDiv = $('#league_view');
 
 	if ($leagueCrationDiv.length > 0) {
-		console.log('Leagues JS file executed');
+		console.log('Leagues JS for new league initiated');
 		// catch to only display popup explanation during league creation
 		if ($('#popupDisabler').length === 0) {
 			// Create new league function 
@@ -78,16 +79,30 @@ $(document).ready(function () {
 				}
 			]
 		});
-	} else if ($leagueViewDiv.length > 0) {
-		var participantCount = $.getJSON( "/leagues/1", function (data) {
+	} else {
+		var getUrlParameter = function () {
+			var sPageURL = window.location.pathname;
+			var sURLVariables = sPageURL.split('/');
+			for (var i = 0; i < sURLVariables.length; i++) {
+				var sParameterName = sURLVariables[i];
+				if ($.isNumeric(sParameterName) == true) {
+					return sParameterName;
+				}
+			}
+		};   
+
+		var participantCount = $.getJSON( "/leagues/" + getUrlParameter(), function (data) {
 			participantCount = data.exportParticipants.length;
+			console.log('yoo hoo');
 		})
 		.done(function () {
-			if (participantCount > 1) {
+			if (participantCount <= 1) {
 				setTimeout(function (response) {
 					$("#participants_prompt").modal();
 				}, 1000);			
 			};
 		});
 	};
+
+
 });

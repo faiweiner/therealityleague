@@ -186,6 +186,7 @@ class LeaguesController < ApplicationController
 			format.html
 			format.json { 		
 				render :json => {
+					:leagueId => @league.id,
 					:exportParticipants => @participants
 				} 
 			}
