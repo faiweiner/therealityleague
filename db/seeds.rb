@@ -75,19 +75,19 @@ cont23 = Contestant.create(:name => 'Brooke', :season_id => season3.id, :age => 
 cont24 = Contestant.create(:name => 'Diana', :season_id => season3.id, :age => 31, :gender => 'Female', :occupation => 'Salon Owner', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', :image => '/assets/the_bachelor/season18/diana.jpg')
 cont25 = Contestant.create(:name => 'Katie', :season_id => season3.id, :age => 27, :gender => 'Female', :occupation => 'Yoga Instructor', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', :image => '/assets/the_bachelor/season18/katie.jpg')
 
-roster1 = Bracket.create(:user_id => user1.id, :league_id => league3.id)
-roster2 = Bracket.create(:user_id => user4.id, :league_id => league3.id)
-roster3 = Bracket.create(:user_id => user5.id, :league_id => league3.id)
-roster4 = Bracket.create(:user_id => user1.id, :league_id => league2.id)
-roster5 = Fantasy.create(:user_id => user3.id, :league_id => league2.id)
-roster6 = Fantasy.create(:user_id => user4.id, :league_id => league2.id)
-roster7 = Fantasy.create(:user_id => user5.id, :league_id => league2.id)
-roster8 = Fantasy.create(:user_id => user1.id, :league_id => league1.id)
-roster9 = Fantasy.create(:user_id => user2.id, :league_id => league1.id)
-roster10 = Fantasy.create(:user_id => user3.id, :league_id => league1.id)
+roster1 = Roster.create(:user_id => user1.id, :league_id => league3.id)
+roster2 = Roster.create(:user_id => user4.id, :league_id => league3.id)
+roster3 = Roster.create(:user_id => user5.id, :league_id => league3.id)
+roster4 = Roster.create(:user_id => user1.id, :league_id => league2.id)
+roster5 = Roster.create(:user_id => user3.id, :league_id => league2.id)
+roster6 = Roster.create(:user_id => user4.id, :league_id => league2.id)
+roster7 = Roster.create(:user_id => user5.id, :league_id => league2.id)
+roster8 = Roster.create(:user_id => user1.id, :league_id => league1.id)
+roster9 = Roster.create(:user_id => user2.id, :league_id => league1.id)
+roster10 = Roster.create(:user_id => user3.id, :league_id => league1.id)
 
-roster10 = Bracket.create(:user_id => user1.id, :league_id => league4.id)
-roster11 = Bracket.create(:user_id => user2.id, :league_id => league4.id)
+roster10 = Roster.create(:user_id => user1.id, :league_id => league4.id)
+roster11 = Roster.create(:user_id => user2.id, :league_id => league4.id)
 roster10.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, cont14, cont15, cont16, cont17, cont18, cont19, cont20, cont21, cont22, cont23, cont24, cont25]
 roster11.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, cont14, cont15, cont16, cont17, cont18, cont19, cont20, cont21, cont22, cont23, cont24, cont25]
 

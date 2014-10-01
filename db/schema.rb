@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20140904084454) do
     t.integer  "commissioner_id"
     t.integer  "season_id"
     t.boolean  "public_access",   default: true
-    t.string   "draft_type"
+    t.string   "type"
     t.datetime "draft_deadline"
     t.integer  "scoring_system"
     t.string   "league_key"
@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 20140904084454) do
   create_table "rosters", force: true do |t|
     t.integer  "user_id"
     t.integer  "league_id"
-    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

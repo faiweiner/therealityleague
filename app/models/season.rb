@@ -40,7 +40,7 @@ class Season < ActiveRecord::Base
 
 	def self.select_season
 		# This model method is for populating Create League's drop-down menu
-		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id, s.show_id]}
+		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id]}
 	end
 
 	# check method if season can be edited
