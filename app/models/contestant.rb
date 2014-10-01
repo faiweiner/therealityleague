@@ -23,26 +23,31 @@ class Contestant < ActiveRecord::Base
 	before_destroy { rosters.clear }
 	has_and_belongs_to_many :rounds, inverse_of: :contestants
 	
-	has_many :points
-	has_many :episodes, through: :points
-	has_many :events, through: :points
+	has_many :events
+	has_many :episodes, through: :events
+	has_many :schemes, through: :events
 
 	validates :name, :presence => true, :on => :create
 	validates :season_id, :presence => true, :on => :create
 
+	def self.select_contestant
+		# This model method is for populating Create League's drop-down menu
+		@contestants_list = Contestant.where(present: true).each.map {|c| [c.name, c.id] }
+		@contestants_list.unshift(["Select a contestant", nil])
+	end
 
 	def calculate_points_per_episode(episode_id)
-		Point.joins(:event).where(contestant_id: self.id, episode_id: episode_id).sum("events.points_asgn")
+		Event.joins(:scheme).where(contestant_id: self.id, episode_id: episode_id).sum("schemes.points_asgn")
 	end
 
 	def calculate_points_per_round(round_id)
 		round = Round.find(round_id)
 		episode = Episode.find(round.episode_id)
-		Point.joins(:event).where(contestant_id: self.id, episode_id: episode.id).sum("events.points_asgn")
+		Event.joins(:scheme).where(contestant_id: self.id, episode_id: episode.id).sum("schemes.points_asgn")
 	end
 
 	def calculate_total_points		# takes one contestant of a roster to get his/her total score
-		Point.joins(:event).where(contestant_id: self.id).sum("events.points_asgn")
+		Event.joins(:scheme).where(contestant_id: self.id).sum("schemes.points_asgn")
 	end
 
 	def status

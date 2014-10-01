@@ -4,7 +4,7 @@
 			%h1 Edit league
 		- else
 			%h1 Start a league
-	.panel-body
+	.panel-body{:id => ("league_creation" unless params[:id])}
 		= form_for(@league) do |f|
 			/ Errors Message
 			- if @league.errors.any?
@@ -23,7 +23,13 @@
 				.col-md-3.text-right
 					= label_tag :show
 				.col-md-6
-					= select_tag(:show_list, options_for_select(Show.select_show, 'id'), {class:"form-control", :data => {:toggle => "popover", :trigger => "focus", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"})
+					/ Disable popup description if editing league;
+					/ New league will get popup description of fields
+					- if @league_show_id
+						.div#popupDisabler.hidden= @league_show_id
+						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control step1"})
+					- else
+						= select_tag(:show_list, (), {:prompt => "Select a show", class:"form-control step1", :required => true})
 			/ Select reality show's season
 			.row.form-group
 				.col-md-3.text-right
@@ -31,16 +37,16 @@
 					%br/
 				.col-md-6
 					- if @league_season_id
-						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {}, {class:"form-control"})
+						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class:"form-control step2"})
 					- else
-						= f.select(:season, options_for_select(Season.select_season), {}, {:class => "form-control"})
+						= f.select(:season, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
 			/ Name of League
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :league_name
 					%br/
 				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
-					= f.text_field :name, class:"form-control", :placeholder => "Enter name here"
+					= f.text_field :name, class:"form-control", :placeholder => "Enter name here", :required => true
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right
@@ -61,13 +67,13 @@
 					- if @league_draft_type	
 						= f.select(:draft_type, options_for_select(@draft_type, @league_draft_type), {}, {:class => "form-control"})
 					- else
-						= f.select(:draft_type, options_for_select(@draft_type), {}, {:class => "form-control"})
+						= f.select(:draft_type, options_for_select(@draft_type), {:include_blank => "Select draft type"}, class:"form-control")
 			/ Scoring system FIXME!
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :scoring_system
 					%br/
-				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Choose between standard scoring system for a show's contestant, or customize your league's scoring schema."}, :title => "Select Scoring System"}
+				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Choose between standard scoring system for a show's contestant, or customize your league's scoring scheme."}, :title => "Select Scoring System"}
 					.col-md-6
 						= f.radio_button :scoring_system, true
 						= f.label(:standard, 'Standard')

@@ -49,10 +49,9 @@ ActiveRecord::Schema.define(version: 20140904084454) do
   end
 
   create_table "events", force: true do |t|
-    t.string   "type"
-    t.integer  "show_id"
-    t.string   "event"
-    t.integer  "points_asgn"
+    t.integer  "contestant_id"
+    t.integer  "episode_id"
+    t.integer  "scheme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -77,14 +76,6 @@ ActiveRecord::Schema.define(version: 20140904084454) do
     t.integer "user_id"
   end
 
-  create_table "points", force: true do |t|
-    t.integer  "contestant_id"
-    t.integer  "episode_id"
-    t.integer  "event_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "rosters", force: true do |t|
     t.integer  "user_id"
     t.integer  "league_id"
@@ -96,6 +87,15 @@ ActiveRecord::Schema.define(version: 20140904084454) do
   create_table "rounds", force: true do |t|
     t.integer  "roster_id"
     t.integer  "episode_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "schemes", force: true do |t|
+    t.string   "type"
+    t.integer  "show_id"
+    t.string   "description"
+    t.integer  "points_asgn"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

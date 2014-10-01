@@ -1,89 +1,113 @@
 .panel.panel-default
+	.panel-heading
+		.panel-title.row
+			.col-lg-10
+				%h2 Manage Seasons
+			.col-lg-2.text-right
+				= link_to "Add New Season", new_season_path, class:"btn btn-default btn-sm"
 	.panel-body
-		.panel-heading
-			%h2 Season Listing
-			= link_to 'Add New Show', new_season_path, class:"btn btn-default"
-		.panel-body
-			%table.table.table-hover
-				%h4 
-					Current 
-					= pluralize_without_count(@seasons.count, "Season", text = nil)
-				%thead
+		%table.table.table-hover
+			/ Error Messages
+			.row.form-group
+				- if flash[:notice] && flash[:color] == "valid"
+					.alert.alert-success{:role => "alert"}= flash[:notice]
+				- elsif flash[:notice] && flash[:color] == "invalid"
+					.alert.alert-warning{:role => "alert"}= flash[:notice]
+				- elsif flash[:notice] && flash[:color] == "prohibited"
+					.alert.alert-danger{:role => "alert"}= flash[:notice]
+			/ End Error Messages
+			%h4 
+				Current 
+				= pluralize_without_count(@current_seasons.count, "Season", text = nil)
+			%thead
+				%tr
+					%th.col-sm-3 Season Name
+					/ column 1
+					%th.col-sm-1 Status
+					/ column 2
+					%th.col-sm-1 Premiere
+					/ column 3
+					%th.col-sm-1 Finale
+					%th.col-sm-3 Actions
+					/ column 4
+					%th.col-sm-1 
+					%th.col-sm-2 Events
+					/ column 6
+					%th.col-sm-1 Contestants
+					/ column 7
+			%tbody
+				- @current_seasons.each do |season|
 					%tr
-						%th.col-sm-3 Season Name
 						/ column 1
-						%th.col-sm-1 Status
+						%td
+							= link_to "#{season.show.name}: #{season.name}", season_path(season.id)
 						/ column 2
-						%th.col-sm-1 Premiere
+						%td
+							- if season.premiere_date < @current_date
+								Commenced
+							- elsif season.published? == false
+								Unpublished
+							- else
+								Draft Open
+						%td= season.premiere_date.strftime("%D")
 						/ column 3
-						%th.col-sm-3 Actions
-						/ column 4
-						%th.col-sm-2 Score Schemas
-						/ column 6
-						%th.col-sm-1 Destroy
-						/ column 7
-				%tbody
-					- @seasons.each do |show|
-						%tr
-							%td
-								= show.show.name
-								\: #{link_to show.name, show_path(show.id)}
-							/ column 1
-							%td
-								/ column 2
-								- if show.expired == true
-									Completed
-								- else
-									- if show.premiere_date < @current_date
-										Commenced
-									- else
-										Draft Open
-							%td= show.premiere_date.strftime("%D")
-							/ column 3
-							%td
-								- if show.editable?(show.id) == true
-									= link_to 'Edit', edit_season_path(show.id), class:"btn btn-sm btn-default"
-								- else
-									= link_to 'View', season_path(show.id), class:"btn btn-sm btn-default"
-								= link_to 'Contestants', contestants_season_path(show.id), class:"btn btn-sm btn-default"
-							%td
-								= link_to 'Add', edit_season_path(show.id), class:"btn btn-sm btn-default"
-								= link_to 'Edit', edit_season_path(show.id), class:"btn btn-sm btn-default"
-							%td
-								- if show.destroyable?(show.id) == false
-									= button_to 'Destroy', season_path(show.id), method: :delete, data: { confirm: 'Are you sure you want to delete this show?' }, class:"btn btn-sm btn-default"
-			%table.table.table-hover
-				%h4 
-					Past 
-					= pluralize_without_count(@past_seasons.count, "Season", text = nil)
-				%thead
+						%td= season.finale_date.strftime("%D")
+						%td
+							= link_to "View", season_path(season.id), class:"btn btn-sm btn-default"
+							= link_to "Edit", edit_season_path(season.id), class:"btn btn-sm btn-default"
+							= link_to "Delete", season_path(season.id), :method => "delete", :action => "destroy", :data => {:confirm => "Are you sure you want to delete this season?"}, class:"btn btn-sm btn-default"
+						%td
+							- if season.published? 
+								= link_to "Unpublish", unpublish_season_path(season.id), :method => "patch", :data => {:confirm => "Are you sure you want to unpublish this season?"}, class:"btn btn-sm btn-default"
+							- else
+								= link_to "Publish", publish_season_path(season.id), :method => "patch", class:"btn btn-sm btn-default"
+						%td 
+							= link_to "Track", edit_season_path(season.id), class:"btn btn-sm btn-default"
+							= link_to "View", season_path(season.id), class:"btn btn-sm btn-default"
+						%td
+							= link_to "View", contestants_season_path(season.id), class:"btn btn-sm btn-default"
+	.panel-body
+		%table.table.table-hover
+			%h4 
+				Past 
+				= pluralize_without_count(@past_seasons.count, "Season", text = nil)
+			%thead
+				%tr
+					/ column 1
+					%th.col-sm-3 Season Name
+					/ column 2
+					%th.col-sm-1 Status
+					/ column 3
+					%th.col-sm-1 Premiered
+					/ column 4
+					%th.col-sm-1 Finale Date
+					/ column 5
+					%th.col-sm-3 Actions
+					/ column 6
+					%th.col-sm-3 Statistics
+			%tbody
+				- @past_seasons.each do |season|
 					%tr
-						%th.col-sm-2 Show Name
-						%th.col-sm-1 Status
-						%th.col-sm-1 Premiered
-						%th.col-sm-2 Actions
-						%th.col-sm-1
-						%th.col-sm-1
-						%th.col-sm-2 Score Schemas
-				%tbody
-					- @past_seasons.each do |show|
-						%tr
-							%td= link_to show.name, season_path(show.id)
-							%td
-								- if show.expired == true
-									Completed
+						/ column 1
+						%td
+							= link_to "#{season.show.name}: #{season.name}", season_path(season.id)
+						/ column 2
+						%td
+							- if season.expired == true
+								Completed
+							- else
+								- if season.premiere_date < @current_date
+									Commenced
+								- elsif season.published? == false
+									Unpublished
 								- else
-									- if show.premiere_date < @current_date
-										Commenced
-									- else
-										Draft Open
-							%td
-								= show.premiere_date.strftime("%D")
-							%td
-								- if show.editable?(show.id) == true
-									= link_to 'Edit', edit_season_path(show.id), class:"btn btn-sm btn-default"
-								- else
-									= link_to 'View', season_path(show.id), class:"btn btn-sm btn-default"
-								- if show.destroyable?(show.id) == false
-									= link_to 'Destroy', show, method: :delete, data: { confirm: 'Are you sure you want to delete this show?' }, class:"btn btn-sm btn-default"
-							%td Score Schema
+									Draft Open
+						/ column 3
+						%td= season.premiere_date.strftime("%D")
+						/ column 4
+						%td= season.finale_date.strftime("%D")
+						/ column 5
+						%td
+							= link_to "View", season_path(season.id), class:"btn btn-sm btn-default"
+							= link_to "Contestants", contestants_season_path(season.id), class:"btn btn-sm btn-default"
+						%td

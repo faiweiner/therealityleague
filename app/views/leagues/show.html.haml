@@ -1,51 +1,64 @@
-.panel.panel-default
+- if flash[:notice] && flash[:color] == "valid"
+	.alert.alert-success{:role => "alert"}= flash[:notice]
+- elsif flash[:notice] && flash[:color] == "invalid"
+	.alert.alert-warning{:role => "alert"}= flash[:notice]
+.panel.panel-default#league_view
 	.panel-heading
 		.panel-title.row
-			%span.col-md-10
-				%h3= @league.name 
+			%span.col-lg-8
+				- if @league.public_access == true
+					%h3= @league.name + " (public)"
+				- else
+					%h3= @league.name  + " (private)"
 				%p
 					= @league.season.show.name + ": "
-					= @league_season.name
-			/ FIXME with jQuery
-			- if @comm_this_league == true
-				%span.col-offset-md-2
-					%h4.small Commissioner
-					- if @league.active == true 
-						= link_to"Edit League", edit_league_path, class:"btn btn-default" 
-			- elsif @a_participant == false
-				= button_to "Join League", league_join_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
-	.panel-body
-		/ left column
-		.media.col-md-4
-			= link_to (content_tag(:img, nil, :src => @league.season.image, class:"media-object img-thumbnail")), season_path(@league_season.id)
-			%br/
-			.media-body
-				%h4.media-heading= @league_season.name
-				%p= @league_season.description
-				%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur unde odio cumque autem totam enim debitis minima illo dicta corporis excepturi rem laborum voluptates deserunt eum minus, quod commodi accusamus.
-			- if @league.public_access == true
-				.row
-				%span.col-md-6
-					%h4.small This is a public league.
-			- else
-				.row
-					%span.col-md-6
-						%h4.small League Key:
-						%span.btn.btn-default.disabled
+					= @league.season.name		
+				- if @comm_this_league == true
+					%p 
+						League Key:
+						%a.btn.btn-default.btn-xs.disabled
 							= @league.league_key
-					%span.col-md-6
-						%h4.small League Password:
-						%span.btn.btn-default.disabled
-							= @league.league_password
-		/ right column
-		.col-md-8
+						- if @league.public_access == false
+							Password:
+							%a.btn.btn-default.btn-xs.disabled
+								= @league.league_password
+						- if @participants.count <= 1
+							= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-primary btn-sm" 
+						- else
+							= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
+						- if @league_deadline_set == false
+							= link_to "Set Draft Deadline", "#", class:"btn btn-primary btn-sm" 
+			%span.col-lg-4.text-right
+				.dropdown
+					%a{"data-toggle" => "dropdown", :href =>"#", class:"btn btn-default"} Actions
+					%ul.dropdown-menu{:role => "menu", "aria-labelledby" => "dLabel"}
+						%li HI
+						%li HO
+				.div
+					%button.btn.btn-default.btn-sm{"data-target" => "#about_league", "data-toggle" => "collapse", :type => "button"}
+						About Show
+					- if @comm_this_league && @league.active?
+						= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
+					- elsif @a_participant == false
+						= button_to "Join League", league_join_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
+				%br/
+				.div
+					%h6 League rules
+					%h6
+						- if @league.active?
+							Commence date
+						- else
+							Concluded
+					%h6 what else do you need
+	.panel-body
+		.col-lg-6
 			%h3 Ranking
 			%table.table.table-hover
 				%thead
 					%th Rank
 					%th Participants
-					%th Total Points
-					%th Action
+					%th Total Pts
+					%th Roster
 				%tbody
 					- @participants_roster_total_sorted.each_with_index do |participant, i|
 						%tr
@@ -54,30 +67,47 @@
 							%td= participant[1]
 							%td
 								- if User.where(username: participant[0]).first.id == @current_user.id
-									= link_to "View Roster", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary"
+									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
+									- if @league.active?
+										= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
 								- else
-									= link_to "View Roster", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default"
-			%table.table.table-hover
-				%h3 Weekly Score
-				%thead
-					%th Participants
-					- @league_season.episode_count.times do |i|
-						%th= i+1
-					%th Total
-				%tbody
-					- @participants.each_with_index do |participant, index|
-						%tr
-							%td= participant.username
-							- @league_season.episode_count.times do |i|
-								- if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
-									%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
-								- else
-									%td --
-							%td= @participants_roster_total[participant.username]
-
-
-
-
-
-
+									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default btn-sm"
+		.col-lg-6
+			%h3 Live Score Update
+			#event-update-board
+				- if @season
+					no
+				- else
+					.panel.panel-default
+						.panel-body
+							Nothing has happened yet.						
+		- if @league.season.episode_count
+			.col-lg-12
+				%table.table.table-hover
+					%h3 Weekly Score
+					%thead
+						%th Participants
+						- @league.season.episode_count.times do |i|
+							%th= i+1
+						%th Total
+					%tbody
+						- @participants.each_with_index do |participant, index|
+							%tr
+								%td= participant.username
+								- @league.season.episode_count.times do |i|
+									- if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
+										%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
+									- else
+										%td --
+								%td= @participants_roster_total[participant.username]
+.modal.fade.bs-example-modal-md#participants_prompt{"aria-hidden" => "true", "aria-labelledby" => "mySmallModalLabel", :role => "dialog", :tabindex => "-1"}
+	.modal-dialog.modal-md
+		.modal-content
+			.modal-body
+				%h3 Invite Participants!
+				%p Invite friends in your network to join this league and get the game started!
+				%p Would you like to do this now?
+			.modal-footer
+				%button.btn.btn-default.btn-sm{"data-dismiss" => "modal", :type => "button"} Not now
+				%a.btn.btn-primary.btn-sm{:href => league_invite_path} Let's do it!
 

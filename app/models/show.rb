@@ -11,16 +11,15 @@
 
 class Show < ActiveRecord::Base
 	has_many :seasons, inverse_of: :show, dependent: :destroy
-	has_many :events, inverse_of: :show, dependent: :destroy
+	has_many :schemes, inverse_of: :show, dependent: :destroy
 	has_many :episodes, through: :seasons
-	has_many :points, through: :events
+	has_many :events, through: :schemes
 
 	validates :name, :presence => true, :on => :create
 	private
 
 	def self.select_show
 		# This model method is for populating Create League's drop-down menu
-		@shows_list = Show.all.each.map {|s| [s.name, s.id] } # FIXME! add a filter to only include the most recent show
-		@shows_list.unshift(["Select a show", nil])
+		@shows_list = Show.all.each.map {|s| [s.name, s.id] }
 	end
 end

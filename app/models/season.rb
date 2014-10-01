@@ -22,7 +22,7 @@
 class Season < ActiveRecord::Base
 	belongs_to :show, inverse_of: :seasons
 	has_many :leagues, inverse_of: :season, dependent: :destroy
-	has_many :events, through: :show
+	has_many :schemes, through: :show
 	has_many :contestants
 	has_many :episodes
 	# belongs_to :score
@@ -30,6 +30,8 @@ class Season < ActiveRecord::Base
 	validates :name, :presence => true, :on => :create
 	validates :premiere_date, :presence => true, :on => :create
 
+	private
+	
 	def self.top_three
 		# This model method is called in Pages#home to give list of the three top shows
 		
@@ -38,35 +40,13 @@ class Season < ActiveRecord::Base
 
 	def self.select_season
 		# This model method is for populating Create League's drop-down menu
-		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id] }
-		@seasons_list.unshift(["Select a season", nil])
-	end
-
-	def self.get_show_name(season_id)
-		season = Season.find(season_id)
-		season.name
-	end
-
-	# check method if season can be destroyed
-	def destroyable?(season_id)
-		season = Season.find(season_id)
-		if season.expired == false
-			if season.premiere_date < DateTime.now
-				return true
-			else
-				return false
-			end
-		else
-			return true
-		end
+		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id, s.show_id]}
 	end
 
 	# check method if season can be edited
-	def editable?(season_id)
-		season = Season.find(season_id)
-		if season.expired == false
-			return true
-		end
+
+	def self.list_by_show(show_id)
+		seasons_show = Season.where(show_id: show_id)	
 	end
 
 	def get_points_by_season(season_id)

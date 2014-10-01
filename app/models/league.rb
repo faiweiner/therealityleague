@@ -42,10 +42,12 @@ class League < ActiveRecord::Base
 	end
 
 	def set_up_league
-		if public_access == false # if the league is private
+		if public_access == true # if the league is public
+			gen_league_key
+		else
 			gen_league_key
 			gen_league_password
 		end
 	end
-	
+
 end

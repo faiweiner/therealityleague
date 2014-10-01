@@ -1,0 +1,88 @@
+.panel.panel-default
+	.panel-heading
+		.panel-title.row
+			%span.col-md-9
+				%h3= @roster.league.name
+				%p
+					= @roster.league.season.show.name + ": "
+					= @roster.league.season.name
+			%span
+				- if @roster.user_id == @current_user.id
+					%h4.small
+						Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
+					= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary"
+				- else
+					%h4.small= @roster.user.username
+				= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default"
+		/ FIXME with jQuery
+	.panel-body
+		- if @roster.league.season.episodes.count > 0
+			#roster-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
+				%table#rosterScoreBoard.table.table-hover
+					%h3 Weekly Score
+					%thead
+						%th.col-md-2 Contestants
+						- @roster.league.season.episode_count.times do |i|
+							%th.col-md-1= i+1
+						%th.col-md-1 Total
+					%tbody
+						- @roster.contestants.order(name: :asc).each do |contestant|
+							%tr
+								%td= contestant.name
+								- @roster.league.season.episodes.each do |episode|
+									%td= contestant.calculate_points_per_episode(episode.id)
+								- if @roster.league.season.episodes.count < @roster.league.season.episode_count
+									/ FIXME!
+									- @roster.league.season.episode_count.times do |i|
+										%td -
+								%td= contestant.calculate_total_points
+						%tr
+							%td
+							- @roster.league.season.episode_count.times do |i|
+								%td
+							%td= @roster.calculate_total_roster_points
+			/ Contestant Board
+			#contestantBoard.col-xs-12.col-sm-3.col-md-4
+				%h3 Available Contestants
+				- @available_contestants.each do |contestant|
+					.col-xs-3.col-sm-6.col-md-5
+						.thumbnail.thumbnail-available-contestants
+							= image_tag contestant.image
+							.caption
+								= contestant.name
+			/ END Contestant Board
+			/ Roster Board
+			.col-xs-12.col-sm-9.col-md-8
+				.row
+					- if @roster.user_id == @current_user.id
+						%h3 Your Roster
+					- else
+						%h3 Roster Contestants
+				%br/
+				#rosterBoard.row
+					- @selected_contestants.each do |contestant|
+						.col-xs-3.col-sm-3.col-md-3
+							.thumbnail.thumbnail-current-roster
+								= image_tag contestant.image
+								.caption
+									= contestant.name
+				#box.row
+					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odit eius non, ratione ducimus magni consequatur eum quae quia quam itaque hic id provident obcaecati soluta fugiat doloribus ab aliquam?
+			/ END Roster Board
+		- else
+			#contestants-display
+				%h3 Nothing
+- if @roster.contestants.empty?
+	.modal.fade.modal-md#roster-complete-prompt{"aria-hidden" => "true", "aria-labelledby" => "myMediumModalLabel", :role => "dialog", :tabindex => "-1"}
+		.modal-dialog.modal-md
+			.modal-content
+				.modal-header.text-center
+					%button.close{"data-dismiss" => "modal", :type => "button"}
+						%span{"aria-hidden" => "true"} ×
+						%span.sr-only Close
+					%h3 Your roster is currently empty!
+				.modal-body
+					%p Oh hello there
+					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, eum tenetur laboriosam aut fugiat incidunt voluptatum error ea facilis earum quae, deleniti. Ipsa iusto neque, consequatur id nihil impedit ratione.
+				.modal-footer
+					%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

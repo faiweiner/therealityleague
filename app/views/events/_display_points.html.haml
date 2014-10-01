@@ -1,0 +1,24 @@
+#points-display-box.panel.panel-default
+	.panel-heading
+		%h4#panel-title-dynamic.panel-title
+			= @show.name
+	.panel-body
+		.row
+			.col-lg-12
+				%table.table.table-hover.points-table
+					%thead
+						%th.col-lg-2{"data-field" => "season", "data-sortable" => "true"} Season
+						%th.col-lg-6{"data-field" => "event", "data-sortable" => "true"} Event
+						%th.col-lg-1{"data-field" => "points_asgn", "data-sortable" => "true"} Pts Assigned
+						%th.col-lg-3 Actions
+					%tbody
+						- @points_info_table.each do |id, point|
+							%tr
+								%td
+									= point[:season].show.name + ": "
+									= point[:season].name
+								%td= point[:event]
+								%td= point[:points_assigned]
+								%td.col-lg-3
+									= link_to "Edit", edit_point_path(id), class:"btn btn-default btn-sm"
+									= link_to "Delete", point_path(id), :action => "destroy", :method => "post",  class:"btn btn-default btn-sm"

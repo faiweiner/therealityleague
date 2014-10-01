@@ -1,5 +1,5 @@
 / Large modal
-%button.btn.btn-primary{"data-target" => ".bs-example-modal-md", "data-toggle" => "modal"} View scoring system
+%button.btn.btn-primary.btn-sm{"data-target" => ".bs-example-modal-md", "data-toggle" => "modal"} View scoring system
 .modal.fade.bs-example-modal-md{"aria-hidden" => "true", "aria-labelledby" => "myMediumModalLabel", :role => "dialog", :tabindex => "-1"}
 	.modal-dialog.modal-md
 		.modal-content
@@ -10,7 +10,7 @@
 				%h4#myModalLabel.modal-title
 					= @show.name
 					's Scoring System
-			.modal-body
+			.modal-body.text-left
 				%h4 Elimination/Survival
 				%table#score-system-table.table.table-striped
 					%thead
@@ -19,7 +19,7 @@
 					%tbody
 						- @rules_survival.each do |rule|
 							%tr
-								%td= rule.event
+								%td= rule.description
 								%td= rule.points_asgn
 				%h4 Show/Game
 				%table#score-system-table.table.table-striped
@@ -29,7 +29,7 @@
 					%tbody
 						- @rules_game.each do |rule|
 							%tr
-								%td= rule.event
+								%td= rule.description
 								%td= rule.points_asgn
 				%h4 Extracurricular
 				%table#score-system-table.table.table-striped
@@ -39,7 +39,7 @@
 					%tbody
 						- @rules_extra.each do |rule|
 							%tr
-								%td= rule.event
+								%td= rule.description
 								%td= rule.points_asgn
 			.modal-footer
 				%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

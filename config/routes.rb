@@ -1,29 +1,34 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-	get 'events/:show_id' => 'events#display', :as => :event
+	get 'schemes/:show_id' => 'schemes#display', :as => :event
+  resources :schemes
+  get 'events/display'
+  get 'events/get_seasons' => 'events#seasons', :as => :get_seasons
   resources :events
-  get 'points/display'
-  get 'points/get_seasons' => 'points#seasons', :as => :get_seasons
-  resources :points
   
 	get 'pages/about' => 'pages#about'
 
+	get 'shows/:id' => 'shows#display', :as => :show
+	resources :shows
 	get 'seasons/search' => 'seasons#search'
 	get 'seasons' => 'seasons#index', :as => :seasons
 	post 'seasons' => 'seasons#create'
+	get 'seasons/new/:show_id' => 'seasons#new', :as => :new_season_show
 	get 'seasons/new' => 'seasons#new', :as => :new_season
 	get 'seasons/:id/edit' => 'seasons#edit', :as => :edit_season
+	patch 'seasons/:id/publish' => 'seasons#publish', :as => :publish_season
+	patch 'seasons/:id/unpublish' => 'seasons#unpublish', :as => :unpublish_season
 	get 'seasons/:id' => 'seasons#display', :as => :season
 	patch 'seasons/:id' => 'seasons#update'
 	put 'seasons/:id' => 'seasons#update'
 	delete 'seasons/:id' => 'seasons#destroy'
-	resources :shows
+
 
 	get 'leagues/search' => 'leagues#search'
 	post 'leagues/search/:search' => 'leagues#results'
+	get 'leagues/:id/invite' => 'leagues#invite', :as => :league_invite
 	resources :leagues
-	get 'leagues/invite/:invite' => 'leagues#invite', :as => :league_invite
 	post 'leagues/access' => 'leagues#access', :as => :league_access 
 	post 'leagues/join/:league' => 'leagues#join', :as => :league_join
 

@@ -1,0 +1,27 @@
+= form_for(@scheme) do |f|
+	- if @scheme.errors.any?
+		#error_explanation
+			%h2
+				= pluralize(@scheme.errors.count, "error")
+				prohibited this score from being saved:
+			%ul
+				- @scheme.errors.full_messages.each do |message|
+					%li= message
+	.field.has-success.has-feedback
+		= f.label :show_id
+		%br/
+		= f.select(:show_id, options_for_select(Show.select_show), {}, {class:"form-control"})
+	.field
+		= f.label :type
+		%br/
+		= f.select(:type, options_for_select(Scheme.select_type), {}, {class:"form-control"})
+	.field
+		= f.label :description
+		%br/
+		= f.text_area :description, class:"form-control"
+	.field
+		= f.label :points_asgn, "Points assignment"
+		%br/
+		= f.number_field :points_asgn, class:"form-control", :placeholder => 0
+	.actions
+		= f.submit "Add new scheme", class:"btn btn-block btn-default", :id => "new-scheme-submit"

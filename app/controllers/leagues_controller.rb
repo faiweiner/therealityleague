@@ -22,6 +22,7 @@ class LeaguesController < ApplicationController
 			if @past_leagues.nil?
 				flash[:notice] = "You have yet to compete in a league."
 			end
+			
 			# List of leagues of which user is the commissioner
 			@comm_leagues = League.where(commissioner_id: @current_user.id)
 			# @league_players = @league.users
@@ -37,14 +38,27 @@ class LeaguesController < ApplicationController
 			flash[:color] = "invalid"
 			redirect_to new_user_path
 		end
-		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
+		
+		@draft_type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@league = League.new 
+		@export_season_list = Season.where(expired: false)
+		@export_show_list = Show.all
+
+		respond_to do |format|
+			format.html
+			format.json { 		
+				render :json => {
+					:exportSeasons => @export_season_list.where(show_id: params[:show_list]),
+					:exportShows => @export_show_list
+				} 
+			}
+		end
 	end
 	
 	def create
 		@league = League.new league_params
 		@league.season_id = params[:league][:season]
-		season = Show.where(name: params[:league][:season])
+		season = Season.where(name: params[:league][:season])
 		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
@@ -78,6 +92,7 @@ class LeaguesController < ApplicationController
 			redirect_to league_path(params[:id])
 		end
 		@league = League.find(params[:id])
+		@league_show_id = @league.season.show_id
 		@league_season_id = @league.season_id
 		@league_draft_type = @league.draft_type
 		@draft_type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
@@ -94,19 +109,28 @@ class LeaguesController < ApplicationController
 		@league.destroy
 		redirect_to leagues_path
 	end
+
 	def show
 		@participants = @league.users
 		@league_type = @league.draft_type
-		@league_season = Season.find(@league.season)
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
-		@comm_this_league = true if @league.commissioner_id == @current_user.id
+		
 		if p_id.include? @current_user.id
 			@a_participant = true
 		else
 			@a_participant = false
 		end
-	
+		
+		if @league.draft_deadline
+			@league_deadline_set = true
+			@league_commenced = true if @league.draft_deadline <= Date.today
+		else
+			@league_deadline_set = false
+		end
+
+		@comm_this_league = true if @league.commissioner_id == @current_user.id
+
 		# assign hashes
 		@participants_roster_id = {}
 		@participants_roster_total = {}
@@ -144,7 +168,6 @@ class LeaguesController < ApplicationController
 				# get Roster ID
 				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
 				@participants_roster_id.store(participant.username, roster_id)
-
 				# get Roster Total
 				roster_total = Roster.find(roster_id).calculate_total_roster_points
 				@participants_roster_total.store(participant.username, roster_total)
@@ -167,6 +190,16 @@ class LeaguesController < ApplicationController
 		else
 			raise "need to fix this"
 		end
+
+		respond_to do |format|
+			format.html
+			format.js { 		
+				render :json => {
+					:leagueId => @league.id,
+					:exportParticipants => @participants
+				} 
+			}
+		end
 	end
 
 	def search
@@ -175,6 +208,10 @@ class LeaguesController < ApplicationController
 	end
 
 	def results
+	end
+
+	def invite
+		@league = League.find params[:id]
 	end
 
 	def access
@@ -214,7 +251,7 @@ class LeaguesController < ApplicationController
 	private
 
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :show_id, :public_access, :draft_type, :league_key, :league_password, :active)
+		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :draft_type, :league_key, :league_password, :active)
 	end
 
 	def get_id(username)
@@ -225,10 +262,7 @@ class LeaguesController < ApplicationController
 	def private_restriction
 		@league = League.find(params[:id])
 		if @league.public_access == false
-			if @league.users.include? @current_user
-				flash[:notice] = "You are currently viewing a private league"
-				flash[:color] = "valid"
-			else
+			if @league.users.include? @current_user == false
 				flash[:notice] = "You do not have permission to access this private league."
 				flash[:color] = "prohibited"
 				redirect_to leagues_path
@@ -236,10 +270,13 @@ class LeaguesController < ApplicationController
 		end
 	end
 
+	def bar
+		return "hello"
+	end
+
 	def commissioner_restriction?
 		@league = League.find(params[:id])
-		@commissioner_id = @league.commissioner_id
-		if @current_user.id == @commissioner_id
+		if @current_user.id == @league.commissioner_id
 			return true
 		else
 			return false

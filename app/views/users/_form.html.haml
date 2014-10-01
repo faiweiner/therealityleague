@@ -1,6 +1,7 @@
+#fb-root
 .panel.panel-default
 	.panel-body
-		.col-md-12
+		.col-lg-12.col-md-12
 			- if params[:id]
 				%h2
 					Edit User
@@ -43,16 +44,19 @@
 								%input{:type => "checkbox"}
 								I agree to the
 								%a{"data-target" => "#myModal", "data-toggle" => "modal"} terms of service
-					.row.form-group.actions
-						- if params[:id]
+					- if params[:id]
+						.row.form-group.actions
 							= f.submit "Update", class:"btn btn-primary btn-lg"
 							= link_to "Cancel", user_path(:id), class:"btn btn-default btn-lg"
-						- else
-							= f.submit "Register", class:"btn btn-primary btn-lg"
-							%br/
-							%br/
-							%p
-								Already signed up? #{link_to "Sign in", login_path}
+					- else
+						.row.form-group.actions
+							= f.submit "Sign Up", class:"btn btn-primary btn-md"
+						.row
+							.fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1", "data-show-faces" => "false", "data-size" => "large"} Sign Up with Facebook
+						%br/
+						%br/
+						%p
+							Already signed up? #{link_to "Sign in", login_path}
 			#sign-up-message.col-lg-8.col-md-6.col-sm-6
 / Modal
 #myModal.modal.fade.bs-example-modal-md{"aria-hidden" => "true", "aria-labelledby" => "myMediumModalLabel", :role => "dialog", :tabindex => "-1"}
