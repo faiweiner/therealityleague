@@ -61,13 +61,13 @@
 			/	Draft Type
 			.row.form-group
 				.col-md-3.text-right
-					= f.label :draft_type
+					= f.label :type
 					%br/
-				.col-md-6{:id => "draft_type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
-					- if @league_draft_type	
-						= f.select(:draft_type, options_for_select(@draft_type, @league_draft_type), {}, {:class => "form-control"})
+				.col-md-6{:id => "type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
+					- if @league_type	
+						= f.select(:type, options_for_select(@type, @league_type), {}, {:class => "form-control"})
 					- else
-						= f.select(:draft_type, options_for_select(@draft_type), {:include_blank => "Select draft type"}, class:"form-control")
+						= f.select(:type, options_for_select(@type), {:include_blank => "Select draft type"}, class:"form-control")
 			/ Scoring system FIXME!
 			.row.form-group
 				.col-md-3.text-right

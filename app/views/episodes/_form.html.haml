@@ -1,0 +1,33 @@
+.col-lg-12
+	= form_for(:episode, :url => {:action => "create"}, :html => {:method => "post", id:"episode_form"}, class:"form-horizontal", :role => "form") do |f|
+		/ Error Messages
+		.row.form-group
+			- if flash[:notice] && flash[:color] == "valid"
+				.alert.alert-success{:role => "alert"}= flash[:notice]
+			- elsif flash[:notice] && flash[:color] == "invalid"
+				.alert.alert-warning{:role => "alert"}= flash[:notice]
+			- elsif flash[:notice] && flash[:color] == "prohibited"
+				.alert.alert-danger{:role => "alert"}
+					%p= flash[:notice]
+					- if @point.errors.any?
+						%p
+							= pluralize(@point.errors.count, "error")
+							prohibited this event from being tracked:
+						%ul
+							- @point.errors.full_messages.each do |message|
+								%li= message
+		/ End Error Messages
+		/ Form Portion
+		.row.form-group.field.has-feedback
+			= label_tag :show_id
+			%br/
+			= select_tag :show_select, options_for_select(Show.select_show, 'id'), class:"form-control", :required => true
+		.row.form-group.field.has-feedback
+			= f.label :season_id
+			= f.select :season_id, options_for_select(Season.select_season, 'id'), {}, class:"form-control", :required => true
+		.row.form-group.field.has-feedback
+			= f.label :air_date
+			= f.date_field :air_date, class:"form-control", :required => true
+		.row.form-group.actions
+			= f.submit "Save", class:"btn btn-primary btn-md"
+			= link_to "Cancel", episodes_path, class:"btn btn-default btn-md"
