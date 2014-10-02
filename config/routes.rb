@@ -3,14 +3,19 @@ Rails.application.routes.draw do
 
 	get 'schemes/:show_id' => 'schemes#display', :as => :event
   resources :schemes
+  
   get 'events/display'
   get 'events/get_seasons' => 'events#seasons', :as => :get_seasons
   resources :events
   
+  resources :episodes
+
 	get 'pages/about' => 'pages#about'
 
+	get 'shows/new' => 'shows#new', :as => :new_show
 	get 'shows/:id' => 'shows#display', :as => :show
 	resources :shows
+
 	get 'seasons/search' => 'seasons#search'
 	get 'seasons' => 'seasons#index', :as => :seasons
 	post 'seasons' => 'seasons#create'
