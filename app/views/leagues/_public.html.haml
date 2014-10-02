@@ -1,23 +1,25 @@
 / League display and search results
-.col-md-12
+.col-lg-6
 	%h2 Public Leagues
-	%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias aspernatur, eius recusandae, officiis ipsam omnis deleniti vero laudantium fugiat corporis dolorem nulla inventore. Quidem excepturi dolorum cumque tenetur, eaque autem.
-	.panel-body
-		.row
-			%table.table.table-striped
-				%thead
+.col-lg-6
+	%form.navbar-form.navbar-right{:action => "/leagues/search", role: "search", method: "get"}
+		.form-group
+			%input.input-sm{:type => "text", class: "form-control", name: "search", id: "search", placeholder: "Search league or show"}/
+			%button.btn.btn-sm.btn-default{type: "submit"} Submit
+.panel-body
+	.row
+	- if params[:search]
+		%h4 Search Results
+		%table.table.table-striped
+			%thead
+				%tr
+					%th League Name
+					%th Show
+					%th Action
+			%tbody
+				- @league_results.each do |league|
 					%tr
-						%th League Name
-						%th Show
-						%th Action
-				%tbody
-					- @league_results.each do |league|
-						%tr
-							%td= league.name
-							%td= league.season.name
-							%td
-								= link_to "View", league_path(league.id), class:"btn btn-default"
-			%form.navbar-form.navbar-left{:action => "/leagues/search", role: "search", method: "get"}
-				.form-group
-					%input{:type => "text", class: "form-control", name: "search", id: "search", placeholder: "search"}/
-					%button.btn.btn-default{type: "submit"} Submit
+						%td= league.name
+						%td= league.season.name
+						%td
+							= link_to "View", league_path(league.id), class:"btn btn-default"

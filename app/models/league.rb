@@ -36,8 +36,8 @@ class League < ActiveRecord::Base
 		where("league_key LIKE ?", "%#{query}%")
 	end
 
-	def self.search(query)
-		where("league_key LIKE ?", "%#{query}%")
+	def self.search_by_show_id(show_id)
+		where(:season_id, "%#{query}%")
 	end
 
 	private

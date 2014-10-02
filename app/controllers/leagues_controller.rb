@@ -205,9 +205,9 @@ class LeaguesController < ApplicationController
 			elsif query == "The Bachelor"
 				shows_list = Show.search_show(query)
 				shows_list.each do |show|
-					show.id if show.name == query
+					@show = Show.find(show.id)
 				end
-				@league_results	= League.search_by_show(show.id)
+				@league_results	= League.search_by_show(@show.id)
 				raise "stop here"
 
 
