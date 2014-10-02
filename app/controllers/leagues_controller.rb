@@ -1,7 +1,8 @@
 class LeaguesController < ApplicationController
 
-	before_action :check_if_logged_in, :except => [:index, :new, :search]
-	before_action :save_login_state, :only => [:new, :search]
+	before_action :check_if_logged_in, :except => [:index, :new]
+	skip_before_action :verify_authenticity_token, :only => [:results]
+	before_action :save_login_state, :only => [:new, :search, :results]
 	before_action :private_restriction, :only => [:show]
 	before_action :commissioner_restriction?, :only => [:edit]
 
@@ -194,12 +195,39 @@ class LeaguesController < ApplicationController
 	end
 
 	def search
-		@public_leagues = League.where(:public_access => true).order("created_at DESC") # FIXME!
-		@private_leagues = League.where(:public_access => false)
-	end
+		if params[:search]
+			query = params[:search]
+			# if query is a league key, having 10 hex characters exactly
+			if query.length == 10 && !query[/\H/]
+				@league_results = League.search_by_key(query).order("created_at ASC")
+			
+			# if query is a league name, presumably having space and/or \' between words
+			elsif query == "The Bachelor"
+				shows_list = Show.search_show(query)
+				shows_list.each do |show|
+					show.id if show.name == query
+				end
+				@league_results	= League.search_by_show(show.id)
+				raise "stop here"
 
-	def results
-		raise params
+
+			elsif query[/\s/] == " "
+				raise "match string"
+
+
+
+			else ""
+				flash[:notice] = "Search query empty - please enter league name, key, or show name."
+				flash[:color] = "invalid"
+				@league_results = League.all.order("created_at ASC")
+				raise "no you shouldn't get here!"
+			end
+
+		# If there is no query (direct visit to search)
+		else
+			@league_results = League.all.order("created_at DESC")
+			@private_leagues = League.where(:public_access => false) if @current_user.admin? 
+		end
 	end
 
 	def invite

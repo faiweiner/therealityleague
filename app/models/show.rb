@@ -17,7 +17,9 @@ class Show < ActiveRecord::Base
 
 	validates :name, :presence => true, :on => :create
 	
-	private
+	def self.search_show(query)
+		where("name LIKE ?", "%#{query}%")
+	end
 
 	def self.select_show
 		# This model method is for populating Create League's drop-down menu

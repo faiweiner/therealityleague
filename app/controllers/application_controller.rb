@@ -2,9 +2,7 @@ class ApplicationController < ActionController::Base
 	# Prevent CSRF attacks by raising an exception.
 	# For APIs, you may want to use :null_session instead.
 	protect_from_forgery with: :exception
-	
 	before_action :set_current_user, :get_shows
-	before_action :save_login_state, :only => [:new, :login_attempt]
 	
 	def export_show_list
 		@export_show_list = Show.all
@@ -88,11 +86,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def save_login_state
-		if session[:user_id].present?
-			return false
-		else
-			return true
-		end
+		return false if session[:user_id].present?
 	end
 
 	def current_user

@@ -31,6 +31,15 @@ class League < ActiveRecord::Base
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
 
+	# sarch function
+	def self.search_by_key(query)
+		where("league_key LIKE ?", "%#{query}%")
+	end
+
+	def self.search(query)
+		where("league_key LIKE ?", "%#{query}%")
+	end
+
 	private
 
 	def gen_league_key

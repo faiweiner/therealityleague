@@ -1,10 +1,8 @@
 class SessionsController	< ApplicationController
+	before_action :save_login_state, :only => [:new, :login_attempt]
+	
 	def new
 		# view renders Sign-in (Session) form
-	end
-
-	def fb_login_attempt
-		
 	end
 
 	def login_attempt
