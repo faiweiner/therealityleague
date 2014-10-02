@@ -21,8 +21,6 @@ class EventsController < ApplicationController
 				:points_assigned => pts}
 			@events_info_table[event.id] = event_data
 		end
-
-		export_show_season_lists
 	end
 
 	def new

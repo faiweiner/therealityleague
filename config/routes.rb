@@ -45,9 +45,11 @@ Rails.application.routes.draw do
 	post 'contestants/:id' => 'contestants#update'
 	delete 'contestants/:id' => 'contestants#destroy'
 
-	get '/login' => 'sessions#new'
-	post '/login' => 'sessions#login_attempt'
-	delete '/login' => 'sessions#logout'
+	get 'login' => 'sessions#new'
+	post 'login' => 'sessions#login_attempt'
+	delete 'login' => 'sessions#logout'
 
 	get 'admin' => 'admin#home'
+
+	get 'api/show' => 'application#export_show_list', :as => :api_show
 end

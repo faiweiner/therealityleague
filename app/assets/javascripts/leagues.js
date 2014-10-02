@@ -23,7 +23,7 @@ $(document).ready(function () {
 			selectBoxes: [
 				{
 					selector: '.step1',
-					source: function(request, response) {
+					source: function (request, response) {
 						$.getJSON('/leagues/new', request, function (data) {
 							response($.map(data.exportShows, function (item, index) {
 								return {
@@ -98,7 +98,7 @@ $(document).ready(function () {
 			url: leagueUrl,
 			data: {format: 'js'},
 			dataType: 'json',
-			success: function(data) {
+			success: function (data) {
 				participantCount = data.exportParticipants.length;
 			}
 		})

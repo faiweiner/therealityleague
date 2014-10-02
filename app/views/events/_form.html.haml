@@ -21,7 +21,7 @@
 		.row.form-group.field.has-feedback
 			= f.label :show_id
 			%br/
-			= f.select :show_select, [], {:selected => "Select one"}, class:"form-control step1", :required => true
+			= f.select :show_select, {}, {:selected => "Select one"}, class:"form-control step1", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :season_id
 			= f.select :season_select, options_for_select(Season.select_season, 'id'), {}, class:"form-control step2", :required => true

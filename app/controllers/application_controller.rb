@@ -5,6 +5,28 @@ class ApplicationController < ActionController::Base
 	
 	before_action :set_current_user, :get_shows
 	before_action :save_login_state, :only => [:new, :login_attempt]
+	
+	def export_show_list
+		@export_show_list = Show.all
+		respond_to do |format|
+			format.js { 		
+				render :json => {
+					:exportShows => @export_show_list
+				} 
+			}
+		end
+	end
+
+	def export_season_list
+		@export_season_list = Season.where(expired: false)
+		respond_to do |format|
+			format.js { 		
+				render :json => {
+					:exportSeasons => @export_season_list.where(show_id: params[:show_list])
+				} 
+			}
+		end
+	end
 
 	private 
 
@@ -56,26 +78,6 @@ class ApplicationController < ActionController::Base
 		if @current_user && @current_user.admin? == false
 			redirect_to root_path
 		end
-	end
-
-	def bar
-		return "hello"
-	end
-	
-	def export_show_season_lists
-		@export_show_list = Show.all
-		@export_season_list = Season.where(expired: false)
-
-		respond_to do |format|
-			format.html
-			format.js { 		
-				render :json => {
-					:exportShows => @export_show_list,
-					:exportSeasons => @export_season_list.where(show_id: params[:show_list])
-				} 
-			}
-		end
-
 	end
 
 	helper_method :current_user

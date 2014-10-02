@@ -270,10 +270,6 @@ class LeaguesController < ApplicationController
 		end
 	end
 
-	def bar
-		return "hello"
-	end
-
 	def commissioner_restriction?
 		@league = League.find(params[:id])
 		if @current_user.id == @league.commissioner_id
