@@ -6,6 +6,17 @@ class ApplicationController < ActionController::Base
 	before_action :set_current_user, :get_shows
 	before_action :save_login_state, :only => [:new, :login_attempt]
 
+	def shows_list
+		@shows_list = Show.all
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:exportShowsList => @shows_list
+				} 
+			}
+		end
+	end
+
 	private 
 
 	def featured_seasons

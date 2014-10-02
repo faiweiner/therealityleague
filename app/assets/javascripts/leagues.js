@@ -24,8 +24,8 @@ $(document).ready(function () {
 				{
 					selector: '.step1',
 					source: function(request, response) {
-						$.getJSON('/leagues/new', request, function (data) {
-							response($.map(data.exportShows, function (item, index) {
+						$.getJSON('/api/shows', request, function (data) {
+							response($.map(data.exportShowsList, function (item, index) {
 								return {
 									label: item.name,
 									value: item.id

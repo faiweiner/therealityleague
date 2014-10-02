@@ -50,4 +50,6 @@ Rails.application.routes.draw do
 	delete '/login' => 'sessions#logout'
 
 	get 'admin' => 'admin#home'
+
+	get 'api/shows' => 'application#shows_list', :as => :api_show
 end
