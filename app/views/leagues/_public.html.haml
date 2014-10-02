@@ -16,7 +16,7 @@
 							%td= league.season.name
 							%td
 								= link_to "View League", league_path(league.id), class:"btn btn-default"
-			%form.navbar-form.navbar-left{:role => "search"}
+			%form.navbar-form.navbar-left{:method => "post", :action => leagues_search_path, :role => "search"}
 				.form-group
 					%input.form-control{:placeholder => "Search league or show", :type => "text"}/
 				%button.btn.btn-default{:type => "submit"} Search

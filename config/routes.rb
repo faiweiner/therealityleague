@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 	get 'shows/:id' => 'shows#display', :as => :show
 	resources :shows
 
+
 	get 'seasons/search' => 'seasons#search'
 	get 'seasons' => 'seasons#index', :as => :seasons
 	post 'seasons' => 'seasons#create'
@@ -32,7 +33,8 @@ Rails.application.routes.draw do
 
 
 	get 'leagues/search' => 'leagues#search'
-	post 'leagues/search/:search' => 'leagues#results'
+	post 'leagues/search' => 'leagues#results', :as => :leagues_results
+
 	get 'leagues/:id/invite' => 'leagues#invite', :as => :league_invite
 	resources :leagues
 	post 'leagues/access' => 'leagues#access', :as => :league_access 

@@ -199,6 +199,7 @@ class LeaguesController < ApplicationController
 	end
 
 	def results
+		raise params
 	end
 
 	def invite
