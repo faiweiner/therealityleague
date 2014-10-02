@@ -16,6 +16,7 @@ class Show < ActiveRecord::Base
 	has_many :events, through: :schemes
 
 	validates :name, :presence => true, :on => :create
+	
 	private
 
 	def self.select_show

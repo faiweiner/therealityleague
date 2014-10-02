@@ -51,5 +51,6 @@ Rails.application.routes.draw do
 
 	get 'admin' => 'admin#home'
 
-	get 'api/shows' => 'application#shows_list', :as => :api_show
+	get 'api/shows' => 'application#shows_list', :as => :api_shows
+	get 'api/seasons' => 'application#seasons_list', :as => :api_seasons
 end

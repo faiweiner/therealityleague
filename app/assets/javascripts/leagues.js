@@ -25,7 +25,7 @@ $(document).ready(function () {
 					selector: '.step1',
 					source: function(request, response) {
 						$.getJSON('/api/shows', request, function (data) {
-							response($.map(data.exportShowsList, function (item, index) {
+							response($.map(data.exportShows, function (item, index) {
 								return {
 									label: item.name,
 									value: item.id
@@ -42,7 +42,7 @@ $(document).ready(function () {
 								requires: ['.step1'],
 								paramName: 'showId',
 								source: function (request, response) {
-									$.getJSON('/leagues/new', request, function (data) {
+									$.getJSON('/api/seasons', request, function (data) {
 										var selectOnlyOption = data.length <= 1;
 										response($.map(data.exportSeasons, function (item, index) {
 											return {
@@ -62,7 +62,7 @@ $(document).ready(function () {
 					requires: ['.step1'],
 					paramName: 'showId',
 					source: function (request, response) {
-						$.getJSON('/leagues/new', request, function (data) {
+						$.getJSON('/api/seasons', request, function (data) {
 							var selectOnlyOption = data.length <= 1;
 							response($.map(data.exportSeasons, function (item, index) {
 								return {
