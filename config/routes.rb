@@ -3,14 +3,20 @@ Rails.application.routes.draw do
 
 	get 'schemes/:show_id' => 'schemes#display', :as => :event
   resources :schemes
+  
   get 'events/display'
   get 'events/get_seasons' => 'events#seasons', :as => :get_seasons
   resources :events
   
+  get 'episodes/:id' => 'episodes#display', :as => :episode
+  resources :episodes
+
 	get 'pages/about' => 'pages#about'
 
+	get 'shows/new' => 'shows#new', :as => :new_show
 	get 'shows/:id' => 'shows#display', :as => :show
 	resources :shows
+
 	get 'seasons/search' => 'seasons#search'
 	get 'seasons' => 'seasons#index', :as => :seasons
 	post 'seasons' => 'seasons#create'
@@ -51,5 +57,6 @@ Rails.application.routes.draw do
 
 	get 'admin' => 'admin#home'
 
-	get 'api/show' => 'application#export_show_list', :as => :api_show
+	get 'api/shows' => 'application#shows_list', :as => :api_shows
+	get 'api/seasons' => 'application#seasons_list', :as => :api_seasons
 end

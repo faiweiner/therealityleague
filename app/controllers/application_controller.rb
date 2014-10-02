@@ -28,6 +28,36 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	def shows_list
+		shows_list = Show.all
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:exportShows => shows_list
+				} 
+			}
+		end
+	end
+
+	def seasons_list
+		seasons = Season.where(:expired => false, :show_id => params[:show_list])
+		seasons_list = []
+		seasons.each do |season|
+			season = { :name => season.name,
+				:id => season.id,
+				:showId => season.show.id
+			}
+			seasons_list.push season
+		end
+
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:exportSeasons => seasons_list
+				}
+			}
+		end
+	end
 	private 
 
 	def featured_seasons
