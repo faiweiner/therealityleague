@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'events/get_seasons' => 'events#seasons', :as => :get_seasons
   resources :events
   
+  get 'episodes/:id' => 'episodes#display', :as => :episode
   resources :episodes
 
 	get 'pages/about' => 'pages#about'

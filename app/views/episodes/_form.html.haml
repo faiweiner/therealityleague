@@ -1,5 +1,5 @@
 .col-lg-12
-	= form_for(:point_entry, :url => {:action => "create"}, :html => {:method => "post", id:"episode_form"}, class:"form-horizontal", :role => "form") do |f|
+	= form_for(:episode, :url => {:action => "create"}, :html => {:method => "post", id:"episode_form"}, class:"form-horizontal", :role => "form") do |f|
 		/ Error Messages
 		.row.form-group
 			- if flash[:notice] && flash[:color] == "valid"
@@ -19,24 +19,15 @@
 		/ End Error Messages
 		/ Form Portion
 		.row.form-group.field.has-feedback
-			= f.label :show_id
+			= label_tag :show_id
 			%br/
-			= f.select :show_select, options_for_select(Show.select_show, 'id'), {:selected => "Ya one"}, class:"form-control", :required => true
+			= select_tag :show_select, options_for_select(Show.select_show, 'id'), class:"form-control", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :season_id
-			= f.select :season_select, options_for_select(Season.select_season, 'id'), {}, class:"form-control", :required => true
+			= f.select :season_id, options_for_select(Season.select_season, 'id'), {}, class:"form-control", :required => true
 		.row.form-group.field.has-feedback
-			= f.label :contestant_id
-			= f.select :contestant_select, options_for_select(Contestant.select_contestant, 'id'), {}, class:"form-control", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :episode_id
-			= f.select :episode_select, options_for_select(Episode.select_episode, 'id'), {}, class:"form-control", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :scheme_type
-			= f.select :scheme_type_select, options_for_select(Scheme.select_type), {}, class:"form-control", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :scheme_id
-			= f.select :scheme_select, options_for_select(Scheme.select_scheme, 'id'), {}, class:"form-control", :required => true
+			= f.label :air_date
+			= f.date_field :air_date, class:"form-control", :required => true
 		.row.form-group.actions
 			= f.submit "Save", class:"btn btn-primary btn-md"
-			= link_to "Cancel", events_path, class:"btn btn-default btn-md"
+			= link_to "Cancel", episodes_path, class:"btn btn-default btn-md"
