@@ -14,6 +14,50 @@ class RostersController < ApplicationController
 		end	
 	end
 
+	def create
+		league = League.find(params[:league_id])
+		Roster.find_or_create_by!(:user_id => @current_user.id, :league_id => league.id)
+		league.users << @current_user
+		redirect_to league_path(league.id)
+	end
+
+	def edit
+		@roster = Roster.find(params[:id])
+		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
+		@selected_contestants = @roster.contestants.order(name: :asc)
+		@available_contestants = []
+		# iterate to pull list of non-selected contestants
+		@all_contestants.select do |contestant|
+			unless @selected_contestants.include? contestant
+				@available_contestants.push contestant
+			end
+		end
+	end
+	
+	def show
+		@roster = Roster.find(params[:id])
+		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
+		@selected_contestants = @roster.contestants.order(name: :asc)
+		@available_contestants = []
+		# iterate to pull list of non-selected contestants
+		@all_contestants.select do |contestant|
+			unless @selected_contestants.include? contestant
+				@available_contestants.push contestant
+			end
+		end
+		@available_contestants.sort
+	end
+
+	def destroy
+		@roster = Roster.find(params[:id])
+		@roster.destroy
+		flash[:notice] = "You've successfully left league '#{@roster.league.name}'."
+		flash[:color] = "valid"
+		redirect_to leagues_path
+	end
+
+	# ============ ADD/REMOVE CONTESTANTS FROM ROSTER ============ #
+
 	def add
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 
 		@roster = Roster.find(params[:roster_id])
@@ -50,36 +94,11 @@ class RostersController < ApplicationController
 		end    
 	end
 
-	def edit
-		@roster = Roster.find(params[:id])
-		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-		@selected_contestants = @roster.contestants.order(name: :asc)
-		@available_contestants = []
-		# iterate to pull list of non-selected contestants
-		@all_contestants.select do |contestant|
-			unless @selected_contestants.include? contestant
-				@available_contestants.push contestant
-			end
-		end
-	end
+	private
 
-	# def create
-	# end
-	
-	def show
-		@roster = Roster.find(params[:id])
-		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-		@selected_contestants = @roster.contestants.order(name: :asc)
-		@available_contestants = []
-		# iterate to pull list of non-selected contestants
-		@all_contestants.select do |contestant|
-			unless @selected_contestants.include? contestant
-				@available_contestants.push contestant
-			end
-		end
-		@available_contestants.sort
+	def roster_params
+		params.require(:roster).permit(:user_id, :league_id)
 	end
-
 end
 
 

@@ -254,19 +254,6 @@ class LeaguesController < ApplicationController
 		end
 	end
 
-	def join
-		@league = League.find(params[:league])
-		@league.users << @current_user
-		if Roster.where(user_id: @current_user.id).where(league_id: @league.id).nil?
-			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
-			roster.save
-		else
-			flash[:notice] = "You already have a roster for this league."
-			flash[:color] = "invalid"
-			redirect_to league_path(@league.id)
-		end
-	end
-
 	private
 
 	def league_params

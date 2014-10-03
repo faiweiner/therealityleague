@@ -34,16 +34,14 @@ Rails.application.routes.draw do
 
 	get 'leagues/search' => 'leagues#search'
 	get 'leagues/:id/invite' => 'leagues#invite', :as => :league_invite
-	resources :leagues do
-    get 'search/:search', :action => 'search', :as => 'search'
-  end
-	post 'leagues/access' => 'leagues#access', :as => :league_access 
-	post 'leagues/join/:league' => 'leagues#join', :as => :league_join
+	resources :leagues
+	post 'leagues/access' => 'leagues#access', :as => :league_access
 
 	resources :users
 	
 	post 'rosters/:roster_id/add/:contestant_id' => 'rosters#add', :as => :roster_add
 	post 'rosters/:roster_id/remove/:contestant_id' => 'rosters#remove', :as => :roster_remove
+	post 'rosters/:league_id' => 'rosters#create', :as => :rosters
 	resources :rosters
 
 	get 'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season
