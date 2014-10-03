@@ -2,8 +2,10 @@ class ContestantsController < ApplicationController
 	before_action :check_if_admin
 
 	def index
-		@season = Season.find(params[:season_id])
-		@contestants = Contestant.where(season_id: params[:season_id])
+		@season = Season.includes(:contestants).find(params[:season_id])
+		@contestant = Contestant.new
+		@contestant.season_id = params[:season_id]
+		@contestants = @season.contestants
 	end
 
 	def edit_single
