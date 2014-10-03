@@ -4,10 +4,8 @@
 			- if flash[:notice_show]
 				.alert.alert-success{:role => "alert"}= flash[:notice_show]
 			%h2
-				= @season.show.name
-				Season
-				- @season.number
-				\: #{@season.name}
+				= @season.show.name + ": "
+				= @season.name
 			#new-contestant-form.col-lg-4.col-md-6.col-sm-6
 				.row
 					- if params[:season_id]
