@@ -33,11 +33,11 @@ class League < ActiveRecord::Base
 
 	# sarch function
 	def self.search_by_key(query)
-		where("league_key LIKE ?", "%#{query}%")
+		where("league_key LIKE ?", "%#{query}%").uniq.order("created_by DESC")
 	end
 
-	def self.search_by_show_id(show_id)
-		where(:season_id, "%#{query}%")
+	def self.search_by_season_name(query)
+		includes(:season).joins(:season).where("season.name LIKE ?", "%#{query}%")
 	end
 
 	private

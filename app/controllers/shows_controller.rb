@@ -9,7 +9,12 @@ class ShowsController < ApplicationController
 	end
 
 	def create
-		
+		@show = Show.new show_params
+		if @show.save
+			redirect_to show_path(@show.id)
+		else
+			render :new
+		end
 	end
 
 	def display

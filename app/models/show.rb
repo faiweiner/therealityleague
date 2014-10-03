@@ -15,7 +15,7 @@ class Show < ActiveRecord::Base
 	has_many :episodes, through: :seasons
 	has_many :events, through: :schemes
 
-	validates :name, :presence => true, :on => :create
+	validates :name, presence: true, uniqueness: true,  on: :create
 	
 	def self.search_show(query)
 		where("name LIKE ?", "%#{query}%")
@@ -24,5 +24,9 @@ class Show < ActiveRecord::Base
 	def self.select_show
 		# This model method is for populating Create League's drop-down menu
 		@shows_list = Show.joins(:seasons).uniq.order("name ASC").each.map {|s| [s.name, s.id] }
+	end
+
+	def self.select_show_all
+		@shows_list = Show.all.order("name ASC").each.map {|s| [s.name, s.id] }
 	end
 end

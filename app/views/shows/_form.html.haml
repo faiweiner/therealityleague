@@ -12,18 +12,14 @@
 					.row.form-group
 						- if flash[:notice] && flash[:color] == "valid"
 							.alert.alert-success{:role => "alert"}= flash[:notice]
-						- elsif flash[:notice] && flash[:color] == "invalid"
-							.alert.alert-warning{:role => "alert"}= flash[:notice]
-						- elsif flash[:notice] && flash[:color] == "prohibited"
-							.alert.alert-danger{:role => "alert"}
+						- elsif @show.errors.any?
+							.alert.alert-warning{:role => "alert"}
 								%p= flash[:notice]
-								- if @season.errors.any?
-									%p
-										= pluralize(@season.errors.count, "error")
-										prohibited this season from being saved:
-									%ul
-										- @season.errors.full_messages.each do |message|
-											%li= message
+								= pluralize(@show.errors.count, "error")
+								prohibited this show from being saved:
+								%ul
+									- @show.errors.full_messages.each do |message|
+										%li= message
 					/ End Error Messages
 					/ Form Portion
 					.row.form-group

@@ -225,7 +225,8 @@ class LeaguesController < ApplicationController
 
 		# If there is no query (direct visit to search)
 		else
-			@league_results = League.all.order("created_at DESC")
+			@league_results_participant = League.includes(:users).where(:active => true) 	#
+			@league_results_nonparticipant = League.all
 			@private_leagues = League.where(:public_access => false) if @current_user.admin? 
 		end
 	end
