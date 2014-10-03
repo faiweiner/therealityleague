@@ -16,13 +16,24 @@
 				%th League Name
 				%th Show
 				%th Action
-		%tbody
-			- @league_results_participant.each do |league|
+		- if @league_result
+			%tbody
 				%tr
-					%td= league.name
-					%td= league.season.show.name + ": " + league.season.name
+					%td= @league_result.name
+					%td= @league_result.season.show.name + ": " + @league_result.season.name
 					%td
-						- if league.users.include? (@current_user)
-							= link_to "Manage roster", league_path(league.id), class:"btn btn-default btn-sm"
+						- if @league_result.users.include? (@current_user)
+							= link_to "Manage roster", league_path(@league_result), class:"btn btn-default btn-sm"
 						- else
-							= link_to "Join", league_path(league.id), class:"btn btn-default btn-sm"
+							= link_to "Join", league_path(@league_result), class:"btn btn-default btn-sm"
+		- else
+			%tbody
+				- @league_results_participant.each do |league|
+					%tr
+						%td= league.name
+						%td= league.season.show.name + ": " + league.season.name
+						%td
+							- if league.users.include? (@current_user)
+								= link_to "Manage roster", league_path(league.id), class:"btn btn-default btn-sm"
+							- else
+								= link_to "Join", league_path(league.id), class:"btn btn-default btn-sm"
