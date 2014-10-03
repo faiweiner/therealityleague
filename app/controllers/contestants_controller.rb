@@ -14,7 +14,7 @@ class ContestantsController < ApplicationController
 
 	def update
 		@contestant = Contestant.find(params[:id])
-		@contestant.update contestant_params
+		@contestant.update contestant_limited_params
 		render json: @contestant
 	end
 

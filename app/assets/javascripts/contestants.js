@@ -19,6 +19,10 @@ $(document).ready(function () {
 			tpl: "<input style='width: 55px' id='contestant_age' name='contestant[age]'>"
 		});
 
+		$('#contestants span[data-name="gender"]').editable({
+			tpl: "<input style='width: 55px' id='contestant_gender' name='contestant[gender]'>"
+		});
+
 		$('#contestants span[data-name="occupation"]').editable({
 			title: 'Enter occupation',
 			tpl: "<input style='width: 185px' id='contestant_occupation' name='contestant[occupation]'>",
@@ -69,26 +73,10 @@ $(document).ready(function () {
 
 			var postURL = '/contestants/' + contestantId;
 
-			// $.ajax({
-			// 	url: postURL,
-			// 	type: patch,
-			// })
-
-			// $.post(postURL, {
-			// 	name: 					contestantName,
-			// 	season_id: 			seasonId,
-			// 	age: 						contestantAge,
-			// 	gender: 				"hi",
-			// 	occupation: 		contestantOccupation,
-			// 	description: 		contestantDescription,
-			// 	status_on_show:	'xx',
-			// 	present:				'true',
-			// 	episode_id: 		'',
-			// 	image: 					"hi"
-			// })
-			// .done(function (data) {
-  	// 		alert( "Data Loaded: " + data );
-			// });
+			$.ajax({
+				url: postURL,
+				type: patch,
+			})
 
 			$btn.closest('tr').find('.editable').editable('hide');
 			$btn.siblings('.cancel').hide();

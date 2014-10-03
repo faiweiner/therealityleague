@@ -1,8 +1,7 @@
 class PagesController < ApplicationController
-	before_action :featured_seasons
 
 	def home
-		featured_seasons
+		@featured_seasons = Season.top_three
 		if @current_user && @current_user.leagues.count > 0
 			@league_count = @current_user.leagues.count
 		else

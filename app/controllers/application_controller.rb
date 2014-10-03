@@ -58,10 +58,6 @@ class ApplicationController < ActionController::Base
 	end
 	private 
 
-	def featured_seasons
-		@featured_seasons = Season.top_three
-	end
-
 	def get_shows
 		@shows = Show.all
 	end
