@@ -26,9 +26,20 @@
 							= link_to "Manage roster", league_path(@league_result), class:"btn btn-default btn-sm"
 						- else
 							= link_to "Join", league_path(@league_result), class:"btn btn-default btn-sm"
-		- else
+		- elsif @league_results_participant
 			%tbody
 				- @league_results_participant.each do |league|
+					%tr
+						%td= league.name
+						%td= league.season.show.name + ": " + league.season.name
+						%td
+							- if league.users.include? (@current_user)
+								= link_to "Manage roster", league_path(league.id), class:"btn btn-default btn-sm"
+							- else
+								= link_to "Join", league_path(league.id), class:"btn btn-default btn-sm"
+		- else
+			%tbody
+				- @league_results.each do |league|
 					%tr
 						%td= league.name
 						%td= league.season.show.name + ": " + league.season.name

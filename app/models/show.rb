@@ -21,6 +21,10 @@ class Show < ActiveRecord::Base
 		where("name LIKE ?", "%#{query}%")
 	end
 
+	def self.get_show_names
+		@show_name = Show.select(:name).each.map{|s| s.name }
+	end
+
 	def self.select_show
 		# This model method is for populating Create League's drop-down menu
 		@shows_list = Show.joins(:seasons).uniq.order("name ASC").each.map {|s| [s.name, s.id] }

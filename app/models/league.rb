@@ -40,6 +40,9 @@ class League < ActiveRecord::Base
 		includes(:season).joins(:season).where("season.name LIKE ?", "%#{query}%")
 	end
 
+	def self.search_by_show_name(query)
+		
+	end
 	private
 
 	def gen_league_key

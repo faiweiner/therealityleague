@@ -197,28 +197,30 @@ class LeaguesController < ApplicationController
 	def search
 		if params[:search]
 			query = params[:search]
-
-			# if query is a league key, having 10 hex characters exactly
-			if query.length == 10 && !query[/\H/]
-				@league_result = League.search_by_key(query)[0]
-
-			# if query is a league name, presumably having space and/or \' between words
-			elsif query == "The Bachelor"
-				raise
-				shows_list = Show.search_show(query)
-				shows_list.each do |show|
-					@show = Show.find(show.id)
-				end
-				@league_results	= League.search_by_show(@show.id)
-			elsif query[/\s/] == " "
-				raise "match string"
-				shows_list
-			else ""
-				flash[:notice] = "Search query empty - please enter league name, key, or show name."
+			search_term = regex_validation(query)
+			case search_term 
+			when "empty"
+				flash[:notice] = "Empty search query - please enter a search term"
 				flash[:color] = "invalid"
+			when "league_key"
+				@league_result = League.search_by_key(query)[0]
+			else
 				@league_results = League.all.order("created_at ASC")
-				raise "no you shouldn't get here!"
 			end
+			# # if query is a league name, presumably having space and/or \' between words
+			# elsif regex_validation(query)
+			# 	raise
+			# 	shows_list = Show.search_show(query)
+			# 	shows_list.each do |show|
+			# 		@show = Show.find(show.id)
+			# 	end
+			# 	@league_results	= League.search_by_show(@show.id)
+			# else ""
+			# 	flash[:notice] = "Search query empty - please enter league name, key, or show name."
+			# 	flash[:color] = "invalid"
+			# 	@league_results = League.all.order("created_at ASC")
+			# 	raise "no you shouldn't get here!"
+			# end
 		# If there is no query (direct visit to search)
 		else
 			@league_results_participant = League.includes(:users).where(:active => true) 	#

@@ -56,7 +56,26 @@ class ApplicationController < ActionController::Base
 			}
 		end
 	end
+
+
 	private 
+
+	def regex_validation(query)
+		if /^\s*$/.match(query)												# 1. Empty search queries (invalid)
+			return "empty"
+		elsif query.length == 10 && !query[/\H/]			# 2. League key
+			return "league_key"
+		elsif /^\s+[a-zA-Z]/.match(query) || /\S+\b+/.match(query)
+			query = query.strip
+			if Show.get_show_names.include? query && Show.search_show(query).any?
+				return show = Show.search_show(query)
+			else
+				return "no match for show"
+			end
+		else
+			return "no match"
+		end
+	end
 
 	def get_shows
 		@shows = Show.all
@@ -100,5 +119,5 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-	helper_method :current_user
+	helper_method :current_user, :regex_validation
 end
