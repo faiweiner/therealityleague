@@ -59,10 +59,10 @@
 						= f.label :image
 						= f.text_field :image, class:"form-control"
 					.row.form-group.actions
-						- if params[:season_id]
+						- if params[:season_id] && @contestant.id
 							= f.submit "Update Contestant", class:"btn btn-primary btn-md"
-						- elsif flash[:notice_show]
-							= link_to "Skip Step", season_path(@season.id), class:"btn btn-primary-btn-md"
+							- if flash[:notice_show]
+								= link_to "Skip Step", season_path(@season.id), class:"btn btn-primary-btn-md"
 						- else
 							= f.submit "Add New Contestant", class:"btn btn-primary btn-md"
 						= link_to "Cancel", seasons_path, class:"btn btn-default btn-md"

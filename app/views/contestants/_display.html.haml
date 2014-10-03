@@ -6,6 +6,7 @@
 				Contestants
 			= link_to "Back to Season", season_path(@season.id), class:"btn btn-default"
 			= link_to "Add New Contestant", new_contestant_path(@season.id), class:"btn btn-default"
+			#season_id.invisible= @season.id
 	.panel-body
 		.row
 			.panel-body
@@ -13,11 +14,13 @@
 					%thead
 						%tr
 							%th.col-lg-1 Image
-							%th.col-lg-2 Name
-							%th.col-lg-1 Age
-							%th.col-lg-3 Occupation
-							%th.col-lg-4 Description
-							%th.col-lg-1
+							%th Name
+							%th Age
+							%th Gender
+							%th Occupation
+							%th Description
+							%th Status
+							%th
 					%tbody
 						- @contestants.each do |contestant|
 							%tr
@@ -27,7 +30,11 @@
 									%span{"data-name" => "name", "data-pk" => contestant.id}
 										= contestant.name
 								%td
-									%span{"data-name" => "age", "data-pk" => contestant.id}= contestant.age
+									%span{"data-name" => "age", "data-pk" => contestant.id}
+										= contestant.age
+								%td
+									%span{"data-name" => "gender", "data-pk" => contestant.id}
+										= contestant.gender
 								%td
 									%span{"data-name" => "occupation", "data-pk" => contestant.id}
 										= contestant.occupation
@@ -35,6 +42,10 @@
 									%span{"data-name" => "description", "data-pk" => contestant.id}
 										= contestant.description
 								%td
-									%button.btn.btn-default.edit Edit
-									%button.btn.btn-primary Save
+									%span{"data-name" => "status", "data-pk" => contestant.id}
+										= contestant.status
+								%td
+									%button.btn.btn-default.btn-sm.edit Edit
+									%button.btn.btn-primary.btn-sm.save Save
+									%button.btn.btn-default.btn-sm.cancel Cancel
 	.panel-body

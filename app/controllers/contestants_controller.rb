@@ -43,4 +43,7 @@ class ContestantsController < ApplicationController
 		params.require(:contestant).permit(:name, :season_id, :age, :gender, :occupation, :description, :status_on_season, :present, :image)
 	end
 
+	def contestant_limited_params
+		params require(:contestant).permit(:name, :age, :gender, :occupation, :description)
+	end
 end
