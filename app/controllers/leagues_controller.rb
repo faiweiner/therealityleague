@@ -103,6 +103,7 @@ class LeaguesController < ApplicationController
 	end
 
 	def show
+		raise params.inspect
 		@participants = @league.users
 		@league_type = @league.type
 		@a_participant = nil
@@ -256,13 +257,9 @@ class LeaguesController < ApplicationController
 
 	private
 
+	# standard strong params practice
 	def league_params
 		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :league_key, :league_password, :active)
-	end
-
-	def get_id(username)
-		user = User.where(username: username).first
-		return user.id
 	end
 
 	def private_restriction

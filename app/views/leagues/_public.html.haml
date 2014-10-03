@@ -15,12 +15,14 @@
 			%tr
 				%th League Name
 				%th Show
+				%th Type
 				%th Action
 		- if @league_result
 			%tbody
 				%tr
 					%td= @league_result.name
 					%td= @league_result.season.show.name + ": " + @league_result.season.name
+					%td= @league_result.type
 					%td
 						- if @league_result.users.include? (@current_user)
 							= link_to "Manage roster", league_path(@league_result), class:"btn btn-default btn-sm"
@@ -32,6 +34,7 @@
 					%tr
 						%td= league.name
 						%td= league.season.show.name + ": " + league.season.name
+						%td= league.type
 						%td
 							- if league.users.include? (@current_user)
 								= link_to "Manage roster", league_path(league.id), class:"btn btn-default btn-sm"
@@ -43,6 +46,7 @@
 					%tr
 						%td= league.name
 						%td= league.season.show.name + ": " + league.season.name
+						%td= league.type
 						%td
 							- if league.users.include? (@current_user)
 								= link_to "Manage roster", league_path(league.id), class:"btn btn-default btn-sm"
