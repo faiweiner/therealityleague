@@ -2,6 +2,7 @@ class SeasonsController < ApplicationController
 	before_action :check_if_admin, :only => [:new, :edit, :update, :publish, :unpublish, :destroy]
 	def index
 		@current_seasons = Season.where(:expired => :false).order("premiere_date ASC")
+		raise
 		@past_seasons = Season.where(:expired => :true).order("premiere_date DESC")
 		@current_date = DateTime.now.strftime("%B %d, %Y")
 		if @current_user.admin?

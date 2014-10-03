@@ -2,7 +2,7 @@
 	.panel-body
 		.panel-heading
 			%h2 Current Seasons
-		- @seasons.each do |season|
+		- @current_seasons.each do |season|
 			.col-sm-4.col-md-3
 				.thumbnail
 					%img.img-thumbnail{:src => season.image}/
