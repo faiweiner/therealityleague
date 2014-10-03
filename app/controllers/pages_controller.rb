@@ -10,7 +10,7 @@ class PagesController < ApplicationController
 
 		respond_to do |format|
 			format.html
-			format.json {
+			format.js {
 				render json: @league_count
 			}
 		end
