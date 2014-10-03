@@ -11,14 +11,18 @@
 				%h2 Sign Up
 			#sign-up-form.col-lg-4.col-md-6.col-sm-6
 				/ Error Messages
-				- if flash[:notice] && flash[:color] == "valid"
-					.row.form-group
+				.row.form-group
+					- if flash[:notice] && flash[:color] == "valid"
 						.alert.alert-success{:role => "alert"}= flash[:notice]
-				- elsif flash[:notice] && flash[:color] == "invalid"
-					.row.form-group
-						.alert.alert-warning{:role => "alert"}= flash[:notice]
 				/ End Error Messages
 				= form_for(@user, class:"form-horizontal", :role => "form", :html => {:multipart => true}) do |f|
+					- if @user.errors.any?
+						.row.form-group
+							.alert.alert-warning{:role => "alert"}
+								%p= flash[:notice]
+								%ul
+									- @user.errors.full_messages.each do |msg|
+										%li= msg
 					/ Form Portion
 					.row.form-group
 						= f.label :email, class:"control-label"
