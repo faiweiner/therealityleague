@@ -1,6 +1,6 @@
 class RostersController < ApplicationController
 	before_action :check_if_logged_in
-	# before_action :save_login_state, :only => [:new, :create]
+	before_action :save_login_state
 
 	def index
 		if @current_user== nil
@@ -49,11 +49,16 @@ class RostersController < ApplicationController
 	end
 
 	def destroy
-		@roster = Roster.find(params[:id])
-		@roster.destroy
-		flash[:notice] = "You've successfully left league '#{@roster.league.name}'."
-		flash[:color] = "valid"
-		redirect_to leagues_path
+		@roster = Roster.includes(:league).find(params[:id])
+		if @roster.league.draft_deadline && @roster.league.draft_deadline > DateTime.today
+			raise
+		else
+			raise "trying to destroy?"
+			@roster.destroy
+			flash[:notice] = "You've successfully left league '#{@roster.league.name}'."
+			flash[:color] = "valid"
+			redirect_to leagues_path
+		end
 	end
 
 	# ============ ADD/REMOVE CONTESTANTS FROM ROSTER ============ #

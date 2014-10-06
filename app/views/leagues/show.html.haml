@@ -32,8 +32,6 @@
 						About Show
 					- if @comm_this_league && @league.active?
 						= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
-					- elsif @a_participant == true
-						= button_to "Leave League", roster_path(@league.id), :action => "#", :leave_league => @league.id, :method => "#", class:"btn btn-default"						
 					- elsif @a_participant == false
 						= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
 				%br/
@@ -65,6 +63,8 @@
 									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
 									- if @league.active?
 										= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
+									- if @league.draft_deadline == nil
+										= link_to "Leave League", roster_path(@participants_roster_id[participant[0]]), :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn btn-default btn-sm"			
 								- else
 									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default btn-sm"
 		/ .col-lg-6
