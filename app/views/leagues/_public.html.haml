@@ -1,15 +1,17 @@
 / League display and search results
-.col-lg-6
+.col-lg-5
 	%h2 Public Leagues
-.col-lg-6
+.col-lg-7
 	%form.navbar-form.navbar-right{:action => "/leagues/search", role: "search", method: "get"}
 		.form-group
-			%input.input-sm{:type => "text", class: "form-control", name: "search", id: "search", placeholder: "Search league or show"}/
+			%input.input-sm{:type => "text", class: "form-control", name: "search", id: "search", placeholder: "Search league"}/
 			%button.btn.btn-sm.btn-default{type: "submit"} Submit
 .panel-body
 	.row
 	- if params[:search]
-		%h4 Search Results
+		%h4
+			Search Results for
+			= "\"" + params[:search] + "\""
 	%table.table.table-striped
 		%thead
 			%tr
@@ -25,9 +27,9 @@
 					%td= @league_result.type
 					%td
 						- if @league_result.users.include? (@current_user)
-							= link_to "Manage roster", league_path(@league_result), class:"btn btn-default btn-sm"
+							= link_to "Manage roster", league_path(@league_result), class: "btn btn-default btn-sm"
 						- else
-							= link_to "Join", league_path(@league_result), class:"btn btn-default btn-sm"
+							= link_to "Join", league_path(@league_result), class: "btn btn-default btn-sm"
 		- elsif @league_results_participant
 			%tbody
 				- @league_results_participant.each do |league|
@@ -37,9 +39,9 @@
 						%td= league.type
 						%td
 							- if league.users.include? (@current_user)
-								= link_to "Manage roster", league_path(league.id), class:"btn btn-default btn-sm"
+								= link_to "Manage roster", league_path(league.id), class: "btn btn-default btn-sm"
 							- else
-								= link_to "Join", league_path(league.id), class:"btn btn-default btn-sm"
+								= link_to "Join", league_path(league.id), class: "btn btn-default btn-sm"
 		- else
 			%tbody
 				- @league_results.each do |league|
@@ -49,6 +51,6 @@
 						%td= league.type
 						%td
 							- if league.users.include? (@current_user)
-								= link_to "Manage roster", league_path(league.id), class:"btn btn-default btn-sm"
+								= link_to "Manage roster", league_path(league.id), class: "btn btn-default btn-sm"
 							- else
-								= link_to "Join", league_path(league.id), class:"btn btn-default btn-sm"
+								= link_to "Join", league_path(league.id), class: "btn btn-default btn-sm"

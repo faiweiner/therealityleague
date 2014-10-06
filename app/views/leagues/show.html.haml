@@ -12,7 +12,8 @@
 					%h3= @league.name  + " (private)"
 				%p
 					= @league.season.show.name + ": "
-					= @league.season.name		
+					= @league.season.name
+				= link_to "View Scoring System", "#", class:"btn btn-default btn-sm" 		
 				- if @comm_this_league == true
 					%p 
 						League Key:
