@@ -1,6 +1,0 @@
-<% if @current_user && @current_user.admin? %>
-	<%= render "admin" %>
-<% else %>
-	<%= render "current_seasons" %>
-	<%= render "past_seasons" %>
-<% end %>

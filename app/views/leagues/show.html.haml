@@ -15,20 +15,12 @@
 					= @league.season.name
 				= link_to "View Scoring System", "#", class:"btn btn-default btn-sm" 		
 				- if @comm_this_league == true
-					%p 
-						League Key:
-						%a.btn.btn-default.btn-xs.disabled
-							= @league.league_key
-						- if @league.public_access == false
-							Password:
-							%a.btn.btn-default.btn-xs.disabled
-								= @league.league_password
-						- if @participants.count <= 1
-							= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-primary btn-sm" 
-						- else
-							= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
-						- if @league_deadline_set == false
-							= link_to "Set Draft Deadline", "#", class:"btn btn-primary btn-sm" 
+					- if @participants.count <= 1
+						= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-primary btn-sm" 
+					- else
+						= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
+					- if @league_deadline_set == false
+						= link_to "Set Draft Deadline", "#", class:"btn btn-primary btn-sm" 
 			%span.col-lg-4.text-right
 				.dropdown
 					%a{"data-toggle" => "dropdown", :href =>"#", class:"btn btn-default"} Actions

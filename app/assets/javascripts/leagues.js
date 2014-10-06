@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	$leagueCrationDiv = $('#league_creation');
-	$leagueViewDiv = $('#league_view');
+	$leagueCommissionerOne = $('#comm-one');
 
 	if ($leagueCrationDiv.length > 0) {
 		console.log('Leagues JS for new league initiated');
@@ -78,7 +78,7 @@ $(document).ready(function () {
 				}
 			]
 		});
-	} else if ($leagueViewDiv.length > 0) {
+	} else if ($leagueCommissionerOne.length > 0) {
 		console.log('Leagues JS for viewing a league initiated');
 		var getUrlParameter = function () {
 			var sPageURL = window.location.pathname;
@@ -109,6 +109,7 @@ $(document).ready(function () {
 				}, 1000);			
 			};
 		});
+
 	};
 
 

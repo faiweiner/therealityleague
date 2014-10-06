@@ -1,17 +1,33 @@
 .panel.panel-default
 	.panel-body
 		.col-md-12
-			%h2 Featured Shows
-			%p Here are some of the most popular shows at the moment:
-			.row
-				- @featured_seasons.each do |season|
-					.col-sm-4.col-md-3.col-lg-6
-						.thumbnail
-							= link_to image_tag(season.image), season_path(season.id)
-							.caption
-								%h4
-									= season.show.name + ": "
-									= season.name
-								%p
-									Starts: #{season.premiere_date.strftime("%B %d")}
-			= link_to('Browse All Shows and Seasons', seasons_path, class: "btn btn-default btn-lg")
+			%h2 Featured Shows		
+	#carousel-features-generic.carousel.slide{"data-ride" => "carousel"}
+		/ Indicators
+		%ol.carousel-indicators
+			%li.active{"data-slide-to" => "0", "data-target" => "#carousel-example-generic"}
+			%li{"data-slide-to" => "1", "data-target" => "#carousel-example-generic"}
+			%li{"data-slide-to" => "2", "data-target" => "#carousel-example-generic"}
+		/ Wrapper for slides
+		.carousel-inner
+			- @featured_seasons.each_with_index do |season, i|
+				- if i == 0
+					.item.carousel-img.active
+						%img{:alt => season.name, :src => season.image}/
+						.carousel-caption
+							%h2
+								= season.show.name + ": "
+								= season.name
+				- else
+					.item.carousel-img
+						%img{:alt => season.name, :src => season.image}/
+						.carousel-caption
+							%h2
+								= season.show.name + ": "
+								= season.name	
+
+		/ Controls
+		%a.left.carousel-control{"data-slide" => "prev", :href => "#carousel-example-generic", :role => "button"}
+			%span.glyphicon.glyphicon-chevron-left
+		%a.right.carousel-control{"data-slide" => "next", :href => "#carousel-example-generic", :role => "button"}
+			%span.glyphicon.glyphicon-chevron-right
