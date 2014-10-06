@@ -30,6 +30,14 @@ class Contestant < ActiveRecord::Base
 	validates :name, :presence => true, :on => :create
 	validates :season_id, :presence => true, :on => :create
 
+	def self.select_gender
+		@gender_list = ["Male", "Female", "N/A"]
+	end
+
+	def self.select_status
+		@status_list = ["Present", "Eliminated", "Brought Back"]
+	end
+
 	def self.select_contestant
 		# This model method is for populating Create League's drop-down menu
 		@contestants_list = Contestant.where(present: true).each.map {|c| [c.name, c.id] }

@@ -2,14 +2,16 @@ Rails.application.routes.draw do
 	root :to => 'pages#home'
 
 	get 'schemes/:show_id' => 'schemes#display', :as => :event
-  resources :schemes
-  
-  get 'events/display'
-  get 'events/get_seasons' => 'events#seasons', :as => :get_seasons
-  resources :events
-  
-  get 'episodes/:id' => 'episodes#display', :as => :episode
-  resources :episodes
+	resources :schemes
+	
+	get 'events/display'
+	get 'events/get_seasons' => 'events#seasons', :as => :get_seasons
+	resources :events
+	
+	get 'episodes' => 'episodes#index', :as => :episodes
+	post 'episodes' => 'episodes#create'
+	get 'episodes/new' => 'episodes#new', :as => :new_episode
+	get 'episodes/:id' => 'episodes#display', :as => :episode
 
 	get 'pages/about' => 'pages#about'
 

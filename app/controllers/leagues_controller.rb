@@ -103,7 +103,6 @@ class LeaguesController < ApplicationController
 	end
 
 	def show
-		raise params.inspect
 		@participants = @league.users
 		@league_type = @league.type
 		@a_participant = nil

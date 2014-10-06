@@ -22,7 +22,7 @@ class League < ActiveRecord::Base
 	belongs_to :season, inverse_of: :leagues
 	has_and_belongs_to_many :users, inverse_of: :leagues
 	before_destroy { users.clear }
-	has_many :rosters, through: :users
+	has_many :rosters
 
 # FIXME! Come bck to deal with dependencies please
 
