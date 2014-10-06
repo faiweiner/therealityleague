@@ -41,8 +41,12 @@ class League < ActiveRecord::Base
 	end
 
 	def self.search_by_show_name(query)
-		
 	end
+
+	def self.select_type
+		@type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
+	end
+
 	private
 
 	def gen_league_key

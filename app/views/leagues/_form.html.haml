@@ -15,7 +15,6 @@
 					%ul
 						- @league.errors.full_messages.each do |message|
 							%li= message
-			/ Form
 			.row
 				= f.hidden_field :commissioner_id, value: @current_user.id
 			/ Select show to filter season
@@ -56,7 +55,7 @@
 						= f.radio_button :public_access, true
 						= f.label(:public, 'Public league')
 					.col-md-6
-						= f.radio_button(:public_access, false)
+						= f.radio_button :public_access, false
 						= f.label(:private, 'Private league')
 			/	Type
 			.row.form-group
@@ -65,20 +64,19 @@
 					%br/
 				.col-md-6{:id => "type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
 					- if @league_type	
-						= f.select(:type, options_for_select(@type, @league_type), {}, {:class => "form-control"})
+						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {:class => "form-control"})
 					- else
 						= f.select(:type, options_for_select(@type), {:include_blank => "Select draft type"}, class:"form-control")
-			/ Scoring system FIXME!
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :scoring_system
 					%br/
 				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Choose between standard scoring system for a show's contestant, or customize your league's scoring scheme."}, :title => "Select Scoring System"}
 					.col-md-6
-						= f.radio_button :scoring_system, true
+						= f.radio_button :scoring_system, 1
 						= f.label(:standard, 'Standard')
 					.col-md-6
-						= f.radio_button(:scoring_system, false)
+						= f.radio_button :scoring_system, 2
 						= f.label(:custom, 'Custom')
 			/ Submit
 			.row.form-group

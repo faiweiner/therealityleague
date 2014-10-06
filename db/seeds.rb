@@ -34,9 +34,46 @@ show4 = Show.create(:name => 'Bachelor in Paradise', :image => '/assets/bachelor
 show5 = Show.create(:name => 'Master Chef', :image => '/assets/master_chef/masterchef.jpg')
 show6 = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')
 
-season1 = Season.create(:name => 'Juan Pablo', :number => 18, :show_id => show1.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'With his Spanish accent, good looks, salsa moves and undying devotion for his daughter, Juan Pablo, 32, was a fan favorite. Sadly, Desiree Hartsock couldn\'t see a future with Juan Pablo and sent him home from Barcelona.', :episode_count => 10, :image => '/assets/the_bachelor/juanpablo.jpg', :published => true)
-season2 = Season.create(:name => 'Desiree', :number => 9, :show_id => show2.id, :premiere_date => two_weeks, :finale_date => two_weeks - 45, :description => 'This season features 27-year-old Desiree Hartsock, a bridal stylist from Colorado. Twenty-five men, all aged 26-34, will be competing for Desiree\'s heart.', :episode_count => 10, :image => '/assets/the_bachelorette/desiree.jpg', :published => true)
-season3 = Season.create(:name => 'Sean Lowe', :number => 17, :show_id => show1.id, :premiere_date => '01/07/2013', :finale_date => '01/12/2013', :description	=> 'The best bachelor ever - Sean Lowe is the man!', :episode_count => 10, :expired => true, :image => '/assets/the_bachelor/seanlowe.jpg', :published => true)
+season1 = Season.create(
+	:name => 'Juan Pablo', 
+	:number => 18, 
+	:show_id => show1.id, 
+	:premiere_date => two_weeks, 
+	:finale_date => two_weeks - 45, 
+	:description => 'With his Spanish accent, good looks, salsa moves and undying devotion for his daughter, Juan Pablo, 32, was a fan favorite. Sadly, Desiree Hartsock couldn\'t see a future with Juan Pablo and sent him home from Barcelona.', 
+	:episode_count => 10, 
+	:image => '/assets/the_bachelor/juanpablo.jpg', 
+	:published => true)
+season2 = Season.create(
+	:name => 'Andi', 
+	:number => 10, 
+	:show_id => show2.id, 
+	:premiere_date => two_weeks, 
+	:finale_date => two_weeks - 45, 
+	:description => 'Lorem ipsum',
+	:episode_count => 10, 
+	:image => '/assets/the_bachelorette/desiree.jpg', 
+	:published => true)
+season3 = Season.create(
+	:name => 'Sean Lowe', 
+	:number => 17, 
+	:show_id => show1.id, 
+	:premiere_date => '01/07/2013', 
+	:finale_date => '01/12/2013', 
+	:description => 'The best bachelor ever - Sean Lowe is the man!', 
+	:episode_count => 10, 
+	:expired => true, 
+	:image => '/assets/the_bachelor/seanlowe.jpg', 
+	:published => true)
+season4 = Season.create(
+	:name => 'Season 7', 
+	:number => 7, 
+	:show_id => show3.id, 
+	:premiere_date => '23/09/2014', 
+	:finale_date => '25/01/2015', 
+	:description => 'This season with new judge Gwen Stefani', 
+	:episode_count => 22, :image => '', 
+	:published => true)
 
 league1 = Fantasy.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :type => 'Fantasy', :public_access => true)
 league2 = Fantasy.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :type => 'Fantasy', :public_access => false)
@@ -48,12 +85,54 @@ league2.users << [user1, user3, user4, user5]
 league3.users << [user1, user4, user5]
 league4.users << [user1, user2]
 
-cont1 = Contestant.create(:name => 'Layla', :season_id => season1.id, :age => 22, :gender => 'Female', :occupation => 'Physical Therapist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis ullam doloribus, laborum asperiores aperiam.', :image => '/assets/the_bachelor/layla.jpg')
-cont2 = Contestant.create(:name => 'Nikki', :season_id => season1.id, :age => 24, :gender => 'Female', :occupation => 'Executive Assistant', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae.', :image => '/assets/the_bachelor/nikki.jpg')
-cont3 = Contestant.create(:name => 'Jessica', :season_id => season1.id, :age => 32, :gender => 'Female', :occupation => 'Nurse', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique cum repudiandae quod officia expedita tenetur praesentium magnam.', :image => '/assets/the_bachelor/jessica.jpg')
-cont4 = Contestant.create(:name => 'Heather', :season_id => season1.id, :age => 26, :gender => 'Female', :occupation => 'Hair Stylist', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/heather.jpg')
-cont5 = Contestant.create(:name => 'Alex', :season_id => season1.id, :age => 24, :gender => 'Female', :occupation => 'Entrepreneur', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/alex.jpg')
-cont6 = Contestant.create(:name => 'Suzie', :season_id => season1.id, :age => 24, :gender => 'Female', :occupation => 'Web Designer', :description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!', :image => '/assets/the_bachelor/suzie.jpg')
+cont1 = Contestant.create(
+	:name => 'Cassandra', 
+	:season_id => season1.id, 
+	:age => 22, 
+	:gender => 'Female', 
+	:image => '/assets/the_bachelor/season19/cassandra.jpg',
+	:occupation => 'Physical Therapist', 
+	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis ullam doloribus, laborum asperiores aperiam.')
+cont2 = Contestant.create(
+	:name => 'Nikki', 
+	:season_id => season1.id, 
+	:age => 24, 
+	:gender => 'Female', 
+	:image => '/assets/the_bachelor/season19/nikki.jpg',
+	:occupation => 'Executive Assistant', 
+	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae.')
+cont3 = Contestant.create(
+	:name => 'Jessica', 
+	:season_id => season1.id, 
+	:age => 32, 
+	:gender => 'Female', 
+	:image => '/assets/the_bachelor/season19/jessica.jpg',
+	:occupation => 'Nurse', 
+	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique cum repudiandae quod officia expedita tenetur praesentium magnam.')
+cont4 = Contestant.create(
+	:name => 'Heather', 
+	:season_id => season1.id, 
+	:age => 26, 
+	:gender => 'Female', 
+	:image => '/assets/the_bachelor/season19/heather.jpg',
+	:occupation => 'Hair Stylist', 
+	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
+cont5 = Contestant.create(
+	:name => 'Alex', 
+	:season_id => season1.id, 
+	:age => 24, 
+	:gender => 'Female', 
+	:image => '/assets/the_bachelor/season19/alex.jpg',
+	:occupation => 'Entrepreneur', 
+	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
+cont6 = Contestant.create(
+	:name => 'Suzie', 
+	:season_id => season1.id, 
+	:age => 24, 
+	:image => '/assets/the_bachelor/season19/suzie.jpg',
+	:gender => 'Female', 
+	:occupation => 'Web Designer', 
+	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
 
 episode1 = Episode.create(:season_id => season3.id, :air_date => '07/01/2013')
 episode2 = Episode.create(:season_id => season3.id, :air_date => '14/01/2013')

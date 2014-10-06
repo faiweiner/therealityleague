@@ -33,9 +33,9 @@
 									%td
 										Status of league
 									%td
-										= link_to "View", league_path(league.id), class:'btn btn-default btn-sm'
+										= link_to "View", league_path(league.id), class: "btn btn-default btn-sm"
 										- if league.commissioner_id == @current_user.id
-											= link_to(content_tag(:div, "Edit", class:'btn btn-default btn-sm'), edit_league_path(league))
+											= link_to(content_tag(:div, "Edit", class: "btn btn-default btn-sm"), edit_league_path(league))
 					%p
 						= image_tag("/assets/ref.png") + " Commissioner"
 			.panel.panel-default
@@ -58,9 +58,8 @@
 								%tr
 									%td
 										= league.name
-									%td
 										- if league.commissioner_id == @current_user.id
-											%img{:src => "/assets/megaphone_black.png", class:"icon"}
+											%img{:src => "/assets/ref.png", class: "icon"}
 									%td
 										= league.season.name
 									%td
@@ -70,6 +69,6 @@
 											Private
 									%td
 										-
-										= link_to "View", league_path(league.id), class:'btn btn-default btn-sm'
+										= link_to "View", league_path(league.id), class: "btn btn-default btn-sm"
 					%p
-						= image_tag("/assets/megaphone_black.png") + "   Commissioner"
+						= image_tag("/assets/ref.png") + "   Commissioner"
