@@ -50,7 +50,4 @@ class Contestant < ActiveRecord::Base
 		Event.joins(:scheme).where(contestant_id: self.id).sum("schemes.points_asgn")
 	end
 
-	def status
-		return "(eliminated)" if self.present == false
-	end
 end

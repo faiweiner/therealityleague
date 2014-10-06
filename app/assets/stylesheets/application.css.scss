@@ -110,6 +110,33 @@ div {
 .thumbnail {
 	position: relative;
 	overflow: scroll;
+	padding: 0;
+	&.fading {
+		&.eliminated {
+			opacity: 0.8;
+			filter: alpha(opacity=80);
+		}
+	}
+	.caption {
+		position: absolute;
+		padding: 4px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		width: 100%;
+		background-color: black;
+		font-size: 12px;
+		color: white;  
+    opacity: 0.6; /* transparency */  
+    filter: alpha(opacity=60); /* IE transparency */  
+	}
+	p {  
+    padding: 0px;  
+    margin-bottom: 0px; 
+    &.status {
+    	display: none;
+    } 
+	} 
 }
 
 .thumbnail a > img {
@@ -183,16 +210,3 @@ input.form-control.input-small {
 	}
 }
 
-// .btn-primary {
-// 	background-color: $sports-main-dark;
-// 	border-color: $sports-main-light;
-// }
-// .btn-primary:hover {background-color: $sports-main-medium}
-
-// .panel-default {
-// 	> .panel-heading {
-// 		background-color: #004F37;
-// 		color: #FFFFFF;
-// 	}
-// 	background-color: rgba( $sports-main-dark, .4 );
-// }

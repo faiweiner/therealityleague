@@ -18,11 +18,10 @@ class ShowsController < ApplicationController
 	end
 
 	def display
-		Show.get_schemes(params[:id])
 		@show = Show.find(params[:id])
-		@rules_survival = @show.schemes.where(type: "Survival")
-		@rules_game = @show.schemes.where(type: "Game")
-		@rules_extra = @show.schemes.where(type: "Extracurricular")
+		@rules_survival = Show.get_schemes(@show.id, "Survival")
+		@rules_game = Show.get_schemes(@show.id, "Game")
+		@rules_extra =Show.get_schemes(@show.id, "Extracurricular")
 	end
 
 	def edit
