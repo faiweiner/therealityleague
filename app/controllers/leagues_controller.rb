@@ -48,7 +48,7 @@ class LeaguesController < ApplicationController
 	end
 	
 	def create
-		@league = League.new league_params("league")
+		@league = League.new league_params
 		@league.season_id = params[:league][:season]
 		season = Season.where(name: params[:league][:season])
 		
@@ -90,10 +90,10 @@ class LeaguesController < ApplicationController
 	end
 
 	def update
-		@league = League.find(params[:id])
+		@league = League.find(params[:id]).becomes(League)
 		@league.becomes(League)
 		symbol = "#{@league.type.downcase}"
-		@league.update_attributes league_params(symbol)
+		@league.update_attributes league_params
 		redirect_to leagues_path
 	end
 
@@ -258,8 +258,8 @@ class LeaguesController < ApplicationController
 	private
 
 	# standard strong params practice
-	def league_params(type)
-		params.require(type).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active)
+	def league_params
+		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active)
 	end
 
 	def private_restriction

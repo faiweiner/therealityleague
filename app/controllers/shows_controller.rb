@@ -1,11 +1,14 @@
 class ShowsController < ApplicationController
 	before_action :check_if_admin, :only => [:new, :create, :edit, :update, :destroy]
+	around_action :render_admin, :only => [:index]
+	
 	def index
 		@shows = Show.all
 	end
 
 	def new
 		@show = Show.new
+		render_admin
 	end
 
 	def create
@@ -35,7 +38,9 @@ class ShowsController < ApplicationController
 	end
 
 	private
+
 	def show_params
 		params.require(:show).permit(:name, :image)
 	end
+
 end
