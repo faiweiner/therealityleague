@@ -1,5 +1,6 @@
 class ContestantsController < ApplicationController
 	before_action :check_if_admin
+	layout "admin"
 
 	def index
 		@season = Season.includes(:contestants).find(params[:season_id])
@@ -21,6 +22,7 @@ class ContestantsController < ApplicationController
 	def new
 		@season = Season.find(params[:season_id])
 		@contestant = Contestant.new
+		render :nothing
 	end
 
 	def create

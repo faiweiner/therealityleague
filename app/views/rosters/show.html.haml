@@ -1,22 +1,20 @@
 .panel.panel-default
-	.panel-heading
-		.panel-title.row
-			%span.col-md-9
-				%h3= @roster.league.name
-				%p
-					= @roster.league.season.show.name + ": "
-					= @roster.league.season.name
-			%span
-				- if @roster.user_id == @current_user.id
-					%h4.small
-						Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
-					= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary"
-				- else
-					%h4.small= @roster.user.username
-				= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default"
-		/ FIXME with jQuery
 	.panel-body
-		- if @roster.contestants.count > 0
+		.col-md-9.col-lg-10
+			%h3= @roster.league.name
+			%p
+				= @roster.league.season.show.name + ": "
+				= @roster.league.season.name
+		.col-lg-2
+			- if @roster.user_id == @current_user.id
+				%h4.small
+					Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
+				= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
+			- else
+				%h4.small= @roster.user.username
+			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
+	- if @roster.contestants.any?
+		.panel-body
 			#roster-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
 				%table#rosterScoreBoard.table.table-hover
 					%h3 Weekly Score
@@ -69,9 +67,11 @@
 				#box.row
 					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odit eius non, ratione ducimus magni consequatur eum quae quia quam itaque hic id provident obcaecati soluta fugiat doloribus ab aliquam?
 			/ END Roster Board
-		- else
-			#contestants-display
-				%h3 Nothing
+	- else
+		.panel-body
+			#contestants-display.col-lg-12.text-center
+				%p Your roster is currently empty! Add contestants to your roster now!
+				= link_to "Add contestants to roster", edit_roster_path(@roster.id), class:"btn btn-primary"
 - if @roster.contestants.empty?
 	.modal.fade.modal-md#roster-complete-prompt{"aria-hidden" => "true", "aria-labelledby" => "myMediumModalLabel", :role => "dialog", :tabindex => "-1"}
 		.modal-dialog.modal-md

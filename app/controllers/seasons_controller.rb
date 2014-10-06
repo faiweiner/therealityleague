@@ -92,6 +92,7 @@ class SeasonsController < ApplicationController
 		@rules_survival = Show.get_schemes(@show.id, "Survival")
 		@rules = @season.show.events
 		@contestants = @season.contestants.order("name ASC")
+		@contestants_ranking = @season.contestants.includes(:events).order("episode_id DESC")
 	end
 	
 	private

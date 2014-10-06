@@ -12,8 +12,8 @@
 					%h3= @league.name  + " (private)"
 				%p
 					= @league.season.show.name + ": "
-					= @league.season.name
-				= render "/shows/scoring_system"
+					/ = @league.season.name
+					= render "/shows/scoring_system"
 				- if @comm_this_league == true
 					- if @participants.count <= 1
 						= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-primary btn-sm" 

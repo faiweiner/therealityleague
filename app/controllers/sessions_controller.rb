@@ -12,7 +12,7 @@ class SessionsController	< ApplicationController
 			if user.admin?
 				redirect_to admin_path
 			elsif	user.leagues.count > 0
-				flash[:notice] = "Welcome back, #{@current_user}!"
+				flash[:notice] = "Welcome back, #{user.username}!"
 				flash[:color] = "valid"
 				redirect_to leagues_path
 			else

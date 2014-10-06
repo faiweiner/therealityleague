@@ -1,12 +1,8 @@
 class AdminController < ApplicationController
 	layout "admin"
+	before_action :check_if_admin
 	
 	def home
-		if @current_user.admin?
-			confirm_admin
-		else
-			redirect_to root_path
-		end
 		@users = User.all
 		@shows = Show.all
 		@leagues = League.all
@@ -14,6 +10,10 @@ class AdminController < ApplicationController
 
 	def show
 		@shows = Show.all	
+	end
+
+	def seasons
+		
 	end
 
 	private

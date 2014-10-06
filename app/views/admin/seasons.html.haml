@@ -65,7 +65,9 @@
 							= link_to "Track", edit_season_path(season.id), class:"btn btn-sm btn-default"
 							= link_to "View", season_path(season.id), class:"btn btn-sm btn-default"
 						%td
-							= link_to "View", contestants_season_path(season.id), class:"btn btn-sm btn-default"
+							= link_to "Add", new_contestant_path(season.id), class:"btn btn-default btn-xs btn-block"
+							= link_to "View", contestants_season_path(season.id), class:"btn btn-xs btn-default btn-block"
+							= link_to "Edit", contestants_season_path(season.id), class:"btn btn-default btn-xs btn-block"
 	.panel-body
 		%table.table.table-hover
 			%h4 

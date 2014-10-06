@@ -4,8 +4,7 @@
 			%h3
 				= @season.name
 				Contestants
-			= link_to "Back to Season", season_path(@season.id), class:"btn btn-default"
-			= link_to "Add New Contestant", new_contestant_path(@season.id), class:"btn btn-default"
+			= link_to "Season User View", season_path(@season.id), class:"btn btn-default"
 			#season_id.invisible= @season.id
 	.panel-body
 		.row

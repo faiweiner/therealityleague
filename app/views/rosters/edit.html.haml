@@ -1,0 +1,25 @@
+.panel.panel-default
+	.panel-body
+		.col-md-10.col-lg-7
+			%h3= @roster.league.name
+			%p
+				= @roster.league.season.show.name + ": "
+				= @roster.league.season.name
+		.col-md-2.col-lg-5.text-right
+			%h4.small
+				Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
+			= link_to "Save", roster_path(@roster.id), class:"btn btn-primary btn-sm"
+	.panel-body
+		/ Roster Board
+		.col-sm-6.col-md-8.col-lg-12
+			%h3 Your Roster
+			#rosterBoard
+				= render partial: "current_roster"
+			#left-box
+				%p Instructions: Do this a million times and you'll get it right.
+		/ END Roster Board
+		/ Contestant Board
+		#right-box.col-sm-6.col-md-4
+			%h4 Available Contestants
+			= render partial: "current_available_contestants"
+		/ END Contestant Board
