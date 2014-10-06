@@ -11,31 +11,28 @@
 					= @show.name
 					's Scoring System
 			.modal-body.text-left
-				%h4 Elimination/Survival
-				%table#score-system-table.table.table-striped
+				%table.table.table-condensed.table-striped
 					%thead
-						%th Event
-						%th Points
+						%th Elimination/Survival
+						%th
 					%tbody
 						- @rules_survival.each do |rule|
 							%tr
 								%td= rule.description
 								%td= rule.points_asgn
-				%h4 Show/Game
-				%table#score-system-table.table.table-striped
+				%table.table.table-condensed.table-striped
 					%thead
-						%th Event
-						%th Points
+						%th Show/Game
+						%th
 					%tbody
 						- @rules_game.each do |rule|
 							%tr
 								%td= rule.description
 								%td= rule.points_asgn
-				%h4 Extracurricular
-				%table#score-system-table.table.table-striped
+				%table.table.table-condensed.table-striped
 					%thead
-						%th Event
-						%th Points
+						%th Extracurricular
+						%th
 					%tbody
 						- @rules_extra.each do |rule|
 							%tr

@@ -10,19 +10,23 @@
 					= link_to "Edit Show", edit_show_path(@show.id), class:"btn btn-default btn-sm"
 					= link_to "Add New Season", new_season_show_path(@show.id), class:"btn btn-default btn-sm"
 					= link_to "Back to Shows", shows_path, class:"btn btn-default btn-sm"
-	.panel-body
-		#accordion.panel-group
-			- @show.seasons.order("number DESC").each_with_index do |season, index|
-				.panel.panel-default
-					.panel-heading
-						%a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapse#{index}"}
-							%h4.panel-title
-								Season #{season.number}: #{season.name}
-								%span.caret
-					.panel-collapse.collapse{:id => "collapse#{index}"}
-						.panel-body
-							.row
-								.col-md-12
-									%h4 Description:
-									%p= season.description
-									= link_to "View Contestants", season_path(season.id), class:"btn btn-default btn-sm"
+		.panel-body
+			%table.table.table-hover
+				%thead
+					%tr
+						%th.col-lg-10 Season List
+						%th.col-lg-2
+				%tbody
+					- @show.seasons.each do |season|
+						%tr
+							%td
+								%a{:href => season_path(season.id)} 
+									Season
+									#{ season.number}: 
+									= season.name
+							%td.text-right
+								= link_to "View Show", season_path(season.id), class:"btn btn-default btn-sm"
+
+
+
+

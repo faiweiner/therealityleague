@@ -18,6 +18,7 @@ class ShowsController < ApplicationController
 	end
 
 	def display
+		Show.get_schemes(params[:id])
 		@show = Show.find(params[:id])
 		@rules_survival = @show.schemes.where(type: "Survival")
 		@rules_game = @show.schemes.where(type: "Game")
