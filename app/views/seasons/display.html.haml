@@ -5,8 +5,14 @@
 				= @season.show.name + ": "
 				= @season.name
 			%p
-				Premieres: 
-				= @season.premiere_date.strftime("%B %d")
+				- if @season.expired
+					Run Date:
+					= @season.premiere_date.strftime("%B %d, %Y")
+					\-
+					= @season.finale_date.strftime("%B %d, %Y")
+				- else
+					Premieres: 
+					= @season.premiere_date.strftime("%B %d")
 			= link_to "Find a league", leagues_search_path, class:"btn btn-primary btn-sm"
 			= render "shows/scoring_system"
 			= link_to "Back to #{@season.show.name}", show_path(@season.show.id), class:"btn btn-default btn-sm"
@@ -45,7 +51,7 @@
 							.caption
 								%p.name= contestant.name
 								%p.status 
-									(#{contestant.status_on_show})
+									#{contestant.status_on_show}
 							/ 		
 					- else
 						.thumbnail.fading.eliminated{"data-contestant-id" => contestant.id}

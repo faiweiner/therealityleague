@@ -53,7 +53,7 @@
 							Concluded
 					%h6 what else do you need
 	.panel-body
-		.col-lg-6
+		.col-lg-12
 			%h3 Ranking
 			%table.table.table-hover
 				%thead
@@ -74,15 +74,15 @@
 										= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
 								- else
 									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default btn-sm"
-		.col-lg-6
-			%h3 Live Score Update
-			#event-update-board
-				- if @season
-					no
-				- else
-					.panel.panel-default
-						.panel-body
-							Nothing has happened yet.						
+		/ .col-lg-6
+		/ 	%h3 Live Score Update
+		/ 	#event-update-board
+		/ 		- if @season
+		/ 			no
+		/ 		- else
+		/ 			.panel.panel-default
+		/ 				.panel-body
+		/ 					Nothing has happened yet.						
 		- if @league.season.episode_count
 			.col-lg-12
 				%table.table.table-hover
