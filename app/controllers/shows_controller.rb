@@ -1,14 +1,13 @@
 class ShowsController < ApplicationController
-	before_action :check_if_admin, :only => [:new, :create, :edit, :update, :destroy]
-	around_action :render_admin, :only => [:index]
-	
+	before_action :check_if_admin, only: [:new, :create, :edit, :update, :destroy]
+	layout "admin", except: [:index, :display]
+
 	def index
 		@shows = Show.all
 	end
 
 	def new
 		@show = Show.new
-		render_admin
 	end
 
 	def create

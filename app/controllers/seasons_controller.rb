@@ -1,16 +1,14 @@
 class SeasonsController < ApplicationController
-	before_action :check_if_admin, :only => [:new, :edit, :update, :publish, :unpublish, :destroy]
-
+	before_action :check_if_admin, only: [:new, :edit, :update, :publish, :unpublish, :destroy]
+	layout "admin", except: [:display]
 	def index
 		@current_seasons = Season.where(:expired => :false).order("premiere_date ASC")
 		@past_seasons = Season.where(:expired => :true).order("premiere_date DESC")
 		@current_date = DateTime.now.strftime("%B %d, %Y")
-		render layout: "admin"
 	end
 
 	def new
 		@season = Season.new(:show_id => params[:show_id])
-		render layout: "admin"
 	end
 
 	def create
@@ -22,7 +20,7 @@ class SeasonsController < ApplicationController
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"
-			render :new, layout: "admin"
+			render :new
 		end
 	end
 

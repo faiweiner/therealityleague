@@ -17,6 +17,13 @@
 							%li= message
 			.row
 				= f.hidden_field :commissioner_id, value: @current_user.id
+			/ Name of League
+			.row.form-group
+				.col-md-3.text-right
+					= f.label :league_name
+					%br/
+				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
+					= f.text_field :name, class:"form-control", :placeholder => "Enter name here", :required => true
 			/ Select show to filter season
 			.row.form-group
 				.col-md-3.text-right
@@ -37,15 +44,9 @@
 				.col-md-6
 					- if @league_season_id
 						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class:"form-control step2"})
+						Premieres: #{@league.season.premiere_date.strftime("%m/%d/%Y")}
 					- else
 						= f.select(:season, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
-			/ Name of League
-			.row.form-group
-				.col-md-3.text-right
-					= f.label :league_name
-					%br/
-				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
-					= f.text_field :name, class:"form-control", :placeholder => "Enter name here", :required => true
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right
@@ -66,7 +67,7 @@
 					- if @league_type	
 						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {:class => "form-control"})
 					- else
-						= f.select(:type, options_for_select(@type), {:include_blank => "Select draft type"}, class:"form-control")
+						= f.select(:type, options_for_select(League.select_type), {:include_blank => "Select draft type"}, class:"form-control")
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :scoring_system
@@ -78,6 +79,12 @@
 					.col-md-6
 						= f.radio_button :scoring_system, 2
 						= f.label(:custom, 'Custom')
+			/ Draft deadline
+			.row.form-group
+				.col-md-3.text-right
+					= f.label :draft_deadline
+				.col-md-6
+					= f.date_field :draft_deadline, selected: Date.today, id: "draftDatePicker", class: "form-control"
 			/ Submit
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9
@@ -85,4 +92,4 @@
 						= f.submit "Update League", :class => "btn btn-default"
 					- else
 						= f.submit "Create League", :class => "btn btn-default"
-					= link_to("Cancel", leagues_path, class:'btn btn-default')
+					= link_to("Cancel", league_path(@league.id), class:'btn btn-default')

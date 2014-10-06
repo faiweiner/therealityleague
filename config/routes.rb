@@ -36,6 +36,7 @@ Rails.application.routes.draw do
 
 	get 'leagues/search' => 'leagues#search'
 	get 'leagues/:id/invite' => 'leagues#invite', :as => :league_invite
+	get 'leagues/:id' => 'leagues#display', :as => :league
 	resources :leagues
 	resources :fantasies, path: 'leagues', :controller => 'leagues'
 	post 'leagues/access' => 'leagues#access', :as => :league_access
@@ -59,6 +60,7 @@ Rails.application.routes.draw do
 	delete 'login' => 'sessions#logout'
 
 	get 'admin' => 'admin#home'
+	get 'admin/shows' => 'admin#shows', :as => :admin_shows
 
 	get 'api/shows' => 'application#shows_list', :as => :api_shows
 	get 'api/seasons' => 'application#seasons_list', :as => :api_seasons

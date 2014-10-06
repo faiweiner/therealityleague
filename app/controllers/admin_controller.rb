@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
-
+	layout "admin"
+	
 	def home
 		if @current_user.admin?
 			confirm_admin
@@ -9,6 +10,10 @@ class AdminController < ApplicationController
 		@users = User.all
 		@shows = Show.all
 		@leagues = League.all
+	end
+
+	def show
+		@shows = Show.all	
 	end
 
 	private

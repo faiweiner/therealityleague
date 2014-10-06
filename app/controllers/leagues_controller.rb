@@ -3,7 +3,7 @@ class LeaguesController < ApplicationController
 	before_action :check_if_logged_in, :except => [:index, :new]
 	skip_before_action :verify_authenticity_token, :only => [:results]
 	before_action :save_login_state, :only => [:new, :search, :results]
-	before_action :private_restriction, :only => [:show]
+	before_action :private_restriction, :only => [:display]
 	before_action :commissioner_restriction?, :only => [:edit]
 
 	def index
@@ -83,7 +83,7 @@ class LeaguesController < ApplicationController
 			flash[:color] = "prohibited"
 			redirect_to league_path(params[:id])
 		end
-		@league = League.find(params[:id]).becomes(League)
+		@league = League.includes(:season).find(params[:id]).becomes(League)
 		@league_show_id = @league.season.show_id
 		@league_season_id = @league.season_id
 		@league_type = @league.type
@@ -94,7 +94,7 @@ class LeaguesController < ApplicationController
 		@league.becomes(League)
 		symbol = "#{@league.type.downcase}"
 		@league.update_attributes league_params
-		redirect_to leagues_path
+		redirect_to league_path(@league.id)
 	end
 
 	def destroy
@@ -103,8 +103,12 @@ class LeaguesController < ApplicationController
 		redirect_to leagues_path
 	end
 
-	def show
+	def display
 		@participants = @league.users
+		@show = @league.season.show
+		@rules_survival = Show.get_schemes(@show.id, "Survival")
+		@rules_game = Show.get_schemes(@show.id, "Game")
+		@rules_extra =Show.get_schemes(@show.id, "Extracurricular")
 		@league_type = @league.type
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
@@ -259,7 +263,7 @@ class LeaguesController < ApplicationController
 
 	# standard strong params practice
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active)
+		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active, :draft_deadline)
 	end
 
 	def private_restriction

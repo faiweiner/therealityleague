@@ -10,32 +10,26 @@
 					%table#my_leagues_table.table.table-hover
 						%thead
 							%tr
-								%th.col-lg-3 League Name
+								%th.col-lg-4 League Name
 								%th.col-lg-3 Season
-								%th.col-lg-1 Type
-								%th.col-lg-2 Status
-								%th.col-lg-2= pluralize_without_count(@comm_leagues.count, "Action", text = nil)
+								%th.col-lg-3 Status
+								%th.col-lg-1 Action
 						%tbody
 							- @leagues.each do |league|
 								%tr
 									%td
-										= league.name
 										- if league.commissioner_id == @current_user.id
 											%img{:src => "/assets/ref.png"}
-									%td
-										= league.season.show.name + ": "
-										= league.season.name
-									%td
+										= link_to league.name, league_path(league.id)
 										- if league.public_access?
-											Public
+											(Public)
 										- else
-											Private
+											(Private)
 									%td
-										Status of league
+										= link_to league.season.show.name+": "+league.season.name, season_path(league.season.id)
+									%td
 									%td
 										= link_to "View", league_path(league.id), class: "btn btn-default btn-sm"
-										- if league.commissioner_id == @current_user.id
-											= link_to(content_tag(:div, "Edit", class: "btn btn-default btn-sm"), edit_league_path(league))
 					%p
 						= image_tag("/assets/ref.png") + " Commissioner"
 			.panel.panel-default

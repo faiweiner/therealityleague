@@ -105,12 +105,14 @@ $(document).ready(function () {
 		.done(function () {
 			if (participantCount <= 1) {
 				setTimeout(function (response) {
-					$("#participants_prompt").modal();
+					$('#participants_prompt').modal();
 				}, 1000);			
 			};
 		});
 
-	};
+	} else {}
+		$('.participants_prompt').hide();
+	;
 
 
 });

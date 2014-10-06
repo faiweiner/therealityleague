@@ -67,6 +67,18 @@ button a:visited {
 	color: white;
 }
 
+a.btn.btn-default.glow{
+	box-shadow: 0 0 10px rgba(81, 203, 238, 1);
+}
+
+a.btn.btn-default.glow:hover{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	box-shadow: 0 0 30px rgba(81, 203, 238, 1);
+}
+
 pre {
 	background-color: #eee;
 	padding: 10px;
@@ -111,10 +123,13 @@ div {
 	position: relative;
 	overflow: scroll;
 	padding: 0;
-	&.fading {
+	.fading {
+		> img {
+			width: 100%;
+		}
 		&.eliminated {
-			opacity: 0.8;
-			filter: alpha(opacity=80);
+			opacity: 0.5;
+			filter: alpha(opacity=50);
 		}
 	}
 	.caption {

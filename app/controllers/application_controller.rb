@@ -119,11 +119,5 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-	def render_admin
-		if @current_user && @current_user.admin
-			render layout: "admin" 
-		end
-	end
-
 	helper_method :current_user, :regex_validation
 end

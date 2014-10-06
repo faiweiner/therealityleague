@@ -1,0 +1,10 @@
+.modal.fade.bs-example-modal-md#participants_prompt{"aria-hidden" => "true", "aria-labelledby" => "mySmallModalLabel", :role => "dialog", :tabindex => "-1"}
+	.modal-dialog.modal-md
+		.modal-content
+			.modal-body
+				%h3 Invite Participants!
+				%p Invite friends in your network to join this league and get the game started!
+				%p Would you like to do this now?
+			.modal-footer
+				%button.btn.btn-default.btn-sm{"data-dismiss" => "modal", :type => "button"} Not now
+				%a.btn.btn-primary.btn-sm{:href => league_invite_path} Let's do it!

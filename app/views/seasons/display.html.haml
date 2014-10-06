@@ -46,16 +46,18 @@
 			- @contestants.each do |contestant|
 				.col-xs-3.col-sm-2.col-md-2.col-lg-2
 					- if contestant.present == true
-						.thumbnail.fading{"data-id" => contestant.id}
-							= image_tag contestant.image
+						.thumbnail
+							.fading{"data-id" => contestant.id}
+								= image_tag contestant.image
 							.caption
 								%p.name= contestant.name
 								%p.status 
 									#{contestant.status_on_show}
 							/ 		
 					- else
-						.thumbnail.fading.eliminated{"data-contestant-id" => contestant.id}
-							= image_tag contestant.image
+						.thumbnail
+							.fading.eliminated{"data-contestant-id" => contestant.id}
+								= image_tag contestant.image
 							.caption
 								%p.name= contestant.name
 								%p.status 
