@@ -1,11 +1,11 @@
 .panel.panel-default
 	.panel-body
-		.col-md-9.col-lg-10
+		.col-md-9.col-lg-9
 			%h3= @roster.league.name
 			%p
 				= @roster.league.season.show.name + ": "
 				= @roster.league.season.name
-		.col-lg-2
+		.col-lg-3.text-right
 			- if @roster.user_id == @current_user.id
 				%h4.small
 					Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
@@ -70,6 +70,7 @@
 	- else
 		.panel-body
 			#contestants-display.col-lg-12.text-center
+				%h2= @roster.league.draft_deadline.strftime("%B %d, %Y") if @roster.league.draft_deadline
 				%p Your roster is currently empty! Add contestants to your roster now!
 				= link_to "Add contestants to roster", edit_roster_path(@roster.id), class:"btn btn-primary"
 - if @roster.contestants.empty?
