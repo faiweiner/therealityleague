@@ -31,8 +31,6 @@ class League < ActiveRecord::Base
 
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
-	
-	class_attribute :draft_limit
 
 	# sarch function
 	def self.search_by_key(query)
