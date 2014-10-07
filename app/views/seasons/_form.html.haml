@@ -61,7 +61,7 @@
 						= f.text_field :image, class: "form-control", placeholder: "url"
 					.row.form-group
 						= f.label :episode_count
-						= f.number_field :episode_count, class: "form-control", placeholder: 10
+						= f.number_field :episode_count, min: 8, max: 30, class: "form-control", placeholder: 10
 					.row.form-group
 						- if @season.id
 							= f.check_box :published

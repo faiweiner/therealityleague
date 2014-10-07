@@ -49,7 +49,8 @@ Rails.application.routes.draw do
 	post 'rosters/:roster_id/remove/:contestant_id' => 'rosters#remove', :as => :roster_remove
 	post 'rosters/:league_id' => 'rosters#create', :as => :rosters
 	resources :rosters
-
+	resources :rounds
+	
 	get 'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season
 	post 'contestants' => 'contestants#create'
 	get 'contestants/new/:season_id' => 'contestants#new', :as => :new_contestant

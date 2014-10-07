@@ -85,6 +85,11 @@
 					= f.label :draft_deadline
 				.col-md-6
 					= f.date_field :draft_deadline, selected: Date.today, id: "draftDatePicker", class: "form-control"
+			.row.form-group
+				.col-md-3.text-right
+					= f.label :draft_limit
+				.col-md-6
+					= f.number_field :draft_limit, value: 2, id: "draftLimitField", min: 2, max: 20, step: 1, class: "form-control"
 			/ Submit
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9

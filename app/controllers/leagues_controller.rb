@@ -258,7 +258,7 @@ class LeaguesController < ApplicationController
 
 	# standard strong params practice
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active, :draft_deadline)
+		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active, :draft_deadline, :draft_limit)
 	end
 
 	def private_restriction
