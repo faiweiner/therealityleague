@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 	delete 'seasons/:id' => 'seasons#destroy'
 
 
+	get 'leagues/new' => 'leagues#new', :as => :new_league
+	get 'leagues' => 'leagues#index', :as => :leagues
 	get 'leagues/search' => 'leagues#search'
 	get 'leagues/:id/invite' => 'leagues#invite', :as => :league_invite
 	get 'leagues/:id' => 'leagues#display', :as => :league

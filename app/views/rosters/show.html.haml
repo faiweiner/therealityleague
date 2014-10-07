@@ -7,15 +7,12 @@
 				= @roster.league.season.name
 		.col-lg-3.text-right
 			- if @roster.user_id == @current_user.id
-				%h4.small
-					Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
+				%h4.small Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
 				= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
-			- else
-				%h4.small= @roster.user.username
 			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
 	- if @roster.contestants.any?
 		.panel-body
-			#roster-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
+			#score-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
 				%table#rosterScoreBoard.table.table-hover
 					%h3 Weekly Score
 					%thead
@@ -40,33 +37,30 @@
 								%td
 							%td= @roster.calculate_total_roster_points
 			/ Contestant Board
+			/ Roster Board
+			.col-xs-12.col-sm-9.col-md-8
+				- if @roster.user_id == @current_user.id
+					%h3 Your Roster
+				- else
+					%h3= @roster.user.username + "'s Contestants" 
+				%br/
+				#rosterBoard
+					- @selected_contestants.each do |contestant|
+						.col-xs-3.col-sm-3.col-md-3.col-lg-3
+							.thumbnail.thumbnail-current-roster
+								= image_tag contestant.image
+								.caption
+									= contestant.name
+			/ END Roster Board
 			#contestantBoard.col-xs-12.col-sm-3.col-md-4
 				%h3 Available Contestants
 				- @available_contestants.each do |contestant|
-					.col-xs-3.col-sm-6.col-md-5
+					.col-xs-3.col-sm-6.col-md-5.col-lg-5
 						.thumbnail.thumbnail-available-contestants
 							= image_tag contestant.image
 							.caption
 								= contestant.name
 			/ END Contestant Board
-			/ Roster Board
-			.col-xs-12.col-sm-9.col-md-8
-				.row
-					- if @roster.user_id == @current_user.id
-						%h3 Your Roster
-					- else
-						%h3 Roster Contestants
-				%br/
-				#rosterBoard.row
-					- @selected_contestants.each do |contestant|
-						.col-xs-3.col-sm-3.col-md-3
-							.thumbnail.thumbnail-current-roster
-								= image_tag contestant.image
-								.caption
-									= contestant.name
-				#box.row
-					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odit eius non, ratione ducimus magni consequatur eum quae quia quam itaque hic id provident obcaecati soluta fugiat doloribus ab aliquam?
-			/ END Roster Board
 	- else
 		.panel-body
 			#contestants-display.col-lg-12.text-center

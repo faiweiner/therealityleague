@@ -1,7 +1,7 @@
 - @selected_contestants.each do |contestant|
-  .col-md-3
-    .thumbnail.thumbnail-current-roster
-      %i.remove-button.fa.fa-times{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-      = image_tag contestant.image
-      .caption
-        = contestant.name
+	.col-lg-2
+		.thumbnail.thumbnail-current-roster
+			= image_tag contestant.image
+			.caption
+				%i.remove-button.fa.fa-times{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+				= contestant.name

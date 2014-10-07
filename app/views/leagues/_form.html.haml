@@ -90,6 +90,7 @@
 				.actions.col-md-offset-3.col-md-9
 					- if params[:id]
 						= f.submit "Update League", :class => "btn btn-default"
+						= link_to("Cancel", league_path(@league.id), class:'btn btn-default')
 					- else
 						= f.submit "Create League", :class => "btn btn-default"
-					= link_to("Cancel", league_path(@league.id), class:'btn btn-default')
+						= link_to("Cancel", leagues_path, class:'btn btn-default')

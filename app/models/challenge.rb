@@ -11,5 +11,5 @@
 #  updated_at  :datetime
 #
 
-class Extracurricular < Scheme
+class Challenge < Scheme
 end

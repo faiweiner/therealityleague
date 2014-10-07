@@ -3,46 +3,29 @@
 - elsif flash[:notice] && flash[:color] == "invalid"
 	.alert.alert-warning{:role => "alert"}= flash[:notice]
 .panel.panel-default#league_view
-	.panel-heading
-		.panel-title.row
-			%span.col-lg-8
-				- if @league.public_access == true
-					%h3= @league.name + " (public)"
+	.panel-body
+		.col-lg-8
+			- if @league.public_access == true
+				%h2= @league.name + " (public)"
+			- else
+				%h2= @league.name  + " (private)"
+			%p
+				= @league.season.show.name + ": "
+				= @league.season.name
+				= render "/shows/scoring_system"
+			- if @comm_this_league == true
+				- if @participants.count <= 1
+					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-primary btn-sm" 
 				- else
-					%h3= @league.name  + " (private)"
-				%p
-					= @league.season.show.name + ": "
-					/ = @league.season.name
-					= render "/shows/scoring_system"
-				- if @comm_this_league == true
-					- if @participants.count <= 1
-						= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-primary btn-sm" 
-					- else
-						= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
-					- if @league_deadline_set == false
-						= link_to "Set Draft Deadline", "#", class:"btn btn-primary btn-sm" 
-			%span.col-lg-4.text-right
-				.dropdown
-					%a{"data-toggle" => "dropdown", :href =>"#", class:"btn btn-default"} Actions
-					%ul.dropdown-menu{:role => "menu", "aria-labelledby" => "dLabel"}
-						%li HI
-						%li HO
-				.div
-					%button.btn.btn-default.btn-sm{"data-target" => "#about_league", "data-toggle" => "collapse", :type => "button"}
-						About Show
-					- if @comm_this_league && @league.active?
-						= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
-					- elsif @a_participant == false
-						= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
-				%br/
-				.div
-					%h6 League rules
-					%h6
-						- if @league.active?
-							Commence date
-						- else
-							Concluded
-					%h6 what else do you need
+					= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
+				- if @league_deadline_set == false
+					= link_to "Set Draft Deadline", "#", class:"btn btn-primary btn-sm" 
+		.col-lg-4.text-right
+			.div
+				- if @comm_this_league && @league.active?
+					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
+				- elsif @a_participant == false
+					= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
 	.panel-body
 		.col-lg-12
 			%h3 Ranking
@@ -79,7 +62,7 @@
 		- if @league.season.episode_count
 			.col-lg-12
 				%table.table.table-hover
-					%h3 Weekly Score
+					%h3 Participants' Weekly Scores
 					%thead
 						%th Participants
 						- @league.season.episode_count.times do |i|

@@ -34,6 +34,7 @@ class LeaguesController < ApplicationController
 	end
 
 	def new
+		@league = League.new 
 		if @current_user == nil
 			flash[:notice] = "Looks like you haven't registered yet - please sign up before creating a new league."
 			flash[:color] = "invalid"
@@ -41,7 +42,6 @@ class LeaguesController < ApplicationController
 		end
 		
 		@type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
-		@league = League.new 
 		@export_show_list = Show.all
 		@export_season_list = Season.where(expired: false)
 		
@@ -91,7 +91,6 @@ class LeaguesController < ApplicationController
 
 	def update
 		@league = League.find(params[:id]).becomes(League)
-		@league.becomes(League)
 		symbol = "#{@league.type.downcase}"
 		@league.update_attributes league_params
 		redirect_to league_path(@league.id)
@@ -182,10 +181,6 @@ class LeaguesController < ApplicationController
 			# sort roster to reflect current leads
 			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
 			
-		
-		# IF NO ROSTER TYPE ASSIGNED
-		else
-			raise "need to fix this"
 		end
 
 		respond_to do |format|

@@ -9,6 +9,7 @@
 #  public_access   :boolean          default(TRUE)
 #  type            :string(255)
 #  draft_deadline  :datetime
+#  draft_limit     :integer
 #  scoring_system  :integer
 #  league_key      :string(255)
 #  league_password :string(255)
@@ -24,12 +25,14 @@ class League < ActiveRecord::Base
 	before_destroy { users.clear }
 	has_many :rosters
 
-# FIXME! Come bck to deal with dependencies please
+	# FIXME! Come bck to deal with dependencies please
 
 	before_save :set_up_league
 
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
+	
+	class_attribute :draft_limit
 
 	# sarch function
 	def self.search_by_key(query)

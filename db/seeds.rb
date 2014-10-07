@@ -1,24 +1,22 @@
-# USERS
-Bracket.destroy_all
-Contestant.destroy_all
-Episode.destroy_all
-Event.destroy_all
-Extracurricular.destroy_all
-Fantasy.destroy_all
+User.destroy_all
 League.destroy_all
 Roster.destroy_all
 Round.destroy_all
-Scheme.destroy_all
-Season.destroy_all
-Show.destroy_all
-Survival.destroy_all
-User.destroy_all
 
-last_month = DateTime.now - 31
-one_week = DateTime.now + 7
-two_weeks = DateTime.now + 14
-three_weeks = DateTime.now + 21
-one_month = DateTime.now + 31
+Show.destroy_all
+Event.destroy_all
+Season.destroy_all
+Episode.destroy_all
+Contestant.destroy_all
+
+Bracket.destroy_all
+Fantasy.destroy_all
+
+Scheme.destroy_all
+Challenge.destroy_all
+Extracurricular.destroy_all
+Game.destroy_all
+Survival.destroy_all
 
 user1 = User.create(:email => 'faiweiner@gmail.com', :username => 'faiweiner', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'chicken', :password_confirmation => 'chicken', :admin => true)
 user2 = User.create(:email => 'eliweiner@gmail.com', :username => 'eliweiner', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'password', :password_confirmation => 'password')
@@ -30,16 +28,15 @@ user6 = User.create(:email => 'user4@gmail.com', :username => 'username4', :avat
 show1 = Show.create(:name => 'The Bachelor', :image => '/assets/the_bachelor/logo.jpg')
 show2 = Show.create(:name => 'The Bachelorette', :image => '/assets/the_bachelorette/logo.png')
 show3 = Show.create(:name => 'The Voice', :image => '/assets/the_voice/thevoice.jpg')
-show4 = Show.create(:name => 'Bachelor in Paradise', :image => '/assets/bachelor_paradise/bachelor_paradise.jpg')
-show5 = Show.create(:name => 'Master Chef', :image => '/assets/master_chef/masterchef.jpg')
-show6 = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')
+survivor = Show.create(:name => 'Survivor', :image => '/assets/survivor/29/logo.png')
+show5 = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')
 
 season1 = Season.create(
 	:name => 'Juan Pablo', 
 	:number => 18, 
 	:show_id => show1.id, 
-	:premiere_date => two_weeks, 
-	:finale_date => two_weeks - 45, 
+	:premiere_date => '05/01/2014',
+	:finale_date => '10/03/2014', 
 	:description => 'With his Spanish accent, good looks, salsa moves and undying devotion for his daughter, Juan Pablo, 32, was a fan favorite. Sadly, Desiree Hartsock couldn\'t see a future with Juan Pablo and sent him home from Barcelona.', 
 	:episode_count => 10, 
 	:image => '/assets/the_bachelor/juanpablo.jpg', 
@@ -48,11 +45,11 @@ season2 = Season.create(
 	:name => 'Andi', 
 	:number => 10, 
 	:show_id => show2.id, 
-	:premiere_date => two_weeks, 
-	:finale_date => two_weeks - 45, 
-	:description => 'Lorem ipsum',
+	:premiere_date => '19/05/2014',
+	:finale_date => '28/07/2014',
+	:description => 'The tenth season of The Bachelorette features 26-year-old Andi Dorfman, an assistant district attorney from Atlanta, Georgia.',
 	:episode_count => 10, 
-	:image => '/assets/the_bachelorette/desiree.jpg', 
+	:image => 'http://a.abcnews.com/images/Entertainment/ht_andi_dorfman_bachelorette_sr_140319_16x9_992.jpg', 
 	:published => true)
 season3 = Season.create(
 	:name => 'Sean Lowe', 
@@ -62,9 +59,9 @@ season3 = Season.create(
 	:finale_date => '01/12/2013', 
 	:description => 'The best bachelor ever - Sean Lowe is the man!', 
 	:episode_count => 10, 
-	:expired => true, 
 	:image => '/assets/the_bachelor/seanlowe.jpg', 
-	:published => true)
+	:published => true,
+	:expired => true)
 season4 = Season.create(
 	:name => 'Season 7', 
 	:number => 7, 
@@ -72,8 +69,19 @@ season4 = Season.create(
 	:premiere_date => '23/09/2014', 
 	:finale_date => '25/01/2015', 
 	:description => 'This season with new judge Gwen Stefani', 
-	:episode_count => 22, :image => '', 
+	:episode_count => 22, 
+	:image => 'http://www.boomtron.com/wp-content/uploads/Voice-logo.jpg', 
 	:published => true)
+survivor29 = Season.create(
+	:name => 'San Juan Del Sur - Blood vs. Water',
+	:number => 29,
+	:show_id => survivor.id,
+	:premiere_date => '24/09/2014',
+	:finale_date => '30/01/2015',
+	:description => 'Similarly to Survivor: Blood vs. Water, the season features pairs of loved ones competing against each other but, unlike Blood vs. Water, all of the players are new',
+	:episode_count => 10,
+	:image => '/assets/survivor/29/logo.png',
+	:published => false)
 
 league1 = Fantasy.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :type => 'Fantasy', :public_access => true)
 league2 = Fantasy.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :type => 'Fantasy', :public_access => false)
@@ -355,6 +363,48 @@ cont25 = Contestant.create(
 	:present => false,
 	:episode_id => episode2.id)
 
+voice7cont1 = Contestant.create(:name => 'Luke Wade', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/25/LukeWade_Null_1455x1455_KO_1_1.jpg?itok=-z0At4qS', :age => 31, :gender => 'N/A', :description => 'Hometown: Dublin, Texas',  :status_on_show => 'Present')
+voice7cont2 = Contestant.create(:name => 'Clara Hong', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/ClaraHong_Null_1455x1455_RUBEN.jpg?itok=Zs7E4UXw', :age => 22, :gender => 'N/A', :description => 'Hometown: Atlanta, Georgia',  :status_on_show => 'Present')
+voice7cont3 = Contestant.create(:name => 'Bryana Salaz', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/22/BryanaSalaz_Null_1455x1455_KO.jpg?itok=Ny-8WJNE', :age => 16, :gender => 'N/A', :description => 'Hometown: San Antonio, Texas',  :status_on_show => 'Present')
+voice7cont4 = Contestant.create(:name => 'Damien Lawson', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/22/DamienLawson_Null_1455x1455_KO.jpg?itok=IhHFhx1Z', :age => 35, :gender => 'N/A', :description => 'Hometown: Monroe, Louisiana',  :status_on_show => 'Present')
+voice7cont5 = Contestant.create(:name => 'Allison Bray', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/AllisonBray_Null_1455x1455_RUBEN.jpg?itok=9_riJD5g', :age => 18, :gender => 'N/A', :description => 'Hometown: Louisville, Kentucky',  :status_on_show => 'Present')
+voice7cont6 = Contestant.create(:name => 'Taylor John Williams', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/TaylorJohnWilliams_Null_1455x1455_RUBEN.jpg?itok=y0mGySIc', :age => 23, :gender => 'N/A', :description => 'Hometown: Portland, Oregon',  :status_on_show => 'Present')
+voice7cont7 = Contestant.create(:name => 'Elyjuh René', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/22/ElyjuhRene_Null_1455x1455_KO.jpg?itok=EEsVV9ZL', :age => 18, :gender => 'N/A', :description => 'Hometown: Long Beach, California',  :status_on_show => 'Present')
+voice7cont8 = Contestant.create(:name => 'James David Carter', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/JamesDavidCarter_Null_1455x1455_RUBEN.jpg?itok=JgpbQexh', :age => 34, :gender => 'N/A', :description => 'Hometown: Jacksonville, Florida',  :status_on_show => 'Present')
+voice7cont9 = Contestant.create(:name => 'DaNica Shirey', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/DanicaShirey_Null_1455x1455_KO.jpg?itok=pmyqWD-m', :age => 25, :gender => 'N/A', :description => 'Hometown: York, Pennsylvania',  :status_on_show => 'Present')
+voice7cont10 = Contestant.create(:name => 'Joe Kirk', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/JoeKirk_Null_1455x1455_KO.jpg?itok=9PkbLbTL', :age => 17, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
+voice7cont11 = Contestant.create(:name => 'Menlik Zergabachew', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/MenlikZergabachew_Null_1455x1455_KO.jpg?itok=RIukha9D', :age => 19, :gender => 'N/A', :description => 'Hometown: Silver Spring, Maryland',  :status_on_show => 'Present')
+voice7cont12 = Contestant.create(:name => 'Reagan James', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/ReaganJames_Null_1455x1455_KO.jpg?itok=Xtbm-QG0', :age => 15, :gender => 'N/A', :description => 'Hometown: Burleson, Texas',  :status_on_show => 'Present')
+voice7cont13 = Contestant.create(:name => 'Taylor Phelan', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/TaylorPhelan_Null_1455x1455_KO.jpg?itok=gXJL6-Sg', :age => 25, :gender => 'N/A', :description => 'Hometown: Sherman, Texas',  :status_on_show => 'Present')
+voice7cont14 = Contestant.create(:name => 'Sugar Joans', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/SugarJoans_Null_1455x1455_KO.jpg?itok=Nhn9EaZS', :age => 24, :gender => 'N/A', :description => 'Hometown: Los Angeles, California',  :status_on_show => 'Present')
+voice7cont15 = Contestant.create(:name => 'Taylor Brashears', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/TaylorBrashears_Null_1455x1455_KO.jpg?itok=l9oNQX9I', :age => 21, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
+voice7cont16 = Contestant.create(:name => 'Maiya Sykes', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/MaiyaSykes_Null_1455x1455_KO.jpg?itok=B1d-tCxY', :age => 36, :gender => 'N/A', :description => 'Hometown: Los Angeles, California',  :status_on_show => 'Present')
+voice7cont17 = Contestant.create(:name => 'John Martin', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/JohnMartin_Null_1455x1455_KO.jpg?itok=gWGZ0Bt4', :age => 25, :gender => 'N/A', :description => 'Hometown: Saint Louis, Missouri',  :status_on_show => 'Present')
+voice7cont18 = Contestant.create(:name => 'Jessie Pitts', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/JessiePitts_Null_1455x1455_KO.jpg?itok=Ol51hoxI', :age => 18, :gender => 'N/A', :description => 'Hometown: Montgomery, Alabama',  :status_on_show => 'Present')
+voice7cont19 = Contestant.create(:name => 'Ricky Manning', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/RickyManning_Null_1455x1455_KO.jpg?itok=jx6ntDtc', :age => 19, :gender => 'N/A', :description => 'Hometown: Cape Coral, Florida',  :status_on_show => 'Present')
+voice7cont20 = Contestant.create(:name => 'Kelli Douglas', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/KelliDouglas_Null_1455x1455_KO.jpg?itok=4onfBlax', :age => 31, :gender => 'N/A', :description => 'Hometown: Dallas, Texas',  :status_on_show => 'Present')
+voice7cont21 = Contestant.create(:name => 'Blessing Offor', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/BlessingOffor_Null_1455x1455_KO.jpg?itok=1oHziOfj', :age => 25, :gender => 'N/A', :description => 'Hometown: New York, New York',  :status_on_show => 'Present')
+voice7cont22 = Contestant.create(:name => 'Troy Ritchie', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/TroyRichie_Null_1455x1455_KO.jpg?itok=d9KsNQRP', :age => 21, :gender => 'N/A', :description => 'Hometown: Trabuco Canyon, California',  :status_on_show => 'Present')
+voice7cont23 = Contestant.create(:name => 'Mia Pfirrman', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/MiaPfirrman_Null_1455x1455_KO.jpg?itok=H7ypv2Lc', :age => 19, :gender => 'N/A', :description => 'Hometown: Temple City, California',  :status_on_show => 'Present')
+voice7cont24 = Contestant.create(:name => 'Alessandra Castronovo', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/AlessandraCastronovo_Null_1455x1455_KO.jpg?itok=-RZtBrpn', :age => 21, :gender => 'N/A', :description => 'Hometown: Millstone, New Jersey',  :status_on_show => 'Present')
+voice7cont25 = Contestant.create(:name => 'Jordy Searcy', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/JordySearcy_Null_1455x1455_KO.jpg?itok=NOZAO_Jv', :age => 20, :gender => 'N/A', :description => 'Hometown: Fairhope, Alabama',  :status_on_show => 'Present')
+voice7cont26 = Contestant.create(:name => 'Kensington Moore', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/KensingtonMoore_Null_1455x1455_KO.jpg?itok=1_KKtDWk', :age => 18, :gender => 'N/A', :description => 'Hometown: Georgetown, Kentucky',  :status_on_show => 'Present')
+voice7cont27 = Contestant.create(:name => 'Bree Fondacaro', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/BreeFondacaro_Null_1455x1455_KO.jpg?itok=2koAD45f', :age => 24, :gender => 'N/A', :description => 'Hometown: Orange County, California',  :status_on_show => 'Present')
+voice7cont28 = Contestant.create(:name => 'Anita Antoinette', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/AnitaAntoinette_Null_1455x1455_KO.jpg?itok=-BX4lPMc', :age => 24, :gender => 'N/A', :description => 'Hometown: Boston, Massachusetts',  :status_on_show => 'Present')
+voice7cont29 = Contestant.create(:name => 'Katriz Trinidad', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/KatrizTrinidad_Null_1455x1455_KO.jpg?itok=svt0TZ9L', :age => 15, :gender => 'N/A', :description => 'Hometown: San Diego, California',  :status_on_show => 'Present')
+voice7cont30 = Contestant.create(:name => 'Ethan Butler', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/EthanButler_Null_1455x1455_KO.jpg?itok=foReHGiQ', :age => 25, :gender => 'N/A', :description => 'Hometown: Chicago, Illinois',  :status_on_show => 'Present')
+voice7cont31 = Contestant.create(:name => 'Tanner Linford', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/TannerLinford_Null_1455x1455_KO.jpg?itok=xA2xk--V', :age => 17, :gender => 'N/A', :description => 'Hometown: Kaysville, Utah',  :status_on_show => 'Present')
+voice7cont32 = Contestant.create(:name => 'Jean Kelley', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/JeanKelley_Null_1455x1455_KO.jpg?itok=B4if2hmG', :age => 29, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
+voice7cont33 = Contestant.create(:name => 'Chris Jamison', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/ChrisJamison_Null_1455x1455_KO.jpg?itok=2irGUJ_0', :age => 21, :gender => 'N/A', :description => 'Hometown: Pittsburgh, Pennsylvania',  :status_on_show => 'Present')
+voice7cont34 = Contestant.create(:name => 'Craig Wayne Boyd', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/CraigWayneBoyd_Null_1455x1455_KO.jpg?itok=Zd-RUHKn', :age => 35, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
+voice7cont35 = Contestant.create(:name => 'Toia Jones', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/ToiaJones_Null_1455x1455_KO.jpg?itok=Wg0fOheD', :age => 29, :gender => 'N/A', :description => 'Hometown: Montgomery, Alabama',  :status_on_show => 'Present')
+voice7cont36 = Contestant.create(:name => 'Amanda Lee Peers', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/AmandaLeePeers_Null_1455x1455_KO.jpg?itok=oP7j38qD', :age => 29, :gender => 'N/A', :description => 'Hometown: Rochester, New York',  :status_on_show => 'Present')
+voice7cont37 = Contestant.create(:name => 'Gianna Salvato', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/GiannaSalvato_Null_1455x1455_KO.jpg?itok=n1g-oPDc', :age => 18, :gender => 'N/A', :description => 'Hometown: Freehold, New Jersey',  :status_on_show => 'Present')
+voice7cont38 = Contestant.create(:name => 'Rebekah Samarin', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/RebekahSamarin_Null_1455x1455_KO.jpg?itok=0U6uzY9d', :age => 31, :gender => 'N/A', :description => 'Hometown: Whittier, California',  :status_on_show => 'Present')
+voice7cont39 = Contestant.create(:name => 'Grant Ganzer', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/GrantGanzer_Null_1455x1455_KO.jpg?itok=RA2ME7XA', :age => 16, :gender => 'N/A', :description => 'Hometown: Johnston, Iowa',  :status_on_show => 'Present')
+voice7cont40 = Contestant.create(:name => 'Jonathan Wyndham', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/JonathanWyndham_Null_1455x1455_KO.jpg?itok=KPOsDqA9', :age => 22, :gender => 'N/A', :description => 'Hometown: Lexington, South Carolina',  :status_on_show => 'Present')
+voice7cont41 = Contestant.create(:name => 'Matt McAndrew', :season_id => season4.id, :image => '#', :age => 23, :gender => 'N/A', :description => 'Hometown: Philadelphia, Pennsylvania',  :status_on_show => 'Present')
+
 roster1 = Roster.create(:user_id => user1.id, :league_id => league3.id)
 roster2 = Roster.create(:user_id => user4.id, :league_id => league3.id)
 roster3 = Roster.create(:user_id => user5.id, :league_id => league3.id)
@@ -457,8 +507,6 @@ survival18 = Survival.create(:show_id => show1.id, :description => 'Contestant l
 survival19 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 9', :points_asgn => 10)
 survival20 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in the Finale', :points_asgn => 10)
 survival21 = Survival.create(:show_id => show1.id, :description => 'Contestant is asked to leave by the producer', :points_asgn => 100)
-survival38 = Survival.create(:show_id => show1.id, :description => 'Contestant gets eliminated', :points_asgn => 0)
-
 game22 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for 1-on-1 date', :points_asgn => 50)
 game23 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
 game24 = Game.create(:show_id => show1.id, :description => 'Contestant gets in a helicopter', :points_asgn => 25)
@@ -467,7 +515,6 @@ game26 = Game.create(:show_id => show1.id, :description => 'Contestant rejects a
 game27 = Game.create(:show_id => show1.id, :description => 'Contestant meets the bachelor\'s family', :points_asgn => 50)
 game28 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
 game29 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
-
 extra30 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant kisses the bachelor', :points_asgn => 10)
 extra31 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gets in the hot tub with the bachelor', :points_asgn => 20)
 extra32 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant cries', :points_asgn => 10)
@@ -476,6 +523,49 @@ extra34 = Extracurricular.create(:show_id => show1.id, :description => 'Contesta
 extra35 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gets inappropriately drunk', :points_asgn => 25)
 extra36 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gets injured', :points_asgn => 25)
 extra37 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gives the bachelor a gift', :points_asgn => 10)
+survival38 = Survival.create(:show_id => show1.id, :description => 'Contestant gets eliminated', :points_asgn => 0)
+
+survival40 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 1', :points_asgn => 10)
+survival41 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 2', :points_asgn => 20)
+survival42 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 3', :points_asgn => 30)
+survival43 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 4', :points_asgn => 40)
+survival44 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 5', :points_asgn => 50)
+survival45 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 6', :points_asgn => 60)
+survival46 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 7', :points_asgn => 70)
+survival47 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 8', :points_asgn => 80)
+survival48 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 9', :points_asgn => 90)
+survival49 = Survival.create(:show_id => show2.id, :description => 'Contestant receives the Final Rose', :points_asgn => 100)
+survival50 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 1', :points_asgn => 10)
+survival51 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 2', :points_asgn => 10)
+survival52 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 3', :points_asgn => 10)
+survival53 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 4', :points_asgn => 10)
+survival54 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 5', :points_asgn => 10)
+survival55 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 6', :points_asgn => 10)
+survival56 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 7', :points_asgn => 10)
+survival57 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 8', :points_asgn => 10)
+survival58 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 9', :points_asgn => 10)
+survival59 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in the Finale', :points_asgn => 10)
+survival60 = Survival.create(:show_id => show2.id, :description => 'Contestant is asked to leave by the producer', :points_asgn => 100)
+survival61 = Survival.create(:show_id => show2.id, :description => 'Contestant gets eliminated', :points_asgn => 0)
+game62 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for 1-on-1 date', :points_asgn => 50)
+game63 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
+game64 = Game.create(:show_id => show2.id, :description => 'Contestant gets in a helicopter', :points_asgn => 25)
+game65 = Game.create(:show_id => show2.id, :description => 'Contestant gets a Fantasy Suite invitation', :points_asgn => 75)
+game66 = Game.create(:show_id => show2.id, :description => 'Contestant rejects a Fantay Suite invitation', :points_asgn => 100)
+game67 = Game.create(:show_id => show2.id, :description => 'Contestant meets the bachelorette\'s family', :points_asgn => 50)
+game68 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
+game69 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
+extra70 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant kisses the bachelorette', :points_asgn => 10)
+extra71 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets in the hot tub with the bachelorette', :points_asgn => 20)
+extra72 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant cries', :points_asgn => 10)
+extra73 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets in a fight with another contestant', :points_asgn => 25)
+extra74 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant says he\'s "here for the right reason" ', :points_asgn => 15)
+extra75 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets inappropriately drunk', :points_asgn => 25)
+extra76 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets injured', :points_asgn => 25)
+extra77 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gives the bachelorette a gift', :points_asgn => 10)
+
+survival78 = Survival.create(:show_id => show3.id, :description => 'Contestant gets selected during the Blind Audition', :points_asgn => 10)
+survival79 = Survival.create(:show_id => show3.id, :description => 'Contestant gets stolen by another coach during the Battle', :points_asgn => 20)
 
 event1 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival1.id, :episode_id => episode1.id)
 event2 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival1.id, :episode_id => episode1.id)
