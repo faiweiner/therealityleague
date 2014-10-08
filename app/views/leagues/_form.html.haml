@@ -35,6 +35,7 @@
 						.div#popupDisabler.hidden= @league_show_id
 						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control step1"})
 					- else
+						= f.select :show_list, {}, {:selected => "Select a show"}, class:"form-control step1", :required => true
 						= select_tag(:show_list, (), {:prompt => "Select a show", class:"form-control step1", :required => true})
 			/ Select reality show's season
 			.row.form-group
