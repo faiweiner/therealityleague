@@ -15,11 +15,6 @@ class RostersController < ApplicationController
 	end
 
 	def create
-		raise params.inspect
-					# automatically creates a league roster for the commissioner
-			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
-			roster.save
-
 		league = League.find(params[:league_id])
 		Roster.find_or_create_by!(:user_id => @current_user.id, :league_id => league.id)
 		league.users << @current_user
