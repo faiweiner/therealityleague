@@ -45,9 +45,11 @@ Rails.application.routes.draw do
 
 	resources :users
 	
-	post 'rosters/:roster_id/add/:contestant_id' => 'rosters#add', :as => :roster_add
-	post 'rosters/:roster_id/remove/:contestant_id' => 'rosters#remove', :as => :roster_remove
-	post 'rosters/:league_id' => 'rosters#create', :as => :rosters
+	post 	'rosters/:roster_id/add/:contestant_id' => 'rosters#add', :as => :roster_add
+	post 	'rosters/:roster_id/remove/:contestant_id' => 'rosters#remove', :as => :roster_remove
+	get 	'rosters/:roster_id/available' => 'rosters#available', :as => :roster_available
+	get 	'rosters/:roster_id/current' => 'rosters#current', :as => :roster_current
+	post 	'rosters/:league_id' => 'rosters#create', :as => :rosters
 	resources :rosters
 	resources :rounds
 	

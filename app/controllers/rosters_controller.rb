@@ -12,6 +12,11 @@ class RostersController < ApplicationController
 			flash[:color] = "invalid"	
 			redirect_to root_path
 		end	
+
+		respond_to do |format|
+			format.html
+			format.js
+		end
 	end
 
 	def create
@@ -22,7 +27,8 @@ class RostersController < ApplicationController
 	end
 
 	def edit
-		@roster = Roster.find(params[:id])
+		@roster = Roster.includes(:league).find(params[:id])
+		@roster.league.draft_limit
 		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		@available_contestants = []
@@ -33,7 +39,7 @@ class RostersController < ApplicationController
 			end
 		end
 	end
-	
+
 	def show
 		@roster = Roster.find(params[:id])
 		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
@@ -66,7 +72,7 @@ class RostersController < ApplicationController
 	def add
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 
 		@roster = Roster.find(params[:roster_id])
-		contestant = Contestant.find(params[:contestant_id])
+		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 		@roster.contestants << contestant unless @roster.contestants.include? contestant 
 		# i.e. do NOT append if roster already includes contestant
 		@selected_contestants = @roster.contestants.order(name: :asc)
@@ -75,29 +81,43 @@ class RostersController < ApplicationController
 
 	def remove
 		# removing contestants from rosters
-		@roster = Roster.find(params[:roster_id])
-		contestant = Contestant.find(params[:contestant_id])
+		@roster = Roster.includes(:contestants).find(params[:roster_id])
 
-		if contestant
+		if params[:contestant_id]
+			contestant = Contestant.find(params[:contestant_id])
 			@roster.contestants.destroy(contestant)
 		end
 
 		all_contestants = Contestant.where(season_id: @roster.league.season)
-		selected_contestants = @roster.contestants
 		@available_contestants = []
 		all_contestants.select do |contestant|
-			unless selected_contestants.include? contestant
+			unless @roster.contestants.include? contestant
 				@available_contestants.push contestant
 			end
 		end
 		render :partial => "current_available_contestants"
 	end
-	
-	def ajax_load_events
-		respond_to do |format|
-			format.js
-		end    
+
+	# ======== rendering for roster edit page ======== #
+	def current
+		@roster = Roster.find(params[:roster_id])
+		@selected_contestants = @roster.contestants.order("name ASC")
+		render :partial => "current_roster"
 	end
+
+	def available
+		@roster = Roster.includes(:contestants).find(params[:roster_id])
+		all_contestants = Contestant.where(season_id: @roster.league.season)
+		@available_contestants = []
+		all_contestants.select do |contestant|
+			unless @roster.contestants.include? contestant
+				@available_contestants.push contestant
+			end
+		end
+		@available_contestants
+		render :partial => "current_available_contestants"
+	end
+	# ===========
 
 	private
 
