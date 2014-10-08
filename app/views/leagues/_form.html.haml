@@ -46,7 +46,7 @@
 						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class:"form-control step2"})
 						Premieres: #{@league.season.premiere_date.strftime("%m/%d/%Y")}
 					- else
-						= f.select(:season, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
+						= f.select(:season_id, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right

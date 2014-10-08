@@ -26,24 +26,27 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+
+	# for AJAX requests only 
 	def shows_list
 		shows_list = Show.all
 		respond_to do |format|
 			format.js {
 				render :json => {
-					:exportShows => shows_list
+					:showsList => shows_list
 				} 
 			}
 		end
 	end
 
+	# for AJAX requests only 
 	def seasons_list
-		seasons = Season.where(:expired => false, :show_id => params[:showId])
+		seasons = Season.where(:expired => false, :show_id => params[:show_list])
 		seasons_list = []
 		seasons.each do |season|
 			season = { :name => season.name,
 				:id => season.id,
-				:showId => season.show.id
+				:show_list => season.show.id
 			}
 			seasons_list.push season
 		end
@@ -51,7 +54,7 @@ class ApplicationController < ActionController::Base
 		respond_to do |format|
 			format.js {
 				render :json => {
-					:exportSeasons => seasons_list
+					:seasonsList => seasons_list
 				}
 			}
 		end

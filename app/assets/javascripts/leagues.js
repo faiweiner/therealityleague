@@ -25,7 +25,7 @@ $(document).ready(function () {
 					selector: '.step1',
 					source: function(request, response) {
 						$.getJSON('/api/shows', request, function (data) {
-							response($.map(data.exportShows, function (item, index) {
+							response($.map(data.showsList, function (item, index) {
 								return {
 									label: item.name,
 									value: item.id
@@ -44,7 +44,7 @@ $(document).ready(function () {
 								source: function (request, response) {
 									$.getJSON('/api/seasons', request, function (data) {
 										var selectOnlyOption = data.length <= 1;
-										response($.map(data.exportSeasons, function (item, index) {
+										response($.map(data.seasonsList, function (item, index) {
 											return {
 													label: item.name,
 													value: item.id,
@@ -64,7 +64,7 @@ $(document).ready(function () {
 					source: function (request, response) {
 						$.getJSON('/api/seasons', request, function (data) {
 							var selectOnlyOption = data.length <= 1;
-							response($.map(data.exportSeasons, function (item, index) {
+							response($.map(data.seasonsList, function (item, index) {
 								return {
 										label: item.name,
 										value: item.id,

@@ -51,9 +51,9 @@ Rails.application.routes.draw do
 	post	'rosters/:league_id' => 'rosters#create', :as => :rosters
 	resources :rosters
 
-	get 	'rounds/new/:episode_id' => '#rounds#new', :as => :new_round_episode
+	get 	'rounds/new/:episode_id' => 'rounds#new', :as => :new_round_episode
 	get 	'rounds/new' => 'rounds#new', :as => :new_round
-	post	'rounds' => 'rounds#create'
+	post	'rounds' => 'rounds#create', :as => :rounds
 	resources :rounds
 	
 	get 	'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season

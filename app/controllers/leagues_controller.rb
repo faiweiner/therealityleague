@@ -62,14 +62,10 @@ class LeaguesController < ApplicationController
 			else
 				@access_type = "private"
 			end
-			# automatically creates a league roster for the commissioner
-			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
-			roster.save
-
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = "valid"
-			redirect_to league_path(@league.id)
+			redirect_to rosters_path(@league.id)
 		else
 			flash[:notice] = "Something went wrong and we were unable to save your league"
 			flash[:color] = "invalid"
