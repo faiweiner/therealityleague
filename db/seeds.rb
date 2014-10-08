@@ -153,6 +153,17 @@ episode8 = Episode.create(:season_id => season3.id, :air_date => '18/02/2013')
 episode9 = Episode.create(:season_id => season3.id, :air_date => '25/02/2013')
 episode10 = Episode.create(:season_id => season3.id, :air_date => '11/03/2013')
 
+ep1blrte = Episode.create(:season_id => season2.id, :air_date => '19/05/2014')
+ep2blrte = Episode.create(:season_id => season2.id, :air_date => '26/05/2014') 
+ep3blrte = Episode.create(:season_id => season2.id, :air_date => '01/06/2014')
+ep4blrte = Episode.create(:season_id => season2.id, :air_date => '08/06/2014')
+ep5blrte = Episode.create(:season_id => season2.id, :air_date => '16/06/2014')
+ep6blrte = Episode.create(:season_id => season2.id, :air_date => '23/06/2014')
+ep7blrte = Episode.create(:season_id => season2.id, :air_date => '30/06/2014')
+ep8blrte = Episode.create(:season_id => season2.id, :air_date => '07/07/2014')
+ep9blrte = Episode.create(:season_id => season2.id, :air_date => '14/07/2014')
+ep10blrte = Episode.create(:season_id => season2.id, :air_date => '28/07/2014')
+
 cont7 = Contestant.create(
 	:name => 'Catherine', 
 	:season_id => season3.id, 

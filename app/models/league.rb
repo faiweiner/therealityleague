@@ -45,7 +45,7 @@ class League < ActiveRecord::Base
 	end
 
 	def self.select_type
-		@type = [["Select draft type", nil],["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
+		@type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
 	end
 
 	private
