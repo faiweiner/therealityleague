@@ -62,7 +62,7 @@ class LeaguesController < ApplicationController
 			else
 				@access_type = "private"
 			end
-			# automatically creates a league roster for the user
+			# automatically creates a league roster for the commissioner
 			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
 			roster.save
 

@@ -75,11 +75,15 @@ class RostersController < ApplicationController
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 
 		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
+		# limits are only available for Fantasy-type leagues
 		limit = @roster.league.draft_limit
-		if limit && @roster.contestants.count + 1 <= limit
+		case limit 
+		when limit 
+			if @roster.contestants.count + 1 <= limit
+				@roster.contestants << contestant unless @roster.contestants.include? contestant
+			end
+		when limit.nil? 		# if there is no limit (Bracket-type)
 			@roster.contestants << contestant unless @roster.contestants.include? contestant
-		else
-			# @roster.contestants << contestant unless @roster.contestants.include? contestant
 		end
 		# i.e. do NOT append if roster already includes contestant
 		@selected_contestants = @roster.contestants.order(name: :asc)
@@ -110,7 +114,8 @@ class RostersController < ApplicationController
 		render :partial => "current_available_contestants"
 	end
 
-	# ======== rendering for roster edit page ======== #
+	# ======== rendering CONTESTANTS for roster edit page ======== #
+	
 	def current
 		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
 		@selected_contestants = @roster.contestants.order(name: :asc)

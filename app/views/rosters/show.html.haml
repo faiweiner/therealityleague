@@ -38,7 +38,7 @@
 							%td= @roster.calculate_total_roster_points
 			/ Contestant Board
 			/ Roster Board
-			.col-xs-12.col-sm-9.col-md-8
+			.col-lg-12
 				- if @roster.user_id == @current_user.id
 					%h3 Your Roster
 				- else
@@ -46,16 +46,16 @@
 				%br/
 				#rosterBoard
 					- @selected_contestants.each do |contestant|
-						.col-xs-3.col-sm-3.col-md-3.col-lg-3
+						.col-xs-2.col-sm-2.col-md-2.col-lg-2
 							.thumbnail.thumbnail-current-roster
 								= image_tag contestant.image
 								.caption
 									= contestant.name
 			/ END Roster Board
-			#contestantBoard.col-xs-12.col-sm-3.col-md-4
+			#contestantBoard.col-lg-12
 				%h3 Available Contestants
 				- @available_contestants.each do |contestant|
-					.col-xs-3.col-sm-6.col-md-5.col-lg-5
+					.col-xs-2.col-sm-2.col-md-2.col-lg-2
 						.thumbnail.thumbnail-available-contestants
 							= image_tag contestant.image
 							.caption

@@ -16,11 +16,11 @@ class ApplicationController < ActionController::Base
 	end
 
 	def export_season_list
-		@export_season_list = Season.where(expired: false)
+		@export_season_list = Season.where(expired: false, show_id: params[:show_list]).order(name: :asc)
 		respond_to do |format|
 			format.js { 		
 				render :json => {
-					:exportSeasons => @export_season_list.where(show_id: params[:show_list])
+					:exportSeasons => @export_season_list
 				} 
 			}
 		end
@@ -59,6 +59,8 @@ class ApplicationController < ActionController::Base
 
 	def episodes_list
 		episodes = Episode.where(:season_id => params[:seasonId])
+
+		# FIXMEEEEE
 	end
 
 	private 

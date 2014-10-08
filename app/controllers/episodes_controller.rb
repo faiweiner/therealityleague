@@ -1,6 +1,6 @@
 class EpisodesController < ApplicationController
 	def index
-		
+		@episodes = Episode.includes(:season, :show).where(:season_id => params[:season_id])		
 	end
 
 	def new
@@ -12,7 +12,7 @@ class EpisodesController < ApplicationController
 		if @episode.save 
 			flash[:notice] = "You've successfully added an episode to #{@episode.season.show.name}: #{@episode.season.name}."
 			flash[:color] = "valid"
-			redirect_to episode_path(@episode.id)
+			redirect_to new_round_episode(@episode.id)
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "invalid"

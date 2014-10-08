@@ -42,7 +42,7 @@
 					= f.label :season
 					%br/
 				.col-md-6
-					- if @league_season_id
+					- if @league_season_id && @league.active?
 						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class:"form-control step2"})
 						Premieres: #{@league.season.premiere_date.strftime("%m/%d/%Y")}
 					- else
@@ -74,7 +74,7 @@
 					%br/
 				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Choose between standard scoring system for a show's contestant, or customize your league's scoring scheme."}, :title => "Select Scoring System"}
 					.col-md-6
-						= f.radio_button :scoring_system, 1
+						= f.radio_button :scoring_system, 1, :checked => "checked"
 						= f.label(:standard, 'Standard')
 					.col-md-6
 						= f.radio_button :scoring_system, 2
@@ -89,7 +89,7 @@
 				.col-md-3.text-right
 					= f.label :draft_limit
 				.col-md-6
-					= f.number_field :draft_limit, id: "draftLimitField", min: 2, max: 20, step: 1, class: "form-control", placeholder: 2
+					= f.number_field :draft_limit, id: "draftLimitField", min: 2, max: 20, step: 1, class: "form-control", placeholder: "Select draft limit"
 			/ Submit
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9
