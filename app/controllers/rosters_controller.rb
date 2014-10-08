@@ -79,7 +79,7 @@ class RostersController < ApplicationController
 		if limit && @roster.contestants.count + 1 <= limit
 			@roster.contestants << contestant unless @roster.contestants.include? contestant
 		else
-			@roster.contestants << contestant unless @roster.contestants.include? contestant
+			# @roster.contestants << contestant unless @roster.contestants.include? contestant
 		end
 		# i.e. do NOT append if roster already includes contestant
 		@selected_contestants = @roster.contestants.order(name: :asc)

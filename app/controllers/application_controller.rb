@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def seasons_list
-		seasons = Season.where(:expired => false, :show_id => params[:show_list])
+		seasons = Season.where(:expired => false, :show_id => params[:showId])
 		seasons_list = []
 		seasons.each do |season|
 			season = { :name => season.name,
@@ -57,6 +57,9 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	def episodes_list
+		episodes = Episode.where(:season_id => params[:seasonId])
+	end
 
 	private 
 

@@ -1,5 +1,5 @@
 .col-lg-12#event_create
-	= form_for(:point_entry, :url => {:action => "create"}, :html => {:method => "post"}, class:"form-horizontal", :role => "form") do |f|
+	= form_for(:event, :url => {:action => "create"}, :html => {:method => "post"}, class:"form-horizontal", :role => "form") do |f|
 		/ Error Messages
 		.row.form-group
 			- if flash[:notice] && flash[:color] == "valid"
@@ -24,19 +24,19 @@
 			= select_tag(:show_list, (), {:prompt => "Select a show", class:"form-control step1", :required => true})
 		.row.form-group.field.has-feedback
 			= f.label :season_id
-			= f.select :season_select, options_for_select(Season.select_season, 'id'), {}, class:"form-control step2", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :contestant_id
-			= f.select :contestant_select, options_for_select(Contestant.select_contestant, 'id'), {}, class:"form-control", :required => true
+			= select_tag(:season_list, (), {:prompt => "Select a season", class:"form-control step2", :required => true})
 		.row.form-group.field.has-feedback
 			= f.label :episode_id
-			= f.select :episode_select, options_for_select(Episode.select_episode, 'id'), {}, class:"form-control", :required => true
+			= f.select :episode_id, [], {:include_blank => "Select an episode"}, class:"form-control step3", :required => true
+		.row.form-group.field.has-feedback
+			= f.label :contestant_id
+			= f.select :contestant_id, options_for_select(Contestant.select_contestant, 'id'), {:include_blank => "Select a contestant"}, class:"form-control", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :scheme_type
-			= f.select :scheme_type_select, options_for_select(Scheme.select_type), {}, class:"form-control", :required => true
+			= select_tag :scheme_type_select, options_for_select(Scheme.select_type), class:"form-control", :required => true
 		.row.form-group.field.has-feedback
-			= f.label :scheme_id
-			= f.select :scheme_select, options_for_select(Scheme.select_scheme, 'id'), {}, class:"form-control", :required => true
+			= f.label :scheme_id, "Event"
+			= f.select :scheme_id, options_for_select(Scheme.select_scheme, 'id'), {:include_blank => "select an event"}, class:"form-control", :required => true
 		.row.form-group.actions
 			= f.submit "Save", class:"btn btn-primary btn-md"
 			= link_to "Cancel", events_path, class:"btn btn-default btn-md"
