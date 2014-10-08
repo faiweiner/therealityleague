@@ -5,7 +5,7 @@ $(document).ready(function () {
 		// sets up the contestantBoard and rosterBoard
 		$contestantBoard = $('#contestantBoard');
 		$rosterBoard = $('#rosterBoard');
-
+		$rosterCountDisplay = $('#rosterCountDisplay');
 		// ================== GLOBAL FUNCTIONS ================== //
 
 		// ----- BEGIN server-side ----- //
@@ -18,7 +18,21 @@ $(document).ready(function () {
 					var partial = msg;
 					$rosterBoard.html(partial);
 				}
-			});
+			}).done(function (data) {
+
+				// Getting contestant count for roster
+				$.get( "/rosters/" + rosterId + "/current", function (data) {
+				}, 'json')
+				.done(function (data) {
+					var contestantsCount = data.contestantsCount;
+					var leagueLimit = data.leagueLimit;
+				});
+			})
+
+			;
+			
+
+			// refreshing contestant board
 			$.ajax({
 				url: '/rosters/' + rosterId + '/available',
 				type: 'GET',
@@ -39,6 +53,13 @@ $(document).ready(function () {
 					$contestantBoard.html(partial);
 				}
 			});
+
+			// Getting contestant count for roster
+			var contestantsCount = $.get( "/rosters/" + rosterId + "/current", function (data) {
+				contestantsCount = data ;
+			}, 'json');
+
+			// refreshing roster board
 			$.ajax({
 				url: '/rosters/' + rosterId + '/current',
 				type: 'GET',

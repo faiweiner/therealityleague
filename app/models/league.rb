@@ -47,7 +47,7 @@ class League < ActiveRecord::Base
 	def self.select_type
 		@type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]		
 	end
-
+	
 	private
 
 	def gen_league_key
@@ -65,6 +65,5 @@ class League < ActiveRecord::Base
 			gen_league_key
 			gen_league_password
 		end
-	end
-
+	end	
 end

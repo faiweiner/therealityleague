@@ -12,11 +12,6 @@ class RostersController < ApplicationController
 			flash[:color] = "invalid"	
 			redirect_to root_path
 		end	
-
-		respond_to do |format|
-			format.html
-			format.js
-		end
 	end
 
 	def create
@@ -56,11 +51,18 @@ class RostersController < ApplicationController
 
 	def destroy
 		@roster = Roster.includes(:league).find(params[:id])
-		if @roster.league.draft_deadline && @roster.league.draft_deadline > DateTime.today
-			raise
+		league = @roster.league
+		if @roster.league.draft_deadline && @roster.league.draft_deadline.past?
+			flash[:notice] = "You cannot leave a commenced league."
+			flash[:color] = "invalid"
+			redirect_to league_path(league.id)
+		elsif @roster.user.id == league.commissioner_id
+			flash[:notice] = "A commissioner cannot leave the league."
+			flash[:color] = "invalid"
+			redirect_to league_path(league.id)			
 		else
-			raise "trying to destroy?"
 			@roster.destroy
+			league.users.destroy(User.find(@current_user.id))
 			flash[:notice] = "You've successfully left league '#{@roster.league.name}'."
 			flash[:color] = "valid"
 			redirect_to leagues_path
@@ -71,12 +73,22 @@ class RostersController < ApplicationController
 
 	def add
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 
-		@roster = Roster.find(params[:roster_id])
+		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
-		@roster.contestants << contestant unless @roster.contestants.include? contestant 
+		limit = @roster.league.draft_limit
+		if limit && @roster.contestants.count + 1 <= limit
+			@roster.contestants << contestant unless @roster.contestants.include? contestant
+		else
+			@roster.contestants << contestant unless @roster.contestants.include? contestant
+		end
 		# i.e. do NOT append if roster already includes contestant
 		@selected_contestants = @roster.contestants.order(name: :asc)
-		render :partial => "current_roster"
+		respond_to do |format|
+			format.html { render :partial => "current_roster" }
+			format.js {
+				render :json => { :contestantsCount => @selected_contestants.count, :leagueLimit => @roster.league.draft_limit }
+			}
+		end
 	end
 
 	def remove
@@ -88,7 +100,7 @@ class RostersController < ApplicationController
 			@roster.contestants.destroy(contestant)
 		end
 
-		all_contestants = Contestant.where(season_id: @roster.league.season)
+		all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
 		@available_contestants = []
 		all_contestants.select do |contestant|
 			unless @roster.contestants.include? contestant
@@ -100,14 +112,21 @@ class RostersController < ApplicationController
 
 	# ======== rendering for roster edit page ======== #
 	def current
-		@roster = Roster.find(params[:roster_id])
-		@selected_contestants = @roster.contestants.order("name ASC")
-		render :partial => "current_roster"
+		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
+		@selected_contestants = @roster.contestants.order(name: :asc)
+		@contestantsCount = @selected_contestants.count
+		respond_to do |format|
+			format.html { render :partial => "current_roster" }
+			format.js {
+				render :json => { :contestantsCount => @selected_contestants.count, :leagueLimit => @roster.league.draft_limit }
+			}
+		end
+		
 	end
 
 	def available
 		@roster = Roster.includes(:contestants).find(params[:roster_id])
-		all_contestants = Contestant.where(season_id: @roster.league.season)
+		all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
 		@available_contestants = []
 		all_contestants.select do |contestant|
 			unless @roster.contestants.include? contestant
@@ -115,7 +134,12 @@ class RostersController < ApplicationController
 			end
 		end
 		@available_contestants
-		render :partial => "current_available_contestants"
+		respond_to do |format|
+			format.html { render :partial => "current_available_contestants" }
+			format.js {
+				render :json => {}
+			}
+		end
 	end
 	# ===========
 

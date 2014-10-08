@@ -5,17 +5,21 @@
 			%p
 				= @roster.league.season.show.name + ": "
 				= @roster.league.season.name
+			%p 
 		.col-lg-2.text-right
-			= link_to "Save Roster", roster_path(@roster.id), class:"btn btn-primary btn-sm"
 			%h4.small
 				Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
+			%p.small
+				League Limit: #{ @roster.league.draft_limit } contestants
 	.panel-body
 		/ Roster Board
 		.col-lg-8
 			%h3 Your Roster
-			%p Limit to roster is #{@roster.league.draft_limit}
 			#rosterBoard.row
 				= render partial: "current_roster"
+			%br/
+			.row.col-lg-12
+				= link_to "Save Roster", roster_path(@roster.id), class:"btn btn-primary btn-sm"
 		/ END Roster Board
 		/ Contestant Board
 		#right-box.col-lg-4

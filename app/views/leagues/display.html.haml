@@ -4,7 +4,7 @@
 	.alert.alert-warning{:role => "alert"}= flash[:notice]
 .panel.panel-default#league_view
 	.panel-body
-		.col-lg-8
+		.col-lg-12
 			- if @league.public_access == true
 				%h2= @league.name + " (public)"
 			- else
@@ -12,20 +12,16 @@
 			%p
 				= @league.season.show.name + ": "
 				= @league.season.name
-				= render "/shows/scoring_system"
+			= render "/shows/scoring_system"
 			- if @comm_this_league == true
 				- if @participants.count <= 1
 					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-primary btn-sm" 
 				- else
 					= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
-				- if @league_deadline_set == false
-					= link_to "Set Draft Deadline", "#", class:"btn btn-primary btn-sm" 
-		.col-lg-4.text-right
-			.div
-				- if @comm_this_league && @league.active?
+				- if @league.active?
 					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
-				- elsif @a_participant == false
-					= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
+			- elsif @a_participant == false
+				= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
 	.panel-body
 		.col-lg-12
 			%h3 Ranking
@@ -46,8 +42,8 @@
 									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
 									- if @league.active?
 										= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
-									- if @league.draft_deadline == nil
-										= link_to "Leave League", roster_path(@participants_roster_id[participant[0]]), :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn btn-default btn-sm"			
+									- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
+										= link_to "Leave League", roster_path(@participants_roster_id[participant[0]]), :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn btn-default btn-sm"		
 								- else
 									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default btn-sm"
 		/ .col-lg-6
@@ -62,7 +58,10 @@
 		- if @league.season.episode_count
 			.col-lg-12
 				%table.table.table-hover
-					%h3 Participants' Weekly Scores
+					- if @league.type == "Fantasy"
+						%h3 Participants' Weekly Team Scores
+					- elsif @league.type == "Bracket"
+						%h3 Participants' Weekly Bracket Scores
 					%thead
 						%th Participants
 						- @league.season.episode_count.times do |i|

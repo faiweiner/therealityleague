@@ -1,3 +1,6 @@
+- if @roster.league.draft_limit
+	#rosterCountDisplay.col-lg-12
+		%p #{ @roster.contestants.count } out of #{ @roster.league.draft_limit } contestants
 - @selected_contestants.each do |contestant|
 	.col-lg-2
 		.thumbnail.thumbnail-current-roster
