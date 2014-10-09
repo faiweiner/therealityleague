@@ -17,6 +17,8 @@
 #  expired        :boolean          default(FALSE)
 #  created_at     :datetime
 #  updated_at     :datetime
+#  website        :string(255)
+#  network        :string(255)
 #
 
 class Season < ActiveRecord::Base
