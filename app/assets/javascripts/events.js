@@ -4,7 +4,7 @@ $(document).ready(function () {
 	if ($eventCreationDiv.length > 0) {
 		$eventCreationDiv.cascadingDropdown({
 			selectBoxes: [
-				// === begin Step 1 === //
+				// === begin Step 1 for SHOWS === //
 				{
 					// Populating .step 1 with list of shows and their IDs
 					selector: '.step1',
@@ -19,7 +19,7 @@ $(document).ready(function () {
 						});
 					}  
 				},  // end Step 1!
-				// ==== begin Step 2 === //
+				// ==== begin Step 2 for SEASONS=== //
 				{
 					selector: '.step2',
 					requires: ['.step1'],
@@ -37,7 +37,7 @@ $(document).ready(function () {
 						});
 					} // end source for Step 2
 				}, // end Step 2
-				// ==== begin Step 3 === //				
+				// ==== begin Step 3 for EPISODES === //				
 				{
 
 
@@ -50,20 +50,35 @@ $(document).ready(function () {
 						$.getJSON('/api/episodes', request, function (data) {
 							var selectOnlyOption = data.length <= 1;
 							response($.map(data.episodesList, function (item, index) {
+								var episodeName = item.name + " - " + item.airDate;
 								return {
-										label: item,
-										value: item,
+										label: episodeName,
+										value: item.id,
 										selected: selectOnlyOption // Select if only option
 								};
 							}));
 						});
 					} // end source for Step 2
 				},	// end Step 3!
+				// ==== begin Step 4 for CONTESTANTS === //						
 				{
 					selector: '.step4',
-					requires: ['.step3'],
-					paramsName: 'boogyboogy',
+					requires: ['.step2'],
+					paramName: 'seasonId',
 					source: function (request, response) {
+						var value = request.showId;
+						request = 'season_list='+value;
+						$.getJSON('/api/contestants', request, function (data) {
+							var selectOnlyOption = data.length <= 1;
+							response($.map(data.episodesList, function (item, index) {
+								var episodeName = item.name + " - " + item.airDate;
+								return {
+										label: episodeName,
+										value: item.id,
+										selected: selectOnlyOption // Select if only option
+								};
+							}));
+						});
 
 					}
 				}

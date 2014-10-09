@@ -44,7 +44,8 @@ class ApplicationController < ActionController::Base
 		seasons = Season.where(:expired => false, :show_id => params[:show_list])
 		seasons_list = []
 		seasons.each do |season|
-			season = { :name => season.name,
+			season = { 
+				:name => season.name,
 				:id => season.id,
 				:showId => season.show.id
 			}
@@ -65,7 +66,8 @@ class ApplicationController < ActionController::Base
 		episodes = Episode.where(:season_id => params[:season_list])
 		episodes_list = []
 		episodes.each_with_index do |episode, index|
-			episode = { :name => "Episode #{index+1}",
+			episode = { 
+				:name => "Episode #{index+1}",
 				:id => episode.id,
 				:airDate => episode.air_date.strftime("%m/%d/%Y"),
 				:seasonId => episode.season.id
@@ -76,6 +78,27 @@ class ApplicationController < ActionController::Base
 			format.js {
 				render :json => {
 					:episodesList => episodes_list
+				}
+			}
+		end
+	end
+
+	# for AJAX requests only 
+	def contestants_list
+		contestants = Contestant.where(:season_id => params[:season_list])
+		contestants_list = []
+		contestants.each do |contestant|
+			contestant = {
+				:name => contestant.name,
+				:id => contestant.id,
+				:status => contestant.status_on_show,
+				:present => contestant.present
+			}
+		end	
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:contestants_list => contestants_list
 				}
 			}
 		end
