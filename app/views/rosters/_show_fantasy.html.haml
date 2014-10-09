@@ -4,23 +4,31 @@
 			%h3 Weekly Score
 			%thead
 				%th.col-md-2 Contestants
-				- @season.episode_count.times do |i|
-					%th.col-md-1= i+1
+				- if @eps_count > 0
+					- @eps_count.times do |i|
+						%th= i
+					- @eps_left.times do |i|
+						%th= i + @eps_count 
+				- elsif @eps_count.zero?
+					- @eps_record.times do |i|
+						%th -
 				%th.col-md-1 Total
 			%tbody
-				- @roster.contestants.order(name: :asc).each do |contestant|
+				- @contestants.each do |contestant|
 					%tr
 						%td= contestant.name
-						- @roster.league.season.episodes.each do |episode|
-							%td= contestant.calculate_points_per_episode(episode.id)
-						- if @roster.league.season.episodes.count < @roster.league.season.episode_count
-							/ FIXME!
-							- @roster.league.season.episode_count.times do |i|
+						- if @eps_count > 0
+							- @episodes.each do |episode|
+								%td= contestant.calculate_points_per_episode(episode.id)
+							- @eps_left.times do
+								%td -
+						- elsif @eps_count.zero?
+							- @eps_record.times do |i|
 								%td -
 						%td= contestant.calculate_total_points
-				%tr
+				%tr.active
 					%td
-					- @roster.league.season.episode_count.times do |i|
+					- @eps_record.times do |i|
 						%td
 					%td= @roster.calculate_total_roster_points
 	/ Contestant Board

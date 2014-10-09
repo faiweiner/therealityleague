@@ -36,14 +36,19 @@ class RostersController < ApplicationController
 	end
 
 	def show
-		@roster = Roster.includes(:league, :rounds).find(params[:id])
+		@roster = Roster.includes(:league, :rounds, :contestants).find(params[:id])
 		@league = @roster.league
 		@rounds = @roster.rounds
-		@season = Season.includes(:contestants).find(@league.season_id)
+		@season = Season.includes(:contestants, :episodes).find(@league.season_id)
 		@show = @season.show
 
 		case @league.type
 		when "Fantasy"
+			@episodes = @season.episodes
+			@eps_record = @season.episode_count
+			@eps_count = @season.episodes.count
+			@eps_left = @eps_record - @eps_count
+			@contestants = @roster.contestants.order(name: :asc)
 		when "Bracket"
 			@contestants_rounds = []
 			@rounds.each_with_index do |round, index|
@@ -113,13 +118,12 @@ class RostersController < ApplicationController
 		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 		# limits are only available for Fantasy-type leagues
-		limit = @roster.league.draft_limit
-		case limit 
-		when limit.present?
-			if @roster.contestants.count + 1 <= limit
+
+		if @roster.league.draft_limit.present?
+			if @roster.contestants.count + 1 <= @roster.league.draft_limit
 				@roster.contestants << contestant unless @roster.contestants.include? contestant
 			end
-		when limit.nil? 		# if there is no limit (Bracket-type)
+		elsif @roster.league.draft_limit.nil? 		# if there is no limit (Bracket-type)
 			@roster.contestants << contestant unless @roster.contestants.include? contestant
 		end
 		# i.e. do NOT append if roster already includes contestant

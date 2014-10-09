@@ -22,7 +22,7 @@ class Roster < ActiveRecord::Base
 	def calculate_total_roster_points			
 		contestants = self.contestants
 		roster_total_score = 0
-		contestants.each do |contestants|
+		contestants.each do |contestant|
 			roster_total_score += contestant.calculate_total_points
 		end
 		return roster_total_score
