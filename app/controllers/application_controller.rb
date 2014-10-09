@@ -106,11 +106,12 @@ class ApplicationController < ActionController::Base
 	end
 
 	def schemes_list
-		schemes = Scheme.where(:show_id => params[:show_id])
+		schemes = Scheme.where(:show_id => params[:show_list]).order(:type, :id)
 		schemes_list = []
 		schemes.each_with_index do |scheme, index|
 			scheme = {
 				:description => scheme.description,
+				:type => scheme.type,
 				:id => scheme.id
 			}
 			schemes_list.push scheme
@@ -178,11 +179,17 @@ class ApplicationController < ActionController::Base
 		return true if user.admin == true
 	end
 
+	def render_admin
+		if @current_user.admin?
+			render layout: "admin"
+		end
+	end
+
 	def check_if_admin
 		if @current_user == nil || @current_user.admin? == false
 			redirect_to root_path
 		end
 	end
 
-	helper_method :current_user, :regex_validation
+	helper_method :current_user, :regex_validation, :render_admin
 end

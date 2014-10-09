@@ -4,7 +4,7 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :contestant_id
       t.integer :episode_id
       t.integer :scheme_id
-      t.integer :points
+      t.integer :points_earned
       t.timestamps
     end
   end

@@ -20,7 +20,10 @@ class EpisodesController < ApplicationController
 	end
 
 	def display
-		@episode = Episode.find(params[:id])	
+		@episode = Episode.includes(:events).find(params[:id])	
+		@season = Season.includes(:episodes).find(@episode.season_id)
+		@episodes_list = @season.episodes
+		@count = @season.episodes.count
 	end
 
 	private

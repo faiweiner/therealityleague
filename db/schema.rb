@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20141007005314) do
     t.integer  "contestant_id"
     t.integer  "episode_id"
     t.integer  "scheme_id"
+    t.integer  "points_earned"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

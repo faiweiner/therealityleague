@@ -24,6 +24,8 @@ class ShowsController < ApplicationController
 		@rules_survival = Show.get_schemes(@show.id, "Survival")
 		@rules_game = Show.get_schemes(@show.id, "Game")
 		@rules_extra =Show.get_schemes(@show.id, "Extracurricular")
+		
+		render_admin
 	end
 
 	def edit

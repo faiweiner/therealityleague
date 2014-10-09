@@ -12,8 +12,10 @@
 			%table.table.table-hover
 				%thead
 					%tr
-						%th.col-lg-10 Season List
-						%th.col-lg-2
+						%th Season List
+						- if @current_user.admin
+							%th Episodes
+						%th
 				%tbody
 					- @show.seasons.each do |season|
 						%tr
@@ -22,5 +24,9 @@
 									Season
 									#{ season.number}: 
 									= season.name
+								- if @current_user.admin
+									%td
+										- season.episodes.each_with_index do |episode, index|
+											= link_to "Episode #{index+1}", episode_path(episode.id), class:"btn btn-default btn-xs"
 							%td.text-right
 								= link_to "View Season", season_path(season.id), class:"btn btn-default btn-sm"

@@ -80,7 +80,30 @@ $(document).ready(function () {
 						});
 
 					}
-				}	// end Step 4!
+				},	// end Step 4!
+				{
+					selector: '.step5',
+				},
+				// ==== begin Step 6 for SCHEMES === //			
+				{
+					selector: '.step6',
+					requires: ['.step1','.step5'],
+					requireAll: true,
+					paramName: 'showId',
+					source: function (request, response) {
+						$.getJSON('/api/schemes', request, function (data) {
+							var selectOnlyOption = data.length <= 1;
+							response($.map(data.schemesList, function (item, index) {
+								var schemeName = item.type + ": " + item.description
+								return {
+									label: schemeName,
+									value: item.id,
+									selected: selectOnlyOption
+								}
+							}));	// end response block
+						}) 
+					}	// end source block
+				} 	// end Step 6!
 			] // end selectBoxes
 		});
 	}; // end IF statement $eventCreationDiv

@@ -6,6 +6,7 @@
 #  contestant_id :integer
 #  episode_id    :integer
 #  scheme_id     :integer
+#  points_earned :integer
 #  created_at    :datetime
 #  updated_at    :datetime
 #
@@ -24,6 +25,8 @@ class Event < ActiveRecord::Base
 	private
 
 	def calculate_points
+		points = Scheme.find(self.scheme_id).points_asgn
+		self.points_earned = points
 	end
 end
 

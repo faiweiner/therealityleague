@@ -93,6 +93,8 @@ class SeasonsController < ApplicationController
 		@rules = @season.show.events
 		@contestants = @season.contestants.order("name ASC")
 		@contestants_ranking = @season.contestants.includes(:events).order("episode_id DESC")
+
+		render_admin
 	end
 	
 	private

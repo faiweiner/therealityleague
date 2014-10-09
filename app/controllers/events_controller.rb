@@ -29,37 +29,22 @@ class EventsController < ApplicationController
 
 	def create
 		#====== check for bad entry ======#
-		raise
-		event_show = Show.find(params[:point_entry][:show_select])
-		event_season = Season.find(params[:point_entry][:season_select])
-		event_contestant = Contestant.find(params[:point_entry][:contestant_select])
-		event_scheme = Event.find(params[:point_entry][:scheme_select])
-		if event_season.show_id != event_show.id
-			#---- if selected season doesn't belong to the show
-			flash[:notice] = "Invalid entry: selected season does not belong to the selected show."
-			flash[:color] = "invalid"
-			render :new
-		elsif event_season.contestants.exclude? event_contestant
-			#---- if selected contestant does not belong to the season
-			flash[:notice] = "Invalid entry: selected contestant does not belong to the selected season."
-			flash[:color] = "invalid"
-			render :new
+		event_show = Show.find(params[:show_list])
+		event_season = Season.find(params[:season_list])
+		event_episode = Episode.find(params[:event][:episode_id])
+		event_contestant = Contestant.find(params[:event][:contestant_id])
+		event_scheme = Scheme.find(params[:event][:scheme_id])
+
+
+		
+		@event = Event.new event_param[:event]
+		raise 
+
+		if @event && @event.save
+			redirect_to events_path
 		else
-			#---- if all is good
-			new_params = {
-				:contestant_id => params[:point_entry][:contestant_select], 
-				:episode_id => params[:point_entry][:episode_select], 
-				:scheme_id => params[:point_entry][:scheme_select]
-			}
-
-			@event = Event.new new_params
-
-			if @event && @event.save
-				redirect_to events_path
-			else
-				raise
-				render :new
-			end
+			raise
+			render :new
 		end
 
 	end

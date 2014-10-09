@@ -2,5 +2,28 @@
 	.panel-body
 		.col-lg-12
 			%h2
-				= @season.show.name + ": "
-				= @season.name
+				= @episode.season.show.name + ": "
+				= @episode.season.name
+			%h4
+				Episode: #
+				Aired On:
+				= @episode.air_date.strftime("%B %d, %Y")
+			%p
+				- @episodes_list.each_with_index do |episode, index|
+					- if episode == @episode
+						= link_to "Episode #{index + 1}", episode_path(episode.id), class: "btn btn-xs btn-primary"
+					- else
+						= link_to "Episode #{index + 1}", episode_path(episode.id), class: "btn btn-xs btn-default"
+		.col-lg-12
+			%h3 Events
+			%table.table.table-hover
+				%thead
+					%tr
+						%th Event
+				%tbody
+					- @episode.events.each do |event|
+						%tr
+							%td
+								= event.contestant.name
+								= event.scheme.description
+
