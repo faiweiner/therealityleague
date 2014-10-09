@@ -1,9 +1,9 @@
 .panel.panel-default
 	.panel-body
 		.col-md-9.col-lg-9
-			%h3= @roster.league.name
+			%h3= @league.name
 			%p
-				= @roster.league.season.show.name + ": "
+				= @show.name + ": "
 				= @roster.league.season.name
 		.col-lg-3.text-right
 			- if @roster.user_id == @current_user.id
@@ -11,56 +11,8 @@
 				= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
 			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
 	- if @roster.contestants.any?
-		.panel-body
-			#score-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
-				%table#rosterScoreBoard.table.table-hover
-					%h3 Weekly Score
-					%thead
-						%th.col-md-2 Contestants
-						- @roster.league.season.episode_count.times do |i|
-							%th.col-md-1= i+1
-						%th.col-md-1 Total
-					%tbody
-						- @roster.contestants.order(name: :asc).each do |contestant|
-							%tr
-								%td= contestant.name
-								- @roster.league.season.episodes.each do |episode|
-									%td= contestant.calculate_points_per_episode(episode.id)
-								- if @roster.league.season.episodes.count < @roster.league.season.episode_count
-									/ FIXME!
-									- @roster.league.season.episode_count.times do |i|
-										%td -
-								%td= contestant.calculate_total_points
-						%tr
-							%td
-							- @roster.league.season.episode_count.times do |i|
-								%td
-							%td= @roster.calculate_total_roster_points
-			/ Contestant Board
-			/ Roster Board
-			.col-lg-12
-				- if @roster.user_id == @current_user.id
-					%h3 Your Roster
-				- else
-					%h3= @roster.user.username + "'s Contestants" 
-				%br/
-				#rosterBoard
-					- @selected_contestants.each do |contestant|
-						.col-xs-2.col-sm-2.col-md-2.col-lg-2
-							.thumbnail.thumbnail-current-roster
-								= image_tag contestant.image
-								.caption
-									= contestant.name
-			/ END Roster Board
-			#contestantBoard.col-lg-12
-				%h3 Available Contestants
-				- @available_contestants.each do |contestant|
-					.col-xs-2.col-sm-2.col-md-2.col-lg-2
-						.thumbnail.thumbnail-available-contestants
-							= image_tag contestant.image
-							.caption
-								= contestant.name
-			/ END Contestant Board
+		= render partial: "show_bracket" if @league.type == "Bracket"
+		= render partial: "show_fantasy" if @league.type == "Fantasy"
 	- else
 		.panel-body
 			#contestants-display.col-lg-12.text-center

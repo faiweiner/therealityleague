@@ -1,0 +1,46 @@
+.panel-body
+	#score-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
+		%h3 
+			Bracket Board
+			%button.btn.btn-primary.disabled Total Points: #{ @roster.calculate_total_roster_points }
+		.row
+			- @rounds.each_with_index do |round, index|
+				.col-lg-2.col-md-2.col-sm-2.col-xs-4
+					%table.table.table-bordered
+						%thead
+							%tr
+								%th Ep. #{index + 1}
+						%tbody
+							- round.contestants.order(name: :asc).each do |contestant|
+								%tr
+									%td
+										= contestant.name
+										%span.pull-right= contestant.calculate_points_per_round(round.id)
+							%tr
+								%td.success
+									%span.pull-right #{round.calculate_round_points} pts
+		
+
+		%table#rosterScoreBoard.table.table-hover
+			%h3 Weekly Score
+			%thead
+				%th.col-md-2 Contestants
+				- @season.episode_count.times do |i|
+					%th.col-md-1= i+1
+				%th.col-md-1 Total
+			%tbody
+				- @roster.contestants.order(name: :asc).each do |contestant|
+					%tr
+						%td= contestant.name
+						- @roster.league.season.episodes.each do |episode|
+							%td= contestant.calculate_points_per_episode(episode.id)
+						- if @roster.league.season.episodes.count < @roster.league.season.episode_count
+							/ FIXME!
+							- @roster.league.season.episode_count.times do |i|
+								%td -
+						%td= contestant.calculate_total_points
+				%tr
+					%td
+					- @roster.league.season.episode_count.times do |i|
+						%td
+					%td= @roster.calculate_total_roster_points

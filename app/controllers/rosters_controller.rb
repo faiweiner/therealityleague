@@ -36,17 +36,54 @@ class RostersController < ApplicationController
 	end
 
 	def show
-		@roster = Roster.find(params[:id])
-		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-		@selected_contestants = @roster.contestants.order(name: :asc)
-		@available_contestants = []
-		# iterate to pull list of non-selected contestants
-		@all_contestants.select do |contestant|
-			unless @selected_contestants.include? contestant
-				@available_contestants.push contestant
+		@roster = Roster.includes(:league, :rounds).find(params[:id])
+		@league = @roster.league
+		@rounds = @roster.rounds
+		@season = Season.includes(:contestants).find(@league.season_id)
+		@show = @season.show
+
+		case @league.type
+		when "Fantasy"
+		when "Bracket"
+			@contestants_rounds = []
+			@rounds.each_with_index do |round, index|
+				round = {
+					:round => (index + 1),
+					:contestants => [
+						round.contestants.map.each_with_index do |c,i| 
+							{ :name => c.name, 
+								:id => c.id, 
+								:points_round => c.calculate_points_per_round(round.id)
+							}
+						end
+					],
+					:points_total => round.calculate_round_points
+				}
+				@contestants_rounds.push round
 			end
 		end
-		@available_contestants.sort
+
+		if @league.active?
+			@all_contestants = @season.contestants
+			@selected_contestants = @roster.contestants.sort
+			@available_contestants = []
+			# iterate to pull list of non-selected contestants
+			@all_contestants.select do |contestant|
+				unless @selected_contestants.include? contestant
+					@available_contestants.push contestant
+				end
+			end
+			@available_contestants.sort
+		end
+
+		respond_to do |format|
+			format.html
+			format.js {
+				render :json => {
+					:contestantsRounds => @contestants_rounds
+				}
+			}
+		end
 	end
 
 	def destroy
