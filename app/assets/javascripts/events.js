@@ -70,10 +70,9 @@ $(document).ready(function () {
 						request = 'season_list='+value;
 						$.getJSON('/api/contestants', request, function (data) {
 							var selectOnlyOption = data.length <= 1;
-							response($.map(data.episodesList, function (item, index) {
-								var episodeName = item.name + " - " + item.airDate;
+							response($.map(data.contestantsList, function (item, index) {
 								return {
-										label: episodeName,
+										label: item.name,
 										value: item.id,
 										selected: selectOnlyOption // Select if only option
 								};
@@ -81,7 +80,7 @@ $(document).ready(function () {
 						});
 
 					}
-				}
+				}	// end Step 4!
 			] // end selectBoxes
 		});
 	}; // end IF statement $eventCreationDiv

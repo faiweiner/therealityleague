@@ -94,16 +94,35 @@ class ApplicationController < ActionController::Base
 				:status => contestant.status_on_show,
 				:present => contestant.present
 			}
+			contestants_list.push contestant
 		end	
 		respond_to do |format|
 			format.js {
 				render :json => {
-					:contestants_list => contestants_list
+					:contestantsList => contestants_list
 				}
 			}
 		end
 	end
 
+	def schemes_list
+		schemes = Scheme.where(:show_id => params[:show_id])
+		schemes_list = []
+		schemes.each_with_index do |scheme, index|
+			scheme = {
+				:description => scheme.description,
+				:id => scheme.id
+			}
+			schemes_list.push scheme
+		end
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:schemesList => schemes_list
+				}
+			}
+		end		
+	end
 	private 
 
 	def regex_validation(query)
