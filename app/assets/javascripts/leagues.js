@@ -21,6 +21,7 @@ $(document).ready(function () {
 
 		$leagueCrationDiv.cascadingDropdown({
 			selectBoxes: [
+				// ===== begin Step 1 ===== //
 				{
 					selector: '.step1',
 					source: function(request, response) {
@@ -32,31 +33,9 @@ $(document).ready(function () {
 								}
 							}));
 						});
-					},
-					onChange: function (event, value, requiredValues) {
-						console.log(value);
-						console.log(requiredValues);
-						selectBoxes: [
-							{
-								selector: '.step2',
-								requires: ['.step1'],
-								paramName: 'showId',
-								source: function (request, response) {
-									$.getJSON('/api/seasons', request, function (data) {
-										var selectOnlyOption = data.length <= 1;
-										response($.map(data.seasonsList, function (item, index) {
-											return {
-													label: item.name,
-													value: item.id,
-													selected: selectOnlyOption // Select if only option
-											};
-										}));
-									});
-								}
-							}
-						]
 					}
-				},
+				}, 	// end Step 1
+				// ===== begin Step 2 ===== //
 				{
 					selector: '.step2',
 					requires: ['.step1'],
@@ -72,8 +51,26 @@ $(document).ready(function () {
 								};
 							}));
 						});
-					},
-					onChange: function (event, value, requiredValues) {
+					}
+				},		// end Step 2
+				{
+					selector: '.step3',
+					paramName: 'leagueType',
+					source: [
+						{ label: 'Fantasy', value: 'Fantasy'},
+						{ label: 'Bracket', value: 'Bracket'}
+					],	// end source
+					onChange: function (data, response) {
+						var leagueType = response;
+						var $draftDatePicker = $('.draftDatePicker');
+						var $draftLimitField = $('#draftLimitField');
+						if (leagueType == 'Fantasy') {
+							$draftDatePicker.attr('disabled', false);						
+							$draftLimitField.attr('disabled', false);		
+						} else if (leagueType == 'Bracket') {
+							$draftDatePicker.attr('disabled', 'disabled');
+							$draftLimitField.attr('disabled', 'disabled');
+						};
 					}
 				}
 			]

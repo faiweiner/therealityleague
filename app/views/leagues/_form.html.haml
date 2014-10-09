@@ -33,9 +33,9 @@
 					/ New league will get popup description of fields
 					- if @league_show_id
 						.div#popupDisabler.hidden= @league_show_id
-						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class:"form-control step1"})
+						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class: "form-control step1"})
 					- else
-						= select_tag(:show_list, (), {:prompt => "Select a show", class:"form-control step1", :required => true})
+						= select_tag(:show_list, (), {:prompt => "Select a show", class: "form-control step1", :required => true})
 			/ Select reality show's season
 			.row.form-group
 				.col-md-3.text-right
@@ -43,10 +43,10 @@
 					%br/
 				.col-md-6
 					- if @league_season_id && @league.active?
-						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class:"form-control step2"})
+						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class: "form-control step2"})
 						Premieres: #{@league.season.premiere_date.strftime("%m/%d/%Y")}
 					- else
-						= f.select(:season_id, [], {:include_blank => "Select a season"}, class:"form-control step2", :required => true)
+						= f.select(:season_id, [], {:include_blank => "Select a season"}, class: "form-control step2", :required => true)
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right
@@ -65,9 +65,9 @@
 					%br/
 				.col-md-6{:id => "type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
 					- if @league_type	
-						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {:class => "form-control"})
+						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
 					- else
-						= f.select(:type, options_for_select(League.select_type), {:include_blank => "Select draft type"}, class:"form-control")
+						= f.select(:type, [], {:include_blank => "Select draft type"}, class: "form-control step3")
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :scoring_system
@@ -84,7 +84,7 @@
 				.col-md-3.text-right
 					= f.label :draft_deadline
 				.col-md-6
-					= f.date_field :draft_deadline, selected: Date.today, id: "draftDatePicker", class: "form-control"
+					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", default: Date.today}
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :draft_limit

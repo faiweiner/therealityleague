@@ -1,4 +1,5 @@
 class SchemesController < ApplicationController
+	layout "admin"
 	def index
 		@shows = Show.all.order("name DESC")	
 		@scheme = Scheme.new
