@@ -49,8 +49,8 @@ class Contestant < ActiveRecord::Base
 	end
 
 	def calculate_points_per_round(round_id)
-		round = Round.find(round_id)
-		episode = Episode.find(round.episode_id)
+		round = Round.includes(:episode).find(round_id)
+		episode = round.episode
 		Event.joins(:scheme).where(contestant_id: self.id, episode_id: episode.id).sum("schemes.points_asgn")
 	end
 

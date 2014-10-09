@@ -16,14 +16,19 @@
 						= link_to "Episode #{index + 1}", episode_path(episode.id), class: "btn btn-xs btn-default"
 		.col-lg-12
 			%h3 Events
-			%table.table.table-hover
-				%thead
-					%tr
-						%th Event
-				%tbody
-					- @episode.events.each do |event|
+			.col-lg-2
+				%h4 Contestants
+				- @season.contestants.each do |contestant|
+					= button_to contestant.name, (), class: "btn btn-default btn-sm btn-block"
+			.col-lg-10
+				%table.table.table-hover
+					%thead
 						%tr
-							%td
-								= event.contestant.name
-								= event.scheme.description
+							%th Event
+					%tbody
+						- @episode.events.each do |event|
+							%tr
+								%td
+									= event.contestant.name
+									= event.scheme.description
 

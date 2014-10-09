@@ -21,7 +21,9 @@ class EpisodesController < ApplicationController
 
 	def display
 		@episode = Episode.includes(:events).find(params[:id])	
-		@season = Season.includes(:episodes).find(@episode.season_id)
+		@season = Season.includes(:episodes, :contestants).find(@episode.season_id)
+		@contestants = @season.contestants
+		@contestants.sort_by { |contestant| contestant.name }
 		@episodes_list = @season.episodes
 		@count = @season.episodes.count
 	end
