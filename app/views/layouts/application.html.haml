@@ -144,13 +144,7 @@
 										%li= link_to "View/update schemes", schemes_path
 										%li.divider
 										%li.dropdown-header Events
-										%li= link_to "Track events", new_event_path
-										%li.divider
-										%li.dropdown-header Users
-										/ FIXME
-										%li= link_to "View all users", "#"
-										%li= link_to "View all leagues", "#"	
-										%li= link_to "View all rosters", "#"									
+										%li= link_to "Track events", new_event_path			
 						%ul.nav.navbar-nav.navbar-right
 							- if @current_user.present?
 								%li

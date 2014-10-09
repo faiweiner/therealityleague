@@ -41,6 +41,8 @@
 								%p.name= contestant.name
 								%p.status 
 									(#{contestant.status_on_show})
+		.col-lg-12.text-right
+			%p.small Photos courtesy of #{ link_to @season.network, @season.website }
 	- if @season.episodes.any?
 		.panel-body
 			.col-lg-12

@@ -100,7 +100,7 @@ class SeasonsController < ApplicationController
 	private
 
 	def season_params
-		params.require(:season).permit(:name, :number, :show_id, :premiere_date, :finale_date, :country_origin, :type, :description, :episode_count, :image, :published, :expired)
+		params.require(:season).permit(:name, :number, :show_id, :premiere_date, :finale_date, :country_origin, :type, :description, :episode_count, :image, :website, :network, :published, :expired)
 	end
 
 end

@@ -43,7 +43,7 @@
 							= link_to "#{season.show.name}: #{season.name}", season_path(season.id)
 						/ column 2
 						%td
-							- if season.premiere_date < @current_date
+							- if season.premiere_date.past?
 								Commenced
 							- elsif season.published? == false
 								Unpublished

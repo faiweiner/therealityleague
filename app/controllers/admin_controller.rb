@@ -13,7 +13,8 @@ class AdminController < ApplicationController
 	end
 
 	def seasons
-		
+		@current_seasons = Season.where(expired: false)		
+		@past_seasons = Season.where(expired: true)
 	end
 
 	private

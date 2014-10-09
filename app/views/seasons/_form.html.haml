@@ -63,6 +63,12 @@
 						= f.label :episode_count
 						= f.number_field :episode_count, min: 8, max: 30, class: "form-control", placeholder: 10
 					.row.form-group
+						= f.label :website
+						= f.text_field :website, class: "form-control", placeholder: "url"					
+					.row.form-group
+						= f.label :network
+						= f.text_field :network, class: "form-control", placeholder: "ABC/NBC.CBS"			
+					.row.form-group
 						- if @season.id
 							= f.check_box :published
 							= f.label :published

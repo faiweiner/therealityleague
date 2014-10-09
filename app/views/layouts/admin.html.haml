@@ -28,35 +28,50 @@
 					.container-fluid
 						.collapse.navbar-collapse
 							%ul.nav.nav-pills.nav-stacked
-								%li.dropdown
+								%li
 									%a{:href => admin_path} Admin Dashboard
+								%li
 									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "/leagues"}
 										Show
 										%span.caret
-									%ul.dropdown-menu{:role => "menu"}
+									%ul.dropdown-menu.right-menu{:role => "menu"}
 										%li= link_to "View All Shows", admin_shows_path
 										%li= link_to "Add New Show", new_show_path
-										%li= link_to "Search Leagues", leagues_search_path
-									#shows_menu.panel-collapse.collapse.in
-										%ul.panel-body.dropdown-menu{:role => "menu"}
-											%li= link_to "View all shows", shows_path
-											%li.divider
-											- @shows.each do |show|
-												%li= link_to show.name, show_path(show.id)
-								%li.dropdown
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Schemes
-								%li.dropdown
+										%li= link_to "Search Leagues (Users)", leagues_search_path
+								%li
 									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
 										Seasons
-								%li.dropdown
+										%span.caret
+									%ul.dropdown-menu.right-menu{:role => "menu"}
+										%li= link_to "Manage All Seasons", admin_seasons_path
+										%li= link_to "Add New Show", new_show_path
+										%li= link_to "Search Leagues", leagues_search_path
+								%li
 									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Episodes												
-								%li.dropdown
+										Schemes
+										%span.caret
+									%ul.dropdown-menu.right-menu{:role => "menu"}
+										%li= link_to "View/Update Schemes", schemes_path
+										%li= link_to "Add New Scheme", new_scheme_path
+								%li
+									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+										Episodes
+										%span.caret			
+									%ul.dropdown-menu.right-menu{:role => "menu"}
+										%li= link_to "Add New Episode", new_episode_path
+								%li
 									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
 										Events
+										%span.caret		
+									%ul.dropdown-menu.right-menu{:role => "menu"}
+										%li= link_to "Track events", new_event_path
 								%li.dropdown
 									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Users										
+										Users	
+										%span.caret		
+									%ul.dropdown-menu.right-menu{:role => "menu"}
+										%li= link_to "View All Shows", admin_shows_path
+										%li= link_to "Add New Show", new_show_path
+										%li= link_to "Search Leagues", leagues_search_path							
 			%div#admin_content.col-lg-10
 				= yield
