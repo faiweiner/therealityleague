@@ -29,6 +29,7 @@ class EventsController < ApplicationController
 
 	def create
 		#====== check for bad entry ======#
+		raise
 		event_show = Show.find(params[:point_entry][:show_select])
 		event_season = Season.find(params[:point_entry][:season_select])
 		event_contestant = Contestant.find(params[:point_entry][:contestant_select])

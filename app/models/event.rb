@@ -18,5 +18,12 @@ class Event < ActiveRecord::Base
 	validates :contestant_id, presence: true
 	validates :episode_id, presence: true
 	validates :scheme_id, presence: true
+
+	before_save :calculate_points
+
+	private
+
+	def calculate_points
+	end
 end
 

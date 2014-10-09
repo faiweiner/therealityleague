@@ -68,9 +68,12 @@ Rails.application.routes.draw do
 	delete 'login' => 'sessions#logout'
 
 	get 	'admin' => 'admin#home'
+
+	# all shows and all seasons lists
 	get 	'admin/shows' => 'admin#shows', :as => :admin_shows
 	get 	'admin/seasons' => 'admin#seasons', :as => :admin_seasons
 
+	# API for pulling lists via AJAX
 	get 	'api/shows' => 'application#shows_list', :as => :api_shows
 	get 	'api/seasons' => 'application#seasons_list', :as => :api_seasons
 	get 	'api/episodes' => 'application#episodes_list', :as => :api_episodes

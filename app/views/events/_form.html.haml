@@ -30,7 +30,7 @@
 			= f.select :episode_id, [], {:include_blank => "Select an episode"}, class:"form-control step3", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :contestant_id
-			= f.select :contestant_id, options_for_select(Contestant.select_contestant, 'id'), {:include_blank => "Select a contestant"}, class:"form-control", :required => true
+			= f.select :contestant_id, options_for_select(Contestant.select_contestant, 'id'), {:include_blank => "Select a contestant"}, class:"form-control step4", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :scheme_type
 			= select_tag :scheme_type_select, options_for_select(Scheme.select_type), class:"form-control", :required => true
