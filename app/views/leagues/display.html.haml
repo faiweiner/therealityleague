@@ -22,59 +22,7 @@
 					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
 			- elsif @a_participant == false
 				= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
-	.panel-body
-		.col-lg-12
-			%h3 Ranking
-			%table.table.table-hover
-				%thead
-					%th Rank
-					%th Participants
-					%th Total Pts
-					%th Roster
-				%tbody
-					- @participants_roster_total_sorted.each_with_index do |participant, i|
-						%tr
-							%td= i + 1
-							%td= participant[0]
-							%td= participant[1]
-							%td
-								- if User.where(username: participant[0]).first.id == @current_user.id
-									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
-									- if @league.active?
-										= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
-									- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
-										= link_to "Leave League", roster_path(@participants_roster_id[participant[0]]), :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn btn-default btn-sm"		
-								- else
-									= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default btn-sm"
-		/ .col-lg-6
-		/ 	%h3 Live Score Update
-		/ 	#event-update-board
-		/ 		- if @season
-		/ 			no
-		/ 		- else
-		/ 			.panel.panel-default
-		/ 				.panel-body
-		/ 					Nothing has happened yet.						
-		- if @league.season.episode_count
-			.col-lg-12
-				%table.table.table-hover
-					- if @league.type == "Fantasy"
-						%h3 Participants' Weekly Team Scores
-					- elsif @league.type == "Bracket"
-						%h3 Participants' Weekly Bracket Scores
-					%thead
-						%th Participants
-						- @league.season.episode_count.times do |i|
-							%th= i+1
-						%th Total
-					%tbody
-						- @participants.each_with_index do |participant, index|
-							%tr
-								%td= participant.username
-								- @league.season.episode_count.times do |i|
-									- if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
-										%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
-									- else
-										%td --
-								%td= @participants_roster_total[participant.username]
+	= render partial: "ranking"			
+	- if @league.season.episode_count
+		= render partial: "weekly_score"
 

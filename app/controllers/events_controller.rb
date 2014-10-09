@@ -29,21 +29,18 @@ class EventsController < ApplicationController
 
 	def create
 		#====== check for bad entry ======#
-		event_show = Show.find(params[:show_list])
-		event_season = Season.find(params[:season_list])
-		event_episode = Episode.find(params[:event][:episode_id])
-		event_contestant = Contestant.find(params[:event][:contestant_id])
-		event_scheme = Scheme.find(params[:event][:scheme_id])
+		@event = Event.new event_param
+		event_episode = @event.episode
+				
+		# event_show = Show.find(params[:show_list])
+		# event_season = Season.find(params[:season_list])
 
-
-		
-		@event = Event.new event_param[:event]
-		raise 
+		# event_contestant = Contestant.find(params[:event][:contestant_id])
+		# event_scheme = Scheme.find(params[:event][:scheme_id])
 
 		if @event && @event.save
 			redirect_to events_path
 		else
-			raise
 			render :new
 		end
 
@@ -71,7 +68,7 @@ class EventsController < ApplicationController
 	private
 
 	def event_param
-		params.require(:events).permit(:contestant_id, :episode_id, :scheme_id)
+		params.require(:event).permit(:contestant_id, :episode_id, :scheme_id)
 	end
 
 	def generate_half_sentence(string)

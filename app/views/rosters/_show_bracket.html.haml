@@ -2,7 +2,7 @@
 	#score-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
 		%h3 
 			Bracket Board
-			%button.btn.btn-primary.disabled Total Points: #{ @roster.calculate_total_roster_points }
+			%button.btn.btn-primary.disabled Total Points: #{ @roster.calculate_total_rounds_points }
 		.row
 			- @rounds.each_with_index do |round, index|
 				.col-lg-2.col-md-2.col-sm-2.col-xs-4
@@ -43,4 +43,4 @@
 					%td
 					- @roster.league.season.episode_count.times do |i|
 						%td
-					%td= @roster.calculate_total_roster_points
+					%td= @roster.calculate_total_rounds_points 

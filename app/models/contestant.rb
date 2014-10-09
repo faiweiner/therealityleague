@@ -55,7 +55,7 @@ class Contestant < ActiveRecord::Base
 	end
 
 	def calculate_total_points		# takes one contestant of a roster to get his/her total score
-		Event.joins(:scheme).where(contestant_id: self.id).sum("schemes.points_asgn")
+		Event.where(contestant_id: self.id).sum("points_earned")
 	end
 
 end

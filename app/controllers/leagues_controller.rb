@@ -49,8 +49,8 @@ class LeaguesController < ApplicationController
 	
 	def create
 		@league = League.new league_params
-		@league.season_id = params[:league][:season]
-		season = Season.where(name: params[:league][:season])
+		@league.season_id = params[:league][:season_id]
+		season = Season.where(name: params[:league][:season_id])
 		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league

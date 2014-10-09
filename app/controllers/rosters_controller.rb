@@ -115,7 +115,7 @@ class RostersController < ApplicationController
 		# limits are only available for Fantasy-type leagues
 		limit = @roster.league.draft_limit
 		case limit 
-		when limit 
+		when limit.present?
 			if @roster.contestants.count + 1 <= limit
 				@roster.contestants << contestant unless @roster.contestants.include? contestant
 			end

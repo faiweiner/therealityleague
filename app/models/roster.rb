@@ -18,16 +18,18 @@ class Roster < ActiveRecord::Base
 	validates :user_id, :presence => true
 	validates :league_id, :presence => true
 
-	def calculate_total_roster_points			# method for FANTASY only; takes a collection of contestants within one roster
+	# method for FANTASY only; takes a collection of contestants within one roster
+	def calculate_total_roster_points			
 		contestants = self.contestants
 		roster_total_score = 0
-		contestants.each do |contestant|
+		contestants.each do |contestants|
 			roster_total_score += contestant.calculate_total_points
 		end
 		return roster_total_score
 	end
 
-	def calculate_total_rounds_points 		# method for BRACKET only; takes a collection of rounds within one roster
+	# method for BRACKET only; takes a collection of rounds within one roster
+	def calculate_total_rounds_points 		
 		rounds = self.rounds
 		roster_total_rounds_score = 0
 		rounds.each do |round|

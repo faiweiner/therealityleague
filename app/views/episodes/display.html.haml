@@ -17,9 +17,14 @@
 		.col-lg-12
 			%h3 Events
 			.col-lg-2
-				%h4 Contestants
-				- @season.contestants.each do |contestant|
-					= button_to contestant.name, (), class: "btn btn-default btn-sm btn-block"
+				%table.table
+					%thead
+						%tr
+							%th Contestants
+					%tbody
+						- @season.contestants.order(name: :asc).each do |contestant|
+							%tr
+								%td= button_to contestant.name, (), class: "btn btn-default btn-sm btn-block"
 			.col-lg-10
 				%table.table.table-hover
 					%thead
