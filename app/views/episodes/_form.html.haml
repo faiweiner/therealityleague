@@ -1,4 +1,4 @@
-.col-lg-12
+.col-lg-12#episodeCreationDiv
 	= form_for(:episode, :url => {:action => "create"}, :html => {:method => "post", id:"episode_form"}, class:"form-horizontal", :role => "form") do |f|
 		/ Error Messages
 		.row.form-group
@@ -21,10 +21,10 @@
 		.row.form-group.field.has-feedback
 			= label_tag :show_id
 			%br/
-			= select_tag :show_select, options_for_select(Show.select_show, 'id'), class:"form-control", :required => true
+			= select_tag(:show_list, (), {:prompt => "Select a show", class: "form-control step1", :required => true})
 		.row.form-group.field.has-feedback
 			= f.label :season_id
-			= f.select :season_id, options_for_select(Season.select_season, 'id'), {}, class:"form-control", :required => true
+			= f.select(:season_id, [], {:include_blank => "Select a season"}, class: "form-control step2", :required => true)
 		.row.form-group.field.has-feedback
 			= f.label :air_date
 			= f.date_field :air_date, class:"form-control", :required => true
