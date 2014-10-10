@@ -58,7 +58,7 @@
 						- @contestants_ranking.each_with_index do |contestant, index|
 							%tr
 								%td
-									= link_to contestant.name, contestant_path(contestant.id)
+									= contestant.name
 								- @season.episodes.each_with_index do |episode, i|
 									%td
 										= link_to contestant.calculate_points_per_episode(episode.id), episode_path(episode.id)

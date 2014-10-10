@@ -6,6 +6,7 @@ class LeaguesController < ApplicationController
 	before_action :private_restriction, :only => [:display]
 	before_action :commissioner_restriction?, :only => [:edit]
 
+	attr_accessor :name, :league_key, :league_password
 	def index
 		if @current_user == nil
 			flash[:notice] = "You must be a registered user to view leagues. Please sign up or sign in."
@@ -235,22 +236,31 @@ class LeaguesController < ApplicationController
 
 	def access
 		if params[:league_key].empty? || params[:password].empty?
-			flash[:notice] = "Private league key and password empty. Please try again."
+			flash[:notice] = "Invalid entry. Please enter both league key and password."
 			flash[:color] = "invalid"
 			redirect_to leagues_search_path
-		end
-
-		if League.where(league_key: params[:league_key]).first.present?
-			@league = League.where(league_key: params[:league_key]).first
-		end
-
-		if @league.present? && @league.league_password === params[:password]
-			params[:league] = @league.id
-			redirect_to	league_path(@league.id)
-		else
-			flash[:notice] = "Invalid league key and password. Please try again."
-			flash[:color] = "invalid"
-			redirect_to leagues_search_path
+		elsif params[:league_key].present? && params[:password].present?
+			@league = League.where(league_key: params[:league_key]).uniq.first
+			if @league.present? && @league.league_password == params[:password]
+				if @league.active?
+					flash[:notice] = "Access granted!"
+					flash[:color] = "valid"
+				else
+					flash[:notice] = "This league is no longer active."
+					flash[:color] = "warning"
+				end
+				params[:league] = @league.id
+				redirect_to	league_path(@league.id)
+			elsif @league.nil? && @league.league_password != params[:password]
+				flash[:notice] = "Invalid league password. Please try again."
+				flash[:color] = "invalid"
+				redirect_to leagues_search_path
+			else
+				flash[:notice] = "Invalid league key. Please try again"
+				flash[:color] = "invalid"
+				redirect_to leagues_search_path				
+			end
+		
 		end
 	end
 

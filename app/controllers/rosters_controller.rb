@@ -23,8 +23,9 @@ class RostersController < ApplicationController
 
 	def edit
 		@roster = Roster.includes(:league).find(params[:id])
-		@roster.league.draft_limit
-		@all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
+		@league = @roster.league
+		@season = @league.season
+		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		@available_contestants = []
 		# iterate to pull list of non-selected contestants
@@ -32,6 +33,9 @@ class RostersController < ApplicationController
 			unless @selected_contestants.include? contestant
 				@available_contestants.push contestant
 			end
+		end
+		if @roster.rounds.empty?
+			raise
 		end
 	end
 

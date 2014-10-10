@@ -85,10 +85,10 @@
 					.row.form-group.actions
 						- if params[:id]
 							= f.submit "Update season", class: "btn btn-primary btn-md"
-							= link_to "Cancel", seasons_path, class: "btn btn-default btn-md"
+							= link_to "Cancel", admin_seasons_path, class: "btn btn-default btn-md"
 						- else
 							= f.submit "Save season", class: "btn btn-primary btn-md"
-							= link_to "Cancel", seasons_path, class: "btn btn-default btn-md"
+							= link_to "Cancel", admin_seasons_path, class: "btn btn-default btn-md"
 					/ End Form portion
 			/ End sign-up-form
 		/ End col-md-12

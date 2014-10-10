@@ -90,10 +90,10 @@ $(document).ready(function () {
 			var contestantId = $element.dataset.contestantId
 			var rosterId	= $element.dataset.rosterId
 			// sets operation based on myClass value
-			if (myClass == 'add-button fa fa-plus') {
+			if (myClass == 'add-button glyphicon glyphicon-plus') {
 				var operation = 'add';
 				$element.parentElement.parentElement.remove();
-			} else if (myClass == 'remove-button fa fa-times') {
+			} else if (myClass == 'remove-button glyphicon glyphicon-remove') {
 				var operation = 'remove';
 				$element.parentElement.parentElement.remove();
 			} else {

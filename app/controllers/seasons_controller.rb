@@ -31,7 +31,7 @@ class SeasonsController < ApplicationController
 	def update
 		@season = Season.find(params[:id])
 		if @season.update season_params
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		else
 			render :edit
 		end
@@ -42,11 +42,11 @@ class SeasonsController < ApplicationController
 		if @season.update(published: true)
 			flash[:notice] = "#{@season.show.name}: #{@season.name} is now published."
 			flash[:color] = "valid"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		end
 	end
 
@@ -55,15 +55,15 @@ class SeasonsController < ApplicationController
 		if @season.leagues.count > 0
 			flash[:notice] = "#{@season.show.name}: #{@season.name} cannot be unpublished because leagues for this season already exist."
 			flash[:color] = "prohibited"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		elsif @season.update(published: false)
 			flash[:notice] = "#{@season.show.name}: #{@season.name} is now hidden from the public."
 			flash[:color] = "valid"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		end
 	end
 
@@ -72,15 +72,15 @@ class SeasonsController < ApplicationController
 		if @season.leagues.count > 0
 			flash[:notice] = "#{@season.show.name}: #{@season.name} cannot be deleted because leagues for this season already exist."
 			flash[:color] = "prohibited"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		elsif	@season.destroy
 			flash[:notice] = "#{@season.show.name}: #{@season.name} has been successfully deleted."
 			flash[:color] = "valid"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
 			flash[:color] = "prohibited"
-			redirect_to seasons_path
+			redirect_to admin_seasons_path
 		end
 	end
 

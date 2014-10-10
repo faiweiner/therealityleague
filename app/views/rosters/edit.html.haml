@@ -12,6 +12,12 @@
 			%p.small
 				League Limit: #{ @roster.league.draft_limit } contestants
 	.panel-body
+		/ Contestant Board
+		#right-box.panel.panel-default.col-lg-4
+			%h3 Available Contestants
+			#contestantBoard.row
+				= render partial: "current_available_contestants"
+		/ END Contestant Board
 		/ Roster Board
 		.panel.panel-default.col-lg-8
 			.row
@@ -19,14 +25,10 @@
 					%h3 Your Roster
 				.panel-body.col-lg-3.text-right
 					= link_to "Save Roster", roster_path(@roster.id), class:"btn btn-primary btn-sm"
-				
+				.col-lg-12
+					- @season.episode_count.times do |i|
+						.btn.btn-default.btn-xs Week #{i + 1}
 			#rosterBoard.row
 				= render partial: "current_roster"
 			%br/
 		/ END Roster Board
-		/ Contestant Board
-		#right-box.panel.panel-default.col-lg-4
-			%h3 Available Contestants
-			#contestantBoard.row
-				= render partial: "current_available_contestants"
-		/ END Contestant Board

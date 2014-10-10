@@ -1,7 +1,9 @@
 - if flash[:notice] && flash[:color] == "valid"
 	.alert.alert-success{:role => "alert"}= flash[:notice]
 - elsif flash[:notice] && flash[:color] == "invalid"
-	.alert.alert-warning{:role => "alert"}= flash[:notice]
+	.alert.alert-danger{:role => "alert"}= flash[:notice]
+- elsif flash[:notice] && flash[:color] == "warning"
+	.alert.alert-warning{:role => "alert"}= flash[:notice] 
 .panel.panel-default#league_view
 	.panel-body
 		.col-lg-12
@@ -20,7 +22,7 @@
 					= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
 				- if @league.active?
 					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
-			- elsif @a_participant == false
+			- elsif @a_participant == false && @league.active?
 				= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
 	= render partial: "ranking"			
 	- if @league.season.episode_count

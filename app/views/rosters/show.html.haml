@@ -8,7 +8,8 @@
 		.col-lg-3.text-right
 			- if @roster.user_id == @current_user.id
 				%h4.small Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
-				= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
+				- if @roster.contestants.any?
+					= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
 			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
 	- if @roster.contestants.any?
 		= render partial: "show_bracket" if @league.type == "Bracket"
@@ -19,17 +20,16 @@
 				%h2= @roster.league.draft_deadline.strftime("%B %d, %Y") if @roster.league.draft_deadline
 				%p Your roster is currently empty! Add contestants to your roster now!
 				= link_to "Add contestants to roster", edit_roster_path(@roster.id), class:"btn btn-primary"
-- if @roster.contestants.empty?
-	.modal.fade.modal-md#roster-complete-prompt{"aria-hidden" => "true", "aria-labelledby" => "myMediumModalLabel", :role => "dialog", :tabindex => "-1"}
-		.modal-dialog.modal-md
-			.modal-content
-				.modal-header.text-center
-					%button.close{"data-dismiss" => "modal", :type => "button"}
-						%span{"aria-hidden" => "true"} ×
-						%span.sr-only Close
-					%h3 Your roster is currently empty!
-				.modal-body
-					%p Oh hello there
-					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, eum tenetur laboriosam aut fugiat incidunt voluptatum error ea facilis earum quae, deleniti. Ipsa iusto neque, consequatur id nihil impedit ratione.
-				.modal-footer
-					%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+		.modal.fade.modal-md#roster-complete-prompt{"aria-hidden" => "true", "aria-labelledby" => "myMediumModalLabel", :role => "dialog", :tabindex => "-1"}
+			.modal-dialog.modal-md
+				.modal-content
+					.modal-header.text-center
+						%button.close{"data-dismiss" => "modal", :type => "button"}
+							%span{"aria-hidden" => "true"} ×
+							%span.sr-only Close
+						%h3 Your roster is currently empty!
+					.modal-body
+						%p Oh hello there
+						%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, eum tenetur laboriosam aut fugiat incidunt voluptatum error ea facilis earum quae, deleniti. Ipsa iusto neque, consequatur id nihil impedit ratione.
+					.modal-footer
+						%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

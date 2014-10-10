@@ -9,7 +9,7 @@
 				%th Roster
 			%tbody
 				- @participants_roster_total_sorted.each_with_index do |participant, i|
-					%tr
+					%tr{"data-ranking" => i + 1}
 						%td= i + 1
 						%td= participant[0]
 						%td= participant[1]
@@ -19,6 +19,6 @@
 								- if @league.active?
 									= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
 								- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
-									= link_to "Leave League", roster_path(@participants_roster_id[participant[0]]), :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn btn-default btn-sm"		
+									= link_to "Leave League", roster_path(@participants_roster_id[participant[0]]), :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn-sm pull-right"		
 							- else
 								= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-default btn-sm"
