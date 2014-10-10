@@ -4,18 +4,26 @@ $(document).ready(function () {
 
 	if ($leagueCrationDiv.length > 0) {
 		console.log('Leagues JS for new league initiated');
+		
+		// set form variables
+		$leagueNameInstruction = $('#league_name');
+		$leagueSeasonInstruction = $('#league_season');
+		$leagueTypeInstruction = $('#league_type');
+		$leagueScoringInstruction = $('#league_scoring');
+		$leagueDeadlineInstructions = $('#league_deadline');
+		$leagueDraftInput = $('#draft_type');
+		$draftDatePicker = $('.draftDatePicker');
+		$draftLimitField = $('#draftLimitField');
+
 		// catch to only display popup explanation during league creation
 		if ($('#popupDisabler').length === 0) {
 			// Create new league function 
 			$newLeagueForm = $('#new_league');
-			$leagueNameInput = $('#league_name');
-			$leagueTypeInput = $('#league_type');
-			$leagueScoringInput = $('#league_scoring');
-			$leagueDraftInput = $('#draft_type');
 
-			$leagueNameInput.popover('hide');
-			$leagueTypeInput.popover('hide');
-			$leagueScoringInput.popover('hide');
+			$leagueNameInstruction.popover('hide');
+			$leagueTypeInstruction.popover('hide');
+			$leagueScoringInstruction.popover('hide');
+			$leagueDeadlineInstructions.popover('hide');
 			$leagueDraftInput.popover('hide');
 		}
 
@@ -62,8 +70,7 @@ $(document).ready(function () {
 					],	// end source
 					onChange: function (data, response) {
 						var leagueType = response;
-						var $draftDatePicker = $('.draftDatePicker');
-						var $draftLimitField = $('#draftLimitField');
+						console.log(leagueType);
 						if (leagueType == 'Fantasy') {
 							$draftDatePicker.attr('disabled', false);						
 							$draftLimitField.attr('disabled', false);		

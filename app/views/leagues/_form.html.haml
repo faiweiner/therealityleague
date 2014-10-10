@@ -29,8 +29,6 @@
 				.col-md-3.text-right
 					= label_tag :show
 				.col-md-6
-					/ Disable popup description if editing league;
-					/ New league will get popup description of fields
 					- if @league_show_id
 						.div#popupDisabler.hidden= @league_show_id
 						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class: "form-control step1"})
@@ -41,7 +39,7 @@
 				.col-md-3.text-right
 					= f.label :season
 					%br/
-				.col-md-6
+				.col-md-6{:id => "league_season", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
 					- if @league_season_id && @league.active?
 						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class: "form-control step2"})
 						Premieres: #{@league.season.premiere_date.strftime("%m/%d/%Y")}
@@ -63,7 +61,7 @@
 				.col-md-3.text-right
 					= f.label :type
 					%br/
-				.col-md-6{:id => "type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
+				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
 					- if @league_type	
 						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
 					- else
@@ -83,7 +81,7 @@
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :draft_deadline
-				.col-md-6
+				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
 					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", default: Date.today}
 			.row.form-group
 				.col-md-3.text-right
