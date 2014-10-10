@@ -1,4 +1,5 @@
 class EpisodesController < ApplicationController
+	layout "admin", only: [:new, :create]
 	def index
 		@episodes = Episode.includes(:season, :show).where(:season_id => params[:season_id])		
 	end

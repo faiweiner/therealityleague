@@ -17,16 +17,25 @@
 							%th Episodes
 						%th
 				%tbody
-					- @show.seasons.each do |season|
-						%tr
-							%td
-								%a{:href => season_path(season.id)} 
-									Season
-									#{ season.number}: 
+					- @seasons.each do |season|
+						- if season.published?
+							%tr
+								%td
+									%a{:href => season_path(season.id)} 
+										Season #{season.number}: 
+										= season.name
+									- if @current_user.admin
+										%td
+											- season.episodes.each_with_index do |episode, index|
+												= link_to "Episode #{index+1}", episode_path(episode.id), class:"btn btn-default btn-xs"
+								%td.text-right
+									= link_to "View Season", season_path(season.id), class:"btn btn-default btn-sm"
+						- else
+							%tr
+								%td
+									Season #{season.number}:
 									= season.name
 								- if @current_user.admin
 									%td
-										- season.episodes.each_with_index do |episode, index|
-											= link_to "Episode #{index+1}", episode_path(episode.id), class:"btn btn-default btn-xs"
-							%td.text-right
-								= link_to "View Season", season_path(season.id), class:"btn btn-default btn-sm"
+								%td.text-right
+									= link_to "Coming Soon", season_path(season.id), class:"btn btn-default btn-sm disabled"

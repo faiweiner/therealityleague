@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 	get 	'episodes' => 'episodes#index', :as => :episodes
 	post 	'episodes' => 'episodes#create'
 	get 	'episodes/new' => 'episodes#new', :as => :new_episode
+	get 	'episodes/new/:season_id' => 'episodes#new'
 	get 	'episodes/:id' => 'episodes#display', :as => :episode
 
 	get 	'pages/about' => 'pages#about'

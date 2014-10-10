@@ -1,16 +1,33 @@
 $(document).ready(function () {
 
-	if ($('#manage-events').length == 0) {
-		return;
-	};
-	console.log('Schemes initialized');
+	if ($('#manage-schemes').length > 0) {
+		console.log('Schemes initialized');
 
-	$newEventForm = $('#new-event');
-	$newEventSubmitButton = $('#new-event-submit');
-	$eventsBoard = $('#events-board');
-	$eventsDisplayBox = $('#events-display-box');
+		// setting variables
+		$showsPanel = $('#shows-panel');
+		$newSchemeBoard = $('#newSchemeBoard');
+		$currentSchemeBoard = $('#currentSchemeBoard');
+
+		$('.btn-primary').on('click', function (event) {
+			var $showId = event.target.id;
+			$.ajax({
+				url: '/api/schemes',
+				data: 'show_list='+ $showId,
+				dataType: 'json',
+				type: 'get',
+				success: function (response) {
+					var partial = response.schemesList;
+					$currentSchemeBoard.data(partial);
+				}	// end success function
+			});
+		});
+		$newEventForm = $('#new-event');
+		$newEventSubmitButton = $('#new-event-submit');
+		$eventsBoard = $('#events-board');
+		$eventsDisplayBox = $('#events-display-box');
+	}
+
 // ================== IN-LINE EDITING ================== //
-
 	$.extend($.fn.editable.defaults, defaults);
 
 	var makeElementsReloadable = function (eventTypeValue) {
@@ -106,31 +123,12 @@ $(document).ready(function () {
 		});
 	};
 
-	var populateEventsTable = function (show_id) {
-		console.log(show_id);
-		$.ajax({
-			url: '/schemes/' + show_id,
-			type: 'GET',
-			success: function (msg) {
-				var partial = msg;
-				$eventsBoard.html(partial);
-				hideActionButtons();
-			}
-		});
-		console.log('got here');
-	};
-
 	// ----- END server-side ----- //
 
 	$newEventSubmitButton.on('click', function () {
 		addEventToShow();
 	});
 
-
-	$('.btn-primary').on('click', function (event) {
-		$element = event.target;
-		populateEventsTable($element.id);
-	});
 
 	$eventsBoard.on('click', '.edit', function () {
 		// Get value of event type to be populated in X-editable

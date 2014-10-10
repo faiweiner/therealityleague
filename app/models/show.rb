@@ -27,7 +27,7 @@ class Show < ActiveRecord::Base
 
 	def self.select_show
 		# This model method is for populating Create League's drop-down menu
-		@shows_list = Show.joins(:seasons).uniq.order("name ASC").each.map {|s| [s.name, s.id] }
+		@shows_list = Show.uniq.order("name ASC").each.map {|s| [s.name, s.id] }
 	end
 
 	def self.select_show_all

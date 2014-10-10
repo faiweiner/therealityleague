@@ -16,5 +16,10 @@
 								- show.seasons.order("number DESC").each do |season|
 									- if season.expired
 										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-default btn-xs"
+									- elsif season.published == false
+										.small Coming soon!
+										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-warning btn-xs disabled"
 									- else
+										- if season.created_at.between?(DateTime.now - 7, DateTime.now)
+											.small New!
 										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-primary btn-xs"

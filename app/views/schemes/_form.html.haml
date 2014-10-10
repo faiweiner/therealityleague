@@ -1,3 +1,4 @@
+%h4 New Scheme
 = form_for(@scheme) do |f|
 	- if @scheme.errors.any?
 		#error_explanation
@@ -7,21 +8,22 @@
 			%ul
 				- @scheme.errors.full_messages.each do |message|
 					%li= message
-	.field.has-success.has-feedback
+	.form-group.field
 		= f.label :show_id
 		%br/
-		= f.select(:show_id, options_for_select(Show.select_show), {}, {class:"form-control"})
-	.field
+		= f.select(:show_id, options_for_select(Show.select_show), {:include_blank => "Select a show"}, {class:"form-control", required: true})
+	.form-group.field
 		= f.label :type
 		%br/
 		= f.select(:type, options_for_select(Scheme.select_type), {}, {class:"form-control"})
-	.field
+	.form-group.field
 		= f.label :description
 		%br/
 		= f.text_area :description, class:"form-control"
-	.field
+	.form-group.field
 		= f.label :points_asgn, "Points assignment"
 		%br/
 		= f.number_field :points_asgn, class:"form-control", :placeholder => 0
 	.actions
+		%br/
 		= f.submit "Add new scheme", class:"btn btn-block btn-default", :id => "new-scheme-submit"

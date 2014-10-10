@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+	layout "admin"
 	def index
 		# get data for dynamic drop-down
 		@shows = Show.all

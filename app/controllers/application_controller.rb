@@ -105,6 +105,7 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	# for AJAX requests only
 	def schemes_list
 		schemes = Scheme.where(:show_id => params[:show_list]).order(:type, :id)
 		schemes_list = []

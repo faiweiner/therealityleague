@@ -3,7 +3,7 @@ class ShowsController < ApplicationController
 	layout "admin", except: [:index, :display]
 
 	def index
-		@shows = Show.all
+		@shows = Show.includes(:seasons).all
 	end
 
 	def new
@@ -20,7 +20,8 @@ class ShowsController < ApplicationController
 	end
 
 	def display
-		@show = Show.find(params[:id])
+		@show = Show.includes(:seasons).find(params[:id])
+		@seasons = @show.seasons
 		@rules_survival = Show.get_schemes(@show.id, "Survival")
 		@rules_game = Show.get_schemes(@show.id, "Game")
 		@rules_extra =Show.get_schemes(@show.id, "Extracurricular")
