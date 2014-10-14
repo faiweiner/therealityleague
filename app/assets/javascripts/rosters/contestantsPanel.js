@@ -9,8 +9,7 @@ $(document).ready(function () {
 				url: '/rosters/' + rosterId + '/add' + '/' + contestantId,
 				type: 'POST',
 				success: function (msg) {
-					var partial = msg;
-					$rosterBoard.html(partial);
+					debugger
 				}
 			}).done(function (data) {
 
@@ -32,11 +31,7 @@ $(document).ready(function () {
 			}, function () {
 				$(this).css('-webkit-transform', 'scale(1.0)');
 			}
-		).click(function(event) {
-			rosterId = event.target.dataset.rosterId;
-			contestantId = event.target.dataset.contestantId;
-		});
-
+		);
 		// function for adding contestant
 		$('.glyphicon-ok').hover(
 			function () {
@@ -45,8 +40,11 @@ $(document).ready(function () {
 				$(this).css('-webkit-transform', 'scale(1.0)');
 			}
 		).click(function(event) {
-			rosterId = event.target.dataset.rosterId;
 			contestantId = event.target.dataset.contestantId;
+			rosterId = event.target.dataset.rosterId;
+
+			// passing client-side variables to the server
+			addContestantToRoster(contestantId, rosterId);
 		});
 	}
 });

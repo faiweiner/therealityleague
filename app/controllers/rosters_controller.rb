@@ -133,7 +133,6 @@ class RostersController < ApplicationController
 		# i.e. do NOT append if roster already includes contestant
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		respond_to do |format|
-			format.html { render :partial => "current_roster" }
 			format.js {
 				render :json => { :contestantsCount => @selected_contestants.count, :leagueLimit => @roster.league.draft_limit }
 			}
