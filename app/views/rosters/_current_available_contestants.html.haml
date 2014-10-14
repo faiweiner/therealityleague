@@ -1,8 +1,13 @@
 - @available_contestants.each do |contestant|
-	.col-lg-4
-		.thumbnail.thumbnail-available-contestants
+	.col-lg-4.contestants-panel
+		.thumbnail.contestant-thumbnail
 			= image_tag contestant.image
+			.thumbnail-
 			.caption
-				= contestant.name
-				.pull-right
-					%i.add-button.glyphicon.glyphicon-plus{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+				.contestant-name
+					= contestant.name
+				.action.toggle
+					.pull-left
+						%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					.pull-right
+						%i.add-button.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}

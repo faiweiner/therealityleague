@@ -34,9 +34,9 @@ class RostersController < ApplicationController
 				@available_contestants.push contestant
 			end
 		end
-		if @roster.rounds.empty?
-			raise
-		end
+		# if @roster.rounds.empty?
+		# 	raise
+		# end
 	end
 
 	def display

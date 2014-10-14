@@ -103,7 +103,7 @@ league2.users << [user1, user3, user4, user5]
 league3.users << [user1, user4, user5]
 league4.users << [user1, user2]
 
-cont1 = Contestant.create(
+juancont1 = Contestant.create(
 	:name => 'Cassandra', 
 	:season_id => season1.id, 
 	:age => 22, 
@@ -111,7 +111,7 @@ cont1 = Contestant.create(
 	:image => '/assets/the_bachelor/season19/cassandra.jpg',
 	:occupation => 'Physical Therapist', 
 	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis ullam doloribus, laborum asperiores aperiam.')
-cont2 = Contestant.create(
+juancont2 = Contestant.create(
 	:name => 'Nikki', 
 	:season_id => season1.id, 
 	:age => 24, 
@@ -119,7 +119,7 @@ cont2 = Contestant.create(
 	:image => '/assets/the_bachelor/season19/nikki.jpg',
 	:occupation => 'Executive Assistant', 
 	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae.')
-cont3 = Contestant.create(
+juancont3 = Contestant.create(
 	:name => 'Jessica', 
 	:season_id => season1.id, 
 	:age => 32, 
@@ -127,7 +127,7 @@ cont3 = Contestant.create(
 	:image => '/assets/the_bachelor/season19/jessica.jpg',
 	:occupation => 'Nurse', 
 	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique cum repudiandae quod officia expedita tenetur praesentium magnam.')
-cont4 = Contestant.create(
+juancont4 = Contestant.create(
 	:name => 'Heather', 
 	:season_id => season1.id, 
 	:age => 26, 
@@ -135,15 +135,15 @@ cont4 = Contestant.create(
 	:image => '/assets/the_bachelor/season19/heather.jpg',
 	:occupation => 'Hair Stylist', 
 	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
-cont5 = Contestant.create(
-	:name => 'Alex', 
+juancont5 = Contestant.create(
+	:name => 'Elise', 
 	:season_id => season1.id, 
-	:age => 24, 
+	:age => 27, 
 	:gender => 'Female', 
-	:image => '/assets/the_bachelor/season19/alex.jpg',
+	:image => '/assets/the_bachelor/season19/elise.jpg',
 	:occupation => 'Entrepreneur', 
 	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
-cont6 = Contestant.create(
+juancont6 = Contestant.create(
 	:name => 'Suzie', 
 	:season_id => season1.id, 
 	:age => 24, 
@@ -469,9 +469,9 @@ roster10.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, co
 roster11.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, cont14, cont15, cont16, cont17, cont18, cont19, cont20, cont21, cont22, cont23, cont24, cont25]
 
 # Roster for Edelman's Bachelor League (The Bachelor)
-roster1.contestants << [cont1, cont2, cont3, cont4]
-roster2.contestants << [cont2, cont3, cont4, cont5]
-roster3.contestants << [cont3, cont4, cont5, cont6]
+roster1.contestants << [juancont1, juancont2, juancont3, juancont4]
+roster2.contestants << [juancont2, juancont3, juancont4, juancont5]
+roster3.contestants << [juancont3, juancont4, juancont5, juancont6]
 
 round1 = Round.create(:roster_id => roster10.id, :episode_id => episode1.id)
 round1.contestants << roster10.contestants.clone

@@ -119,9 +119,13 @@ div {
 	width: 0 auto;
 }
 
+.contestants-panel {
+	display: inline-block;
+}
+
 .thumbnail {
 	position: relative;
-	overflow: scroll;
+	border: none;
 	padding: 0;
 	.fading {
 		> img {
@@ -132,19 +136,48 @@ div {
 			filter: alpha(opacity=50);
 		}
 	}
+
+	&.contestant-thumbnail {
+		min-height: auto;
+		max-height: 100px;
+		max-width: 100px;
+		padding-bottom: 40px;
+		> img {
+			height: 100px;
+			width: 100px;
+			border-radius: 3px;
+		}
+	}
+
 	.caption {
 		position: absolute;
-		padding: 5px;
-		bottom: 0px;
+		padding: 3px;
+		bottom: 0;
 		left: 0px;
 		right: 0px;
 		width: 100%;
 		background-color: black;
 		font-size: 12px;
+		text-align: center;
 		color: white;  
 		opacity: 0.6; /* transparency */  
 		filter: alpha(opacity=60); /* IE transparency */  
+		border-radius: 0 0 3px 3px;
+		.contestant-name {
+		}
+		.action {
+			.glyphicon-remove {
+				padding-left: 20px;
+				color: red;
+			}
+			.glyphicon-ok {
+				padding-right: 20px;
+				color: green;
+			}
+		}
 	}
+
+
 	p {  
 		padding: 0px;  
 		margin-bottom: 0px; 
@@ -152,9 +185,6 @@ div {
 			display: none;
 		} 
 	} 
-	img.thumbnail-poster {
-		width: 100%;
-	}
 }
 
 img.img-thumbnail {
@@ -171,18 +201,6 @@ img.img-thumbnail {
 	min-height: auto;
 	max-height: 180px;
 }
-
-.thumbnail-available-contestants {
-	min-height: auto;
-	max-height: 130px;
-}
-
-// .remove-button, .add-button {
-// 	padding-right: 4px;
-// 	padding-bottom: 4px;
-// 	border-bottom-right-radius: 2px;
-// 	background-color: white;
-// }
 
 body.modal-open, .modal-dialog.modal-md, .modal-dialog.modal-sm {
 	left: auto;
@@ -243,4 +261,17 @@ input.form-control.input-small {
 	color: white;  
 	opacity: 0.9; /* transparency */  
 	filter: alpha(opacity=90); /* IE transparency */  
+}
+
+#bracketScoreBoard{
+	width: auto;
+	height: 100%;
+	overflow-y: hidden;
+	box-sizing: border-box;
+	> .col-100-px {
+		width: 120px;
+		display: inline-block;
+		vertical-align: top;
+
+	}
 }
