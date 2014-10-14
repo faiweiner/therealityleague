@@ -50,7 +50,13 @@ Rails.application.routes.draw do
 	get 	'rosters/:roster_id/available' => 'rosters#available', :as => :roster_available
 	get 	'rosters/:roster_id/current' => 'rosters#current', :as => :roster_current
 	post	'rosters/:league_id' => 'rosters#create', :as => :rosters
-	resources :rosters
+	get 	'rosters' => 'rosters#index'
+	get 	'rosters/new' => 'rosters#new', :as => :new_roster
+	get 	'rosters/:id/edit' => 'rosters#edit', :as => :edit_roster
+	get 	'rosters/:id' => 'rosters#display', :as => :roster
+	patch 'rosters/:id' => 'rosters#update'
+	put 	'rosters/:id' => 'rosters#update'
+	delete 'rosters/:id' => 'rosters#destroy'
 
 	get 	'rounds/new/:episode_id' => 'rounds#new', :as => :new_round_episode
 	get 	'rounds/new' => 'rounds#new', :as => :new_round

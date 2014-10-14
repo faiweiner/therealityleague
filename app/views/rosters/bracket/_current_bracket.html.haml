@@ -1,0 +1,19 @@
+
+.col-lg-12
+	%h3 Your Bracket
+.col-lg-12
+	%ul.pagination
+		- @episode_count.times do |i|
+			%li
+				%a{:href => "#"} #{i + 1}
+			
+#bracketBoard.row
+	#bracketDisplay.col-lg-3
+		- @selected_contestants.each do |contestant|
+			.col-lg-12
+				.thumbnail.thumbnail-current-roster
+					= image_tag contestant.image, {class: "remove", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					.caption
+						= contestant.name
+						.pull-right
+							%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}

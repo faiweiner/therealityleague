@@ -39,7 +39,7 @@ class RostersController < ApplicationController
 		end
 	end
 
-	def show
+	def display
 		@roster = Roster.includes(:league, :rounds, :contestants).find(params[:id])
 		@league = @roster.league
 		@rounds = @roster.rounds
