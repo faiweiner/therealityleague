@@ -2,12 +2,9 @@
 	.col-lg-4.contestants-panel
 		.thumbnail.contestant-thumbnail
 			= image_tag contestant.image
-			.thumbnail-
 			.caption
 				.contestant-name
 					= contestant.name
-				.action.toggle
-					.pull-left
-						%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-					.pull-right
-						%i.add-button.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+				.action
+					%i.remove-button.glyphicon.glyphicon-remove.hidden{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					%i.add-button.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}

@@ -123,6 +123,12 @@ div {
 	display: inline-block;
 }
 
+.thumbnail-click-area {
+	height: 100px;
+	width: 100px;
+	position: absolute;
+	z-index: 5;
+}
 .thumbnail {
 	position: relative;
 	border: none;
@@ -138,6 +144,7 @@ div {
 	}
 
 	&.contestant-thumbnail {
+		position: relative;
 		min-height: auto;
 		max-height: 100px;
 		max-width: 100px;
@@ -153,8 +160,8 @@ div {
 		position: absolute;
 		padding: 3px;
 		bottom: 0;
-		left: 0px;
-		right: 0px;
+		left: 0;
+		right: 0;
 		width: 100%;
 		background-color: black;
 		font-size: 12px;
@@ -167,11 +174,9 @@ div {
 		}
 		.action {
 			.glyphicon-remove {
-				padding-left: 20px;
 				color: red;
 			}
 			.glyphicon-ok {
-				padding-right: 20px;
 				color: green;
 			}
 		}
