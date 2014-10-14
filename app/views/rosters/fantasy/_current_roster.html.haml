@@ -1,23 +1,15 @@
-/ Contestant Board
-#right-box.panel.panel-default.col-lg-4
-	%h3 Available Contestants
-	#contestantBoard.row
-		= render partial: "current_available_contestants"
-/ Roster Board
-.panel.panel-default.col-lg-8
-	.row
-		.col-lg-9
-			%h3 Your Roster
-		.panel-body.col-lg-3.text-right
-			= link_to "Save Roster", roster_path(@roster.id), class:"btn btn-primary btn-sm"
-	#rosterBoard.row
-		#rosterCountDisplay.col-lg-12
-			%p #{ @roster.contestants.count } out of #{ @roster.league.draft_limit } contestants
-		- @selected_contestants.each do |contestant|
-			.col-lg-2
-				.thumbnail.thumbnail-current-roster
-					= image_tag contestant.image, {class: "remove", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-					.caption
-						= contestant.name
-						.pull-right
-							%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+- @all_contestants.each do |contestant|
+	.col-lg-4.contestants-panel
+		.thumbnail.contestant-thumbnail
+			- if @selected_contestants.include? contestant
+				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+			- else
+				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
+			.caption
+				.contestant-name
+					= contestant.name
+				.action
+					- if @selected_contestants.include? contestant
+						%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					- else
+						%i.add-button.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}

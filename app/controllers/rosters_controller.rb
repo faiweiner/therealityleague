@@ -27,16 +27,16 @@ class RostersController < ApplicationController
 		@season = @league.season
 		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
 		@selected_contestants = @roster.contestants.order(name: :asc)
-		@available_contestants = []
-		# iterate to pull list of non-selected contestants
-		@all_contestants.select do |contestant|
-			unless @selected_contestants.include? contestant
-				@available_contestants.push contestant
-			end
-		end
-		# if @roster.rounds.empty?
-		# 	raise
-		# end
+		respond_to do |format|
+			format.html
+			format.js {
+				render :json => {
+					:allContestants => @all_contestants,
+					:selectedContestants => @selected_contestants,
+					:rosterContestantCount => @selected_contestants.count
+				}
+			}
+		end		
 	end
 
 	def display
@@ -134,7 +134,10 @@ class RostersController < ApplicationController
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		respond_to do |format|
 			format.js {
-				render :json => { :contestantsCount => @selected_contestants.count, :leagueLimit => @roster.league.draft_limit }
+				render :json => { 
+					:contestantsCount => @selected_contestants.count, 
+					:leagueLimit => @roster.league.draft_limit 
+				}
 			}
 		end
 	end
@@ -143,19 +146,19 @@ class RostersController < ApplicationController
 		# removing contestants from rosters
 		@roster = Roster.includes(:contestants).find(params[:roster_id])
 
-		if params[:contestant_id]
-			contestant = Contestant.find(params[:contestant_id])
-			@roster.contestants.destroy(contestant)
-		end
+		contestant = Contestant.find(params[:contestant_id])
+		@roster.contestants.destroy(contestant)
 
 		all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-		@available_contestants = []
-		all_contestants.select do |contestant|
-			unless @roster.contestants.include? contestant
-				@available_contestants.push contestant
-			end
+		selected_contestants = @roster.contestants.order(name: :asc)
+		respond_to do |format|
+			format.js {
+				render :json => { 
+					:contestantsCount => selected_contestants.count, 
+					:leagueLimit => @roster.league.draft_limit 
+				}
+			}
 		end
-		render :partial => "current_available_contestants"
 	end
 
 	# ======== rendering CONTESTANTS for roster edit page ======== #

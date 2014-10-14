@@ -9,17 +9,21 @@ $(document).ready(function () {
 				url: '/rosters/' + rosterId + '/add' + '/' + contestantId,
 				type: 'POST',
 				success: function (msg) {
-					debugger
+					partial = msg;
 				}
 			}).done(function (data) {
+				debugger
+			});
+		};
 
-				// Getting contestant count for roster
-				$.get( "/rosters/" + rosterId + "/current", function (data) {
-				}, 'json')
-				.done(function (data) {
-					var contestantsCount = data.contestantsCount;
-					var leagueLimit = data.leagueLimit;
-				});
+		var removeContestantFromRoster = function (contestantId, rosterId) {
+			$.ajax({
+				url: '/rosters/' + rosterId + '/remove' + '/' + contestantId,
+				type: 'POST',
+				success: function (msg) {
+					var partial = msg;
+					$contestantBoard.html(partial);
+				}
 			});
 		};
 
@@ -31,7 +35,12 @@ $(document).ready(function () {
 			}, function () {
 				$(this).css('-webkit-transform', 'scale(1.0)');
 			}
-		);
+		).click(function (event) {
+			contestantId = event.target.dataset.contestantId;
+			rosterId = event.target.dataset.rosterId;
+
+			removeContestantFromRoster(contestantId, rosterId);
+		});
 		// function for adding contestant
 		$('.glyphicon-ok').hover(
 			function () {
@@ -39,7 +48,7 @@ $(document).ready(function () {
 			}, function () {
 				$(this).css('-webkit-transform', 'scale(1.0)');
 			}
-		).click(function(event) {
+		).click(function (event) {
 			contestantId = event.target.dataset.contestantId;
 			rosterId = event.target.dataset.rosterId;
 

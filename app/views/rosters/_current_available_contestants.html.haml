@@ -1,10 +1,15 @@
-- @available_contestants.each do |contestant|
+- @all_contestants.each do |contestant|
 	.col-lg-4.contestants-panel
 		.thumbnail.contestant-thumbnail
-			= image_tag contestant.image
+			- if @selected_contestants.include? contestant
+				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+			- else
+				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
 			.caption
 				.contestant-name
 					= contestant.name
 				.action
-					%i.remove-button.glyphicon.glyphicon-remove.hidden{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-					%i.add-button.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					- if @selected_contestants.include? contestant
+						%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					- else
+						%i.add-button.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
