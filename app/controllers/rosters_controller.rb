@@ -130,16 +130,8 @@ class RostersController < ApplicationController
 		elsif @roster.league.draft_limit.nil? 		# if there is no limit (Bracket-type)
 			@roster.contestants << contestant unless @roster.contestants.include? contestant
 		end
-		# i.e. do NOT append if roster already includes contestant
-		@selected_contestants = @roster.contestants.order(name: :asc)
-		respond_to do |format|
-			format.js {
-				render :json => { 
-					:contestantsCount => @selected_contestants.count, 
-					:leagueLimit => @roster.league.draft_limit 
-				}
-			}
-		end
+		
+		redirect_to roster_current_path(@roster.id)
 	end
 
 	def remove
@@ -149,26 +141,20 @@ class RostersController < ApplicationController
 		contestant = Contestant.find(params[:contestant_id])
 		@roster.contestants.destroy(contestant)
 
-		all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-		selected_contestants = @roster.contestants.order(name: :asc)
-		respond_to do |format|
-			format.js {
-				render :json => { 
-					:contestantsCount => selected_contestants.count, 
-					:leagueLimit => @roster.league.draft_limit 
-				}
-			}
-		end
+		redirect_to roster_current_path(@roster.id)
 	end
 
 	# ======== rendering CONTESTANTS for roster edit page ======== #
 	
 	def current
 		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
+		@league = @roster.league
+		@season = @league.season
+		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		@contestantsCount = @selected_contestants.count
 		respond_to do |format|
-			format.html { render :partial => "current_roster" }
+			format.html { render :partial => "rosters/fantasy/current_roster" }
 			format.js {
 				render :json => { :contestantsCount => @selected_contestants.count, :leagueLimit => @roster.league.draft_limit }
 			}
@@ -176,23 +162,23 @@ class RostersController < ApplicationController
 		
 	end
 
-	def available
-		@roster = Roster.includes(:contestants).find(params[:roster_id])
-		all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-		@available_contestants = []
-		all_contestants.select do |contestant|
-			unless @roster.contestants.include? contestant
-				@available_contestants.push contestant
-			end
-		end
-		@available_contestants
-		respond_to do |format|
-			format.html { render :partial => "current_available_contestants" }
-			format.js {
-				render :json => {}
-			}
-		end
-	end
+	# def available
+	# 	@roster = Roster.includes(:contestants).find(params[:roster_id])
+	# 	all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
+	# 	@available_contestants = []
+	# 	all_contestants.select do |contestant|
+	# 		unless @roster.contestants.include? contestant
+	# 			@available_contestants.push contestant
+	# 		end
+	# 	end
+	# 	@available_contestants
+	# 	respond_to do |format|
+	# 		format.html { render :partial => "current_available_contestants" }
+	# 		format.js {
+	# 			render :json => {}
+	# 		}
+	# 	end
+	# end
 	# ===========
 
 	private

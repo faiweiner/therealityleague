@@ -1,5 +1,19 @@
+%h3 
+	Roster Board
+	= link_to "Back to League", roster_path(@roster.id), class: "btn btn-default btn-sm"
+
+%p
+	- if @league.draft_limit
+		#{ @selected_contestants } out of #{ @league.draft_limit }.
+	- else
+		You have #{ @selected_contestants.count } #{ pluralize_without_count(@selected_contestants.count, "contestant", nil) } on your roster.
+	Click
+	%i.glyphicon.glyphicon-ok
+	to add or
+	%i.glyphicon.glyphicon-remove
+	to remove a contestant from your roster.	
 - @all_contestants.each do |contestant|
-	.col-lg-4.contestants-panel
+	.contestants-panel.col-lg-2
 		.thumbnail.contestant-thumbnail
 			- if @selected_contestants.include? contestant
 				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
@@ -13,3 +27,4 @@
 						%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
 					- else
 						%i.add-button.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+#saveRoster.col-lg-12

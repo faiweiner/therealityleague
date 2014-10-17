@@ -13,18 +13,9 @@
 				League Limit: #{ @roster.league.draft_limit } contestants
 	.panel-body
 		/ Contestant Board
-		#right-box.col-lg-4
-			%h3 Roster Board
-			%p
-				- if @league.draft_limit
-					#{ @selected_contestants } out of #{ @league.draft_limit }
-				- else
-					Select as many contestants as you'd like.
-			#contestantBoard.row
-				- if @league.type == "Fantasy"
-					= render partial: "rosters/fantasy/current_roster"
-				- elsif @league.type == "Bracket"
-					= render partial: "rosters/bracket/current_bracket"
-			#saveRoster
-				= link_to "Save Roster", roster_path(@roster.id), class: "btn btn-primary btn-sm"
+		#contestantBoard.col-lg-12
+			- if @league.type == "Fantasy"
+				= render partial: "rosters/fantasy/current_roster"
+			- elsif @league.type == "Bracket"
+				= render partial: "rosters/bracket/current_bracket"
 		/ END Contestant Board
