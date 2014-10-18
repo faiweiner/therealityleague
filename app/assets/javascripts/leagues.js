@@ -7,7 +7,9 @@ $(document).ready(function () {
 		
 		// set form variables
 		$leagueNameInstruction = $('#league_name');
+		$leagueShowInstruction = $('#league_show');		
 		$leagueSeasonInstruction = $('#league_season');
+		$leagueAccessInstruction = $('#league_access');		
 		$leagueTypeInstruction = $('#league_type');
 		$leagueScoringInstruction = $('#league_scoring');
 		$leagueDeadlineInstructions = $('#league_deadline');
@@ -21,10 +23,15 @@ $(document).ready(function () {
 			$newLeagueForm = $('#new_league');
 
 			$leagueNameInstruction.popover('hide');
+			$leagueShowInstruction.popover('hide');
+			$leagueSeasonInstruction.popover('hide');
+			$leagueAccessInstruction.popover('hide');
 			$leagueTypeInstruction.popover('hide');
 			$leagueScoringInstruction.popover('hide');
 			$leagueDeadlineInstructions.popover('hide');
 			$leagueDraftInput.popover('hide');
+			$draftDatePicker.popover('hide');
+			$draftLimitField.popover('hide');
 		}
 
 		$leagueCrationDiv.cascadingDropdown({

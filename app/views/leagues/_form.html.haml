@@ -28,7 +28,7 @@
 			.row.form-group
 				.col-md-3.text-right
 					= label_tag :show
-				.col-md-6
+				.col-md-6{:id => "league_show", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
 					- if @league_show_id
 						.div#popupDisabler.hidden= @league_show_id
 						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class: "form-control step1"})
@@ -49,7 +49,7 @@
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :league_access
-				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "Go 'Public' if you want others to search and join your league. Select 'Private' if you want an exclusive 'invite-only' league."}, :title => "Public vs. Private"}
+				.col-md-6{:id => "league_access", :data => {:toggle => "popover", :trigger => "hover", :content => "Go 'Public' if you want others to search and join your league. Select 'Private' if you want an exclusive 'invite-only' league."}, :title => "Public vs. Private"}
 					.col-md-6
 						= f.radio_button :public_access, true
 						= f.label(:public, 'Public league')
