@@ -16,10 +16,14 @@
 		= render partial: "rosters/fantasy/show_fantasy" if @league.type == "Fantasy"
 	- else
 		.panel-body
-			#contestants-display.col-lg-12.text-center
+			.col-lg-12.text-center
 				%h2= @roster.league.draft_deadline.strftime("%B %d, %Y") if @roster.league.draft_deadline
-				%p Your roster is currently empty! Add contestants to your roster now!
-				= link_to "Add contestants to roster", edit_roster_path(@roster.id), class:"btn btn-primary"
+				- if @league.type == "Fantasy"
+					%p Your roster is currently empty!
+					= link_to "Build Roster", edit_roster_path(@roster.id), class:"btn btn-primary"
+				- elsif @league.type == "Bracket"
+					%p Your bracket is currently empty!
+					= link_to "Build Bracket", edit_roster_path(@roster.id), class:"btn btn-primary"
 		.modal.fade.modal-md#roster-complete-prompt{"aria-hidden" => "true", "aria-labelledby" => "myMediumModalLabel", :role => "dialog", :tabindex => "-1"}
 			.modal-dialog.modal-md
 				.modal-content

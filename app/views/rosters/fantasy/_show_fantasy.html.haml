@@ -6,7 +6,7 @@
 				%th.col-md-2 Contestants
 				- if @eps_count > 0
 					- @eps_count.times do |i|
-						%th= i
+						%th= i + 1
 					- @eps_left.times do |i|
 						%th= i + @eps_count 
 				- elsif @eps_count.zero?

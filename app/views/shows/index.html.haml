@@ -19,7 +19,9 @@
 									- elsif season.published == false
 										.small Coming soon!
 										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-warning btn-xs disabled"
-									- else
-										- if season.created_at.between?(DateTime.now - 7, DateTime.now)
-											.small New!
+									- elsif season.premiere_date.future?
+										.small New!
 										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-primary btn-xs"
+									- else
+										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-primary btn-xs"
+

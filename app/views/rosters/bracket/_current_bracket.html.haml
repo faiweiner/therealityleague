@@ -1,19 +1,28 @@
+.row
+	.col-lg-12
+		%h3 Your Bracket
+		%h5 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo eos, beatae et expedita minus, nihil laborum facilis quisquam. Dolor tempora deleniti inventore sit eius magnam ea quae atque sed provident.
+		.col-lg-2.panel.panel-default
+			.panel-header
+				%h5 Contestants
+			.panel-body
+				- @all_contestants.each do |contestant|
+					.thumbnail.thumbnail-all-contestants
+						= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+						.caption
+							= contestant.name
+							.pull-right
+								%i.add-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-round-number" => 0}
 
-.col-lg-12
-	%h3 Your Bracket
+		- @season.episodes.each_with_index do |episode, i|
+			.col-lg-1.panel.panel-default{"data-episode-id" => "#{ episode.id }", "data-round-number" => i+1}
+				.panel-header.vcenter
+					%h5 Ep #{i+1}
+					= episode.id
+				.panel-body
 .col-lg-12
 	%ul.pagination
-		- @episode_count.times do |i|
-			%li
-				%a{:href => "#"} #{i + 1}
+
 			
 #bracketBoard.row
 	#bracketDisplay.col-lg-3
-		- @selected_contestants.each do |contestant|
-			.col-lg-12
-				.thumbnail.thumbnail-current-roster
-					= image_tag contestant.image, {class: "remove", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-					.caption
-						= contestant.name
-						.pull-right
-							%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}

@@ -7,6 +7,7 @@ class LeaguesController < ApplicationController
 	before_action :commissioner_restriction?, :only => [:edit]
 
 	attr_accessor :name, :league_key, :league_password
+	
 	def index
 		if @current_user == nil
 			flash[:notice] = "You must be a registered user to view leagues. Please sign up or sign in."

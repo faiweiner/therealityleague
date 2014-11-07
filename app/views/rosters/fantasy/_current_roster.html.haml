@@ -4,7 +4,7 @@
 
 %p
 	- if @league.draft_limit
-		#{ @selected_contestants } out of #{ @league.draft_limit }.
+		#{ @selected_contestants.count } out of #{ @league.draft_limit }.
 	- else
 		You have #{ @selected_contestants.count } #{ pluralize_without_count(@selected_contestants.count, "contestant", nil) } on your roster.
 	Click

@@ -4,16 +4,15 @@
 			%h2
 				= @episode.season.show.name + ": "
 				= @episode.season.name
-			%h4
-				Episode: #
-				Aired On:
-				= @episode.air_date.strftime("%B %d, %Y")
 			%p
 				- @episodes_list.each_with_index do |episode, index|
 					- if episode == @episode
 						= link_to "Episode #{index + 1}", episode_path(episode.id), class: "btn btn-xs btn-primary"
 					- else
 						= link_to "Episode #{index + 1}", episode_path(episode.id), class: "btn btn-xs btn-default"
+			%p
+				Aired On:
+				= @episode.air_date.strftime("%B %d, %Y")
 		.col-lg-12
 			%h3 Events
 			.col-lg-2

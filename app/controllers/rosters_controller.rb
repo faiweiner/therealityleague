@@ -25,8 +25,14 @@ class RostersController < ApplicationController
 		@roster = Roster.includes(:league).find(params[:id])
 		@league = @roster.league
 		@season = @league.season
+
+		case @league.type
+		when "Fantasy"
+			@selected_contestants = @roster.contestants.order(name: :asc)
+		when "Bracket"
+			@eps_record = @season.episode_count
+		end
 		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
-		@selected_contestants = @roster.contestants.order(name: :asc)
 		respond_to do |format|
 			format.html
 			format.js {
@@ -115,7 +121,7 @@ class RostersController < ApplicationController
 		end
 	end
 
-	# ============ ADD/REMOVE CONTESTANTS FROM ROSTER ============ #
+	# ============ ADD/REMOVE CONTESTANTS FROM FANTASY ROSTER ============ #
 
 	def add
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 

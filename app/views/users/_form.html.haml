@@ -56,7 +56,8 @@
 						.row.form-group.actions
 							= f.submit "Sign Up", class:"btn btn-primary btn-md"
 						.row
-							.fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1", "data-show-faces" => "false", "data-size" => "large"} Sign Up with Facebook
+							.fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1", "data-show-faces" => "false", "data-size" => "large"}
+								%login-button{:onlogin => "checkLoginState();", :scope => "public_profile,email"}
 						%br/
 						%br/
 						.row

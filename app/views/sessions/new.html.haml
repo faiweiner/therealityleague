@@ -27,8 +27,9 @@
 						= submit_tag("Sign in", :class => "form_submit btn btn-default")
 						%span.help-block
 							%a{:href => "#"} Forgot password?
-					/ .row.form-group
-					/ 	= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in", class:"btn btn-primary", disabled:'disabled'
+					.row.form-group
+
+						%div#sign_in.btn.fb-login-button{:data => {"max-rows" => 1, "size" => "large", "auto-logout-link" => false, "show-faces" => false}}
 					.row
 						%p 
 							New to the site?

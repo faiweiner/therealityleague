@@ -31,6 +31,8 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'validates_timeliness'
 
+gem 'omniauth'
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.0.0'
   gem 'pry-rails'

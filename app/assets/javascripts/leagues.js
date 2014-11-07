@@ -41,10 +41,12 @@ $(document).ready(function () {
 					selector: '.step1',
 					source: function(request, response) {
 						$.getJSON('/api/shows', request, function (data) {
+							var selectOnlyOption = data.length <= 1;
 							response($.map(data.showsList, function (item, index) {
 								return {
 									label: item.name,
-									value: item.id
+									value: item.id,
+									selected: selectOnlyOption // Select if only option
 								}
 							}));
 						});
