@@ -47,6 +47,7 @@ Rails.application.routes.draw do
 	
 	post	'rosters/:roster_id/add/:contestant_id' => 'rosters#add', :as => :roster_add
 	post	'rosters/:roster_id/remove/:contestant_id' => 'rosters#remove', :as => :roster_remove
+	get 	'rosters/:roster_id/round' => 'rosters#round', :as => :roster_round
 	get 	'rosters/:roster_id/available' => 'rosters#available', :as => :roster_available
 	get 	'rosters/:roster_id/current' => 'rosters#current', :as => :roster_current
 	post	'rosters/:league_id' => 'rosters#create', :as => :rosters
@@ -60,7 +61,7 @@ Rails.application.routes.draw do
 
 	get 	'rounds/new/:episode_id' => 'rounds#new', :as => :new_round_episode
 	get 	'rounds/new' => 'rounds#new', :as => :new_round
-	post	'rounds' => 'rounds#create', :as => :rounds
+	get		'rounds' => 'rounds#create', :as => :rounds
 	resources :rounds
 	
 	get 	'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season

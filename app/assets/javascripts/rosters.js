@@ -27,19 +27,7 @@ $(document).ready(function () {
 					var contestantsCount = data.contestantsCount;
 					var leagueLimit = data.leagueLimit;
 				});
-			})
-
-			;
-			
-			// refreshing contestant board
-			$.ajax({
-				url: '/rosters/' + rosterId + '/available',
-				type: 'GET',
-				success: function (msg) {
-					var partial = msg;
-					$contestantBoard.html(partial);
-				}
-			});	
+			});
 		};
 
 		// sends data to server for removal from roster
@@ -69,12 +57,29 @@ $(document).ready(function () {
 			});	
 		};
 
-		var addNewRound = function () {};
+		var getRound = function (contestantId, rosterId, episodeNumber) {
+		};
 
-		var addContestantToRound = function (contestantId, rosterId, roundNumber) {
-			console.log(contestantId);
+		var addContestantToRound = function (contestantId, rosterId, episodeNumber) {
 			console.log(rosterId);
-			console.log(roundNumber);
+			console.log(episodeNumber);
+			switch (episodeNumber) {
+				case '-1':
+					$.ajax({
+						url: '/rounds',
+						data: { 
+							contestant_id: contestantId, 
+							roster_id: rosterId,
+							episode_number: episodeNumber
+						},
+						success: console.log('success')
+					}).done(function (data) {
+						var round = data.round;
+					});
+					break;
+				default:
+					break;
+			};
 		};
 		var removeContestantFromRound = function (contestantId, roundId) {};
 
@@ -82,7 +87,7 @@ $(document).ready(function () {
 
 		// ----- BEGIN client-side ----- //
 		// detects which operation to execute
-		var rosterOperator = function (operation, contestantId, rosterId, roundNumber) {
+		var rosterOperator = function (operation, contestantId, rosterId, episodeNumber) {
 
 			switch (operation) {
 				case 'add-roster':
@@ -92,10 +97,10 @@ $(document).ready(function () {
 					removeContestantFromRoster(contestantId, rosterId);
 					break;
 				case 'add-bracket':
-					addContestantToRound(contestantId, rosterId, roundNumber);
+					addContestantToRound(contestantId, rosterId, episodeNumber);
 					break;
 				case 'remove-bracket':
-					removeContestantFromRound(contestantId, rosterId, roundNumber);
+					removeContestantFromRound(contestantId, rosterId, episodeNumber);
 					break;
 			};
 		};
@@ -108,7 +113,7 @@ $(document).ready(function () {
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
 			var rosterId	= $element.dataset.rosterId;
-			var roundNumber = $element.dataset.roundNumber;
+			var episodeNumber = $element.dataset.episodeNumber;
 			// sets operation based on myClass value
 
 			switch (myClass) {
@@ -123,7 +128,7 @@ $(document).ready(function () {
 					break;									
 			};
 
-			rosterOperator(operation, contestantId, rosterId, roundNumber);
+			rosterOperator(operation, contestantId, rosterId, episodeNumber);
 
 		});
 
