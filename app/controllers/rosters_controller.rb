@@ -25,7 +25,7 @@ class RostersController < ApplicationController
 		@roster = Roster.includes(:league).find(params[:id])
 		@league = @roster.league
 		@season = @league.season
-
+		@selected_contestants = @roster.contestants.order(name: :asc)
 		case @league.type
 		when "Fantasy"
 			@selected_contestants = @roster.contestants.order(name: :asc)

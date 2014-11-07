@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 	resources :events
 	
 	get		'episodes' => 'episodes#index', :as => :episodes
-	post		'episodes' => 'episodes#create'
+	post	'episodes' => 'episodes#create'
 	get		'episodes/new' => 'episodes#new', :as => :new_episode
 	get		'episodes/new/:season_id' => 'episodes#new'
 	get		'episodes/:id' => 'episodes#display', :as => :episode
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
 	get		'seasons/search' => 'seasons#search'
 	get		'seasons' => 'seasons#index', :as => :seasons
-	post		'seasons' => 'seasons#create'
+	post	'seasons' => 'seasons#create'
 	get		'seasons/new/:show_id' => 'seasons#new', :as => :new_season_show
 	get		'seasons/new' => 'seasons#new', :as => :new_season
 	get		'seasons/:id/edit' => 'seasons#edit', :as => :edit_season
@@ -58,9 +58,9 @@ Rails.application.routes.draw do
 	put		'rosters/:id' => 'rosters#update'
 	delete 'rosters/:id' => 'rosters#destroy'
 
-	get		
+	get		'rounds' => 'rounds#index', :as => :rounds
+	post	'rounds' => 'rounds#create'
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add
-	post	'rounds' => 'rounds#create', :as => :rounds
 	resources :rounds
 	
 	get		'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season

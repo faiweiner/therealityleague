@@ -77,10 +77,9 @@ $(document).ready(function () {
 						console.log('success!');
 					}
 				}).done(function (response) {
-					var contestants = response.round.contestants;
-					console.log(contestants);
 				})
 			});
+			$contestantBoard.empty();
 
 		};
 

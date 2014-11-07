@@ -21,13 +21,17 @@
 					= episode.id
 				.panel-body{id: "round#{i}", "data-episode-id" => "#{ episode.id }", "data-origin-box-number" => i}
 		- @roster.rounds.each_with_index do |round, i|
-			.col-lg-1.panel.panel-default
-				.panel-header.vcenter
+			.col-lg-2.panel.panel-default
+				.panel-header
 					%h5 Ep #{i+1}
-					= round
-				- round.contestants.each do |contestant|
-					.panel-body
-						= contestant
+					.btn.btn-primary.btn-sm Save
+					- round.contestants.order(name: :asc).each do |contestant|
+						.thumbnail.thumbnail-all-contestants
+							= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+							.caption
+								= contestant.name
+								.pull-right
+									%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
 .col-lg-12
 	%ul.pagination
 
