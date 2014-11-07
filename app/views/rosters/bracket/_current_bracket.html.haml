@@ -2,36 +2,37 @@
 	.col-lg-12
 		%h3 Your Bracket
 		%h5 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo eos, beatae et expedita minus, nihil laborum facilis quisquam. Dolor tempora deleniti inventore sit eius magnam ea quae atque sed provident.
+.row
+	- @season.episodes.each_with_index do |episode, i|
+		.col-lg-1
+			.panel.panel-default
+				%h5 Ep #{i+1}
+				= episode.id
+			.panel-body{id: "round#{i}", "data-episode-id" => "#{ episode.id }", "data-origin-box-number" => i}
+.row
+	.col-lg-2
+		.panel
+			%h5 Contestants
+			- @all_contestants.each do |contestant|
+				.thumbnail.thumbnail-all-contestants
+					= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					.caption
+						= contestant.name
+						.pull-right
+							%i.add-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
+
+	- @roster.rounds.each_with_index do |round, i|
 		.col-lg-2.panel.panel-default
 			.panel-header
-				%h5 Contestants
-			.panel-body
-				- @all_contestants.each do |contestant|
+				%h5 Ep #{i+1}
+				.btn.btn-primary.btn-sm Save
+				- round.contestants.order(name: :asc).each do |contestant|
 					.thumbnail.thumbnail-all-contestants
 						= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
 						.caption
 							= contestant.name
 							.pull-right
-								%i.add-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
-
-		- @season.episodes.each_with_index do |episode, i|
-			.col-lg-1.panel.panel-default
-				.panel-header.vcenter
-					%h5 Ep #{i+1}
-					= episode.id
-				.panel-body{id: "round#{i}", "data-episode-id" => "#{ episode.id }", "data-origin-box-number" => i}
-		- @roster.rounds.each_with_index do |round, i|
-			.col-lg-2.panel.panel-default
-				.panel-header
-					%h5 Ep #{i+1}
-					.btn.btn-primary.btn-sm Save
-					- round.contestants.order(name: :asc).each do |contestant|
-						.thumbnail.thumbnail-all-contestants
-							= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-							.caption
-								= contestant.name
-								.pull-right
-									%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
+								%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
 .col-lg-12
 	%ul.pagination
 

@@ -20,33 +20,37 @@ class RoundsController < ApplicationController
 	end
 
 	def add
-		# adding contestants to a round
-		@round = Round.includes(:roster, :episode, :contestants).find(params[:round_id])
-		roster = @round.roster
-		episode = @round.episode
-
+		# adding a contestant to a round
+		@round = Round.includes(:contestants).find(params[:round_id])
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 
 		@round.contestants << contestant unless @round.contestants.include? contestant
 
-		respond_to do |format|
-			format.js {
-				render :json => { 
-					:round => @round,
-					:contestants => @round.contestants,
-					:roster => roster,
-					:episode => episode
-				}
-			}
+		redirect_to round_display_path(@round.id)
 		end
 
+		def remove
+			# removing a contestant from a round
+			@round = Round.includes(:contestants).find(params[:round_id])
+			contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
+
+			@round.contestants.destroy(contestant)
+
+			redirect_to round_display_path(@round.id)
+		end
 		
 		def display
-			
+			@round = Round.includes(:roster, :episode, :contestants).find(params[:round_id])
 			respond_to do |format|
-				format.html
+				format.js {
+					render :json => { 
+						:round => @round,
+						:contestants => @round.contestants,
+						:roster => roster,
+						:episode => episode
+					}
+				}
 			end
-
 		end
 	end
 end

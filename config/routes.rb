@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
 	get		'rounds' => 'rounds#index', :as => :rounds
 	post	'rounds' => 'rounds#create'
+	get		'rounds/:round_id' => 'rounds#display', :as => :round_display
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add
 	resources :rounds
 	
