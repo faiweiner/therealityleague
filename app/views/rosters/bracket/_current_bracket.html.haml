@@ -12,14 +12,22 @@
 						.caption
 							= contestant.name
 							.pull-right
-								%i.add-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-episode-number" => -1}
+								%i.add-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
 
 		- @season.episodes.each_with_index do |episode, i|
-			.col-lg-1.panel.panel-default{"data-episode-id" => "#{ episode.id }", "data-episode-number" => i}
+			.col-lg-1.panel.panel-default
 				.panel-header.vcenter
 					%h5 Ep #{i+1}
 					= episode.id
-				.panel-body
+				.panel-body{id: "round#{i}", "data-episode-id" => "#{ episode.id }", "data-origin-box-number" => i}
+		- @roster.rounds.each_with_index do |round, i|
+			.col-lg-1.panel.panel-default
+				.panel-header.vcenter
+					%h5 Ep #{i+1}
+					= round
+				- round.contestants.each do |contestant|
+					.panel-body
+						= contestant
 .col-lg-12
 	%ul.pagination
 

@@ -42,7 +42,7 @@ $(document).ready(function () {
 			});
 
 			// Getting contestant count for roster
-			var contestantsCount = $.get( "/rosters/" + rosterId + "/current", function (data) {
+			var contestantsCount = $.get( '/rosters/' + rosterId + '/current', function (data) {
 				contestantsCount = data ;
 			}, 'json');
 
@@ -57,37 +57,40 @@ $(document).ready(function () {
 			});	
 		};
 
-		var getRound = function (contestantId, rosterId, episodeNumber) {
+
+		var addContestantToRound = function (contestantId, rosterId, originBoxNumber) {
+
+			$recipientBox = $('#round')
+			$.ajax({
+				url: '/rounds',
+				data: { 
+					roster_id: rosterId,
+					origin_box_number: originBoxNumber
+				},
+				dataType: 'JSON'
+			}).done(function (response) {
+				var RoundId = response.round.id;
+				$.ajax({
+					url: '/rounds/' + RoundId + '/add/' + contestantId,
+					type: 'POST',
+					success: function (msg) {
+						console.log('success!');
+					}
+				}).done(function (response) {
+					var contestants = response.round.contestants;
+					console.log(contestants);
+				})
+			});
+
 		};
 
-		var addContestantToRound = function (contestantId, rosterId, episodeNumber) {
-			console.log(rosterId);
-			console.log(episodeNumber);
-			switch (episodeNumber) {
-				case '-1':
-					$.ajax({
-						url: '/rounds',
-						data: { 
-							contestant_id: contestantId, 
-							roster_id: rosterId,
-							episode_number: episodeNumber
-						},
-						success: console.log('success')
-					}).done(function (data) {
-						var round = data.round;
-					});
-					break;
-				default:
-					break;
-			};
-		};
 		var removeContestantFromRound = function (contestantId, roundId) {};
 
 		// ----- END server-side ----- //
 
 		// ----- BEGIN client-side ----- //
 		// detects which operation to execute
-		var rosterOperator = function (operation, contestantId, rosterId, episodeNumber) {
+		var rosterOperator = function (operation, contestantId, rosterId, originBoxNumber) {
 
 			switch (operation) {
 				case 'add-roster':
@@ -97,10 +100,10 @@ $(document).ready(function () {
 					removeContestantFromRoster(contestantId, rosterId);
 					break;
 				case 'add-bracket':
-					addContestantToRound(contestantId, rosterId, episodeNumber);
+					addContestantToRound(contestantId, rosterId, originBoxNumber);
 					break;
 				case 'remove-bracket':
-					removeContestantFromRound(contestantId, rosterId, episodeNumber);
+					removeContestantFromRound(contestantId, rosterId, originBoxNumber);
 					break;
 			};
 		};
@@ -113,7 +116,7 @@ $(document).ready(function () {
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
 			var rosterId	= $element.dataset.rosterId;
-			var episodeNumber = $element.dataset.episodeNumber;
+			var originBoxNumber = $element.dataset.originBoxNumber;
 			// sets operation based on myClass value
 
 			switch (myClass) {
@@ -128,13 +131,13 @@ $(document).ready(function () {
 					break;									
 			};
 
-			rosterOperator(operation, contestantId, rosterId, episodeNumber);
+			rosterOperator(operation, contestantId, rosterId, originBoxNumber);
 
 		});
 
 	} else if ($('#contestants-display').length > 0) {
 		setTimeout(function () {
-			$("#participants_prompt").modal();
+			$('#participants_prompt').modal();
 		}, 1000);
 	};
 
