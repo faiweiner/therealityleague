@@ -24,7 +24,11 @@
 					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
 			- elsif @a_participant == false && @league.active?
 				= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
-	= render partial: "ranking"			
+	- case @league.type
+	- when "Bracket"
+		= render partial: "leagues/bracket/ranking"
+	- when "Fantasy"
+		= render partial: "ranking"			
 	- if @league.season.episode_count
 		= render partial: "weekly_score"
 

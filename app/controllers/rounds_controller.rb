@@ -2,6 +2,7 @@ class RoundsController < ApplicationController
 
 	def index
 		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
+		@rounds_collection
 
 		season = @roster.league.season
 		origin_box = params[:origin_box_number].to_i			#contestant box will always be -1
