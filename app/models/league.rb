@@ -24,6 +24,7 @@ class League < ActiveRecord::Base
 	has_and_belongs_to_many :users, inverse_of: :leagues
 	before_destroy { users.clear }
 	has_many :rosters
+	has_many :rounds
 
 	# FIXME! Come bck to deal with dependencies please
 
@@ -32,7 +33,7 @@ class League < ActiveRecord::Base
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
 
-	# sarch function
+	# sarch functions
 	def self.search_by_key(query)
 		joins(:season, :users).where(league_key: query).uniq.order("created_at DESC")
 	end

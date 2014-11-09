@@ -384,31 +384,31 @@ cont25 = Contestant.create(
 	:present => false,
 	:episode_id => episode2.id)
 
-bachlorette10cont1 = Contestant.create(:name => 'Marcus', :season_id => season2.id, :image => '#', :age => '29', :gender => 'male', :description => 'Tampa, Florida', :occupation => 'Former Professional Baseball Player', :status_on_show => 'Winner', :episode_id => ep10blrte.id)
-bachlorette10cont2 = Contestant.create(:name => 'Chris', :season_id => season2.id, :image => '#', :age => '33', :gender => 'male', :description => 'Waukesha, Wisconsin', :occupation => 'Software Sales Executive', :status_on_show => 'Runner-up', :episode_id => ep10blrte.id)
-bachlorette10cont3 = Contestant.create(:name => 'J.J.', :season_id => season2.id, :image => '#', :age => '32', :gender => 'male', :description => 'Lamont, Iowa', :occupation => 'Farmer', :status_on_show => 'Present', :episode_id => ep9blrte.id)
-bachlorette10cont4 = Contestant.create(:name => 'Marquel', :season_id => season2.id, :image => '#', :age => '25', :gender => 'male', :description => 'Medicine Hat, Alberta', :occupation => 'Sports Medicine Manager', :status_on_show => 'Present', :episode_id => ep8blrte.id)
-bachlorette10cont5 = Contestant.create(:name => 'Tasos', :season_id => season2.id, :image => '#', :age => '27', :gender => 'male', :description => 'Harrisburg, Pennsylvania', :occupation => 'Basketball Coach', :status_on_show => 'Present', :episode_id => ep7blrte.id)
-bachlorette10cont6 = Contestant.create(:name => 'Cody', :season_id => season2.id, :image => '#', :age => '26', :gender => 'male', :description => 'Longmeadow, Massachusetts', :occupation => 'Accountant', :status_on_show => 'Present', :episode_id => ep7blrte.id)
-bachlorette10cont7 = Contestant.create(:name => 'Steven', :season_id => season2.id, :image => '#', :age => '30', :gender => 'male', :description => 'Hanover, Massachusetts', :occupation => 'Pantsapreneur', :status_on_show => 'Present', :episode_id => ep6blrte.id)
-bachlorette10cont8 = Contestant.create(:name => 'Rudie', :season_id => season2.id, :image => '#', :age => '28', :gender => 'male', :description => 'Oakley, Kansas', :occupation => 'Personal Trainer', :status_on_show => 'Present', :episode_id => ep6blrte.id)
-bachlorette10cont9 = Contestant.create(:name => 'Carl', :season_id => season2.id, :image => '#', :age => '30', :gender => 'male', :description => 'Portola Valley, California', :occupation => 'Social Media Marketer', :status_on_show => 'Present', :episode_id => ep5blrte.id)
-bachlorette10cont10 = Contestant.create(:name => 'Jason', :season_id => season2.id, :image => '#', :age => '26', :gender => 'male', :description => 'Rialto, California', :occupation => 'Sponsorship Salesman', :status_on_show => 'Present', :episode_id => ep5blrte.id)
-bachlorette10cont11 = Contestant.create(:name => 'Nick V.', :season_id => season2.id, :image => '#', :age => '29', :gender => 'male', :description => 'Clinton, New Jersey', :occupation => 'Advertising Executive', :status_on_show => 'Present', :episode_id => ep5blrte.id)
-bachlorette10cont12 = Contestant.create(:name => 'Dylan', :season_id => season2.id, :image => '#', :age => '30', :gender => 'male', :description => 'Denver, Colorado', :occupation => 'Wedding Event Coordinator', :status_on_show => 'Present', :episode_id => ep4blrte.id)
-bachlorette10cont13 = Contestant.create(:name => 'Patrick', :season_id => season2.id, :image => '#', :age => '', :gender => 'male', :description => 'Citrus Heights, California', :occupation => 'Explorer', :status_on_show => 'Present', :episode_id => ep4blrte.id)
-bachlorette10cont14 = Contestant.create(:name => 'Emil', :season_id => season2.id, :image => '#', :age => '32', :gender => 'male', :description => 'Grosse Pointe, Michigan', :occupation => 'Opera Singer', :status_on_show => 'Present', :episode_id => ep3blrte.id)
-bachlorette10cont15 = Contestant.create(:name => 'Brett', :season_id => season2.id, :image => '#', :age => '29', :gender => 'male', :description => 'Warminster, Pennsylvania', :occupation => 'Hairstylist', :status_on_show => 'Present', :episode_id => ep3blrte.id)
-bachlorette10cont16 = Contestant.create(:name => 'Craig', :season_id => season2.id, :image => '#', :age => '28', :gender => 'male', :description => 'Nahariya, Israel', :occupation => 'Beverage Sales Manager', :status_on_show => 'Present', :episode_id => ep3blrte.id)
-bachlorette10cont17 = Contestant.create(:name => 'Ron', :season_id => season2.id, :image => '#', :age => '30', :gender => 'male', :description => 'Hollywood, California', :occupation => 'Firefighter', :status_on_show => 'Present', :episode_id => ep2blrte.id)
-bachlorette10cont18 = Contestant.create(:name => 'Bradley', :season_id => season2.id, :image => '#', :age => '29', :gender => 'male', :description => 'Defiance, Iowa', :occupation => 'Tax Accountant', :status_on_show => 'Present', :episode_id => ep2blrte.id)
-bachlorette10cont19 = Contestant.create(:name => 'Josh B.', :season_id => season2.id, :image => '#', :age => '27', :gender => 'male', :description => 'Chicago, Illinois', :occupation => 'Professional Golfer', :status_on_show => 'Present', :episode_id => ep2blrte.id)
-bachlorette10cont20 = Contestant.create(:name => 'Nick S.', :season_id => season2.id, :image => '#', :age => '33', :gender => 'male', :description => 'Portland, Oregon', :occupation => 'Helicopter Pilot', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont21 = Contestant.create(:name => 'Brian', :season_id => season2.id, :image => '#', :age => '35', :gender => 'male', :description => 'Sturgeon Bay, Wisconsin', :occupation => 'Urgent Care Physician', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont22 = Contestant.create(:name => 'Andrew', :season_id => season2.id, :image => '#', :age => '29', :gender => 'male', :description => 'Evergreen, Colorado', :occupation => 'Telecommunication Marketer', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont23 = Contestant.create(:name => 'Mike', :season_id => season2.id, :image => '#', :age => '29', :gender => 'male', :description => 'Guilderland, New York', :occupation => 'Bartender', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont24 = Contestant.create(:name => 'Eric', :season_id => season2.id, :image => '#', :age => '31', :gender => 'male', :description => 'Yorba Linda, California', :occupation => 'Attorney', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont25 = Contestant.create(:name => 'Josh M.', :season_id => season2.id, :image => '#', :age => '30', :gender => 'male', :description => 'Meadow Vista, California', :occupation => 'Snowboard Product Developer', :status_on_show => 'Present', :episode_id => ep1blrte.id)
+bachlorette10cont1 = Contestant.create(:name => 'Marcus', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/marcus.jpg', :age => '29', :gender => 'male', :description => 'Tampa, Florida', :occupation => 'Former Professional Baseball Player', :status_on_show => 'Winner', :episode_id => ep10blrte.id)
+bachlorette10cont2 = Contestant.create(:name => 'Chris', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/chris.jpg', :age => '33', :gender => 'male', :description => 'Waukesha, Wisconsin', :occupation => 'Software Sales Executive', :status_on_show => 'Runner-up', :episode_id => ep10blrte.id)
+bachlorette10cont3 = Contestant.create(:name => 'J.J.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/jj.jpg', :age => '32', :gender => 'male', :description => 'Lamont, Iowa', :occupation => 'Farmer', :status_on_show => 'Present', :episode_id => ep9blrte.id)
+bachlorette10cont4 = Contestant.create(:name => 'Marquel', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/marquel.jpg', :age => '25', :gender => 'male', :description => 'Medicine Hat, Alberta', :occupation => 'Sports Medicine Manager', :status_on_show => 'Present', :episode_id => ep8blrte.id)
+bachlorette10cont5 = Contestant.create(:name => 'Tasos', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/tasos.jpg', :age => '27', :gender => 'male', :description => 'Harrisburg, Pennsylvania', :occupation => 'Basketball Coach', :status_on_show => 'Present', :episode_id => ep7blrte.id)
+bachlorette10cont6 = Contestant.create(:name => 'Cody', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/cody.jpg', :age => '26', :gender => 'male', :description => 'Longmeadow, Massachusetts', :occupation => 'Accountant', :status_on_show => 'Present', :episode_id => ep7blrte.id)
+bachlorette10cont7 = Contestant.create(:name => 'Steven', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/steven.jpg', :age => '30', :gender => 'male', :description => 'Hanover, Massachusetts', :occupation => 'Pantsapreneur', :status_on_show => 'Present', :episode_id => ep6blrte.id)
+bachlorette10cont8 = Contestant.create(:name => 'Rudie', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/rudie.jpg', :age => '28', :gender => 'male', :description => 'Oakley, Kansas', :occupation => 'Personal Trainer', :status_on_show => 'Present', :episode_id => ep6blrte.id)
+bachlorette10cont9 = Contestant.create(:name => 'Carl', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/carl.jpg', :age => '30', :gender => 'male', :description => 'Portola Valley, California', :occupation => 'Social Media Marketer', :status_on_show => 'Present', :episode_id => ep5blrte.id)
+bachlorette10cont10 = Contestant.create(:name => 'Jason', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/jason.jpg', :age => '26', :gender => 'male', :description => 'Rialto, California', :occupation => 'Sponsorship Salesman', :status_on_show => 'Present', :episode_id => ep5blrte.id)
+bachlorette10cont11 = Contestant.create(:name => 'Nick V.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/nickv.jpg', :age => '29', :gender => 'male', :description => 'Clinton, New Jersey', :occupation => 'Advertising Executive', :status_on_show => 'Present', :episode_id => ep5blrte.id)
+bachlorette10cont12 = Contestant.create(:name => 'Dylan', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/dylan.jpg', :age => '30', :gender => 'male', :description => 'Denver, Colorado', :occupation => 'Wedding Event Coordinator', :status_on_show => 'Present', :episode_id => ep4blrte.id)
+bachlorette10cont13 = Contestant.create(:name => 'Patrick', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/patrick.jpg', :age => '', :gender => 'male', :description => 'Citrus Heights, California', :occupation => 'Explorer', :status_on_show => 'Present', :episode_id => ep4blrte.id)
+bachlorette10cont14 = Contestant.create(:name => 'Emil', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/emil.jpg', :age => '32', :gender => 'male', :description => 'Grosse Pointe, Michigan', :occupation => 'Opera Singer', :status_on_show => 'Present', :episode_id => ep3blrte.id)
+bachlorette10cont15 = Contestant.create(:name => 'Brett', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/brett.jpg', :age => '29', :gender => 'male', :description => 'Warminster, Pennsylvania', :occupation => 'Hairstylist', :status_on_show => 'Present', :episode_id => ep3blrte.id)
+bachlorette10cont16 = Contestant.create(:name => 'Craig', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/craig.jpg', :age => '28', :gender => 'male', :description => 'Nahariya, Israel', :occupation => 'Beverage Sales Manager', :status_on_show => 'Present', :episode_id => ep3blrte.id)
+bachlorette10cont17 = Contestant.create(:name => 'Ron', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/ron.jpg', :age => '30', :gender => 'male', :description => 'Hollywood, California', :occupation => 'Firefighter', :status_on_show => 'Present', :episode_id => ep2blrte.id)
+bachlorette10cont18 = Contestant.create(:name => 'Bradley', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/bradley.jpg', :age => '29', :gender => 'male', :description => 'Defiance, Iowa', :occupation => 'Tax Accountant', :status_on_show => 'Present', :episode_id => ep2blrte.id)
+bachlorette10cont19 = Contestant.create(:name => 'Josh B.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/joshb.jpg', :age => '27', :gender => 'male', :description => 'Chicago, Illinois', :occupation => 'Professional Golfer', :status_on_show => 'Present', :episode_id => ep2blrte.id)
+bachlorette10cont20 = Contestant.create(:name => 'Nick S.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/nicks.jpg', :age => '33', :gender => 'male', :description => 'Portland, Oregon', :occupation => 'Helicopter Pilot', :status_on_show => 'Present', :episode_id => ep1blrte.id)
+bachlorette10cont21 = Contestant.create(:name => 'Brian', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/brian.jpg', :age => '35', :gender => 'male', :description => 'Sturgeon Bay, Wisconsin', :occupation => 'Urgent Care Physician', :status_on_show => 'Present', :episode_id => ep1blrte.id)
+bachlorette10cont22 = Contestant.create(:name => 'Andrew', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/andrew.jpg', :age => '29', :gender => 'male', :description => 'Evergreen, Colorado', :occupation => 'Telecommunication Marketer', :status_on_show => 'Present', :episode_id => ep1blrte.id)
+bachlorette10cont23 = Contestant.create(:name => 'Mike', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/mike.jpg', :age => '29', :gender => 'male', :description => 'Guilderland, New York', :occupation => 'Bartender', :status_on_show => 'Present', :episode_id => ep1blrte.id)
+bachlorette10cont24 = Contestant.create(:name => 'Eric', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/eric.jpg', :age => '31', :gender => 'male', :description => 'Yorba Linda, California', :occupation => 'Attorney', :status_on_show => 'Present', :episode_id => ep1blrte.id)
+bachlorette10cont25 = Contestant.create(:name => 'Josh M.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/joshm.jpg', :age => '30', :gender => 'male', :description => 'Meadow Vista, California', :occupation => 'Snowboard Product Developer', :status_on_show => 'Present', :episode_id => ep1blrte.id)
 
 voice7cont1 = Contestant.create(:name => 'Luke Wade', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/25/LukeWade_Null_1455x1455_KO_1_1.jpg?itok=-z0At4qS', :age => 31, :gender => 'N/A', :description => 'Hometown: Dublin, Texas',  :status_on_show => 'Present')
 voice7cont2 = Contestant.create(:name => 'Clara Hong', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/ClaraHong_Null_1455x1455_RUBEN.jpg?itok=Zs7E4UXw', :age => 22, :gender => 'N/A', :description => 'Hometown: Atlanta, Georgia',  :status_on_show => 'Present')
@@ -473,63 +473,63 @@ roster1.contestants << [juancont1, juancont2, juancont3, juancont4]
 roster2.contestants << [juancont2, juancont3, juancont4, juancont5]
 roster3.contestants << [juancont3, juancont4, juancont5, juancont6]
 
-round1 = Round.create(:roster_id => roster10.id, :episode_id => episode1.id)
+round1 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode1.id)
 round1.contestants << roster10.contestants.clone
-round2 = Round.create(:roster_id => roster10.id, :episode_id => episode2.id)
+round2 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode2.id)
 round2.contestants << round1.contestants.clone
 round2.contestants.delete(cont23, cont24, cont25)
-round3 = Round.create(:roster_id => roster10.id, :episode_id => episode3.id)
+round3 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode3.id)
 round3.contestants << round2.contestants.clone
 round3.contestants.delete(cont20, cont21, cont22)
-round4 = Round.create(:roster_id => roster10.id, :episode_id => episode4.id)
+round4 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode4.id)
 round4.contestants << round3.contestants.clone
 round4.contestants.delete(cont18, cont19)
-round5 = Round.create(:roster_id => roster10.id, :episode_id => episode5.id)
+round5 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode5.id)
 round5.contestants << round4.contestants.clone
 round5.contestants.delete(cont16, cont17)
-round6 = Round.create(:roster_id => roster10.id, :episode_id => episode6.id)
+round6 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode6.id)
 round6.contestants << round5.contestants.clone
 round6.contestants.delete(cont13, cont15)
-round7 = Round.create(:roster_id => roster10.id, :episode_id => episode7.id)
+round7 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode7.id)
 round7.contestants << round6.contestants.clone
 round7.contestants.delete(cont10, cont14)
-round8 = Round.create(:roster_id => roster10.id, :episode_id => episode8.id)
+round8 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode8.id)
 round8.contestants << round7.contestants.clone
 round8.contestants.delete(cont9, cont11)
-round9 = Round.create(:roster_id => roster10.id, :episode_id => episode9.id)
+round9 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode9.id)
 round9.contestants << round8.contestants.clone
 round9.contestants.delete(cont8)
-round10 = Round.create(:roster_id => roster10.id, :episode_id => episode10.id)
+round10 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode10.id)
 round10.contestants << round9.contestants.clone
 round10.contestants.delete(cont12)
 
-round11 = Round.create(:roster_id => roster11.id, :episode_id => episode1.id)
+round11 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode1.id)
 round11.contestants << roster11.contestants.clone
-round12 = Round.create(:roster_id => roster11.id, :episode_id => episode2.id)
+round12 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode2.id)
 round12.contestants << round11.contestants.clone
 round12.contestants.delete(cont13, cont16, cont23)
-round13 = Round.create(:roster_id => roster11.id, :episode_id => episode3.id)
+round13 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode3.id)
 round13.contestants << round12.contestants.clone
 round13.contestants.delete(cont19, cont20, cont21)
-round14 = Round.create(:roster_id => roster11.id, :episode_id => episode4.id)
+round14 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode4.id)
 round14.contestants << round13.contestants.clone
 round14.contestants.delete(cont8, cont17)
-round15 = Round.create(:roster_id => roster11.id, :episode_id => episode5.id)
+round15 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode5.id)
 round15.contestants << round14.contestants.clone
 round15.contestants.delete(cont7, cont10)
-round16 = Round.create(:roster_id => roster11.id, :episode_id => episode6.id)
+round16 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode6.id)
 round16.contestants << round15.contestants.clone
 round16.contestants.delete(cont25, cont24)
-round17 = Round.create(:roster_id => roster11.id, :episode_id => episode7.id)
+round17 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode7.id)
 round17.contestants << round16.contestants.clone
 round17.contestants.delete(cont22, cont18)
-round18 = Round.create(:roster_id => roster11.id, :episode_id => episode8.id)
+round18 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode8.id)
 round18.contestants << round17.contestants.clone
 round18.contestants.delete(cont12, cont14)
-round19 = Round.create(:roster_id => roster11.id, :episode_id => episode9.id)
+round19 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode9.id)
 round19.contestants << round18.contestants.clone
 round19.contestants.delete(cont15)
-round20 = Round.create(:roster_id => roster11.id, :episode_id => episode10.id)
+round20 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode10.id)
 round20.contestants << round19.contestants.clone
 round20.contestants.delete(cont11)
 

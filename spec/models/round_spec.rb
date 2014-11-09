@@ -3,10 +3,11 @@
 # Table name: rounds
 #
 #  id         :integer          not null, primary key
-#  roster_id  :integer
 #  episode_id :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  user_id    :integer
+#  league_id  :integer
 #
 
 require 'rails_helper'

@@ -13,7 +13,6 @@ class Roster < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :league
 	has_and_belongs_to_many :contestants, inverse_of: :rosters
-	has_many :rounds
 	
 	validates :user_id, :presence => true
 	validates :league_id, :presence => true
@@ -27,14 +26,5 @@ class Roster < ActiveRecord::Base
 		end
 		return roster_total_score
 	end
-
-	# method for BRACKET only; takes a collection of rounds within one roster
-	def calculate_total_rounds_points 		
-		rounds = self.rounds
-		roster_total_rounds_score = 0
-		rounds.each do |round|
-			roster_total_rounds_score += round.calculate_round_points
-		end
-		return roster_total_rounds_score
-	end
+	
 end

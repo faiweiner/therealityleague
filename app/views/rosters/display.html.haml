@@ -11,9 +11,8 @@
 				- if @roster.contestants.any?
 					= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
 			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
-	- if @roster.contestants.any?
-		= render partial: "rosters/bracket/show_bracket" if @league.type == "Bracket"
-		= render partial: "rosters/fantasy/show_fantasy" if @league.type == "Fantasy"
+	- if @contestants.any?
+		= render partial: "rosters/fantasy/show_fantasy"
 	- else
 		.panel-body
 			.col-lg-12.text-center

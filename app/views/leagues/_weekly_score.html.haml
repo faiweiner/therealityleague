@@ -3,20 +3,20 @@
 		%table.table.table-hover
 			- if @league.type == "Fantasy"
 				%h3 Participants' Weekly Scores
+				%thead
+					%th Participants
+					- @league.season.episode_count.times do |i|
+						%th= i+1
+					%th Total
+				%tbody
+					- @participants.each_with_index do |participant, index|
+						%tr
+							%td= participant.username
+							- @league.season.episode_count.times do |i|
+								/ - if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
+								/ 	%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
+								/ - else
+								/ 	%td --
+							%td= @participants_roster_total[participant.username]
+					%h3 Participants' Weekly Bracket Scores
 			- elsif @league.type == "Bracket"
-				%h3 Participants' Weekly Bracket Scores
-			%thead
-				%th Participants
-				- @league.season.episode_count.times do |i|
-					%th= i+1
-				%th Total
-			%tbody
-				- @participants.each_with_index do |participant, index|
-					%tr
-						%td= participant.username
-						- @league.season.episode_count.times do |i|
-							- if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
-								%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
-							- else
-								%td --
-						%td= @participants_roster_total[participant.username]

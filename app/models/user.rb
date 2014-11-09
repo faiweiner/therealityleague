@@ -20,9 +20,9 @@ class User < ActiveRecord::Base
 
 	has_and_belongs_to_many :leagues, inverse_of: :users
 	has_many :rosters
+	has_many :rounds
 	has_many :contestants, through: :rosters
 	has_many :seasons, through: :leagues
-	has_many :rounds, through: :rosters
 
 	# FIXME! Come bck to deal with dependencies please
 
@@ -37,5 +37,6 @@ class User < ActiveRecord::Base
 		roster = self.rosters.where(:league_id => league.id).first
 		roster || Roster.first
 	end
+
 end
 

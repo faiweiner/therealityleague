@@ -47,9 +47,8 @@ class RostersController < ApplicationController
 	end
 
 	def display
-		@roster = Roster.includes(:league, :rounds, :contestants).find(params[:id])
+		@roster = Roster.includes(:league, :contestants).find(params[:id])
 		@league = @roster.league
-		@rounds = @roster.rounds
 		@season = Season.includes(:contestants, :episodes).find(@league.season_id)
 		@show = @season.show
 
@@ -81,7 +80,7 @@ class RostersController < ApplicationController
 
 		if @league.active?
 			@all_contestants = @season.contestants
-			@selected_contestants = @roster.contestants.sort
+			@selected_contestants = @roster.contestants.order(name: :asc)
 			@available_contestants = []
 			# iterate to pull list of non-selected contestants
 			@all_contestants.select do |contestant|
