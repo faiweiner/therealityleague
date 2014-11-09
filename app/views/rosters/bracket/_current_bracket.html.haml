@@ -10,29 +10,31 @@
 				= episode.id
 			.panel-body{id: "round#{i}", "data-episode-id" => "#{ episode.id }", "data-origin-box-number" => i}
 .row
-	.col-lg-2
+	.col-lg-3
 		.panel
 			%h5 Contestants
-			- @all_contestants.each do |contestant|
-				.thumbnail.thumbnail-all-contestants
+			- @available_contestants.each do |contestant|
+				.thumbnail.thumbnail-all-contestants.col-lg-6{class: "contestant#{contestant.id}"}
 					= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
 					.caption
 						= contestant.name
 						.pull-right
-							%i.add-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
-
+							%i.add-bracket.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
+			= @all_contestants.count
+			= @available_contestants.count
 	- @roster.rounds.each_with_index do |round, i|
-		.col-lg-2.panel.panel-default
+		.col-lg-2.panel.panel-default#round{"data-round-id" => round.id}
 			.panel-header
 				%h5 Ep #{i+1}
+				%p #{round.contestants.count} out of X contestants
 				.btn.btn-primary.btn-sm Save
 				- round.contestants.order(name: :asc).each do |contestant|
-					.thumbnail.thumbnail-all-contestants
-						= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+					.thumbnail.thumbnail-contestant{class: "contestant#{contestant.id}", "data-contestant-id" => contestant.id, "data-round-id" => round.id}
+						= image_tag contestant.image, {class: "remove", "data-contestant-id" => contestant.id, "data-round-id" => round.id}
 						.caption
 							= contestant.name
 							.pull-right
-								%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
+								%i.remove-bracket.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id, "data-origin-box-number" => -1}
 .col-lg-12
 	%ul.pagination
 

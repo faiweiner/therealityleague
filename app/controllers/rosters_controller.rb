@@ -25,14 +25,15 @@ class RostersController < ApplicationController
 		@roster = Roster.includes(:league).find(params[:id])
 		@league = @roster.league
 		@season = @league.season
+		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
 		@selected_contestants = @roster.contestants.order(name: :asc)
+		
 		case @league.type
 		when "Fantasy"
 			@selected_contestants = @roster.contestants.order(name: :asc)
 		when "Bracket"
 			@eps_record = @season.episode_count
 		end
-		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
 		respond_to do |format|
 			format.html
 			format.js {

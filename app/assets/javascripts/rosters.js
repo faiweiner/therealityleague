@@ -69,21 +69,34 @@ $(document).ready(function () {
 				},
 				dataType: 'JSON'
 			}).done(function (response) {
-				var RoundId = response.round.id;
+				var roundId = response.round.id;
 				$.ajax({
-					url: '/rounds/' + RoundId + '/add/' + contestantId,
+					url: '/rounds/' + roundId + '/add/' + contestantId,
 					type: 'POST',
 					success: function (msg) {
-						console.log('success!');
 					}
 				}).done(function (response) {
+					$contestantBox = $('.contestant'+contestantId);
+					$contestantBox.empty();
 				})
 			});
-			$contestantBoard.empty();
-
 		};
 
-		var removeContestantFromRound = function (contestantId, roundId) {};
+		var removeContestantFromRound = function (contestantId, originBoxNumber) {
+			$recipientBox = $('#round');
+			roundId = $recipientBox.data().roundId;
+
+			$.ajax({
+				url:	'/rounds/' +  roundId + '/remove/' + contestantId,
+				type:	'POST',
+				success: function (msg) {
+
+				}
+			}).done(function (response) {
+				$contestantBox = $('.contestant'+contestantId);
+				$contestantBox.empty();
+			});
+		};
 
 		// ----- END server-side ----- //
 
@@ -102,7 +115,7 @@ $(document).ready(function () {
 					addContestantToRound(contestantId, rosterId, originBoxNumber);
 					break;
 				case 'remove-bracket':
-					removeContestantFromRound(contestantId, rosterId, originBoxNumber);
+					removeContestantFromRound(contestantId, originBoxNumber);
 					break;
 			};
 		};
@@ -125,9 +138,12 @@ $(document).ready(function () {
 				case 'remove-button glyphicon glyphicon-remove':
 					var operation = 'remove-roster';
 					break;
-				case 'add-button glyphicon glyphicon-arrow-right':
+				case 'add-bracket glyphicon glyphicon-arrow-right':
 					var operation = 'add-bracket';
-					break;									
+					break;
+				case 'remove-bracket glyphicon glyphicon-remove':
+					var operation = 'remove-bracket';
+					break;
 			};
 
 			rosterOperator(operation, contestantId, rosterId, originBoxNumber);

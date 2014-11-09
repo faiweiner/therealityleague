@@ -62,6 +62,7 @@ Rails.application.routes.draw do
 	post	'rounds' => 'rounds#create'
 	get		'rounds/:round_id' => 'rounds#display', :as => :round_display
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add
+	post	'rounds/:round_id/remove/:contestant_id' => 'rounds#remove', :as => :round_remove
 	resources :rounds
 	
 	get		'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season
