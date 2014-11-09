@@ -18,5 +18,5 @@
 #  updated_at      :datetime
 #
 
-class Bracket < League
+class Elimination < League
 end

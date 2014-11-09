@@ -25,10 +25,12 @@
 			- elsif @a_participant == false && @league.active?
 				= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
 	- case @league.type
-	- when "Bracket"
-		= render partial: "leagues/bracket/ranking"
+	- when "Elimination"
+		= render partial: "leagues/elimination/ranking"
+		- if @league.season.episode_count
+			= render partial: "leagues/elimination/weekly_score"
 	- when "Fantasy"
-		= render partial: "ranking"			
-	- if @league.season.episode_count
-		= render partial: "weekly_score"
+		= render partial: "leagues/fantasy/ranking"			
+		- if @league.season.episode_count
+			= render partial: "leagues/fantasy/weekly_score"
 

@@ -3,11 +3,11 @@
 # Table name: rounds
 #
 #  id         :integer          not null, primary key
+#  user_id    :integer
+#  league_id  :integer
 #  episode_id :integer
 #  created_at :datetime
 #  updated_at :datetime
-#  user_id    :integer
-#  league_id  :integer
 #
 
 class Round < ActiveRecord::Base

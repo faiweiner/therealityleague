@@ -13,6 +13,8 @@ class CreateSeasons < ActiveRecord::Migration
 			t.string		:image
 			t.boolean		:published, default: :false
 			t.boolean		:expired, default: :false
+			t.string		:website
+			t.string		:network
 			t.timestamps
 		end
 	end

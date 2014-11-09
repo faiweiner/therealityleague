@@ -1,9 +1,8 @@
 class RoundsController < ApplicationController
 
 	def index
-		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
-		@rounds_collection
-
+		@rounds_collection = Round.where(league_id: params[:league_id])
+	
 		season = @roster.league.season
 		origin_box = params[:origin_box_number].to_i			#contestant box will always be -1
 		target_episode_number = origin_box + 1						# +1 to reflect array's position

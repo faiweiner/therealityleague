@@ -3,6 +3,7 @@ class LeaguesController < ApplicationController
 	before_action :check_if_logged_in, :except => [:index, :new]
 	skip_before_action :verify_authenticity_token, :only => [:results]
 	before_action :save_login_state, :only => [:new, :search, :results]
+	before_action :get_league, :only => [:edit, :invite]
 	before_action :private_restriction, :only => [:display]
 	before_action :commissioner_restriction?, :only => [:edit]
 
@@ -43,7 +44,6 @@ class LeaguesController < ApplicationController
 			redirect_to new_user_path
 		end
 		
-		@type = [["Fantasy", "Fantasy"],["Bracket", "Bracket"]]
 		@export_show_list = Show.all
 		@export_season_list = Season.where(expired: false)
 		
@@ -85,7 +85,6 @@ class LeaguesController < ApplicationController
 			flash[:color] = "prohibited"
 			redirect_to league_path(params[:id])
 		end
-		@league = League.includes(:season).find(params[:id]).becomes(League)
 		@league_show_id = @league.season.show_id
 		@league_season_id = @league.season_id
 		@league_type = @league.type
@@ -110,7 +109,6 @@ class LeaguesController < ApplicationController
 		@rules_survival = Show.get_schemes(@show.id, "Survival")
 		@rules_game = Show.get_schemes(@show.id, "Game")
 		@rules_extra =Show.get_schemes(@show.id, "Extracurricular")
-		@league_type = @league.type
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
 		
@@ -134,19 +132,23 @@ class LeaguesController < ApplicationController
 		@participants_roster_total = {}
 		@participants_roster_weekly = {}
 
-		case @league_type
+		case @league.type
 
-		# FOR BRACKETS ROSTERS ---- assign values to hashes --- 
-		when "Bracket"
-			@rounds_collection = []
+		# FOR ELIMINATION ---- assign values to hashes --- 
+		when "Elimination"
 			@participants.each do |participant|
-				# get Roster ID
-				@rounds_collection = participant.rounds.where(league_id: @league.id).pluck(:id)[0]
-
-				@rounds_collection.each do |round|
-					round.calculate_round_points
-				end
+				@rounds_collection = {
+					participant.id => [Round.includes(:league, :user, :episode, :contestants).where(user_id: participant.id, league_id: @league.id)]
+				}
 			end
+			# @participants.each do |participant|
+			# 	# get Roster ID
+			# 	@rounds_collection = participant.rounds.where(league_id: @league.id).pluck(:id)[0]
+
+			# 	@rounds_collection.each do |round|
+			# 		round.calculate_round_points
+			# 	end
+			# end
 				# get Rounds Total
 				# roster_rounds_total = Roster.find(roster_id).calculate_total_rounds_points
 				# @participants_roster_total.store(participant.username, roster_rounds_total)
@@ -236,7 +238,6 @@ class LeaguesController < ApplicationController
 	end
 
 	def invite
-		@league = League.find params[:id]
 	end
 
 	def access
@@ -274,6 +275,10 @@ class LeaguesController < ApplicationController
 	# standard strong params practice
 	def league_params
 		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active, :draft_deadline, :draft_limit)
+	end
+
+	def get_league
+		@league = League.includes(:users, :season).find(params[:id]).becomes(League)
 	end
 
 	def private_restriction

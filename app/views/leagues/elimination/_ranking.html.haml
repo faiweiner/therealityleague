@@ -1,0 +1,26 @@
+.panel-body
+	.col-lg-12
+		%h3 Bracket Ranking
+		%table.table.table-hover
+			%thead
+				%th Rank
+				%th Participants
+				%th Total Pts
+				%th Roster
+			%tbody
+				- @participants.each_with_index.each do |participant, i|
+					%tr{"data-ranking" => i + 1}
+						%td= i + 1
+						%td= participant.username
+						%td
+							- participant.rounds.each do |round|
+								= round.calculate_round_points
+						%td
+							- if participant == @current_user
+								= link_to "View", "#", class: "btn btn-primary btn-sm"
+								- if @league.active?
+									= link_to "Edit", "#", class: "btn btn-primary btn-sm" 
+								- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
+									= link_to "Leave League", "#", :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn-sm pull-right"		
+							- else
+								= link_to "View", "#", class:"btn btn-default btn-sm"

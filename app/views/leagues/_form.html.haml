@@ -62,7 +62,7 @@
 					= f.label :type
 					%br/
 				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
-					- if @league_type	
+					- if @league.type
 						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
 					- else
 						= f.select(:type, [], {:include_blank => "Select draft type"}, class: "form-control step3")

@@ -9,7 +9,7 @@ Season.destroy_all
 Episode.destroy_all
 Contestant.destroy_all
 
-Bracket.destroy_all
+Elimination.destroy_all
 Fantasy.destroy_all
 
 Scheme.destroy_all
@@ -95,8 +95,8 @@ survivor29 = Season.create(
 
 league1 = Fantasy.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :type => 'Fantasy', :public_access => true)
 league2 = Fantasy.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :type => 'Fantasy', :public_access => false)
-league3 = Fantasy.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :type => 'Fantasy', :public_access => false)
-league4 = Bracket.create(:name => 'Edelman\'s Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :type => 'Bracket', :public_access => false, :active => false)
+league3 = Fantasy.create(:name => 'Edelman\'s Fantasy Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :type => 'Fantasy', :public_access => false)
+league4 = Elimination.create(:name => 'Edelman\'s Elimination Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :type => 'Elimination', :public_access => false, :active => false)
 
 league1.users << [user1, user2, user3]
 league2.users << [user1, user3, user4, user5]

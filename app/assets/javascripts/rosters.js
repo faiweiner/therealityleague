@@ -111,10 +111,10 @@ $(document).ready(function () {
 				case 'remove-roster':
 					removeContestantFromRoster(contestantId, rosterId);
 					break;
-				case 'add-bracket':
+				case 'add-round':
 					addContestantToRound(contestantId, rosterId, originBoxNumber);
 					break;
-				case 'remove-bracket':
+				case 'remove-round':
 					removeContestantFromRound(contestantId, originBoxNumber);
 					break;
 			};
@@ -138,11 +138,11 @@ $(document).ready(function () {
 				case 'remove-button glyphicon glyphicon-remove':
 					var operation = 'remove-roster';
 					break;
-				case 'add-bracket glyphicon glyphicon-arrow-right':
-					var operation = 'add-bracket';
+				case 'add-round glyphicon glyphicon-arrow-right':
+					var operation = 'add-round';
 					break;
-				case 'remove-bracket glyphicon glyphicon-remove':
-					var operation = 'remove-bracket';
+				case 'remove-round glyphicon glyphicon-remove':
+					var operation = 'remove-round';
 					break;
 			};
 

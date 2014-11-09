@@ -75,7 +75,7 @@ $(document).ready(function () {
 					paramName: 'leagueType',
 					source: [
 						{ label: 'Fantasy', value: 'Fantasy'},
-						{ label: 'Bracket', value: 'Bracket'}
+						{ label: 'Elimination', value: 'Elimination'}
 					],	// end source
 					onChange: function (data, response) {
 						var leagueType = response;
@@ -83,7 +83,7 @@ $(document).ready(function () {
 						if (leagueType == 'Fantasy') {
 							$draftDatePicker.attr('disabled', false);						
 							$draftLimitField.attr('disabled', false);		
-						} else if (leagueType == 'Bracket') {
+						} else if (leagueType == 'Elimination') {
 							$draftDatePicker.attr('disabled', 'disabled');
 							$draftLimitField.attr('disabled', 'disabled');
 						};
