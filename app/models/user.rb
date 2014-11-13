@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 		roster || Roster.first
 	end
 
-	def calculate_total_round_points(league)
+	def rounds_for_league(league)
 		rounds = self.rounds.where(:league_id =>league.id)
 	end
 

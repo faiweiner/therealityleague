@@ -19,6 +19,10 @@ class RoundsController < ApplicationController
 
 	end
 
+	def edit
+		@league = League.find(params[:league_id])	
+	end
+
 	def add
 		# adding a contestant to a round
 		@round = Round.includes(:contestants).find(params[:round_id])

@@ -19,4 +19,7 @@
 #
 
 class Fantasy < League
+	def self.model_name
+		League.model_name
+	end
 end

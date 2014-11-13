@@ -1,6 +1,6 @@
 .panel-body
 	.col-lg-12
-		%h3 Bracket Ranking
+		%h3 League Ranking
 		%table.table.table-hover
 			%thead
 				%th Rank
@@ -17,9 +17,13 @@
 								= round.calculate_round_points
 						%td
 							- if participant == @current_user
-								= link_to "View", "#", class: "btn btn-primary btn-sm"
 								- if @league.active?
-									= link_to "Edit", "#", class: "btn btn-primary btn-sm" 
+									- if participant.rounds.any?
+										= link_to "View", "#", class: "btn btn-primary btn-sm"
+										= link_to "Edit", "#", class: "btn btn-primary btn-sm" 
+									- else
+										= link_to "Create Brackets", rounds_edit_path(@league.id), class: "btn btn-primary btn-sm" 
+									
 								- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
 									= link_to "Leave League", "#", :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn-sm pull-right"		
 							- else

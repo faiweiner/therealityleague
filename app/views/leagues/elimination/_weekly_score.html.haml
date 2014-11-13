@@ -1,4 +1,4 @@
-.panel-body
+.panel-body 
 	.col-lg-12
 		%table.table.table-hover
 			%h3 Participants' Weekly Scores
@@ -11,6 +11,8 @@
 				- @participants.each_with_index do |participant, index|
 					%tr
 						%td= participant.username
-						- participant.rounds.each do |round|
+						- participant.rounds_for_league(@league).each do |round|
 							%td= round.calculate_round_points
-						%td= participant.calculate_total_round_points(@league)
+
+
+								
