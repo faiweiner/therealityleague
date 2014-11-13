@@ -12,7 +12,7 @@
 					= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
 			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
 	- if @contestants.any?
-		= render partial: "rosters/fantasy/show_fantasy"
+		= render partial: "show_fantasy"
 	- else
 		.panel-body
 			.col-lg-12.text-center

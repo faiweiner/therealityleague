@@ -57,8 +57,8 @@ Rails.application.routes.draw do
 	put		'rosters/:id' => 'rosters#update'
 	delete 'rosters/:id' => 'rosters#destroy'
 
-	get		'rounds' => 'rounds#index', :as => :rounds
 	get		'rounds/:league_id/edit' => 'rounds#edit', :as => :rounds_edit
+	get		'rounds/:league_id/:user_id' => 'rounds#index', :as => :rounds
 	post	'rounds' => 'rounds#create'
 	get		'rounds/:round_id' => 'rounds#display', :as => :round_display
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add

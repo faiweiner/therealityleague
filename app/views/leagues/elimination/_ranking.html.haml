@@ -17,14 +17,13 @@
 								= round.calculate_round_points
 						%td
 							- if participant == @current_user
+								= link_to "View", rounds_path(@league.id, participant.id), class: "btn btn-primary btn-sm"
 								- if @league.active?
 									- if participant.rounds.any?
-										= link_to "View", "#", class: "btn btn-primary btn-sm"
-										= link_to "Edit", "#", class: "btn btn-primary btn-sm" 
+										= link_to "Edit", rounds_edit_path(@league.id), class: "btn btn-primary btn-sm" 
 									- else
 										= link_to "Create Brackets", rounds_edit_path(@league.id), class: "btn btn-primary btn-sm" 
-									
 								- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
 									= link_to "Leave League", "#", :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn-sm pull-right"		
 							- else
-								= link_to "View", "#", class:"btn btn-default btn-sm"
+								= link_to "View", rounds_path(@league.id, participant.id), class: "btn btn-default btn-sm"

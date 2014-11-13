@@ -20,5 +20,12 @@
 						Final Round
 					- else
 						Round #{ i+1 }
-			= render partial: "current_bracket"
+			.row
+				#availableContestant.col-lg-4
+					= render partial: "avail_contestants"
+				#roundEdit.col-lg-6
+					- if @rounds_collection.count == 0
+						= render partial: "empty_bracket"
+					- else
+						= render partial: "current_bracket"
 		/ END Bracket Board

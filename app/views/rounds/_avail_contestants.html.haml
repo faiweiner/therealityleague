@@ -1,0 +1,14 @@
+.row
+	.col-lg-12
+		%h4 Contestant Pool
+	.col-lg-12
+		- @all_contestants.each do |contestant|
+			.contestants-panel
+				.thumbnail.contestant-thumbnail
+					%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+					/ %img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
+					.caption
+						.contestant-name
+							= contestant.name
+						.action
+							%i.remove-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id}

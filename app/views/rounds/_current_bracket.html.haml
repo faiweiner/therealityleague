@@ -1,17 +1,5 @@
 .row
-	- @season.episodes.each_with_index do |episode, i|
-		.col-lg-1
-			.panel.panel-default
-				%h5 Ep #{i+1}
-				= episode.id
-			.panel-body{id: "round#{i}", "data-episode-id" => "#{ episode.id }", "data-origin-box-number" => i}
-.row
-	.col-lg-3
-		.panel
-
-.col-lg-12
-	%ul.pagination
-
-			
-#bracketBoard.row
-	#bracketDisplay.col-lg-3
+	.col-lg-12
+		%h4 Round #{ @round.id } (Episode #{ @round.episode. })
+	.col-lg-12
+		%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est, quia, harum. Ex totam dolore modi nemo harum odit eveniet, beatae ut deserunt adipisci voluptatum obcaecati aspernatur suscipit ad, molestias rerum.

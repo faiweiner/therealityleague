@@ -1,0 +1,33 @@
+.panel.panel-default
+	.panel-body
+		.col-md-10.col-lg-10
+			%h3= @league.name
+			%p
+				= @season.show.name + ": "
+				= @season.name
+			%p 
+		- if @league.active?
+			.col-lg-2.text-right
+				%h4.small
+					Deadline: #{@league.season.premiere_date.strftime("%B %d")}
+			%p.small
+				Yeeee
+	.panel-body
+		/ Contestant Board
+		#bracketBoard.col-lg-12
+			%p Click on a round to view your contestant selection.
+			- @season.episode_count.times do |i|
+				.btn.btn-default.btn-sm 
+					- if i+1 == @season.episode_count
+						Final Round
+					- else
+						Round #{ i+1 }
+			%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui quisquam iste placeat facilis nobis repellat perspiciatis, magnam, veniam quidem, vero cum expedita voluptates deleniti culpa dignissimos eveniet quos! Aperiam, adipisci.
+			- @rounds_collection.each_with_index do |round, i|
+				.panel.panel-default.col-lg-2
+					.col-lg-12
+						%h3 Round #{ i+1 }
+						- round.contestants.order(name: :asc).each do |contestant|	
+							= contestant.name
+
+		/ END Bracket Board
