@@ -1,8 +1,4 @@
 .row
-	.col-lg-12
-		%h3 Your Bracket
-		%h5 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo eos, beatae et expedita minus, nihil laborum facilis quisquam. Dolor tempora deleniti inventore sit eius magnam ea quae atque sed provident.
-.row
 	- @season.episodes.each_with_index do |episode, i|
 		.col-lg-1
 			.panel.panel-default
@@ -12,29 +8,7 @@
 .row
 	.col-lg-3
 		.panel
-			%h5 Contestants
-			- @available_contestants.each do |contestant|
-				.thumbnail.thumbnail-all-contestants.col-lg-6{class: "contestant#{contestant.id}"}
-					= image_tag contestant.image, {class: "add", "data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-					.caption
-						= contestant.name
-						.pull-right
-							%i.add-bracket.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id, "data-origin-box-number" => -1}
-			= @all_contestants.count
-			= @available_contestants.count
-	- @roster.rounds.each_with_index do |round, i|
-		.col-lg-2.panel.panel-default#round{"data-round-id" => round.id}
-			.panel-header
-				%h5 Ep #{i+1}
-				%p #{round.contestants.count} out of X contestants
-				.btn.btn-primary.btn-sm Save
-				- round.contestants.order(name: :asc).each do |contestant|
-					.thumbnail.thumbnail-contestant{class: "contestant#{contestant.id}", "data-contestant-id" => contestant.id, "data-round-id" => round.id}
-						= image_tag contestant.image, {class: "remove", "data-contestant-id" => contestant.id, "data-round-id" => round.id}
-						.caption
-							= contestant.name
-							.pull-right
-								%i.remove-bracket.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id, "data-origin-box-number" => -1}
+
 .col-lg-12
 	%ul.pagination
 

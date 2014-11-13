@@ -21,6 +21,9 @@ class RoundsController < ApplicationController
 
 	def edit
 		@league = League.find(params[:league_id])	
+		@season = Season.includes(:show, :contestants).find(@league.season.id)
+		@all_contestants = @season.contestants
+		@available_contestants = @all_contestants
 	end
 
 	def add

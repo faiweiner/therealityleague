@@ -1,1 +1,24 @@
-= render 'form'
+.panel.panel-default
+	.panel-body
+		.col-md-10.col-lg-10
+			%h3= @league.name
+			%p
+				= @season.show.name + ": "
+				= @season.name
+			%p 
+		.col-lg-2.text-right
+			%h4.small
+				Deadline: #{@league.season.premiere_date.strftime("%B %d")}
+			%p.small
+	.panel-body
+		/ Contestant Board
+		#bracketBoard.col-lg-12
+			%p Select contestants to make it through each of the #{ @season.episode_count } rounds on this season of #{ @season.show.name }.
+			- @season.episode_count.times do |i|
+				.btn.btn-default.btn-sm 
+					- if i+1 == @season.episode_count
+						Final Round
+					- else
+						Round #{ i+1 }
+			= render partial: "current_bracket"
+		/ END Bracket Board
