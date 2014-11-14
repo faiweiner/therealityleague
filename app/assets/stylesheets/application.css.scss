@@ -119,7 +119,7 @@ div {
 	width: 0 auto;
 }
 
-.contestants-panel {
+.contestants-pool {
 	display: inline-block;
 }
 
@@ -273,7 +273,7 @@ input.form-control.input-small {
 	filter: alpha(opacity=90); /* IE transparency */  
 }
 
-#bracketScoreBoard{
+#bracketScoreBoard {
 	width: auto;
 	height: 100%;
 	overflow-y: hidden;
@@ -284,4 +284,33 @@ input.form-control.input-small {
 		vertical-align: top;
 
 	}
+}
+
+// Elimination Bracket Viewing
+
+#roundSelector {
+	border: 1px solid red;
+}
+
+#roundViewPort {
+	display: inline-block;
+	border: 1px solid blue;
+}
+
+ul.bracketList {
+	width: 100%;
+	list-style-type: none;
+	white-space: nowrap;
+	overflow-x: auto;
+}
+
+li.bracketItem {
+	list-style: none;
+	display: inline-block;
+	width: 110px;
+}
+.documentItem {
+	border: 1px solid black;
+	padding: 0;
+	height: 100%;
 }

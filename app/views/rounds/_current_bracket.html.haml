@@ -1,5 +1,16 @@
 .row
 	.col-lg-12
-		%h4 Round #{ @round.id } (Episode #{ @round.episode. })
-	.col-lg-12
-		%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est, quia, harum. Ex totam dolore modi nemo harum odit eveniet, beatae ut deserunt adipisci voluptatum obcaecati aspernatur suscipit ad, molestias rerum.
+		- @rounds_collection.each_with_index do |round, i|
+			- if @rounds_collection.include? round
+				%h4 Round #{ i+1 }
+				%p You have selected #{ round.contestants.count } out of 18 contestants for this round.
+				- @round.contestants.each do |contestant|
+					.contestants-selected
+						.thumbnail.contestant-thumbnail
+							%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+							/ %img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
+							.caption
+								.contestant-name
+									= contestant.name
+								.action
+									%i.add-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id}

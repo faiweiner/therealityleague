@@ -58,45 +58,7 @@ $(document).ready(function () {
 		};
 
 
-		var addContestantToRound = function (contestantId, rosterId, originBoxNumber) {
-
-			$recipientBox = $('#round')
-			$.ajax({
-				url: '/rounds',
-				data: { 
-					roster_id: rosterId,
-					origin_box_number: originBoxNumber
-				},
-				dataType: 'JSON'
-			}).done(function (response) {
-				var roundId = response.round.id;
-				$.ajax({
-					url: '/rounds/' + roundId + '/add/' + contestantId,
-					type: 'POST',
-					success: function (msg) {
-					}
-				}).done(function (response) {
-					$contestantBox = $('.contestant'+contestantId);
-					$contestantBox.empty();
-				})
-			});
-		};
-
-		var removeContestantFromRound = function (contestantId, originBoxNumber) {
-			$recipientBox = $('#round');
-			roundId = $recipientBox.data().roundId;
-
-			$.ajax({
-				url:	'/rounds/' +  roundId + '/remove/' + contestantId,
-				type:	'POST',
-				success: function (msg) {
-
-				}
-			}).done(function (response) {
-				$contestantBox = $('.contestant'+contestantId);
-				$contestantBox.empty();
-			});
-		};
+		
 
 		// ----- END server-side ----- //
 

@@ -1,5 +1,5 @@
 - @all_contestants.each do |contestant|
-	.col-lg-4.contestants-panel
+	.col-lg-4
 		.thumbnail.contestant-thumbnail
 			- if @selected_contestants.include? contestant
 				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 

@@ -22,7 +22,7 @@ class RoundsController < ApplicationController
 		else
 			@round = @rounds_collection.first
 		end
-		@all_contestants = @season.contestants
+		 @available_contestants = @season.contestants
 	end
 
 	def add
@@ -46,12 +46,28 @@ class RoundsController < ApplicationController
 	end
 		
 	def display
-		@round = Round.includes(:roster, :episode, :contestants).find(params[:round_id])
+		@round = Round.includes(:episode, :contestants).find(params[:round_id])
 		respond_to do |format|
 			format.html
 			format.js {
 				render :json => { 
 					:round => @round }
+			}
+		end
+	end
+
+	def available
+		@round = Round.includes(:episode, :contestants).find(params[:round_id])
+		@available_contestants = []
+		all_contestants = episode.season.contestants
+		all_contestants.each do |contestant|
+			@available_contestants << contestant unless @round.contestants.include? contestant
+		end
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:availableContestants => @available_contestants
+				}
 			}
 		end
 	end

@@ -21,9 +21,9 @@
 					- else
 						Round #{ i+1 }
 			.row
-				#availableContestant.col-lg-4
+				#availableContestant.col-lg-5
 					= render partial: "avail_contestants"
-				#roundEdit.col-lg-6
+				#roundEdit.col-lg-7{"data-round-id" => @round.id}
 					- if @rounds_collection.count == 0
 						= render partial: "empty_bracket"
 					- else

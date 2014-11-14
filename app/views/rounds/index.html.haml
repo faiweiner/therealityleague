@@ -10,11 +10,11 @@
 			.col-lg-2.text-right
 				%h4.small
 					Deadline: #{@league.season.premiere_date.strftime("%B %d")}
-			%p.small
-				Yeeee
+		%p.small
+			= link_to "Back to League", league_path(@league.id), class: "btn btn-default btn-sm"
 	.panel-body
 		/ Contestant Board
-		#bracketBoard.col-lg-12
+		#roundSelector.col-lg-12
 			%p Click on a round to view your contestant selection.
 			- @season.episode_count.times do |i|
 				.btn.btn-default.btn-sm 
@@ -22,12 +22,15 @@
 						Final Round
 					- else
 						Round #{ i+1 }
-			%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui quisquam iste placeat facilis nobis repellat perspiciatis, magnam, veniam quidem, vero cum expedita voluptates deleniti culpa dignissimos eveniet quos! Aperiam, adipisci.
+		#roundViewPort
+			%ul.bracketList.row
 			- @rounds_collection.each_with_index do |round, i|
-				.panel.panel-default.col-lg-2
-					.col-lg-12
-						%h3 Round #{ i+1 }
+				%li.bracketItem
+					.panel
+						%h4 Round #{ i+1 }
 						- round.contestants.order(name: :asc).each do |contestant|	
-							= contestant.name
+							.row
+								.col-lg-12
+									= contestant.name
 
 		/ END Bracket Board

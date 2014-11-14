@@ -2,8 +2,8 @@
 	.col-lg-12
 		%h4 Contestant Pool
 	.col-lg-12
-		- @all_contestants.each do |contestant|
-			.contestants-panel
+		- @available_contestants.each do |contestant|
+			.contestants-pool
 				.thumbnail.contestant-thumbnail
 					%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
 					/ %img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
@@ -11,4 +11,4 @@
 						.contestant-name
 							= contestant.name
 						.action
-							%i.remove-button.glyphicon.glyphicon-arrow-right{"data-contestant-id" => contestant.id}
+							%i.add-round.glyphicon.glyphicon-plus{"data-contestant-id" => contestant.id}
