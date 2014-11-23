@@ -138,7 +138,8 @@ class LeaguesController < ApplicationController
 					:score => participant.calculate_total_rounds_points(@league)
 				}
 			end
-			raise
+			@ranking = @participants_ranking.map.sort_by{ |k, v| -v[:score] }
+
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
 

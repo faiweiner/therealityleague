@@ -8,19 +8,17 @@
 				%th Total Pts
 				%th Actions
 			%tbody
-				- @participants.each_with_index.each do |participant, i|
-					%tr{"data-ranking" => i + 1}
+				- @ranking.each_with_index do |ranking, i|
+					%tr 
 						%td= i + 1
-						%td= participant.username
-						%td= participant.calculate_total_rounds_points(@league)
+						%td= ranking[1][:participant].username
+						%td= ranking[1][:score]
 						%td
-							- if participant == @current_user
-								- if @league.active? && participant.rounds.any?
-									= link_to "View", rounds_path(@league.id, participant.id), class: "btn btn-primary btn-sm"
+							- if ranking[1][:participant] == @current_user
+								- if @league.active? && ranking[1][:participant].rounds.any?
+									= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
 									= link_to "Edit", rounds_edit_path(@league.id), class: "btn btn-primary btn-sm" 
 								- else
 									= link_to "Build Elimination Bracket", rounds_create_path(@league.id), :action => "create", :method => "post", class: "btn btn-primary btn-sm" 
-								- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
-									= link_to "Leave League", "#", :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn-sm pull-right"		
 							- else
-								= link_to "View", rounds_path(@league.id, participant.id), class: "btn btn-default btn-sm"
+								= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-default btn-sm"
