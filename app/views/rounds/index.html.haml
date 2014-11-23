@@ -14,8 +14,7 @@
 				= link_to "Build Elimination Bracket", rounds_create_path(@league.id), class: "btn btn-default btn-sm"
 			- else
 				= link_to "Edit Rounds", rounds_edit_path(@league.id), class: "btn btn-default btn-sm"
-			%p.small
-				= link_to "Back to League", league_path(@league.id), class: "btn btn-default btn-sm"
+			= link_to "Back to League", league_path(@league.id), class: "btn btn-default btn-sm"
 	.panel-body
 		/ Contestant Board
 		#roundSelector.col-lg-12

@@ -17,9 +17,11 @@ $(document).ready(function () {
 				url: '/rounds/' + roundId + '/add/' + contestantId,
 				type: 'POST',
 				success: function (msg) {
+					
 				}
-			}).done(function (response) {
-			})
+			}).done(function () {
+				$roundEditBoard.empty();
+			});
 
 		};
 

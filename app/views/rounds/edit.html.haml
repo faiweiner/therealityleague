@@ -1,16 +1,15 @@
 .panel.panel-default
 	.panel-body
-		.col-md-10.col-lg-10
+		.col-md-10.col-lg-8
 			%h3= @league.name
 			%p
 				= @season.show.name + ": "
 				= @season.name
 			%p 
-		.col-lg-2.text-right
-			%h4.small
-				Deadline: #{@league.season.premiere_date.strftime("%B %d")}
-			%p.small
-				= link_to "Back to League", league_path(@league.id), class: "btn btn-default btn-sm"
+		.col-lg-4.text-right
+			%h4.small Deadline: #{@league.season.premiere_date.strftime("%B %d")}
+			= link_to "Bracket Overview", rounds_path(@league.id, @current_user.id), class: "btn btn-default btn-sm"
+			= link_to "Back to League", league_path(@league.id), class: "btn btn-default btn-sm"
 	.panel-body
 		/ Contestant Board
 		#bracketBoard.col-lg-12
