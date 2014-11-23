@@ -5,7 +5,7 @@
 		- @available_contestants.each do |contestant|
 			.contestants-pool
 				.thumbnail.contestant-thumbnail
-					%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+					%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "contestant.id"}/ 
 					/ %img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
 					.caption
 						.contestant-name

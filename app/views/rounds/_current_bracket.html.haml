@@ -1,16 +1,24 @@
 .row
-	.col-lg-12
-		- @rounds_collection.each_with_index do |round, i|
+	- @rounds_collection_array.each do |round|
+		.col-lg-12
 			- if @rounds_collection.include? round
-				%h4 Round #{ i+1 }
-				%p You have selected #{ round.contestants.count } out of 18 contestants for this round.
-				- @round.contestants.each do |contestant|
-					.contestants-selected
-						.thumbnail.contestant-thumbnail
-							%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
-							/ %img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
-							.caption
-								.contestant-name
-									= contestant.name
-								.action
-									%i.add-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id}
+				%h4
+					Round 
+					= @rounds_collection_array.rindex(round) + 1
+					.btn.btn-xs.btn-default
+						Clear All
+						= @contestants.count
+		.col-lg-12#roundDisplay{"data-contestants-count" => @contestants.count, "data-index" => @rounds_collection_array.rindex(round) + 1 }
+			- @contestants.each do |contestant|
+				.contestants-selected
+					.thumbnail.contestant-thumbnail
+						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+						/ %img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
+						.caption
+							.contestant-name
+								= contestant.name
+							.action
+								%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id}
+		.col-lg-12
+			.btn.btn-default.btn-md.saveButton
+				Save and Next

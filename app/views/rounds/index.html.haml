@@ -17,17 +17,17 @@
 		#roundSelector.col-lg-12
 			%p Click on a round to view your contestant selection.
 			- @season.episode_count.times do |i|
-				.btn.btn-default.btn-sm 
+				.btn.btn-default.btn-sm
 					- if i+1 == @season.episode_count
 						Final Round
 					- else
 						Round #{ i+1 }
 		#roundViewPort
 			%ul.bracketList.row
-			- @rounds_collection.each_with_index do |round, i|
+			- @rounds_collection_array.each do |round|
 				%li.bracketItem
 					.panel
-						%h4 Round #{ i+1 }
+						%h4= @rounds_collection_array.rindex(round)
 						- round.contestants.order(name: :asc).each do |contestant|	
 							.row
 								.col-lg-12

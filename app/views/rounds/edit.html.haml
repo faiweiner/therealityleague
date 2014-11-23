@@ -13,19 +13,20 @@
 	.panel-body
 		/ Contestant Board
 		#bracketBoard.col-lg-12
-			%p Select contestants to make it through each of the #{ @season.episode_count } rounds on this season of #{ @season.show.name }.
-			- @season.episode_count.times do |i|
-				.btn.btn-default.btn-sm 
-					- if i+1 == @season.episode_count
-						Final Round
-					- else
-						Round #{ i+1 }
 			.row
 				#availableContestant.col-lg-5
 					= render partial: "avail_contestants"
-				#roundEdit.col-lg-7{"data-round-id" => @round.id}
+				#roundEdit.col-lg-5{"data-round-id" => @round.id}
 					- if @rounds_collection.count == 0
 						= render partial: "empty_bracket"
 					- else
 						= render partial: "current_bracket"
+				#board.col-lg-2
+					- @season.episode_count.times do |i|
+						.row
+							.btn.btn-default.btn-block.btn-sm{"data-index" => i + 1, "id" => i + 1}
+								- if i+1 == @season.episode_count
+									Final Round
+								- else
+									Round #{ i+1 }
 		/ END Bracket Board

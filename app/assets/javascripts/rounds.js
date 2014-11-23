@@ -3,6 +3,22 @@ $(document).ready(function () {
 		console.log('Round Selection Board initialized');
 		$availableContestantBoard = $('#availableContestant');
 		$roundEditBoard = $('#roundEdit');
+		$roundDisplayBoard = $('#roundDisplay');
+
+		// Button changer
+		$roundButtons = $('.btn.btn-default.btn-block.btn-sm');
+		$saveButton = $('#saveButton');
+
+		for (var i = 0; i < $roundButtons.length; i++) {
+			var searchTerm = '#' + i
+			$matchingButton = $(searchTerm);
+			$buttonIndex = $matchingButton.data('index');
+			if ($matchingButton.data('index') == $roundDisplayBoard.data().index) {
+				console.log('found you!');
+				$matchingButton.removeClass('btn-default');
+				$matchingButton.addClass('btn-primary');
+			};
+		};
 
 		// ----- Begin server-side ----- //
 		
@@ -20,10 +36,7 @@ $(document).ready(function () {
 
 		};
 
-		var removeContestantFromRound = function (contestantId, originBoxNumber) {
-			$recipientBox = $('#round');
-			roundId = $recipientBox.data().roundId;
-
+		var removeContestantFromRound = function (contestantId, roundId) {
 			$.ajax({
 				url:	'/rounds/' +  roundId + '/remove/' + contestantId,
 				type:	'POST',
@@ -31,7 +44,6 @@ $(document).ready(function () {
 
 				}
 			}).done(function (response) {
-				$contestantBox = $('.contestant'+contestantId);
 				$contestantBox.empty();
 			});
 		};
@@ -40,15 +52,28 @@ $(document).ready(function () {
 
 		// ----- BEGIN client-side ----- //
 		// detects which operation to execute
-		var roundOperation = function (operation, contestantId, roundId) {
 
+		var removeContestantBox = function (contestantId) {
+
+		};
+
+		var roundOperation = function (operation, contestantId, roundId, element) {
+			$element = element;
+			var $parent = $element.parentElement.parentElement.parentElement.parentElement;
+
+			if ($parent.className == "contestants-selected") {
+				$parent.remove();
+			}
+		
 			switch (operation) {
 				case 'add-round':
 					addContestantToRound(contestantId, roundId);
 					break;
 				case 'remove-round':
-					console.log('wanna remove?');
-					// removeContestantFromRound(contestantId, roundId, originBoxNumber);
+					removeContestantFromRound(contestantId, roundId);
+					break;
+				case 'save-next':
+					goToNextRound(roundId);
 					break;
 			};
 		};
@@ -59,6 +84,7 @@ $(document).ready(function () {
 		$(this).on('click', function (event) {
 			// records which element is being clicked
 			$element = event.target;
+
 			// set arguments for roundOperation
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
@@ -73,15 +99,18 @@ $(document).ready(function () {
 				case 'remove-round glyphicon glyphicon-remove':
 					var operation = 'remove-round';
 					break;
+				case 'saveButton':
+					var operation = 'save-next';
+					break;
 			};
 
 			console.log($element);
-			console.log("class " + myClass);
-			console.log("contestant " + contestantId);
-			console.log("box " + originBoxNumber);
-			console.log("round " + roundId);
+			console.log('class ' + myClass);
+			console.log('contestant ' + contestantId);
+			console.log('box ' + originBoxNumber);
+			console.log('round ' + roundId);
 
-			roundOperation (operation, contestantId, roundId);
+			roundOperation (operation, contestantId, roundId, $element);
 		});
 
 
