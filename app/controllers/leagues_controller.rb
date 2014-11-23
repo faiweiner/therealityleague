@@ -132,8 +132,8 @@ class LeaguesController < ApplicationController
 		# ========== FOR ELIMINATION ========== #
 		when "Elimination"
 			@participants_ranking = {}
-			@participants.each do |participant|
-				@participants_ranking = {
+			@participants.each_with_index do |participant, i|
+				@participants_ranking[i] = {
 					:participant => participant,
 					:score => participant.calculate_total_rounds_points(@league)
 				}
