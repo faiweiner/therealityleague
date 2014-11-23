@@ -6,32 +6,19 @@ $(document).ready(function () {
 		$roundDisplayBoard = $('#roundDisplay');
 
 		// Button changer
-		$roundButtons = $('.btn.btn-default.btn-block.btn-sm');
 		$saveButton = $('#saveButton');
 
-		for (var i = 0; i < $roundButtons.length; i++) {
-			var searchTerm = '#' + i
-			$matchingButton = $(searchTerm);
-			$buttonIndex = $matchingButton.data('index');
-			if ($matchingButton.data('index') == $roundDisplayBoard.data().index) {
-				console.log('found you!');
-				$matchingButton.removeClass('btn-default');
-				$matchingButton.addClass('btn-primary');
-			};
-		};
-
+		$selectedRoundButton = $('.btn.btn-block.btn-sm.btn-primary.selected')
+		var selectedRoundId = $selectedRoundButton.data().roundId;
 		// ----- Begin server-side ----- //
 		
 		var addContestantToRound = function (contestantId, roundId) {
-
 			$.ajax({
 				url: '/rounds/' + roundId + '/add/' + contestantId,
 				type: 'POST',
 				success: function (msg) {
 				}
 			}).done(function (response) {
-				$roundEditBoard.empty();
-				$availableContestantBoard.empty();
 			})
 
 		};
@@ -44,18 +31,23 @@ $(document).ready(function () {
 
 				}
 			}).done(function (response) {
-				$contestantBox.empty();
+
 			});
 		};
 
+		var goToNextRound = function (roundId) {
+			$.ajax({
+				url:	'/rounds/round/' + roundId + '/save',
+				type:	'GET',
+				success: function (msg) {
+
+				}
+			});
+		};
 		// ----- END server-side ----- //
 
 		// ----- BEGIN client-side ----- //
 		// detects which operation to execute
-
-		var removeContestantBox = function (contestantId) {
-
-		};
 
 		var roundOperation = function (operation, contestantId, roundId, element) {
 			$element = element;
@@ -75,13 +67,22 @@ $(document).ready(function () {
 				case 'save-next':
 					goToNextRound(roundId);
 					break;
-			};
+			}
 		};
 
+		var detectRound = function (roundId) {
+			var $siblings = $( "li.btn.btn-block" ).siblings();
+			$siblings.removeClass('btn-primary', 'selected');
+			$element.classList.add('btn-primary', 'selected');
+			console.log('done');
+			selectedRoundId = roundId;
+			console.log(selectedRoundId);
+		};
 
+		// ========= universal click listeners ========= //
 
-		// ========= universal click listener ========= //
-		$(this).on('click', function (event) {
+		// --- for adding/removing contestants from Round --- //
+		$('.glyphicon').on('click', function (event) {
 			// records which element is being clicked
 			$element = event.target;
 
@@ -89,30 +90,33 @@ $(document).ready(function () {
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
 			var originBoxNumber = $element.dataset.originBoxNumber;
-			var roundId = $roundEditBoard.data().roundId;
+			var roundId;
 			// sets operation based on myClass value
 
 			switch (myClass) {
 				case 'add-round glyphicon glyphicon-plus':
 					var operation = 'add-round';
+					roundId = selectedRoundId;
 					break;
 				case 'remove-round glyphicon glyphicon-remove':
 					var operation = 'remove-round';
-					break;
-				case 'saveButton':
-					var operation = 'save-next';
+					roundId = $element.dataset.roundId;
 					break;
 			};
 
-			console.log($element);
-			console.log('class ' + myClass);
-			console.log('contestant ' + contestantId);
-			console.log('box ' + originBoxNumber);
-			console.log('round ' + roundId);
-
 			roundOperation (operation, contestantId, roundId, $element);
 		});
+		
 
+		// --- for selecting Round --- //
+
+		$('.btn.btn-block.btn-sm').on('click', function (event) {
+			// records which element is being clicked
+			$element = event.target; 
+			var roundId = $element.dataset.roundId;
+
+			detectRound(roundId);
+		});
 
 	};
 });

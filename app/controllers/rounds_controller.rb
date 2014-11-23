@@ -10,30 +10,34 @@ class RoundsController < ApplicationController
 		episode = @season.episodes[target_episode_number]	#getting target episode ID for the round
 	end
 
-	def edit
+	def create
 		@league = League.find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		
+		# @season must already have recorded episodes in order to work
 		@episodes_collection = @season.episodes
-		first_episode = @episodes_collection[0]
-		@rounds_collection = Round.where(:user_id => @current_user.id, :league_id => @league.id)
-		@rounds_collection_array = []
+		@episodes_collection.each do |episode|
+			round = Round.find_or_create_by!(:user_id => @current_user.id, :league_id => @league.id, :episode_id => episode.id)
+		end
 
-		@rounds_collection.each_with_index do |round, i|
-			@rounds_collection_array << round
-		end	 
+		redirect_to rounds_edit_path(@league.id)
+	end
 
-		if @rounds_collection.count == 0
-			@round = Round.find_or_create_by!(:user_id => @current_user.id, :league_id => @league.id, :episode_id => first_episode.id)
-			@available_contestants = @season.contestants
-		else
-			@round = @rounds_collection.first
-			@contestants = @round.contestants.order(name: :asc)
-			@available_contestants = []
-			all_contestants = @season.contestants
-			all_contestants.order(name: :asc).each do |contestant|
-				@available_contestants << contestant unless @round.contestants.include? contestant
-				@available_contestants.sort
-			end
+	def edit
+		@league = League.includes(:rounds).find(params[:league_id])	
+		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		@episodes_collection = @season.episodes
+
+		@rounds_collection = @league.rounds.order(:id)
+
+		@available_contestants = @season.contestants.order(name: :asc)
+		respond_to do |format|
+			format.html
+			format.js {
+				render :json => {
+					:rounds_collection => @rounds_collection
+				}
+			}
 		end
 	end
 
@@ -54,9 +58,30 @@ class RoundsController < ApplicationController
 
 		@round.contestants.destroy(contestant)
 
-		redirect_to round_display_path(@round.id)
+		redirect_to rounds_edit_path(@round.league.id)
 	end
+	
+	def save
+		@round = Round.includes(:user, :league, :episode).find(params[:round_id])
+		@user = @round.user
+		@league = @round.league
+		@episode = @round.episode
+
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:round => @round,
+					:league => @league,
+					:episode => @episode
+				}
+			}
+		end
+	end
+
+	def previous
 		
+	end
+
 	def display
 		@round = Round.includes(:episode, :contestants).find(params[:round_id])
 		@selected_contestants = @round.contestants.order(name: :asc)

@@ -59,17 +59,18 @@ Rails.application.routes.draw do
 
 	get		'rounds/:league_id/edit' => 'rounds#edit', :as => :rounds_edit
 	get		'rounds/:league_id/:user_id' => 'rounds#index', :as => :rounds
-	post	'rounds' => 'rounds#create'
+	post	'rounds/:league_id/create' => 'rounds#create', :as => :rounds_create
 	get		'rounds/:round_id' => 'rounds#display', :as => :round_display
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add
 	post	'rounds/:round_id/remove/:contestant_id' => 'rounds#remove', :as => :round_remove
+	get		'rounds/round/:round_id/save' => 'rounds#save', :as => :round_save
 	resources :rounds
 	
 	get		'contestants/season/:season_id' => 'contestants#index', :as => :contestants_season
-	post		'contestants' => 'contestants#create'
+	post	'contestants' => 'contestants#create'
 	get		'contestants/new/:season_id' => 'contestants#new', :as => :new_contestant
 	get		'contestants/:id' => 'contestants#display', :as => :contestant
-	post		'contestants/:id' => 'contestants#update'
+	post	'contestants/:id' => 'contestants#update'
 	delete 'contestants/:id' => 'contestants#destroy'
 
 	get		'login' => 'sessions#new'

@@ -1,15 +1,15 @@
-.row
-	- @rounds_collection_array.each do |round|
+- @rounds_collection.each_with_index do |round, i|
+	.row{"data-round-id" => round.id}
 		.col-lg-12
-			- if @rounds_collection.include? round
-				%h4
-					Round 
-					= @rounds_collection_array.rindex(round) + 1
-					.btn.btn-xs.btn-default
-						Clear All
-						= @contestants.count
-		.col-lg-12#roundDisplay{"data-contestants-count" => @contestants.count, "data-index" => @rounds_collection_array.rindex(round) + 1 }
-			- @contestants.each do |contestant|
+			%h4
+				Round #{i + 1}
+			%h6
+				Contestant count:
+				= round.contestants.count
+				.btn.btn-xs.btn-default
+					Clear all
+		.col-lg-12#roundDisplay{"data-contestants-count" => round.contestants.count, "data-index" => i + 1 }
+			- round.contestants.order(name: :asc).each do |contestant|
 				.contestants-selected
 					.thumbnail.contestant-thumbnail
 						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
@@ -18,7 +18,7 @@
 							.contestant-name
 								= contestant.name
 							.action
-								%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id}
+								%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
 		.col-lg-12
 			.btn.btn-default.btn-md.saveButton
 				Save and Next
