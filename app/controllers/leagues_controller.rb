@@ -129,39 +129,17 @@ class LeaguesController < ApplicationController
 
 		case @league.type
 
-		# FOR ELIMINATION ---- assign values to hashes --- 
+		# ========== FOR ELIMINATION ========== #
 		when "Elimination"
+			@participants_ranking = {}
 			@participants.each do |participant|
-				@rounds_collection = {
-					participant.id => [Round.includes(:league, :user, :episode, :contestants).where(user_id: participant.id, league_id: @league.id)]
+				@participants_ranking = {
+					:participant => participant,
+					:score => participant.calculate_total_rounds_points(@league)
 				}
 			end
-			# @participants.each do |participant|
-			# 	# get Roster ID
-			# 	@rounds_collection = participant.rounds.where(league_id: @league.id).pluck(:id)[0]
-
-			# 	@rounds_collection.each do |round|
-			# 		round.calculate_round_points
-			# 	end
-			# end
-				# get Rounds Total
-				# roster_rounds_total = Roster.find(roster_id).calculate_total_rounds_points
-				# @participants_roster_total.store(participant.username, roster_rounds_total)
-
-				# get Rounds Weekly
-			# 	roster_rounds_points = []
-			# 	roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
-			# 	roster_rounds.each do |id| 
-			# 		round = Round.find(id)
-			# 		roster_rounds_points << [id, round.calculate_round_points]
-			# 	end
-			# 	@participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
-			# end
-		
-			# # sort roster to reflect current leads
-			# @participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
-
-		# FOR FANTASY ROSTERS ---- assign values to hashes --- 
+			raise
+		# ========== FOR FANTASY ========== #
 		when "Fantasy"
 
 			# assign hashes
