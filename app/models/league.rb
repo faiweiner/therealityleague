@@ -19,6 +19,9 @@
 #
 
 class League < ActiveRecord::Base
+	
+	include ClassLevelInheritableAttributes
+	inheritable_attributes :id, :name, :commissioner_id, :season_id
 
 	belongs_to :season, inverse_of: :leagues
 	has_and_belongs_to_many :users, inverse_of: :leagues

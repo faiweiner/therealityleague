@@ -4,6 +4,7 @@ class RoundsController < ApplicationController
 		@rounds_collection = Round.includes(:league, :user).where(league_id: params[:league_id], user_id: params[:user_id])
 		@league = League.includes(:season).find(params[:league_id])
 		@season = @league.season
+		@user = User.find(params[:user_id])
 		show = @season.show
 		origin_box = params[:origin_box_number].to_i			#contestant box will always be -1
 		target_episode_number = origin_box + 1						# +1 to reflect array's position
