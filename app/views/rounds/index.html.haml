@@ -25,12 +25,6 @@
 						Final Round
 					- else
 						Round #{ i + 1 }
-			/ @season.episode_count.times do |i|
-			/ 	.btn.btn-default.btn-sm
-			/ 		- if i+1 == @season.episode_count
-			/ 			Final Round
-			/ 		- else
-			/ 			Round #{ i+1 }
 		#roundViewPort
 			%ul.bracketList.row
 			- @rounds_collection.each do |round|

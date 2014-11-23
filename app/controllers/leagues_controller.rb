@@ -127,11 +127,6 @@ class LeaguesController < ApplicationController
 
 		@comm_this_league = true if @league.commissioner_id == @current_user.id
 
-		# assign hashes
-		@participants_roster_id = {}
-		@participants_roster_total = {}
-		@participants_roster_weekly = {}
-
 		case @league.type
 
 		# FOR ELIMINATION ---- assign values to hashes --- 
@@ -168,6 +163,12 @@ class LeaguesController < ApplicationController
 
 		# FOR FANTASY ROSTERS ---- assign values to hashes --- 
 		when "Fantasy"
+
+			# assign hashes
+			@participants_roster_id = {}
+			@participants_roster_total = {}
+			@participants_roster_weekly = {}		
+				
 			@participants.each do |participant|
 				# get Roster ID
 				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]

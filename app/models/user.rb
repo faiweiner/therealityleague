@@ -42,5 +42,14 @@ class User < ActiveRecord::Base
 		rounds = self.rounds.where(:league_id =>league.id)
 	end
 
+	def calculate_total_rounds_points(league)
+		rounds = rounds_for_league(league)
+		total_rounds_score = 0
+		rounds.each do |round|
+			total_rounds_score += round.calculate_round_points
+		end
+		return total_rounds_score
+	end
+
 end
 

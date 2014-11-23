@@ -13,6 +13,7 @@
 						%td= participant.username
 						- participant.rounds_for_league(@league).each do |round|
 							%td= round.calculate_round_points
+						%td= participant.calculate_total_rounds_points(@league)
 
 
 								

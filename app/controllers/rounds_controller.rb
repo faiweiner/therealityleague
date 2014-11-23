@@ -24,11 +24,11 @@ class RoundsController < ApplicationController
 	end
 
 	def edit
-		@league = League.includes(:rounds).find(params[:league_id])	
+		@league = League.includes(:users, :rounds).find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		@episodes_collection = @season.episodes
 
-		@rounds_collection = @league.rounds.order(:id)
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
 
 		@available_contestants = @season.contestants.order(name: :asc)
 		respond_to do |format|
