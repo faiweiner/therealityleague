@@ -47,7 +47,8 @@ class ApplicationController < ActionController::Base
 			season = { 
 				:name => season.name,
 				:id => season.id,
-				:showId => season.show.id
+				:showId => season.show.id,
+				:contestantCount => season.contestants.count
 			}
 			seasons_list.push season
 		end

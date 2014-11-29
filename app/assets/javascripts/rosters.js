@@ -16,7 +16,7 @@ $(document).ready(function () {
 				type: 'POST',
 				success: function (msg) {
 					var partial = msg;
-					$rosterBoard.html(partial);
+					$contestantBoard.html(partial);
 				}
 			}).done(function (data) {
 
@@ -27,6 +27,16 @@ $(document).ready(function () {
 					var contestantsCount = data.contestantsCount;
 					var leagueLimit = data.leagueLimit;
 				});
+
+				// refreshing roster board
+				$.ajax({
+					url: '/rosters/' + rosterId + '/current',
+					type: 'GET',
+					success: function (msg) {
+						var partial = msg;
+						$rosterBoard.html(partial);
+					}
+				});	
 			});
 		};
 
@@ -64,20 +74,14 @@ $(document).ready(function () {
 
 		// ----- BEGIN client-side ----- //
 		// detects which operation to execute
-		var rosterOperator = function (operation, contestantId, rosterId, originBoxNumber) {
-
+		var rosterOperator = function (operation, contestantId, rosterId) {
+			console.log(operation, contestantId, rosterId);
 			switch (operation) {
 				case 'add-roster':
 					addContestantToRoster(contestantId, rosterId);
 					break;
 				case 'remove-roster':
 					removeContestantFromRoster(contestantId, rosterId);
-					break;
-				case 'add-round':
-					addContestantToRound(contestantId, rosterId, originBoxNumber);
-					break;
-				case 'remove-round':
-					removeContestantFromRound(contestantId, originBoxNumber);
 					break;
 			};
 		};
@@ -90,7 +94,6 @@ $(document).ready(function () {
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
 			var rosterId	= $element.dataset.rosterId;
-			var originBoxNumber = $element.dataset.originBoxNumber;
 			// sets operation based on myClass value
 
 			switch (myClass) {
@@ -108,7 +111,7 @@ $(document).ready(function () {
 					break;
 			};
 
-			rosterOperator(operation, contestantId, rosterId, originBoxNumber);
+			rosterOperator(operation, contestantId, rosterId);
 
 		});
 

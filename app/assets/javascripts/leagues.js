@@ -68,6 +68,9 @@ $(document).ready(function () {
 								};
 							}));
 						});
+					}, // end source
+					onChange: function (data, response) {
+						console.log(data);
 					}
 				},		// end Step 2
 				{

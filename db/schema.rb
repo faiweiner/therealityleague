@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20141007005314) do
     t.string   "type"
     t.datetime "draft_deadline"
     t.integer  "draft_limit"
+    t.integer  "contestant_cap"
     t.integer  "scoring_system"
     t.string   "league_key"
     t.string   "league_password"

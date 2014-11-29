@@ -45,6 +45,28 @@
 						Premieres: #{@league.season.premiere_date.strftime("%m/%d/%Y")}
 					- else
 						= f.select(:season_id, [], {:include_blank => "Select a season"}, class: "form-control step2", :required => true)
+			/	Type
+			.row.form-group
+				.col-md-3.text-right
+					= f.label :type
+					%br/
+				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
+					- if @league.type
+						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
+					- else
+						= f.select(:type, [], {:include_blank => "Select draft type"}, class: "form-control step3")
+			/ Draft Limit
+			.row.form-group
+				.col-md-3.text-right
+					= f.label :draft_limit, "Participant Limit"
+				.col-md-6
+					= f.number_field :draft_limit, id: "draftLimitField", min: 2, max: 12, step: 1, class: "form-control", placeholder: "Select participant limit"
+			/ Draft deadline
+			.row.form-group
+				.col-md-3.text-right
+					= f.label :draft_deadline
+				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
+					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", default: Date.today}
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right
@@ -56,16 +78,6 @@
 					.col-md-6
 						= f.radio_button :public_access, false
 						= f.label(:private, 'Private league')
-			/	Type
-			.row.form-group
-				.col-md-3.text-right
-					= f.label :type
-					%br/
-				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
-					- if @league.type
-						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
-					- else
-						= f.select(:type, [], {:include_blank => "Select draft type"}, class: "form-control step3")
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :scoring_system
@@ -77,17 +89,6 @@
 					.col-md-6
 						= f.radio_button :scoring_system, 2
 						= f.label(:custom, 'Custom')
-			/ Draft deadline
-			.row.form-group
-				.col-md-3.text-right
-					= f.label :draft_deadline
-				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
-					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", default: Date.today}
-			.row.form-group
-				.col-md-3.text-right
-					= f.label :draft_limit
-				.col-md-6
-					= f.number_field :draft_limit, id: "draftLimitField", min: 2, max: 20, step: 1, class: "form-control", placeholder: "Select draft limit"
 			/ Submit
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9

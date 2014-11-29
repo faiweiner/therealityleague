@@ -160,7 +160,7 @@ class RostersController < ApplicationController
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		@contestantsCount = @selected_contestants.count
 		respond_to do |format|
-			format.html { render :partial => "rosters/fantasy/current_roster" }
+			format.html { render :partial => "rosters/current_roster" }
 			format.js {
 				render :json => { :contestantsCount => @selected_contestants.count, :leagueLimit => @roster.league.draft_limit }
 			}

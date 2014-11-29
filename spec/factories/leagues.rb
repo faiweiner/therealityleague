@@ -10,6 +10,7 @@
 #  type            :string(255)
 #  draft_deadline  :datetime
 #  draft_limit     :integer
+#  contestant_cap  :integer
 #  scoring_system  :integer
 #  league_key      :string(255)
 #  league_password :string(255)

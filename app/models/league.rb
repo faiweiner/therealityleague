@@ -10,6 +10,7 @@
 #  type            :string(255)
 #  draft_deadline  :datetime
 #  draft_limit     :integer
+#  contestant_cap  :integer
 #  scoring_system  :integer
 #  league_key      :string(255)
 #  league_password :string(255)
@@ -20,9 +21,6 @@
 
 class League < ActiveRecord::Base
 	
-	include ClassLevelInheritableAttributes
-	inheritable_attributes :id, :name, :commissioner_id, :season_id
-
 	belongs_to :season, inverse_of: :leagues
 	has_and_belongs_to_many :users, inverse_of: :leagues
 	before_destroy { users.clear }
