@@ -10,7 +10,7 @@
 			- if @league.active?
 				%h4.small
 					Deadline: #{@league.season.premiere_date.strftime("%B %d")}
-			- if @user == @current_user
+			- if @user == @current_user && @league.active?
 				- if @rounds_collection.count == 0
 					= link_to "Build Elimination Bracket", rounds_create_path(@league.id), class: "btn btn-default btn-sm"
 				- else

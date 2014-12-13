@@ -29,7 +29,7 @@ show1 = Show.create(:name => 'The Bachelor', :image => '/assets/the_bachelor/log
 show2 = Show.create(:name => 'The Bachelorette', :image => '/assets/the_bachelorette/logo.png')
 show3 = Show.create(:name => 'The Voice', :image => '/assets/the_voice/thevoice.jpg')
 survivor = Show.create(:name => 'Survivor', :image => '/assets/survivor/29/logo.png')
-show5 = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')
+challenge = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')
 
 season1 = Season.create(
 	:name => 'Juan Pablo', 
@@ -42,7 +42,7 @@ season1 = Season.create(
 	:image => '/assets/the_bachelor/juanpablo.jpg', 
 	:published => true,
 	:website => 'http://abc.go.com/shows/the-bachelor',
-	:network => 'ABC &copy; 2014')
+	:network => 'ABC ©2014')
 season2 = Season.create(
 	:name => 'Andi', 
 	:number => 10, 
@@ -54,7 +54,7 @@ season2 = Season.create(
 	:image => 'http://a.abcnews.com/images/Entertainment/ht_andi_dorfman_bachelorette_sr_140319_16x9_992.jpg', 
 	:published => true,
 	:website => 'http://abc.go.com/shows/the-bachelorette',
-	:network => 'ABC &copy; 2014')
+	:network => 'ABC ©2014')
 season3 = Season.create(
 	:name => 'Sean Lowe', 
 	:number => 17, 
@@ -66,7 +66,7 @@ season3 = Season.create(
 	:image => '/assets/the_bachelor/seanlowe.jpg', 
 	:published => true,
 	:website => 'http://abc.go.com/shows/the-bachelor',
-	:network => 'ABC &copy; 2013',
+	:network => 'ABC ©2013',
 	:expired => true)
 season4 = Season.create(
 	:name => 'Season 7', 
@@ -79,7 +79,7 @@ season4 = Season.create(
 	:image => 'http://www.boomtron.com/wp-content/uploads/Voice-logo.jpg', 
 	:published => true,
 	:website => 'http://www.nbc.com/the-voice',
-	:network => 'NBC &copy; 2014')
+	:network => 'NBC ©2014')
 survivor29 = Season.create(
 	:name => 'San Juan Del Sur - Blood vs. Water',
 	:number => 29,
@@ -91,9 +91,29 @@ survivor29 = Season.create(
 	:image => '/assets/survivor/29/logo.png',
 	:published => false,
 	:website => 'http://www.cbs.com/shows/survivor/',
-	:network => 'CBS &copy; 2014')
+	:network => 'CBS ©2014')
 
-league1 = Fantasy.create(:name => 'The Best Public League', :commissioner_id => user1.id, :season_id => season2.id, :type => 'Fantasy', :public_access => true)
+challenge26 = Season.create(
+	:name => 'Battle of the Exes II',
+	:number => 29,
+	:show_id => challenge.id,
+	:premiere_date => '06/01/2015',
+	:finale_date => '17/03/2015',
+	:description => 'The sequel to the show\'s 22nd season, Battle of the Exes.',
+	:episode_count => 12,
+	:image => '/assets/survivor/29/logo.png',
+	:published => true,
+	:website => '',
+	:network => 'MTV ©2015')
+
+league1 = Fantasy.create(
+	:name => 'The Best Public League', 
+	:commissioner_id => user1.id, 
+	:season_id => season2.id, 
+	:type => 'Fantasy', 
+	:participant_cap => 5,
+	:scoring_system => 1,
+	:public_access => true)
 league2 = Fantasy.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :type => 'Fantasy', :public_access => false)
 league3 = Fantasy.create(:name => 'Edelman\'s Fantasy Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :type => 'Fantasy', :public_access => false)
 league4 = Elimination.create(:name => 'Edelman\'s Elimination Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :type => 'Elimination', :public_access => false, :active => false)
@@ -151,6 +171,11 @@ juancont6 = Contestant.create(
 	:gender => 'Female', 
 	:occupation => 'Web Designer', 
 	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
+
+
+challenge26cont1 = Contestant.create()
+
+
 
 episode1 = Episode.create(:season_id => season3.id, :air_date => '07/01/2013')
 episode2 = Episode.create(:season_id => season3.id, :air_date => '14/01/2013')

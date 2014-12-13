@@ -15,13 +15,12 @@
 				= @league.season.show.name + ": "
 				= @league.season.name
 			= render "/shows/scoring_system"
-			- if @comm_this_league == true
+			- if @league.active? && @comm_this_league == true
 				- if @participants.count <= 1
 					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-primary btn-sm" 
 				- else
 					= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
-				- if @league.active?
-					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
+				= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
 			- elsif @a_participant == false && @league.active?
 				= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
 	- case @league.type

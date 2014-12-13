@@ -8,9 +8,10 @@
 #  season_id       :integer
 #  public_access   :boolean          default(TRUE)
 #  type            :string(255)
-#  draft_deadline  :datetime
+#  participant_cap :integer
 #  draft_limit     :integer
-#  contestant_cap  :integer
+#  draft_deadline  :datetime
+#  draft_order     :string(255)
 #  scoring_system  :integer
 #  league_key      :string(255)
 #  league_password :string(255)
@@ -24,8 +25,21 @@ class Fantasy < League
 		League.model_name
 	end
 
-	def set_contestant_limit
-		
+	def gen_draft_limit
+		self.draft_limit = self.season.contestants.count / self.participant_cap
 	end
 
+	def gen_draft_order
+		draft_order = []
+		draft_order = self.users.pluck(:id).shuffle
+		self.draft_order = draft_order
+	end
+
+	private
+
+	def set_draft_order
+		if self.users.count <= self.participant_cap && self.draft_limit.present?
+			gen_draft_order
+		end
+	end
 end

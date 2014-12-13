@@ -8,9 +8,10 @@
 #  season_id       :integer
 #  public_access   :boolean          default(TRUE)
 #  type            :string(255)
-#  draft_deadline  :datetime
+#  participant_cap :integer
 #  draft_limit     :integer
-#  contestant_cap  :integer
+#  draft_deadline  :datetime
+#  draft_order     :string(255)
 #  scoring_system  :integer
 #  league_key      :string(255)
 #  league_password :string(255)
