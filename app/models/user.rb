@@ -51,5 +51,10 @@ class User < ActiveRecord::Base
 		return total_rounds_score
 	end
 
+	private
+
+	def gen_new_password
+		self.password = SecureRandom.hex(5)
+	end
 end
 

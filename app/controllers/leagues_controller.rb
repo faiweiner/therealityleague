@@ -138,12 +138,19 @@ class LeaguesController < ApplicationController
 					:score => participant.calculate_total_rounds_points(@league)
 				}
 			end
-			@ranking = @participants_ranking.map.sort_by{ |k, v| -v[:score] }
+			@ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
 
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
+			@participants_ranking = {}
+			# @participants.each_with_index do |participant, i|
+			# 	@participants_ranking[i] = {
+			# 		:participant => participant,
+			# 		:score => participant.roster.calculate_total_roster_points
+			# 	}
+			# end
+			# @ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
 
-			# assign hashes
 			@participants_roster_id = {}
 			@participants_roster_total = {}
 			@participants_roster_weekly = {}		
@@ -254,7 +261,20 @@ class LeaguesController < ApplicationController
 
 	# standard strong params practice
 	def league_params
-		params.require(:league).permit(:name, :commissioner_id, :season_id, :public_access, :type, :scoring_system, :league_key, :league_password, :active, :draft_deadline, :draft_limit)
+		params.require(:league).permit(
+			:name, 
+			:commissioner_id, 
+			:season_id, 
+			:public_access, 
+			:type,
+			:participant_cap, 
+			:draft_limit,
+			:draft_deadline,
+			:draft_order, 
+			:scoring_system, 
+			:league_key, 
+			:league_password, 
+			:active)
 	end
 
 	def get_league

@@ -20,7 +20,7 @@
 			/ Name of League
 			.row.form-group
 				.col-md-3.text-right
-					= f.label :league_name
+					= f.label :league_name, "League Name"
 					%br/
 				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
 					= f.text_field :name, class:"form-control", :placeholder => "Enter name here", :required => true
@@ -55,14 +55,34 @@
 						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
 					- else
 						= f.select(:type, [], {:include_blank => "Select draft type"}, class: "form-control step3")
-			/ Draft Limit
-			.row.form-group
+			/ Contestant Count Box
+			.row#seasonContestantCount.hidden
+				.col-lg-6.col-md-6.col-lg-offset-3.col-md-offset-3
+					.caption
+						Please select team and contestant limit below. There are 
+						%br/
+						%span 0
+						contestant(s) in this season and up to
+			/ Contestant Limit Box
+			.row#contestantLimitBox.hidden
+				.col-lg-6.col-md-6.col-lg-offset-3.col-md-offset-3
+					.caption
+						%span 0
+						contestant(s) per team.
+			/ Participant Cap
+			.row.form-group#participantCapField.hidden
 				.col-md-3.text-right
-					= f.label :draft_limit, "Participant Limit"
+					= f.label :participant_cap, "Team Limit"
 				.col-md-6
-					= f.number_field :draft_limit, id: "draftLimitField", min: 2, max: 12, step: 1, class: "form-control", placeholder: "Select participant limit"
+					= f.number_field :participant_cap, id: "participantCap", min: 2, max: 30, class: "form-control step4", placeholder: "Select max number of teams in this league"
+			/ Draft Limit
+			.row.form-group#draftLimitField
+				.col-md-3.text-right
+					= f.label :draft_limit, "Contestant Limit"
+				.col-md-6
+					= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: "Select max number of contestants per team"
 			/ Draft deadline
-			.row.form-group
+			.row.form-group#draftDatePickerField.hidden
 				.col-md-3.text-right
 					= f.label :draft_deadline
 				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
@@ -70,17 +90,17 @@
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right
-					= f.label :league_access
+					= f.label :league_access, "League Access"
 				.col-md-6{:id => "league_access", :data => {:toggle => "popover", :trigger => "hover", :content => "Go 'Public' if you want others to search and join your league. Select 'Private' if you want an exclusive 'invite-only' league."}, :title => "Public vs. Private"}
 					.col-md-6
 						= f.radio_button :public_access, true
-						= f.label(:public, 'Public league')
+						= f.label(:public, 'Public')
 					.col-md-6
 						= f.radio_button :public_access, false
-						= f.label(:private, 'Private league')
+						= f.label(:private, 'Private')
 			.row.form-group
 				.col-md-3.text-right
-					= f.label :scoring_system
+					= f.label :scoring_system, "Scoring System"
 					%br/
 				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Choose between standard scoring system for a show's contestant, or customize your league's scoring scheme."}, :title => "Select Scoring System"}
 					.col-md-6
