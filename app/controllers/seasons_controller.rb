@@ -1,5 +1,6 @@
 class SeasonsController < ApplicationController
 	before_action :check_if_admin, only: [:new, :edit, :update, :publish, :unpublish, :destroy]
+	before_action :check_if_logged_in, only: [:display]
 	layout "admin", except: [:display]
 	def index
 		@current_seasons = Season.where(:expired => :false).order("premiere_date ASC")
@@ -87,10 +88,7 @@ class SeasonsController < ApplicationController
 	def display
 		@season = Season.find(params[:id])
 		@show = @season.show
-		@rules_extra = Show.get_schemes(@show.id, "Extracurricular")
-		@rules_game = Show.get_schemes(@show.id, "Game")
-		@rules_survival = Show.get_schemes(@show.id, "Survival")
-		@rules = @season.show.events
+		@rules = Show.get_schemes(@show.id)
 		@contestants = @season.contestants.order("name ASC")
 		@contestants_ranking = @season.contestants.includes(:events).order("episode_id DESC")
 

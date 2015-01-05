@@ -31,14 +31,15 @@ class UsersController < ApplicationController
 	end
 
 	def update
-		if @current_user.update(user_short_params)
+		@user = @current_user
+		if @current_user.update(user_params)
 			flash[:notice] = "You've successfully updated."
+			flash[:color] = "valid"		
 			redirect_to user_path
 		else
-			@user = @current_user
-			flash[:notice] = "Something went wrong."
-			flash[:color] = "invalid"
-			render :edit
+			flash[:notice] = "Something went wrong, try again."
+			flash[:color] = "invalid"		
+			redirect_to edit_user_path(@current_user.id)
 		end
 	end
 
@@ -47,10 +48,6 @@ class UsersController < ApplicationController
 	end
 	
 	private
-
-	def user_short_params
-		params.require(:user).permit(:email, :username, :avatar)
-	end
 
 	def user_params
 		params.require(:user).permit(:email, :username, :avatar, :password, :password_confirmation)

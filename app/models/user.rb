@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 	has_many :rounds
 	has_many :contestants, through: :rosters
 	has_many :seasons, through: :leagues
+	has_many :messages
 
 	# FIXME! Come bck to deal with dependencies please
 

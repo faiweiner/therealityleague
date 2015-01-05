@@ -106,9 +106,7 @@ class LeaguesController < ApplicationController
 	def display
 		@participants = @league.users
 		@show = @league.season.show
-		@rules_survival = Show.get_schemes(@show.id, "Survival")
-		@rules_game = Show.get_schemes(@show.id, "Game")
-		@rules_extra =Show.get_schemes(@show.id, "Extracurricular")
+		@rules = Show.get_schemes(@show.id)
 		@a_participant = nil
 		p_id = @participants.pluck(:id)
 		

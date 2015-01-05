@@ -314,3 +314,22 @@ li.bracketItem {
 	padding: 0;
 	height: 100%;
 }
+
+#feedbackBox {
+	background-color: $primary-color;
+	position: fixed;
+	padding: 5px;
+	right: 5px;
+	bottom: 0px;
+	border-radius: 3px 3px 0px 0px;
+	height: 30px;
+	width: 30px;
+}
+
+#feedbackBox:hover {
+	background-color: $primary-color;
+}
+
+#feedbackBox:active {
+	background-color: yellow;
+}

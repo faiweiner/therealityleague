@@ -13,22 +13,15 @@ Elimination.destroy_all
 Fantasy.destroy_all
 
 Scheme.destroy_all
-Challenge.destroy_all
+Altercation.destroy_all
+Competition.destroy_all
+Debauchery.destroy_all
 Extracurricular.destroy_all
-Game.destroy_all
 Survival.destroy_all
 
 user1 = User.create(:email => 'faiweiner@gmail.com', :username => 'faiweiner', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'chicken', :password_confirmation => 'chicken', :admin => true)
-user2 = User.create(:email => 'eliweiner@gmail.com', :username => 'eliweiner', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'password', :password_confirmation => 'password')
-user3 = User.create(:email => 'user1@gmail.com', :username => 'username1', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'chicken', :password_confirmation => 'chicken')
-user4 = User.create(:email => 'user2@gmail.com', :username => 'username2', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'chicken', :password_confirmation => 'chicken')
-user5 = User.create(:email => 'user3@gmail.com', :username => 'username3', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'chicken', :password_confirmation => 'chicken')
-user6 = User.create(:email => 'user4@gmail.com', :username => 'username4', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'chicken', :password_confirmation => 'chicken')
 
 show1 = Show.create(:name => 'The Bachelor', :image => '/assets/the_bachelor/logo.jpg')
-show2 = Show.create(:name => 'The Bachelorette', :image => '/assets/the_bachelorette/logo.png')
-show3 = Show.create(:name => 'The Voice', :image => '/assets/the_voice/thevoice.jpg')
-survivor = Show.create(:name => 'Survivor', :image => '/assets/survivor/29/logo.png')
 challenge = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')
 
 season1 = Season.create(
@@ -42,19 +35,9 @@ season1 = Season.create(
 	:image => '/assets/the_bachelor/juanpablo.jpg', 
 	:published => true,
 	:website => 'http://abc.go.com/shows/the-bachelor',
-	:network => 'ABC ©2014')
-season2 = Season.create(
-	:name => 'Andi', 
-	:number => 10, 
-	:show_id => show2.id, 
-	:premiere_date => '19/05/2014',
-	:finale_date => '28/07/2014',
-	:description => 'The tenth season of The Bachelorette features 26-year-old Andi Dorfman, an assistant district attorney from Atlanta, Georgia.',
-	:episode_count => 10, 
-	:image => 'http://a.abcnews.com/images/Entertainment/ht_andi_dorfman_bachelorette_sr_140319_16x9_992.jpg', 
-	:published => true,
-	:website => 'http://abc.go.com/shows/the-bachelorette',
-	:network => 'ABC ©2014')
+	:network => 'ABC ©2014',
+	:expired => true)
+
 season3 = Season.create(
 	:name => 'Sean Lowe', 
 	:number => 17, 
@@ -68,30 +51,19 @@ season3 = Season.create(
 	:website => 'http://abc.go.com/shows/the-bachelor',
 	:network => 'ABC ©2013',
 	:expired => true)
-season4 = Season.create(
-	:name => 'Season 7', 
-	:number => 7, 
-	:show_id => show3.id, 
-	:premiere_date => '23/09/2014', 
-	:finale_date => '25/01/2015', 
-	:description => 'This season with new judge Gwen Stefani', 
-	:episode_count => 22, 
-	:image => 'http://www.boomtron.com/wp-content/uploads/Voice-logo.jpg', 
+
+bachelor19 = Season.create(
+	:name => 'Chris Soules', 
+	:number => 19, 
+	:show_id => show1.id, 
+	:premiere_date => '05/01/2015', 
+	:finale_date => '09/03/2015', 
+	:description => 'The bachelor with a heart of gold - This 6\'1\", blue-eyed bachelor loves football, camping and country music. He epitomizes what women look for in a man: successful, sensitive and sexy.', 
+	:episode_count => 10, 
+	:image => '/assets/the_bachelor/chrissoules.jpg', 
 	:published => true,
-	:website => 'http://www.nbc.com/the-voice',
-	:network => 'NBC ©2014')
-survivor29 = Season.create(
-	:name => 'San Juan Del Sur - Blood vs. Water',
-	:number => 29,
-	:show_id => survivor.id,
-	:premiere_date => '24/09/2014',
-	:finale_date => '30/01/2015',
-	:description => 'Similarly to Survivor: Blood vs. Water, the season features pairs of loved ones competing against each other but, unlike Blood vs. Water, all of the players are new',
-	:episode_count => 10,
-	:image => '/assets/survivor/29/logo.png',
-	:published => false,
-	:website => 'http://www.cbs.com/shows/survivor/',
-	:network => 'CBS ©2014')
+	:website => 'http://abc.go.com/shows/the-bachelor',
+	:network => 'ABC ©2015')
 
 challenge26 = Season.create(
 	:name => 'Battle of the Exes II',
@@ -107,638 +79,157 @@ challenge26 = Season.create(
 	:network => 'MTV ©2015')
 
 league1 = Fantasy.create(
-	:name => 'The Best Public League', 
+	:name => 'Public Bachelor Fantasy League', 
 	:commissioner_id => user1.id, 
-	:season_id => season2.id, 
+	:season_id => bachelor19.id, 
+	:public_access => true,
 	:type => 'Fantasy', 
-	:participant_cap => 5,
-	:scoring_system => 1,
-	:public_access => true)
-league2 = Fantasy.create(:name => 'The Super Private League', :commissioner_id => user2.id, :season_id => season2.id, :type => 'Fantasy', :public_access => false)
-league3 = Fantasy.create(:name => 'Edelman\'s Fantasy Bachelor League', :commissioner_id => user1.id, :season_id => season1.id, :type => 'Fantasy', :public_access => false)
-league4 = Elimination.create(:name => 'Edelman\'s Elimination Bachelor League', :commissioner_id => user1.id, :season_id => season3.id, :type => 'Elimination', :public_access => false, :active => false)
+	:draft_limit => 5,
+	:scoring_system => 1)
 
-league1.users << [user1, user2, user3]
-league2.users << [user1, user3, user4, user5]
-league3.users << [user1, user4, user5]
-league4.users << [user1, user2]
+league2 = Elimination.create(
+	:name => 'Public Bachelor Elimination League', 
+	:commissioner_id => user1.id, 
+	:season_id => bachelor19.id, 
+	:type => 'Elimination', 
+	:scoring_system => 1)
 
-juancont1 = Contestant.create(
-	:name => 'Cassandra', 
-	:season_id => season1.id, 
-	:age => 22, 
-	:gender => 'Female', 
-	:image => '/assets/the_bachelor/season19/cassandra.jpg',
-	:occupation => 'Physical Therapist', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis ullam doloribus, laborum asperiores aperiam.')
-juancont2 = Contestant.create(
-	:name => 'Nikki', 
-	:season_id => season1.id, 
-	:age => 24, 
-	:gender => 'Female', 
-	:image => '/assets/the_bachelor/season19/nikki.jpg',
-	:occupation => 'Executive Assistant', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id quas sunt quam autem, itaque ducimus perferendis optio sint molestiae.')
-juancont3 = Contestant.create(
-	:name => 'Jessica', 
-	:season_id => season1.id, 
-	:age => 32, 
-	:gender => 'Female', 
-	:image => '/assets/the_bachelor/season19/jessica.jpg',
-	:occupation => 'Nurse', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique cum repudiandae quod officia expedita tenetur praesentium magnam.')
-juancont4 = Contestant.create(
-	:name => 'Heather', 
-	:season_id => season1.id, 
-	:age => 26, 
-	:gender => 'Female', 
-	:image => '/assets/the_bachelor/season19/heather.jpg',
-	:occupation => 'Hair Stylist', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
-juancont5 = Contestant.create(
-	:name => 'Elise', 
-	:season_id => season1.id, 
-	:age => 27, 
-	:gender => 'Female', 
-	:image => '/assets/the_bachelor/season19/elise.jpg',
-	:occupation => 'Entrepreneur', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
-juancont6 = Contestant.create(
-	:name => 'Suzie', 
-	:season_id => season1.id, 
-	:age => 24, 
-	:image => '/assets/the_bachelor/season19/suzie.jpg',
-	:gender => 'Female', 
-	:occupation => 'Web Designer', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt commodi, labore sequi maiores iusto accusamus laborum nostrum deleniti, odit reprehenderit, quas inventore!')
+league1.users << [user1]
+league2.users << [user1]
 
 
-challenge26cont1 = Contestant.create()
+bachelor19ep1 = Episode.create(:season_id => bachelor19.id, :air_date => '05/01/2015')
+bachelor19ep2 = Episode.create(:season_id => bachelor19.id, :air_date => '12/01/2015')
+bachelor19ep3 = Episode.create(:season_id => bachelor19.id, :air_date => '19/01/2015')
+bachelor19ep4 = Episode.create(:season_id => bachelor19.id, :air_date => '26/01/2015')
+bachelor19ep5 = Episode.create(:season_id => bachelor19.id, :air_date => '2/02/2015')
+bachelor19ep6 = Episode.create(:season_id => bachelor19.id, :air_date => '9/02/2015')
+bachelor19ep7 = Episode.create(:season_id => bachelor19.id, :air_date => '16/02/2015')
+bachelor19ep8 = Episode.create(:season_id => bachelor19.id, :air_date => '23/02/2015')
+bachelor19ep9 = Episode.create(:season_id => bachelor19.id, :air_date => '2/03/2015')
+bachelor19ep10 = Episode.create(:season_id => bachelor19.id, :air_date => '9/03/2015')
+
+bachelor19cont1 = Contestant.create(:name =>'Alissa', :season_id => bachelor19.id, :age => 24, :gender => 'female', :image => '/assets/the_bachelor/season19/alissa.jpg', :occupation => 'Flight Attendant', :description => 'Hometown: Hamilton, NJ', present: false)
+bachelor19cont2 = Contestant.create(:name =>'Amanda', :season_id => bachelor19.id, :age => 24, :gender => 'female', :image => '/assets/the_bachelor/season19/amanda.jpg', :occupation => 'Ballet Teacher', :description => 'Hometown: Lake in the Hills, IL')
+bachelor19cont3 = Contestant.create(:name =>'Amber', :season_id => bachelor19.id, :age => 29, :gender => 'female', :image => '/assets/the_bachelor/season19/amber.jpg', :occupation => 'Bartender', :description => 'Hometown: Chicago, IL')
+bachelor19cont4 = Contestant.create(:name =>'Ashley I.', :season_id => bachelor19.id, :age => 26, :gender => 'female', :image => '/assets/the_bachelor/season19/ashleyi.jpg', :occupation => 'Freelance Journalist', :description => 'Hometown: Wayne, NJ')
+bachelor19cont5 = Contestant.create(:name =>'Ashley S.', :season_id => bachelor19.id, :age => 24, :gender => 'female', :image => '/assets/the_bachelor/season19/ashleys.jpg', :occupation => 'Hair Stylist', :description => 'Hometown: Brooklyn, NY')
+bachelor19cont6 = Contestant.create(:name =>'Becca', :season_id => bachelor19.id, :age => 25, :gender => 'female', :image => '/assets/the_bachelor/season19/becca.jpg', :occupation => 'Chiropractic Assistant', :description => 'Hometown: San Diego, CA')
+bachelor19cont7 = Contestant.create(:name =>'Bo', :season_id => bachelor19.id, :age => 25, :gender => 'female', :image => '/assets/the_bachelor/season19/bo.jpg', :occupation => 'Plus-Size Model', :description => 'Hometown: Carpinteria, CA')
+bachelor19cont8 = Contestant.create(:name =>'Britt', :season_id => bachelor19.id, :age => 27, :gender => 'female', :image => '/assets/the_bachelor/season19/britt.jpg', :occupation => 'Waitress', :description => 'Hometown: Hollywood, CA')
+bachelor19cont9 = Contestant.create(:name =>'Brittany', :season_id => bachelor19.id, :age => 26, :gender => 'female', :image => '/assets/the_bachelor/season19/brittany.jpg', :occupation => 'WWE Diva-in-Training', :description => 'Hometown: Orlando, FL')
+bachelor19cont10 = Contestant.create(:name =>'Carly', :season_id => bachelor19.id, :age => 29, :gender => 'female', :image => '/assets/the_bachelor/season19/carly.jpg', :occupation => 'Cruise Ship Singer', :description => 'Hometown: Arlington, TX')
+bachelor19cont11 = Contestant.create(:name =>'Jade', :season_id => bachelor19.id, :age => 28, :gender => 'female', :image => '/assets/the_bachelor/season19/jade.jpg', :occupation => 'Cosmetics Developer', :description => 'Hometown: Los Angeles, CA')
+bachelor19cont12 = Contestant.create(:name =>'Jillian', :season_id => bachelor19.id, :age => 25, :gender => 'female', :image => '/assets/the_bachelor/season19/jillian.jpg', :occupation => ' News Producer', :description => 'Hometown: Washington, D.C.')
+bachelor19cont13 = Contestant.create(:name =>'Juelia', :season_id => bachelor19.id, :age => 30, :gender => 'female', :image => '/assets/the_bachelor/season19/juelia.jpg', :occupation => 'Esthetician', :description => 'Hometown: Portland, OR')
+bachelor19cont14 = Contestant.create(:name =>'Jordan', :season_id => bachelor19.id, :age => 24, :gender => 'female', :image => '/assets/the_bachelor/season19/jordan.jpg', :occupation => 'Student', :description => 'Hometown: Windsor, CO')
+bachelor19cont15 = Contestant.create(:name =>'Kaitlyn', :season_id => bachelor19.id, :age => 29, :gender => 'female', :image => '/assets/the_bachelor/season19/kaitlyn.jpg', :occupation => 'Dance Instructor', :description => 'Hometown: Vancouver, BC')
+bachelor19cont16 = Contestant.create(:name =>'Kara', :season_id => bachelor19.id, :age => 25, :gender => 'female', :image => '/assets/the_bachelor/season19/kara.jpg', :occupation => 'High School Soccer Coach', :description => 'Hometown: Brownsville, KY')
+bachelor19cont17 = Contestant.create(:name =>'Kelsey', :season_id => bachelor19.id, :age => 28, :gender => 'female', :image => '/assets/the_bachelor/season19/kelsey.jpg', :occupation => 'Guidance Counselor', :description => 'Hometown: Austin, TX')
+bachelor19cont18 = Contestant.create(:name =>'Kimberly', :season_id => bachelor19.id, :age => 28, :gender => 'female', :image => '/assets/the_bachelor/season19/kimberly.jpg', :occupation => 'Yoga Instructor', :description => 'Hometown: Long Island, NY')
+bachelor19cont19 = Contestant.create(:name =>'Mackenzie', :season_id => bachelor19.id, :age => 21, :gender => 'female', :image => '/assets/the_bachelor/season19/mackenzie.jpg', :occupation => 'Dental Assistant', :description => 'Hometown: Maple Valley, WA')
+bachelor19cont20 = Contestant.create(:name =>'Megan', :season_id => bachelor19.id, :age => 23, :gender => 'female', :image => '/assets/the_bachelor/season19/megan.jpg', :occupation => 'Make-Up Artist', :description => 'Hometown: Nashville, TN')
+bachelor19cont21 = Contestant.create(:name =>'Michelle', :season_id => bachelor19.id, :age => 25, :gender => 'female', :image => '/assets/the_bachelor/season19/michelle.jpg', :occupation => 'Wedding Cake Decorator', :description => 'Hometown: Provo, UT')
+bachelor19cont22 = Contestant.create(:name =>'Nicole', :season_id => bachelor19.id, :age => 31, :gender => 'female', :image => '/assets/the_bachelor/season19/nicole.jpg', :occupation => 'Real Estate Agent', :description => 'Hometown: Scottsdale, AZ')
+bachelor19cont23 = Contestant.create(:name =>'Nikki', :season_id => bachelor19.id, :age => 26, :gender => 'female', :image => '/assets/the_bachelor/season19/nikki.jpg', :occupation => 'Former NFL Cheerleader', :description => 'Hometown: New York City, NY')
+bachelor19cont24 = Contestant.create(:name =>'Reegan', :season_id => bachelor19.id, :age => 28, :gender => 'female', :image => '/assets/the_bachelor/season19/reegan.jpg', :occupation => 'Cadaver Tissue Saleswoman', :description => 'Hometown: Manhattan Beach, CA')
+bachelor19cont25 = Contestant.create(:name =>'Samantha', :season_id => bachelor19.id, :age => 27, :gender => 'female', :image => '/assets/the_bachelor/season19/samantha.jpg', :occupation => 'Fashion Designer', :description => 'Hometown: Los Angeles, CA')
+bachelor19cont26 = Contestant.create(:name =>'Tandra', :season_id => bachelor19.id, :age => 30, :gender => 'female', :image => '/assets/the_bachelor/season19/tandra.jpg', :occupation => 'Executive Assistant', :description => 'Hometown: Sandy UT')
+bachelor19cont27 = Contestant.create(:name =>'Tara', :season_id => bachelor19.id, :age => 26, :gender => 'female', :image => '/assets/the_bachelor/season19/tara.jpg', :occupation => 'Sport Fishing Enthusiast', :description => 'Hometown: Ft. Lauderdale, FL')
+bachelor19cont28 = Contestant.create(:name =>'Tracy', :season_id => bachelor19.id, :age => 29, :gender => 'female', :image => '/assets/the_bachelor/season19/tracy.jpg', :occupation => 'Fourth Grade Teacher', :description => 'Hometown: Wellington, FL')
+bachelor19cont29 = Contestant.create(:name =>'Trina', :season_id => bachelor19.id, :age => 33, :gender => 'female', :image => '/assets/the_bachelor/season19/trina.jpg', :occupation => 'Special Education Teacher', :description => 'Hometown: San Clemente, CA')
+bachelor19cont30 = Contestant.create(:name =>'Whitney', :season_id => bachelor19.id, :age => 29, :gender => 'female', :image => '/assets/the_bachelor/season19/whitney.jpg', :occupation => 'Fertility Nurse', :description => 'Hometown: Chicago, IL')
+
+roster1 = Roster.create(:user_id => user1.id, :league_id => league1.id)
+roster2 = Roster.create(:user_id => user1.id, :league_id => league2.id)
 
 
+roster1.contestants << [bachelor19cont4, bachelor19cont7, bachelor19cont15, bachelor19cont18, bachelor19cont18]
 
-episode1 = Episode.create(:season_id => season3.id, :air_date => '07/01/2013')
-episode2 = Episode.create(:season_id => season3.id, :air_date => '14/01/2013')
-episode3 = Episode.create(:season_id => season3.id, :air_date => '21/01/2013')
-episode4 = Episode.create(:season_id => season3.id, :air_date => '28/01/2013')
-episode5 = Episode.create(:season_id => season3.id, :air_date => '04/02/2013')
-episode6 = Episode.create(:season_id => season3.id, :air_date => '05/02/2013')
-episode7 = Episode.create(:season_id => season3.id, :air_date => '11/02/2013')
-episode8 = Episode.create(:season_id => season3.id, :air_date => '18/02/2013')
-episode9 = Episode.create(:season_id => season3.id, :air_date => '25/02/2013')
-episode10 = Episode.create(:season_id => season3.id, :air_date => '11/03/2013')
 
-ep1blrte = Episode.create(:season_id => season2.id, :air_date => '19/05/2014')
-ep2blrte = Episode.create(:season_id => season2.id, :air_date => '26/05/2014') 
-ep3blrte = Episode.create(:season_id => season2.id, :air_date => '01/06/2014')
-ep4blrte = Episode.create(:season_id => season2.id, :air_date => '08/06/2014')
-ep5blrte = Episode.create(:season_id => season2.id, :air_date => '16/06/2014')
-ep6blrte = Episode.create(:season_id => season2.id, :air_date => '23/06/2014')
-ep7blrte = Episode.create(:season_id => season2.id, :air_date => '30/06/2014')
-ep8blrte = Episode.create(:season_id => season2.id, :air_date => '07/07/2014')
-ep9blrte = Episode.create(:season_id => season2.id, :air_date => '14/07/2014')
-ep10blrte = Episode.create(:season_id => season2.id, :air_date => '28/07/2014')
+survival1 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 1', :points_asgn => 10)
+survival2 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 2', :points_asgn => 20)
+survival3 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 3', :points_asgn => 30)
+survival4 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 4', :points_asgn => 40)
+survival5 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 5', :points_asgn => 50)
+survival6 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 6', :points_asgn => 60)
+survival7 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 7', :points_asgn => 70)
+survival8 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 8', :points_asgn => 80)
+survival9 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 9', :points_asgn => 90)
+survival10 = Survival.create(:show_id => show1.id, :description => 'Receives the Final Rose', :points_asgn => 100)
+survival11 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 1', :points_asgn => 10)
+survival12 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 2', :points_asgn => 10)
+survival13 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 3', :points_asgn => 10)
+survival14 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 4', :points_asgn => 10)
+survival15 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 5', :points_asgn => 10)
+survival16 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 6', :points_asgn => 10)
+survival17 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 7', :points_asgn => 10)
+survival18 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 8', :points_asgn => 10)
+survival19 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in Week 9', :points_asgn => 10)
+survival20 = Survival.create(:show_id => show1.id, :description => 'Leaves on her own accord in the Finale', :points_asgn => 10)
+survival21 = Survival.create(:show_id => show1.id, :description => 'Is asked to leave by the producer', :points_asgn => 100)
+game22 = Competition.create(:show_id => show1.id, :description => 'Is chosen for 1-on-1 date', :points_asgn => 50)
+game23 = Competition.create(:show_id => show1.id, :description => 'Is chosen for group date', :points_asgn => 25)
+game24 = Competition.create(:show_id => show1.id, :description => 'Gets in a helicopter', :points_asgn => 25)
+game25 = Competition.create(:show_id => show1.id, :description => 'Gets a Fantasy Suite invitation', :points_asgn => 75)
+game26 = Competition.create(:show_id => show1.id, :description => 'Rejects a Fantay Suite invitation', :points_asgn => 100)
+game27 = Competition.create(:show_id => show1.id, :description => 'Meets the bachelor\'s family', :points_asgn => 50)
+game28 = Competition.create(:show_id => show1.id, :description => 'Wins a challenge', :points_asgn => 25)
+game29 = Competition.create(:show_id => show1.id, :description => 'Loses a challenge', :points_asgn => -5)
+extra30 = Extracurricular.create(:show_id => show1.id, :description => 'Kisses the bachelor on the lips', :points_asgn => 10)
+extra31 = Extracurricular.create(:show_id => show1.id, :description => 'Gets in the hot tub with the bachelor', :points_asgn => 20)
+extra32 = Extracurricular.create(:show_id => show1.id, :description => 'Cries', :points_asgn => 10)
+extra33 = Extracurricular.create(:show_id => show1.id, :description => 'Gets in a fight with another contestant', :points_asgn => 25)
+extra34 = Extracurricular.create(:show_id => show1.id, :description => 'Says she\'s "here for the right reason" ', :points_asgn => 15)
+extra35 = Extracurricular.create(:show_id => show1.id, :description => 'Gets inappropriately drunk', :points_asgn => 25)
+extra36 = Extracurricular.create(:show_id => show1.id, :description => 'Gets injured', :points_asgn => 25)
+extra37 = Extracurricular.create(:show_id => show1.id, :description => 'Gives the bachelor a gift', :points_asgn => 10)
+survival38 = Survival.create(:show_id => show1.id, :description => 'Gets eliminated', :points_asgn => 0)
 
-cont7 = Contestant.create(
-	:name => 'Catherine', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/catherine.jpg', 
-	:age => 26, 
-	:gender => 'Female', 
-	:occupation => 'Graphic Designer', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Winner',
-	:present => true,
-	:episode_id => episode10.id)
-cont8 = Contestant.create(
-	:name => 'Lindsay', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/lindsay.jpg', 
-	:age => 24, 
-	:gender => 'Female', 
-	:occupation => 'Substitute Teacher', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Runner-up',
-	:present => false,
-	:episode_id => episode10.id)
-cont9 = Contestant.create(
-	:name => 'AshLee', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/ashlee.jpg', 
-	:age => 32, 
-	:gender => 'Female', 
-	:occupation => 'Personal Organizer', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode9.id)
-cont10 = Contestant.create(
-	:name => 'Desiree', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/desiree.jpg', 
-	:age => 26, 
-	:gender => 'Female', 
-	:occupation => 'Bridal Stylist', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode8.id)
-cont11 = Contestant.create(
-	:name => 'Lesley M.', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/lesley.jpg', 
-	:age => 24, 
-	:gender => 'Female', 
-	:occupation => 'Political Consultant', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode7.id)
-cont12 = Contestant.create(
-	:name => 'Tierra', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/tierra.jpg', 
-	:age => 24, 
-	:gender => 'Female', 
-	:occupation => 'Leasing Consultant', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode7.id)
-cont13 = Contestant.create(
-	:name => 'Daniella', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/daniella.jpg', 
-	:age => 24, 
-	:gender => 'Female', 
-	:occupation => 'Commercial Casting Associate', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode6.id)
-cont14 = Contestant.create(
-	:name => 'Selma', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/selma.jpg', 
-	:age => 29, 
-	:gender => 'Female', 
-	:occupation => 'Real Estate Dealer', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode6.id)
-cont15 = Contestant.create(
-	:name => 'Sarah', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/sarah.jpg', 
-	:age => 26, 
-	:gender => 'Female', 
-	:occupation => 'Advertising Executive', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode6.id)
-cont16 = Contestant.create(
-	:name => 'Robyn', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/robyn.jpg', 
-	:age => 24, 
-	:gender => 'Female', 
-	:occupation => 'Oil Field Account Manager', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode5.id)
-cont17 = Contestant.create(
-	:name => 'Jackie', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/jackie.jpg', 
-	:age => 25, 
-	:gender => 'Female', 
-	:occupation => 'Cosmetics Consultant', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode5.id)
-cont18 = Contestant.create(
-	:name => 'Amanda', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/amanda.jpg', 
-	:age => 28, 
-	:gender => 'Female', 
-	:occupation => 'Fit Model', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode4.id)
-cont19 = Contestant.create(
-	:name => 'Leslie H.', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/leslie.jpg', 
-	:age => 26, 
-	:gender => 'Female', 
-	:occupation => 'Poker Dealer', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode4.id)
-cont20 = Contestant.create(
-	:name => 'Kristy', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/kristy.jpg', 
-	:age => 26, 
-	:gender => 'Female', 
-	:occupation => 'Model', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode3.id)
-cont21 = Contestant.create(
-	:name => 'Taryn', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/taryn.jpg', 
-	:age => 30, 
-	:gender => 'Female', 
-	:occupation => 'Health Club Manager', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode3.id)
-cont22 = Contestant.create(
-	:name => 'Kacie', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/kacie.jpg', 
-	:age => 25, 
-	:gender => 'Female', 
-	:occupation => 'Community Organizer', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode3.id)
-cont23 = Contestant.create(
-	:name => 'Brooke', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/brooke.jpg', 
-	:age => 25, 
-	:gender => 'Female', 
-	:occupation => 'Graphic Designer', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode2.id)
-cont24 = Contestant.create(
-	:name => 'Diana', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/diana.jpg', 
-	:age => 31, 
-	:gender => 'Female', 
-	:occupation => 'Salon Owner', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Eliminated',
-	:present => false,
-	:episode_id => episode2.id)
-cont25 = Contestant.create(
-	:name => 'Katie', 
-	:season_id => season3.id, 
-	:image => '/assets/the_bachelor/season18/katie.jpg', 
-	:age => 27, 
-	:gender => 'Female', 
-	:occupation => 'Yoga Instructor', 
-	:description => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit!', 
-	:status_on_show => 'Quit',
-	:present => false,
-	:episode_id => episode2.id)
-
-bachlorette10cont1 = Contestant.create(:name => 'Marcus', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/marcus.jpg', :age => '29', :gender => 'male', :description => 'Tampa, Florida', :occupation => 'Former Professional Baseball Player', :status_on_show => 'Winner', :episode_id => ep10blrte.id)
-bachlorette10cont2 = Contestant.create(:name => 'Chris', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/chris.jpg', :age => '33', :gender => 'male', :description => 'Waukesha, Wisconsin', :occupation => 'Software Sales Executive', :status_on_show => 'Runner-up', :episode_id => ep10blrte.id)
-bachlorette10cont3 = Contestant.create(:name => 'J.J.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/jj.jpg', :age => '32', :gender => 'male', :description => 'Lamont, Iowa', :occupation => 'Farmer', :status_on_show => 'Present', :episode_id => ep9blrte.id)
-bachlorette10cont4 = Contestant.create(:name => 'Marquel', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/marquel.jpg', :age => '25', :gender => 'male', :description => 'Medicine Hat, Alberta', :occupation => 'Sports Medicine Manager', :status_on_show => 'Present', :episode_id => ep8blrte.id)
-bachlorette10cont5 = Contestant.create(:name => 'Tasos', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/tasos.jpg', :age => '27', :gender => 'male', :description => 'Harrisburg, Pennsylvania', :occupation => 'Basketball Coach', :status_on_show => 'Present', :episode_id => ep7blrte.id)
-bachlorette10cont6 = Contestant.create(:name => 'Cody', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/cody.jpg', :age => '26', :gender => 'male', :description => 'Longmeadow, Massachusetts', :occupation => 'Accountant', :status_on_show => 'Present', :episode_id => ep7blrte.id)
-bachlorette10cont7 = Contestant.create(:name => 'Steven', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/steven.jpg', :age => '30', :gender => 'male', :description => 'Hanover, Massachusetts', :occupation => 'Pantsapreneur', :status_on_show => 'Present', :episode_id => ep6blrte.id)
-bachlorette10cont8 = Contestant.create(:name => 'Rudie', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/rudie.jpg', :age => '28', :gender => 'male', :description => 'Oakley, Kansas', :occupation => 'Personal Trainer', :status_on_show => 'Present', :episode_id => ep6blrte.id)
-bachlorette10cont9 = Contestant.create(:name => 'Carl', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/carl.jpg', :age => '30', :gender => 'male', :description => 'Portola Valley, California', :occupation => 'Social Media Marketer', :status_on_show => 'Present', :episode_id => ep5blrte.id)
-bachlorette10cont10 = Contestant.create(:name => 'Jason', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/jason.jpg', :age => '26', :gender => 'male', :description => 'Rialto, California', :occupation => 'Sponsorship Salesman', :status_on_show => 'Present', :episode_id => ep5blrte.id)
-bachlorette10cont11 = Contestant.create(:name => 'Nick V.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/nickv.jpg', :age => '29', :gender => 'male', :description => 'Clinton, New Jersey', :occupation => 'Advertising Executive', :status_on_show => 'Present', :episode_id => ep5blrte.id)
-bachlorette10cont12 = Contestant.create(:name => 'Dylan', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/dylan.jpg', :age => '30', :gender => 'male', :description => 'Denver, Colorado', :occupation => 'Wedding Event Coordinator', :status_on_show => 'Present', :episode_id => ep4blrte.id)
-bachlorette10cont13 = Contestant.create(:name => 'Patrick', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/patrick.jpg', :age => '', :gender => 'male', :description => 'Citrus Heights, California', :occupation => 'Explorer', :status_on_show => 'Present', :episode_id => ep4blrte.id)
-bachlorette10cont14 = Contestant.create(:name => 'Emil', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/emil.jpg', :age => '32', :gender => 'male', :description => 'Grosse Pointe, Michigan', :occupation => 'Opera Singer', :status_on_show => 'Present', :episode_id => ep3blrte.id)
-bachlorette10cont15 = Contestant.create(:name => 'Brett', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/brett.jpg', :age => '29', :gender => 'male', :description => 'Warminster, Pennsylvania', :occupation => 'Hairstylist', :status_on_show => 'Present', :episode_id => ep3blrte.id)
-bachlorette10cont16 = Contestant.create(:name => 'Craig', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/craig.jpg', :age => '28', :gender => 'male', :description => 'Nahariya, Israel', :occupation => 'Beverage Sales Manager', :status_on_show => 'Present', :episode_id => ep3blrte.id)
-bachlorette10cont17 = Contestant.create(:name => 'Ron', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/ron.jpg', :age => '30', :gender => 'male', :description => 'Hollywood, California', :occupation => 'Firefighter', :status_on_show => 'Present', :episode_id => ep2blrte.id)
-bachlorette10cont18 = Contestant.create(:name => 'Bradley', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/bradley.jpg', :age => '29', :gender => 'male', :description => 'Defiance, Iowa', :occupation => 'Tax Accountant', :status_on_show => 'Present', :episode_id => ep2blrte.id)
-bachlorette10cont19 = Contestant.create(:name => 'Josh B.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/joshb.jpg', :age => '27', :gender => 'male', :description => 'Chicago, Illinois', :occupation => 'Professional Golfer', :status_on_show => 'Present', :episode_id => ep2blrte.id)
-bachlorette10cont20 = Contestant.create(:name => 'Nick S.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/nicks.jpg', :age => '33', :gender => 'male', :description => 'Portland, Oregon', :occupation => 'Helicopter Pilot', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont21 = Contestant.create(:name => 'Brian', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/brian.jpg', :age => '35', :gender => 'male', :description => 'Sturgeon Bay, Wisconsin', :occupation => 'Urgent Care Physician', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont22 = Contestant.create(:name => 'Andrew', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/andrew.jpg', :age => '29', :gender => 'male', :description => 'Evergreen, Colorado', :occupation => 'Telecommunication Marketer', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont23 = Contestant.create(:name => 'Mike', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/mike.jpg', :age => '29', :gender => 'male', :description => 'Guilderland, New York', :occupation => 'Bartender', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont24 = Contestant.create(:name => 'Eric', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/eric.jpg', :age => '31', :gender => 'male', :description => 'Yorba Linda, California', :occupation => 'Attorney', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-bachlorette10cont25 = Contestant.create(:name => 'Josh M.', :season_id => season2.id, :image => '/assets/the_bachelorette/season10/joshm.jpg', :age => '30', :gender => 'male', :description => 'Meadow Vista, California', :occupation => 'Snowboard Product Developer', :status_on_show => 'Present', :episode_id => ep1blrte.id)
-
-voice7cont1 = Contestant.create(:name => 'Luke Wade', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/25/LukeWade_Null_1455x1455_KO_1_1.jpg?itok=-z0At4qS', :age => 31, :gender => 'N/A', :description => 'Hometown: Dublin, Texas',  :status_on_show => 'Present')
-voice7cont2 = Contestant.create(:name => 'Clara Hong', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/ClaraHong_Null_1455x1455_RUBEN.jpg?itok=Zs7E4UXw', :age => 22, :gender => 'N/A', :description => 'Hometown: Atlanta, Georgia',  :status_on_show => 'Present')
-voice7cont3 = Contestant.create(:name => 'Bryana Salaz', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/22/BryanaSalaz_Null_1455x1455_KO.jpg?itok=Ny-8WJNE', :age => 16, :gender => 'N/A', :description => 'Hometown: San Antonio, Texas',  :status_on_show => 'Present')
-voice7cont4 = Contestant.create(:name => 'Damien Lawson', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/22/DamienLawson_Null_1455x1455_KO.jpg?itok=IhHFhx1Z', :age => 35, :gender => 'N/A', :description => 'Hometown: Monroe, Louisiana',  :status_on_show => 'Present')
-voice7cont5 = Contestant.create(:name => 'Allison Bray', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/AllisonBray_Null_1455x1455_RUBEN.jpg?itok=9_riJD5g', :age => 18, :gender => 'N/A', :description => 'Hometown: Louisville, Kentucky',  :status_on_show => 'Present')
-voice7cont6 = Contestant.create(:name => 'Taylor John Williams', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/TaylorJohnWilliams_Null_1455x1455_RUBEN.jpg?itok=y0mGySIc', :age => 23, :gender => 'N/A', :description => 'Hometown: Portland, Oregon',  :status_on_show => 'Present')
-voice7cont7 = Contestant.create(:name => 'Elyjuh René', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/22/ElyjuhRene_Null_1455x1455_KO.jpg?itok=EEsVV9ZL', :age => 18, :gender => 'N/A', :description => 'Hometown: Long Beach, California',  :status_on_show => 'Present')
-voice7cont8 = Contestant.create(:name => 'James David Carter', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/JamesDavidCarter_Null_1455x1455_RUBEN.jpg?itok=JgpbQexh', :age => 34, :gender => 'N/A', :description => 'Hometown: Jacksonville, Florida',  :status_on_show => 'Present')
-voice7cont9 = Contestant.create(:name => 'DaNica Shirey', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/DanicaShirey_Null_1455x1455_KO.jpg?itok=pmyqWD-m', :age => 25, :gender => 'N/A', :description => 'Hometown: York, Pennsylvania',  :status_on_show => 'Present')
-voice7cont10 = Contestant.create(:name => 'Joe Kirk', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/JoeKirk_Null_1455x1455_KO.jpg?itok=9PkbLbTL', :age => 17, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
-voice7cont11 = Contestant.create(:name => 'Menlik Zergabachew', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/MenlikZergabachew_Null_1455x1455_KO.jpg?itok=RIukha9D', :age => 19, :gender => 'N/A', :description => 'Hometown: Silver Spring, Maryland',  :status_on_show => 'Present')
-voice7cont12 = Contestant.create(:name => 'Reagan James', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/ReaganJames_Null_1455x1455_KO.jpg?itok=Xtbm-QG0', :age => 15, :gender => 'N/A', :description => 'Hometown: Burleson, Texas',  :status_on_show => 'Present')
-voice7cont13 = Contestant.create(:name => 'Taylor Phelan', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/TaylorPhelan_Null_1455x1455_KO.jpg?itok=gXJL6-Sg', :age => 25, :gender => 'N/A', :description => 'Hometown: Sherman, Texas',  :status_on_show => 'Present')
-voice7cont14 = Contestant.create(:name => 'Sugar Joans', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/SugarJoans_Null_1455x1455_KO.jpg?itok=Nhn9EaZS', :age => 24, :gender => 'N/A', :description => 'Hometown: Los Angeles, California',  :status_on_show => 'Present')
-voice7cont15 = Contestant.create(:name => 'Taylor Brashears', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/TaylorBrashears_Null_1455x1455_KO.jpg?itok=l9oNQX9I', :age => 21, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
-voice7cont16 = Contestant.create(:name => 'Maiya Sykes', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/23/MaiyaSykes_Null_1455x1455_KO.jpg?itok=B1d-tCxY', :age => 36, :gender => 'N/A', :description => 'Hometown: Los Angeles, California',  :status_on_show => 'Present')
-voice7cont17 = Contestant.create(:name => 'John Martin', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/JohnMartin_Null_1455x1455_KO.jpg?itok=gWGZ0Bt4', :age => 25, :gender => 'N/A', :description => 'Hometown: Saint Louis, Missouri',  :status_on_show => 'Present')
-voice7cont18 = Contestant.create(:name => 'Jessie Pitts', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/JessiePitts_Null_1455x1455_KO.jpg?itok=Ol51hoxI', :age => 18, :gender => 'N/A', :description => 'Hometown: Montgomery, Alabama',  :status_on_show => 'Present')
-voice7cont19 = Contestant.create(:name => 'Ricky Manning', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/RickyManning_Null_1455x1455_KO.jpg?itok=jx6ntDtc', :age => 19, :gender => 'N/A', :description => 'Hometown: Cape Coral, Florida',  :status_on_show => 'Present')
-voice7cont20 = Contestant.create(:name => 'Kelli Douglas', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/KelliDouglas_Null_1455x1455_KO.jpg?itok=4onfBlax', :age => 31, :gender => 'N/A', :description => 'Hometown: Dallas, Texas',  :status_on_show => 'Present')
-voice7cont21 = Contestant.create(:name => 'Blessing Offor', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/BlessingOffor_Null_1455x1455_KO.jpg?itok=1oHziOfj', :age => 25, :gender => 'N/A', :description => 'Hometown: New York, New York',  :status_on_show => 'Present')
-voice7cont22 = Contestant.create(:name => 'Troy Ritchie', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/TroyRichie_Null_1455x1455_KO.jpg?itok=d9KsNQRP', :age => 21, :gender => 'N/A', :description => 'Hometown: Trabuco Canyon, California',  :status_on_show => 'Present')
-voice7cont23 = Contestant.create(:name => 'Mia Pfirrman', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/MiaPfirrman_Null_1455x1455_KO.jpg?itok=H7ypv2Lc', :age => 19, :gender => 'N/A', :description => 'Hometown: Temple City, California',  :status_on_show => 'Present')
-voice7cont24 = Contestant.create(:name => 'Alessandra Castronovo', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/AlessandraCastronovo_Null_1455x1455_KO.jpg?itok=-RZtBrpn', :age => 21, :gender => 'N/A', :description => 'Hometown: Millstone, New Jersey',  :status_on_show => 'Present')
-voice7cont25 = Contestant.create(:name => 'Jordy Searcy', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/JordySearcy_Null_1455x1455_KO.jpg?itok=NOZAO_Jv', :age => 20, :gender => 'N/A', :description => 'Hometown: Fairhope, Alabama',  :status_on_show => 'Present')
-voice7cont26 = Contestant.create(:name => 'Kensington Moore', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/KensingtonMoore_Null_1455x1455_KO.jpg?itok=1_KKtDWk', :age => 18, :gender => 'N/A', :description => 'Hometown: Georgetown, Kentucky',  :status_on_show => 'Present')
-voice7cont27 = Contestant.create(:name => 'Bree Fondacaro', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/BreeFondacaro_Null_1455x1455_KO.jpg?itok=2koAD45f', :age => 24, :gender => 'N/A', :description => 'Hometown: Orange County, California',  :status_on_show => 'Present')
-voice7cont28 = Contestant.create(:name => 'Anita Antoinette', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/29/AnitaAntoinette_Null_1455x1455_KO.jpg?itok=-BX4lPMc', :age => 24, :gender => 'N/A', :description => 'Hometown: Boston, Massachusetts',  :status_on_show => 'Present')
-voice7cont29 = Contestant.create(:name => 'Katriz Trinidad', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/KatrizTrinidad_Null_1455x1455_KO.jpg?itok=svt0TZ9L', :age => 15, :gender => 'N/A', :description => 'Hometown: San Diego, California',  :status_on_show => 'Present')
-voice7cont30 = Contestant.create(:name => 'Ethan Butler', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/EthanButler_Null_1455x1455_KO.jpg?itok=foReHGiQ', :age => 25, :gender => 'N/A', :description => 'Hometown: Chicago, Illinois',  :status_on_show => 'Present')
-voice7cont31 = Contestant.create(:name => 'Tanner Linford', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/TannerLinford_Null_1455x1455_KO.jpg?itok=xA2xk--V', :age => 17, :gender => 'N/A', :description => 'Hometown: Kaysville, Utah',  :status_on_show => 'Present')
-voice7cont32 = Contestant.create(:name => 'Jean Kelley', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/JeanKelley_Null_1455x1455_KO.jpg?itok=B4if2hmG', :age => 29, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
-voice7cont33 = Contestant.create(:name => 'Chris Jamison', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/ChrisJamison_Null_1455x1455_KO.jpg?itok=2irGUJ_0', :age => 21, :gender => 'N/A', :description => 'Hometown: Pittsburgh, Pennsylvania',  :status_on_show => 'Present')
-voice7cont34 = Contestant.create(:name => 'Craig Wayne Boyd', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/CraigWayneBoyd_Null_1455x1455_KO.jpg?itok=Zd-RUHKn', :age => 35, :gender => 'N/A', :description => 'Hometown: Nashville, Tennessee',  :status_on_show => 'Present')
-voice7cont35 = Contestant.create(:name => 'Toia Jones', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/ToiaJones_Null_1455x1455_KO.jpg?itok=Wg0fOheD', :age => 29, :gender => 'N/A', :description => 'Hometown: Montgomery, Alabama',  :status_on_show => 'Present')
-voice7cont36 = Contestant.create(:name => 'Amanda Lee Peers', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/AmandaLeePeers_Null_1455x1455_KO.jpg?itok=oP7j38qD', :age => 29, :gender => 'N/A', :description => 'Hometown: Rochester, New York',  :status_on_show => 'Present')
-voice7cont37 = Contestant.create(:name => 'Gianna Salvato', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/GiannaSalvato_Null_1455x1455_KO.jpg?itok=n1g-oPDc', :age => 18, :gender => 'N/A', :description => 'Hometown: Freehold, New Jersey',  :status_on_show => 'Present')
-voice7cont38 = Contestant.create(:name => 'Rebekah Samarin', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/RebekahSamarin_Null_1455x1455_KO.jpg?itok=0U6uzY9d', :age => 31, :gender => 'N/A', :description => 'Hometown: Whittier, California',  :status_on_show => 'Present')
-voice7cont39 = Contestant.create(:name => 'Grant Ganzer', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/GrantGanzer_Null_1455x1455_KO.jpg?itok=RA2ME7XA', :age => 16, :gender => 'N/A', :description => 'Hometown: Johnston, Iowa',  :status_on_show => 'Present')
-voice7cont40 = Contestant.create(:name => 'Jonathan Wyndham', :season_id => season4.id, :image => 'http://www.nbc.com/sites/nbcunbc/files/files/styles/nbc_contestants_teams_thumb/public/images/2014/9/30/JonathanWyndham_Null_1455x1455_KO.jpg?itok=KPOsDqA9', :age => 22, :gender => 'N/A', :description => 'Hometown: Lexington, South Carolina',  :status_on_show => 'Present')
-voice7cont41 = Contestant.create(:name => 'Matt McAndrew', :season_id => season4.id, :image => '#', :age => 23, :gender => 'N/A', :description => 'Hometown: Philadelphia, Pennsylvania',  :status_on_show => 'Present')
-
-roster1 = Roster.create(:user_id => user1.id, :league_id => league3.id)
-roster2 = Roster.create(:user_id => user4.id, :league_id => league3.id)
-roster3 = Roster.create(:user_id => user5.id, :league_id => league3.id)
-roster4 = Roster.create(:user_id => user1.id, :league_id => league2.id)
-roster5 = Roster.create(:user_id => user3.id, :league_id => league2.id)
-roster6 = Roster.create(:user_id => user4.id, :league_id => league2.id)
-roster7 = Roster.create(:user_id => user5.id, :league_id => league2.id)
-roster8 = Roster.create(:user_id => user1.id, :league_id => league1.id)
-roster9 = Roster.create(:user_id => user2.id, :league_id => league1.id)
-roster10 = Roster.create(:user_id => user3.id, :league_id => league1.id)
-
-roster10 = Roster.create(:user_id => user1.id, :league_id => league4.id)
-roster11 = Roster.create(:user_id => user2.id, :league_id => league4.id)
-roster10.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, cont14, cont15, cont16, cont17, cont18, cont19, cont20, cont21, cont22, cont23, cont24, cont25]
-roster11.contestants << [cont7, cont8, cont9, cont10, cont11, cont12, cont13, cont14, cont15, cont16, cont17, cont18, cont19, cont20, cont21, cont22, cont23, cont24, cont25]
-
-# Roster for Edelman's Bachelor League (The Bachelor)
-roster1.contestants << [juancont1, juancont2, juancont3, juancont4]
-roster2.contestants << [juancont2, juancont3, juancont4, juancont5]
-roster3.contestants << [juancont3, juancont4, juancont5, juancont6]
-
-round1 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode1.id)
-round1.contestants << roster10.contestants.clone
-round2 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode2.id)
-round2.contestants << round1.contestants.clone
-round2.contestants.delete(cont23, cont24, cont25)
-round3 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode3.id)
-round3.contestants << round2.contestants.clone
-round3.contestants.delete(cont20, cont21, cont22)
-round4 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode4.id)
-round4.contestants << round3.contestants.clone
-round4.contestants.delete(cont18, cont19)
-round5 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode5.id)
-round5.contestants << round4.contestants.clone
-round5.contestants.delete(cont16, cont17)
-round6 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode6.id)
-round6.contestants << round5.contestants.clone
-round6.contestants.delete(cont13, cont15)
-round7 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode7.id)
-round7.contestants << round6.contestants.clone
-round7.contestants.delete(cont10, cont14)
-round8 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode8.id)
-round8.contestants << round7.contestants.clone
-round8.contestants.delete(cont9, cont11)
-round9 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode9.id)
-round9.contestants << round8.contestants.clone
-round9.contestants.delete(cont8)
-round10 = Round.create(:user_id => user1.id, :league_id => league4.id, :episode_id => episode10.id)
-round10.contestants << round9.contestants.clone
-round10.contestants.delete(cont12)
-
-round11 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode1.id)
-round11.contestants << roster11.contestants.clone
-round12 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode2.id)
-round12.contestants << round11.contestants.clone
-round12.contestants.delete(cont13, cont16, cont23)
-round13 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode3.id)
-round13.contestants << round12.contestants.clone
-round13.contestants.delete(cont19, cont20, cont21)
-round14 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode4.id)
-round14.contestants << round13.contestants.clone
-round14.contestants.delete(cont8, cont17)
-round15 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode5.id)
-round15.contestants << round14.contestants.clone
-round15.contestants.delete(cont7, cont10)
-round16 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode6.id)
-round16.contestants << round15.contestants.clone
-round16.contestants.delete(cont25, cont24)
-round17 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode7.id)
-round17.contestants << round16.contestants.clone
-round17.contestants.delete(cont22, cont18)
-round18 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode8.id)
-round18.contestants << round17.contestants.clone
-round18.contestants.delete(cont12, cont14)
-round19 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode9.id)
-round19.contestants << round18.contestants.clone
-round19.contestants.delete(cont15)
-round20 = Round.create(:user_id => user2.id, :league_id => league4.id, :episode_id => episode10.id)
-round20.contestants << round19.contestants.clone
-round20.contestants.delete(cont11)
-
-survival1 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 1', :points_asgn => 10)
-survival2 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 2', :points_asgn => 20)
-survival3 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 3', :points_asgn => 30)
-survival4 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 4', :points_asgn => 40)
-survival5 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 5', :points_asgn => 50)
-survival6 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 6', :points_asgn => 60)
-survival7 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 7', :points_asgn => 70)
-survival8 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 8', :points_asgn => 80)
-survival9 = Survival.create(:show_id => show1.id, :description => 'Contestant receives a rose in Week 9', :points_asgn => 90)
-survival10 = Survival.create(:show_id => show1.id, :description => 'Contestant receives the Final Rose', :points_asgn => 100)
-survival11 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 1', :points_asgn => 10)
-survival12 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 2', :points_asgn => 10)
-survival13 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 3', :points_asgn => 10)
-survival14 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 4', :points_asgn => 10)
-survival15 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 5', :points_asgn => 10)
-survival16 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 6', :points_asgn => 10)
-survival17 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 7', :points_asgn => 10)
-survival18 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 8', :points_asgn => 10)
-survival19 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in Week 9', :points_asgn => 10)
-survival20 = Survival.create(:show_id => show1.id, :description => 'Contestant leaves on her own accord in the Finale', :points_asgn => 10)
-survival21 = Survival.create(:show_id => show1.id, :description => 'Contestant is asked to leave by the producer', :points_asgn => 100)
-game22 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for 1-on-1 date', :points_asgn => 50)
-game23 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
-game24 = Game.create(:show_id => show1.id, :description => 'Contestant gets in a helicopter', :points_asgn => 25)
-game25 = Game.create(:show_id => show1.id, :description => 'Contestant gets a Fantasy Suite invitation', :points_asgn => 75)
-game26 = Game.create(:show_id => show1.id, :description => 'Contestant rejects a Fantay Suite invitation', :points_asgn => 100)
-game27 = Game.create(:show_id => show1.id, :description => 'Contestant meets the bachelor\'s family', :points_asgn => 50)
-game28 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
-game29 = Game.create(:show_id => show1.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
-extra30 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant kisses the bachelor', :points_asgn => 10)
-extra31 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gets in the hot tub with the bachelor', :points_asgn => 20)
-extra32 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant cries', :points_asgn => 10)
-extra33 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gets in a fight with another contestant', :points_asgn => 25)
-extra34 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant says she\'s "here for the right reason" ', :points_asgn => 15)
-extra35 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gets inappropriately drunk', :points_asgn => 25)
-extra36 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gets injured', :points_asgn => 25)
-extra37 = Extracurricular.create(:show_id => show1.id, :description => 'Contestant gives the bachelor a gift', :points_asgn => 10)
-survival38 = Survival.create(:show_id => show1.id, :description => 'Contestant gets eliminated', :points_asgn => 0)
-
-survival40 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 1', :points_asgn => 10)
-survival41 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 2', :points_asgn => 20)
-survival42 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 3', :points_asgn => 30)
-survival43 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 4', :points_asgn => 40)
-survival44 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 5', :points_asgn => 50)
-survival45 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 6', :points_asgn => 60)
-survival46 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 7', :points_asgn => 70)
-survival47 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 8', :points_asgn => 80)
-survival48 = Survival.create(:show_id => show2.id, :description => 'Contestant receives a rose in Week 9', :points_asgn => 90)
-survival49 = Survival.create(:show_id => show2.id, :description => 'Contestant receives the Final Rose', :points_asgn => 100)
-survival50 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 1', :points_asgn => 10)
-survival51 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 2', :points_asgn => 10)
-survival52 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 3', :points_asgn => 10)
-survival53 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 4', :points_asgn => 10)
-survival54 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 5', :points_asgn => 10)
-survival55 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 6', :points_asgn => 10)
-survival56 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 7', :points_asgn => 10)
-survival57 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 8', :points_asgn => 10)
-survival58 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in Week 9', :points_asgn => 10)
-survival59 = Survival.create(:show_id => show2.id, :description => 'Contestant leaves on his own accord in the Finale', :points_asgn => 10)
-survival60 = Survival.create(:show_id => show2.id, :description => 'Contestant is asked to leave by the producer', :points_asgn => 100)
-survival61 = Survival.create(:show_id => show2.id, :description => 'Contestant gets eliminated', :points_asgn => 0)
-game62 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for 1-on-1 date', :points_asgn => 50)
-game63 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
-game64 = Game.create(:show_id => show2.id, :description => 'Contestant gets in a helicopter', :points_asgn => 25)
-game65 = Game.create(:show_id => show2.id, :description => 'Contestant gets a Fantasy Suite invitation', :points_asgn => 75)
-game66 = Game.create(:show_id => show2.id, :description => 'Contestant rejects a Fantay Suite invitation', :points_asgn => 100)
-game67 = Game.create(:show_id => show2.id, :description => 'Contestant meets the bachelorette\'s family', :points_asgn => 50)
-game68 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
-game69 = Game.create(:show_id => show2.id, :description => 'Contestant is chosen for group date', :points_asgn => 25)
-extra70 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant kisses the bachelorette', :points_asgn => 10)
-extra71 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets in the hot tub with the bachelorette', :points_asgn => 20)
-extra72 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant cries', :points_asgn => 10)
-extra73 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets in a fight with another contestant', :points_asgn => 25)
-extra74 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant says he\'s "here for the right reason" ', :points_asgn => 15)
-extra75 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets inappropriately drunk', :points_asgn => 25)
-extra76 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gets injured', :points_asgn => 25)
-extra77 = Extracurricular.create(:show_id => show2.id, :description => 'Contestant gives the bachelorette a gift', :points_asgn => 10)
-
-survival78 = Survival.create(:show_id => show3.id, :description => 'Contestant gets selected during the Blind Audition', :points_asgn => 10)
-survival79 = Survival.create(:show_id => show3.id, :description => 'Contestant gets stolen by another coach during the Battle', :points_asgn => 20)
-
-event1 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event2 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event3 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event4 = Event.create!(:contestant_id => cont14.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event5 = Event.create!(:contestant_id => cont16.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event6 = Event.create!(:contestant_id => cont25.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event7 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event8 = Event.create!(:contestant_id => cont17.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event9 = Event.create!(:contestant_id => cont19.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event10 = Event.create!(:contestant_id => cont24.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event11 = Event.create!(:contestant_id => cont23.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event12 = Event.create!(:contestant_id => cont15.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event13 = Event.create!(:contestant_id => cont18.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event14 = Event.create!(:contestant_id => cont11.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event15 = Event.create!(:contestant_id => cont22.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event16 = Event.create!(:contestant_id => cont20.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event17 = Event.create!(:contestant_id => cont13.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event18 = Event.create!(:contestant_id => cont21.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event19 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival1.id, :episode_id => episode1.id)
-event20 = Event.create!(:contestant_id => cont15.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event21 = Event.create!(:contestant_id => cont22.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event22 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event23 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event24 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event25 = Event.create!(:contestant_id => cont16.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event26 = Event.create!(:contestant_id => cont17.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event27 = Event.create!(:contestant_id => cont11.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event28 = Event.create!(:contestant_id => cont14.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event29 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event30 = Event.create!(:contestant_id => cont20.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event31 = Event.create!(:contestant_id => cont19.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event32 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event33 = Event.create!(:contestant_id => cont21.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event34 = Event.create!(:contestant_id => cont13.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event35 = Event.create!(:contestant_id => cont18.id, :scheme_id => survival2.id, :episode_id => episode2.id)
-event36 = Event.create!(:contestant_id => cont23.id, :scheme_id => survival38.id, :episode_id => episode2.id)
-event37 = Event.create!(:contestant_id => cont24.id, :scheme_id => survival38.id, :episode_id => episode2.id)
-event38 = Event.create!(:contestant_id => cont25.id, :scheme_id => survival12.id, :episode_id => episode2.id)
-event39 = Event.create!(:contestant_id => cont11.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont19.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont13.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont16.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont14.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont15.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event40 = Event.create!(:contestant_id => cont17.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event50 = Event.create!(:contestant_id => cont18.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event51 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event51 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival3.id, :episode_id => episode3.id)
-event52 = Event.create!(:contestant_id => cont20.id, :scheme_id => survival38.id, :episode_id => episode3.id)
-event53 = Event.create!(:contestant_id => cont21.id, :scheme_id => survival38.id, :episode_id => episode3.id)
-event54 = Event.create!(:contestant_id => cont22.id, :scheme_id => survival38.id, :episode_id => episode3.id)
-event55 = Event.create!(:contestant_id => cont14.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event56 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event57 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event58 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event59 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event60 = Event.create!(:contestant_id => cont11.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event61 = Event.create!(:contestant_id => cont16.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event62 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event63 = Event.create!(:contestant_id => cont15.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event64 = Event.create!(:contestant_id => cont17.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event65 = Event.create!(:contestant_id => cont13.id, :scheme_id => survival4.id, :episode_id => episode4.id)
-event66 = Event.create!(:contestant_id => cont18.id, :scheme_id => survival38.id, :episode_id => episode4.id)
-event67 = Event.create!(:contestant_id => cont19.id, :scheme_id => survival38.id, :episode_id => episode4.id)
-event68 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event69 = Event.create!(:contestant_id => cont13.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event70 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event71 = Event.create!(:contestant_id => cont14.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event72 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event73 = Event.create!(:contestant_id => cont11.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event74 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event75 = Event.create!(:contestant_id => cont15.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event76 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival5.id, :episode_id => episode5.id)
-event77 = Event.create!(:contestant_id => cont16.id, :scheme_id => survival38.id, :episode_id => episode5.id)
-event78 = Event.create!(:contestant_id => cont17.id, :scheme_id => survival38.id, :episode_id => episode5.id)
-event79 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival6.id, :episode_id => episode6.id)
-event80 = Event.create!(:contestant_id => cont11.id, :scheme_id => survival6.id, :episode_id => episode6.id)
-event81 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival6.id, :episode_id => episode6.id)
-event82 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival6.id, :episode_id => episode6.id)
-event83 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival6.id, :episode_id => episode6.id)
-event84 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival6.id, :episode_id => episode6.id)
-event85 = Event.create!(:contestant_id => cont13.id, :scheme_id => survival38.id, :episode_id => episode6.id)
-event86 = Event.create!(:contestant_id => cont14.id, :scheme_id => survival38.id, :episode_id => episode6.id)
-event87 = Event.create!(:contestant_id => cont15.id, :scheme_id => survival38.id, :episode_id => episode6.id)
-event88 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival7.id, :episode_id => episode7.id)
-event89 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival7.id, :episode_id => episode7.id)
-event90 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival7.id, :episode_id => episode7.id)
-event91 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival7.id, :episode_id => episode7.id)
-event92 = Event.create!(:contestant_id => cont11.id, :scheme_id => survival7.id, :episode_id => episode7.id)
-event93 = Event.create!(:contestant_id => cont12.id, :scheme_id => survival38.id, :episode_id => episode7.id)
-event94 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival8.id, :episode_id => episode8.id)
-event95 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival8.id, :episode_id => episode8.id)
-event96 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival8.id, :episode_id => episode8.id)
-event97 = Event.create!(:contestant_id => cont10.id, :scheme_id => survival38.id, :episode_id => episode8.id)
-event98 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival9.id, :episode_id => episode9.id)
-event99 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival9.id, :episode_id => episode9.id)
-event100 = Event.create!(:contestant_id => cont9.id, :scheme_id => survival38.id, :episode_id => episode9.id)
-event101 = Event.create!(:contestant_id => cont7.id, :scheme_id => survival10.id, :episode_id => episode10.id)
-event102 = Event.create!(:contestant_id => cont8.id, :scheme_id => survival38.id, :episode_id => episode10.id)
+botxii1 = Competition.create(:show_id => challenge.id, :description =>'Wins a challenge, resulting in an immunity', :points_asgn => 20)
+botxii2 = Competition.create(:show_id => challenge.id, :description =>'Wins a challenge, resulting in a cash prize', :points_asgn => 10)
+botxii3 = Competition.create(:show_id => challenge.id, :description =>'Loses a challenge', :points_asgn => -10)
+botxii4 = Competition.create(:show_id => challenge.id, :description =>'Chosen through public vote to face a random opponent in the elimination', :points_asgn => 15)
+botxii5 = Competition.create(:show_id => challenge.id, :description =>'Randomly selects the "kill card" during the Draw to compete in the elimination challenge', :points_asgn => 10)
+botxii6 = Competition.create(:show_id => challenge.id, :description =>'Wins an elimination, allowed to return to the game', :points_asgn => 5)
+botxii7 = Competition.create(:show_id => challenge.id, :description =>'Loses an elimination, forced to leave the game', :points_asgn => 20)
+botxii8 = Competition.create(:show_id => challenge.id, :description =>'Serious injury resulting in genuine concern or requiring a medic or ambulance', :points_asgn => 10)
+botxii9 = Competition.create(:show_id => challenge.id, :description =>'Visible mark, wound or contusion, or a well documented internal injury', :points_asgn => 20)
+botxii10 = Competition.create(:show_id => challenge.id, :description =>'Throws a challenge', :points_asgn => 10)
+botxii11 = Competition.create(:show_id => challenge.id, :description =>'Refuses a challenge', :points_asgn => 20)
+botxii12 = Competition.create(:show_id => challenge.id, :description =>'Gets berated by host', :points_asgn => 20)
+botxii13 = Competition.create(:show_id => challenge.id, :description =>'Recipient of vocal disappointment or anger stemming from host T.J. Lavin. Generally due to a lack of effort or bush league behavior', :points_asgn => -10)
+botxii14 = Competition.create(:show_id => challenge.id, :description =>'“You Killed It”, the highest praise an individual or group can receive', :points_asgn => 25)
+botxii15 = Competition.create(:show_id => challenge.id, :description =>'First place team(s), awarded to each member of both genders', :points_asgn => 100)
+botxii16 = Competition.create(:show_id => challenge.id, :description =>'Second place team(s), awarded to each member of both genders', :points_asgn => 50)
+botxii17 = Competition.create(:show_id => challenge.id, :description =>'Does NOT complete the final mission', :points_asgn => 25)
+botxii18 = Altercation.create(:show_id => challenge.id, :description =>'Yelling, negative language, or extreme nonviolent behavior directed at another', :points_asgn => 5)
+botxii19 = Altercation.create(:show_id => challenge.id, :description =>'Encroaching on ones personal space and getting right up in one’s face without crossing the line into a physical altercation', :points_asgn => 10)
+botxii20 = Altercation.create(:show_id => challenge.id, :description =>'Any altercation where violent behavior or physical contact in the form of grappling, hair pulling, or shoving occurs. Usually resulting in a third party interjecting', :points_asgn => 20)
+botxii21 = Altercation.create(:show_id => challenge.id, :description =>'Engaging in any activity that could be considered a "hate crime" or anything that could be considered racist, sexist, or homophobic', :points_asgn => 20)
+botxii22 = Altercation.create(:show_id => challenge.id, :description =>'Being accused of a "hate crime" or anything that could be considered racist, sexist, or homophobic, without having actually committed the act', :points_asgn => 5)
+botxii23 = Altercation.create(:show_id => challenge.id, :description =>'Crying or showing extreme saddened and distraught emotion', :points_asgn => -5)
+botxii24 = Altercation.create(:show_id => challenge.id, :description =>'Inducing crying (deliberately and indeliberately)', :points_asgn => 10)
+botxii25 = Altercation.create(:show_id => challenge.id, :description =>'Throwing a drink or harmless object at another individual i.e. pillow', :points_asgn => 10)
+botxii26 = Altercation.create(:show_id => challenge.id, :description =>'Throwing an object that results in the destruction of property i.e. trash can', :points_asgn => 10)
+botxii27 = Altercation.create(:show_id => challenge.id, :description =>'Throwing a punch that results in the destruction of property i.e. punching a wall', :points_asgn => 10)
+botxii28 = Altercation.create(:show_id => challenge.id, :description =>'Throwing a harmful object at another individual i.e. glass bottle', :points_asgn => 20)
+botxii29 = Altercation.create(:show_id => challenge.id, :description =>'Throwing a punch or slap at another individual with intent to harm', :points_asgn => 20)
+botxii30 = Altercation.create(:show_id => challenge.id, :description =>'Gets restrained by other contestants', :points_asgn => 5)
+botxii31 = Altercation.create(:show_id => challenge.id, :description =>'Restrains other contestants', :points_asgn => 10)
+botxii32 = Altercation.create(:show_id => challenge.id, :description =>'Fights with non-cast members on camera', :points_asgn => 25)
+botxii33 = Survival.create(:show_id => challenge.id, :description =>'Departs early outside of an elimination challenge. Usually due to injury or quitting', :points_asgn => 50)
+botxii34 = Survival.create(:show_id => challenge.id, :description =>'Forcibly kicked off for unsavory acts and reasons other than game play', :points_asgn => 100)
+botxii35 = Altercation.create(:show_id => challenge.id, :description =>'Gets kicked off the show as a result of an altercation', :points_asgn => 50)
+botxii36 = Debauchery.create(:show_id => challenge.id, :description =>'Dresses in costume', :points_asgn => 5)
+botxii37 = Debauchery.create(:show_id => challenge.id, :description =>'Engages in self-promotion', :points_asgn => 10)
+botxii38 = Debauchery.create(:show_id => challenge.id, :description =>'Vomits', :points_asgn => 10)
+botxii39 = Debauchery.create(:show_id => challenge.id, :description =>'Blurcle (nudity)', :points_asgn => 10)
+botxii40 = Debauchery.create(:show_id => challenge.id, :description =>'Quickly kisses or pecks on the face or head', :points_asgn => 5)
+botxii41 = Debauchery.create(:show_id => challenge.id, :description =>'Open mouth kisses or auditory slurping noises, such that kissing can be inferred', :points_asgn => 10)
+botxii42 = Debauchery.create(:show_id => challenge.id, :description =>'Makes out with member of the same sex', :points_asgn => 15)
+botxii43 = Debauchery.create(:show_id => challenge.id, :description =>'Engages in a three-way kiss', :points_asgn => 20)
+botxii44 = Debauchery.create(:show_id => challenge.id, :description =>'Has sex with another contestant', :points_asgn => 20)
+botxii45 = Debauchery.create(:show_id => challenge.id, :description =>'Denies having sex with another contestant', :points_asgn => 10)
+botxii46 = Debauchery.create(:show_id => challenge.id, :description =>'Mentions key phrase(s)', :points_asgn => 10)
+botxii47 = Debauchery.create(:show_id => challenge.id, :description =>'Receives a subtitle on screen', :points_asgn => 5)

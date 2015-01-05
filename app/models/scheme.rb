@@ -17,6 +17,7 @@ class Scheme < ActiveRecord::Base
 	has_many :events
 	has_many :contestants, through: :events
 	has_many :episodes, through: :events
+	has_and_belongs_to_many :leagues
 
 	private
 
@@ -27,6 +28,6 @@ class Scheme < ActiveRecord::Base
 
 	def self.select_type
 		# FIXME - make type_list scalable
-		@type_list = ["Survival", "Game", "Extracurricular"]
+		@type_list = ["Altercation", "Competition", "Debauchery", "Extracurricular", "Survival"]
 	end
 end

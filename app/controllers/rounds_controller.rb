@@ -30,13 +30,32 @@ class RoundsController < ApplicationController
 		@episodes_collection = @season.episodes
 
 		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
+		@rounds_ids = @rounds_collection.pluck(:id)
 
-		@available_contestants = @season.contestants.order(name: :asc)
+		@available_contestants = @season.contestants.where(present: true).order(name: :asc)
 		respond_to do |format|
 			format.html
 			format.js {
 				render :json => {
-					:rounds_collection => @rounds_collection
+					:rounds_collection => @rounds_collection,
+					:rounds_ids => @rounds_ids
+				}
+			}
+		end
+	end
+
+	def singleedit
+		@league = League.includes(:users, :rounds).find(params[:league_id])	
+		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		@episodes_collection = @season.episodes
+
+		@available_contestants = @season.contestants.where(present: true).order(name: :asc)
+		respond_to do |format|
+			format.html
+			format.js {
+				render :json => {
+					:rounds_collection => @rounds_collection,
+					:rounds_ids => @rounds_ids
 				}
 			}
 		end
@@ -45,11 +64,21 @@ class RoundsController < ApplicationController
 	def add
 		# adding a contestant to a round
 		@round = Round.includes(:contestants).find(params[:round_id])
+		@league = @round.league
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 
 		@round.contestants << contestant unless @round.contestants.include? contestant
 
-		redirect_to round_display_path(@round.id)
+		respond_to do |format|
+			format.html {render partial: "current_bracket"}
+			format.js {
+				render :json => {
+					:round => @round,
+					:contestants => @round.contestants
+				}
+			}
+		end
 	end
 
 	def remove

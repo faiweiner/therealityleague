@@ -55,38 +55,39 @@
 						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
 					- else
 						= f.select(:type, [], {:include_blank => "Select draft type"}, class: "form-control step3")
-			/ Contestant Count Box
-			.row#seasonContestantCount.hidden
-				.col-lg-6.col-md-6.col-lg-offset-3.col-md-offset-3
-					.caption
-						Please select team and contestant limit below. There are 
-						%br/
-						%span 0
-						contestant(s) in this season and up to
+			/ / Contestant Count Box
+			/ .row#seasonContestantCount.hidden
+			/ 	.col-lg-6.col-md-6.col-lg-offset-3.col-md-offset-3
+			/ 		.caption
+			/ 			Please select team and contestant limit below. There are 
+			/ 			%br/
+			/ 			%span 0
+			/ 			contestant(s) in this season and up to
 			/ Contestant Limit Box
 			.row#contestantLimitBox.hidden
 				.col-lg-6.col-md-6.col-lg-offset-3.col-md-offset-3
 					.caption
+						Each team can draft
 						%span 0
-						contestant(s) per team.
+						contestant(s).
 			/ Participant Cap
 			.row.form-group#participantCapField.hidden
 				.col-md-3.text-right
-					= f.label :participant_cap, "Team Limit"
+					= f.label :participant_cap, "Max # of Teams"
 				.col-md-6
 					= f.number_field :participant_cap, id: "participantCap", min: 2, max: 30, class: "form-control step4", placeholder: "Select max number of teams in this league"
 			/ Draft Limit
-			.row.form-group#draftLimitField
+			.row.form-group#draftLimitField.hidden
 				.col-md-3.text-right
 					= f.label :draft_limit, "Contestant Limit"
 				.col-md-6
 					= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: "Select max number of contestants per team"
 			/ Draft deadline
 			.row.form-group#draftDatePickerField.hidden
-				.col-md-3.text-right
+				.col-md-3.text-right#draftDateLabel
 					= f.label :draft_deadline
 				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
-					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", default: Date.today}
+					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", :id => "draftDateInput", default: Date.today}
 			/ Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right

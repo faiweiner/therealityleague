@@ -17,7 +17,7 @@
 							%th Episodes
 						%th
 				%tbody
-					- @seasons.each do |season|
+					- @seasons.order("number DESC").each do |season|
 						- if season.published?
 							%tr
 								%td

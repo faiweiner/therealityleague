@@ -11,5 +11,5 @@
 #  updated_at  :datetime
 #
 
-class Game < Scheme
+class Altercation < Scheme
 end

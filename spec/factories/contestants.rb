@@ -11,6 +11,7 @@
 #  occupation     :string(255)
 #  description    :text
 #  status_on_show :string(255)
+#  source         :string(255)
 #  present        :boolean          default(TRUE)
 #  episode_id     :integer
 #  created_at     :datetime

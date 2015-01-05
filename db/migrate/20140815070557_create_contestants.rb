@@ -9,6 +9,7 @@ class CreateContestants < ActiveRecord::Migration
 			t.string	:occupation
 			t.text		:description
 			t.string 	:status_on_show
+			t.string	:source
 			t.boolean :present, default: :true
 			t.integer	:episode_id 				# episode of elimination
 			t.timestamps

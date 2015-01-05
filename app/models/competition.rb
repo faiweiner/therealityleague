@@ -11,5 +11,5 @@
 #  updated_at  :datetime
 #
 
-class Challenge < Scheme
+class Competition < Scheme
 end

@@ -3,10 +3,18 @@ $(document).ready(function () {
 		console.log('Round Selection Board initialized');
 		$availableContestantBoard = $('#availableContestant');
 		$roundEditBoard = $('#roundEdit');
-		$roundDisplayBoard = $('#roundDisplay');
+		$roundsDisplayBoard = $('#roundDisplay');
+
+		// Server data
+		var roundsCount = $('#board').data().roundsCount;
+		var roundsIds = $('#board').data().roundsIds;
+
+		// Client-side data
+		var activeRoundId = $("li.btn-primary.selected").data().roundId;
 
 		// Button changer
 		$saveButton = $('#saveButton');
+
 
 		$selectedRoundButton = $('.btn.btn-block.btn-sm.btn-primary.selected')
 		var selectedRoundId = $selectedRoundButton.data().roundId;
@@ -17,12 +25,17 @@ $(document).ready(function () {
 				url: '/rounds/' + roundId + '/add/' + contestantId,
 				type: 'POST',
 				success: function (msg) {
-					
 				}
 			}).done(function () {
-				$roundEditBoard.empty();
 			});
-
+			$.ajax({
+				url: '/rounds/' + selectedRoundId,
+				type: 'GET',
+				success: function (msg) {
+					var partial = msg;
+					$availableContestantBoard.html(partial);
+				}
+			});
 		};
 
 		var removeContestantFromRound = function (contestantId, roundId) {
@@ -30,10 +43,9 @@ $(document).ready(function () {
 				url:	'/rounds/' +  roundId + '/remove/' + contestantId,
 				type:	'POST',
 				success: function (msg) {
-
 				}
 			}).done(function (response) {
-
+	
 			});
 		};
 
@@ -49,6 +61,22 @@ $(document).ready(function () {
 		// ----- END server-side ----- //
 
 		// ----- BEGIN client-side ----- //
+
+		// hides all round display except the active one
+		var toggleRoundDisplay = function (activeRoundId) {
+			for (var i = 0; i < roundsCount; i++) {
+				var searchTerm = '#' + roundsIds[i]
+				var roundDisplay = $(searchTerm);
+				if (roundsIds[i] == activeRoundId) {
+					$activeRoundDisplay = $(searchTerm);
+					$activeRoundDisplay.removeClass('hidden');
+				} else {
+					$inactiveRoundDisplay = $(searchTerm);
+					$inactiveRoundDisplay.addClass('hidden');
+				}
+			}
+		};
+
 		// detects which operation to execute
 
 		var roundOperation = function (operation, contestantId, roundId, element) {
@@ -76,9 +104,10 @@ $(document).ready(function () {
 			var $siblings = $( "li.btn.btn-block" ).siblings();
 			$siblings.removeClass('btn-primary', 'selected');
 			$element.classList.add('btn-primary', 'selected');
-			console.log('done');
 			selectedRoundId = roundId;
-			console.log(selectedRoundId);
+			searchTerm = '#' + selectedRoundId;
+			$roundDisplay = $(searchTerm);
+			toggleRoundDisplay(selectedRoundId);
 		};
 
 		// ========= universal click listeners ========= //
@@ -120,5 +149,6 @@ $(document).ready(function () {
 			detectRound(roundId);
 		});
 
+		toggleRoundDisplay(activeRoundId);
 	};
 });

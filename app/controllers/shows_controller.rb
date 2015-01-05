@@ -22,10 +22,7 @@ class ShowsController < ApplicationController
 	def display
 		@show = Show.includes(:seasons).find(params[:id])
 		@seasons = @show.seasons
-		@rules_survival = Show.get_schemes(@show.id, "Survival")
-		@rules_game = Show.get_schemes(@show.id, "Game")
-		@rules_extra =Show.get_schemes(@show.id, "Extracurricular")
-		
+		@rules = Show.get_schemes(@show.id)
 		render_admin
 	end
 

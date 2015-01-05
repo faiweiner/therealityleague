@@ -1,5 +1,6 @@
 - @rounds_collection.each_with_index do |round, i|
-	.row{"data-round-id" => round.id}
+
+	.row{"id" => round.id, "data-round-id" => round.id}
 		.col-lg-12
 			%h4
 				Round #{i + 1}

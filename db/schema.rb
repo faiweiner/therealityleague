@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007005314) do
+ActiveRecord::Schema.define(version: 20150105113557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20141007005314) do
     t.string   "occupation"
     t.text     "description"
     t.string   "status_on_show"
+    t.string   "source"
     t.boolean  "present",        default: true
     t.integer  "episode_id"
     t.datetime "created_at"
@@ -75,9 +76,21 @@ ActiveRecord::Schema.define(version: 20141007005314) do
     t.datetime "updated_at"
   end
 
+  create_table "leagues_schemes", id: false, force: true do |t|
+    t.integer "league_id"
+    t.integer "scheme_id"
+  end
+
   create_table "leagues_users", id: false, force: true do |t|
     t.integer "league_id"
     t.integer "user_id"
+  end
+
+  create_table "messages", force: true do |t|
+    t.integer  "user_id"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "rosters", force: true do |t|

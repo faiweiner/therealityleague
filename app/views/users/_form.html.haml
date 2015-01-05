@@ -14,6 +14,8 @@
 				.row.form-group
 					- if flash[:notice] && flash[:color] == "valid"
 						.alert.alert-success{:role => "alert"}= flash[:notice]
+					- elsif flash[:notice] && flash[:color] == "invalid"
+						.alert.alert-danger{:role => "alert"}= flash[:notice]				
 				/ End Error Messages
 				= form_for(@user, class:"form-horizontal", :role => "form", :html => {:multipart => true}) do |f|
 					- if @user.errors.any?
@@ -32,6 +34,12 @@
 						= f.text_field :username, class:"form-control", placeholder: 'username'
 					/ avatar settings will only appear in user edit view
 					- if params[:id]
+						.row.form-group
+							= f.label :new_password, "New Password"
+							= f.password_field :password, class:"form-control"
+						.row.form-group
+							= f.label :confirm_password, "Confirm New Password"
+							= f.password_field :password_confirmation, class:"form-control"
 						.row.form-group
 							= f.label :avatar
 							= f.text_field :avatar, class:"form-control"

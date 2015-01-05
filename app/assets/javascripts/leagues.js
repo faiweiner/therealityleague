@@ -14,14 +14,18 @@ $(document).ready(function () {
 		$leagueScoringInstruction = $('#league_scoring');
 		$leagueDeadlineInstructions = $('#league_deadline');
 		$participantCapField = $('#participantCapField');
+		$participantCapInput = $('#participantCap');
 		$leagueDraftInput = $('#draft_type');
-		$draftDatePickerField = $('.draftDatePickerField');
+		$draftDatePickerField = $('#draftDatePickerField');
+		$draftDateLabel = $('#draftDateLabel');
+		$draftDateInput = $('#draftDateInput');
 		$draftLimitField = $('#draftLimitField');
 
 		$seasonContestantCount = $('#seasonContestantCount');
 		$contestantLimitBox = $('#contestantLimitBox');
 		var contestantCount = 0;
 		var contestantLimitNum = 0;
+		var premiereDate;
 
 		// catch to only display popup explanation during league creation
 		if ($('#popupDisabler').length === 0) {
@@ -68,6 +72,7 @@ $(document).ready(function () {
 							var selectOnlyOption = data.length <= 1;
 							response($.map(data.seasonsList, function (item, index) {
 								contestantCount = item.contestantCount;
+								premiereDate = item.premiereDate;
 								return {
 										label: 	item.name,
 										value: 	item.id,
@@ -78,6 +83,8 @@ $(document).ready(function () {
 					}, // end source
 					onChange: function (data, response) {
 						$seasonContestantCount.children().children().find('span').text(contestantCount);
+						$draftLimitField.find('#draftLimit').val(contestantLimitNum);
+						console.log(premiereDate);
 					}
 				},		// end Step 2
 				{
@@ -92,14 +99,10 @@ $(document).ready(function () {
 						console.log(leagueType);
 						if (leagueType == 'Fantasy') {
 							$participantCapField.removeClass('hidden');
-							$draftLimitField.removeClass('hidden');
-							$seasonContestantCount.removeClass('hidden');
+							$draftDatePickerField.removeClass('hidden');	
 							$contestantLimitBox.removeClass('hidden');
-							$draftDatePickerField.removeClass('hidden');				
 						} else if (leagueType == 'Elimination') {
 							$participantCapField.addClass('hidden');
-							$draftLimitField.addClass('hidden');
-							$seasonContestantCount.addClass('hidden');
 							$contestantLimitBox.addClass('hidden');
 							$draftDatePickerField.addClass('hidden');
 						};
@@ -110,7 +113,7 @@ $(document).ready(function () {
 					paramName: 'participantCap',
 					onChange: function (data, response) {
 						contestantLimitNum = Math.floor(contestantCount / parseInt(response));
-						console.log(contestantLimitNum);
+						$contestantLimitBox.children().children().find('span').css('font-weight:bold');
 						$contestantLimitBox.children().children().find('span').text(contestantLimitNum);
 						$draftLimitField.find('#draftLimit').val(contestantLimitNum);
 					}

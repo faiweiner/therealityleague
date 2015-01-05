@@ -34,8 +34,8 @@ class Show < ActiveRecord::Base
 		@shows_list = Show.all.order("name ASC").each.map {|s| [s.name, s.id] }
 	end
 
-	def self.get_schemes(show_id, type)
+	def self.get_schemes(show_id)
 		show = Show.find(show_id)
-		@rules = show.schemes.where(type: type)
+		@rules = show.schemes
 	end
 end

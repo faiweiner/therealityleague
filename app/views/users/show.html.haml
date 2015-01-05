@@ -1,0 +1,19 @@
+.panel
+	.panel-body
+		.row.form-group
+			- if flash[:notice] && flash[:color] == "valid"
+				.alert.alert-success{:role => "alert"}= flash[:notice]
+			- elsif flash[:notice] && flash[:color] == "invalid"
+				.alert.alert-danger{:role => "alert"}= flash[:notice]				
+		.panel-heading
+			%h1 Account Settings
+		.panel-body
+			.row
+				.col-md-9
+					%strong Username:
+					= @current_user.username
+					%br/
+					%strong Email:
+					= @current_user.email 
+					%br/
+					= link_to "Change account settings", edit_user_path(@current_user.id)

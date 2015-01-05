@@ -27,6 +27,7 @@ class League < ActiveRecord::Base
 	before_destroy { users.clear }
 	has_many :rosters
 	has_many :rounds
+	has_and_belongs_to_many :schemes
 
 	# FIXME! Come bck to deal with dependencies please
 

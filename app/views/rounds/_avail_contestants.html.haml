@@ -2,11 +2,11 @@
 	.col-lg-12
 		%h4 
 			Contestant Pool
-		%h6
-			Add selected contestant to all rounds
-			.btn-group.btn-toggle
-				.btn.btn-xs.btn-default On
-				.btn.btn-xs.btn-primary.active Off
+		/ %h6
+		/ 	Add selected contestant to all rounds
+		/ 	.btn-group.btn-toggle.disabled
+		/ 		.btn.btn-xs.btn-default On
+		/ 		.btn.btn-xs.btn-primary.active Off
 	.col-lg-12
 		- @available_contestants.each do |contestant|
 			.contestants-pool
