@@ -45,7 +45,8 @@ class RoundsController < ApplicationController
 	end
 
 	def singleedit
-		@league = League.includes(:users, :rounds).find(params[:league_id])	
+		@round = Round.includes(:user, :league).find(params[:round_id])	
+		@league = @round.league
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		@episodes_collection = @season.episodes
 
@@ -71,7 +72,6 @@ class RoundsController < ApplicationController
 		@round.contestants << contestant unless @round.contestants.include? contestant
 
 		respond_to do |format|
-			format.html {render partial: "current_bracket"}
 			format.js {
 				render :json => {
 					:round => @round,

@@ -16,6 +16,11 @@
 			.row
 				#availableContestant.col-lg-5
 					= render partial: "avail_contestants"
+				#roundEdit.col-lg-5
+					- if @rounds_collection.count == 0
+						= render partial: "empty_bracket"
+					- else
+						= render partial: "display_single"
 				%ul#board.col-lg-2{"data-rounds-count" => @rounds_collection.count, "data-rounds-ids" => @rounds_ids}
 					- @rounds_collection.each_with_index do |round, i|
 						- if round == @rounds_collection.first
@@ -27,9 +32,4 @@
 									Final Episode
 								- else
 									Episode #{ i + 1 }
-				#roundEdit.col-lg-5
-					- if @rounds_collection.count == 0
-						= render partial: "empty_bracket"
-					- else
-						= render partial: "current_bracket"
 		/ END Bracket Board

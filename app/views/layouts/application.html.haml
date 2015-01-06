@@ -3,7 +3,7 @@
 	%head
 		%title The Reality League
 		/ %link{:href => "http://fonts.googleapis.com/css?family=Patua+One|Open+Sans", :rel => "stylesheet", :type => "text/css"}/
-		%link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", :rel => "stylesheet"}/
+		/ %link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", :rel => "stylesheet"}/
 		= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
 		= javascript_include_tag 'application', 'data-turbolinks-track' => false
 		= csrf_meta_tags
@@ -79,5 +79,6 @@
 				Built by Fai Weiner for GA's WDI-5
 				#status
 			%footer
-				#feedbackBox
+				%button.btn#feedbackBox{:type => "button", :data => {"toggle" =>"modal" , "target" => "#myModal"}}
 					%i.glyphicon.glyphicon-comment
+				.modal#myModal{"tabindex" => -1, "role" => "dialog", :aria =>{"labelledby" => "myModalLabel", "hidden" =>true}}

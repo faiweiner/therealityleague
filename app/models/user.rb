@@ -9,9 +9,10 @@
 #  avatar           :string(255)
 #  oauth_token      :string(255)
 #  oauth_expires_at :datetime
+#  admin            :boolean          default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
-#  admin            :boolean          default(FALSE)
+#  last_logged_in   :datetime
 #
 
 class User < ActiveRecord::Base
@@ -57,5 +58,6 @@ class User < ActiveRecord::Base
 	def gen_new_password
 		self.password = SecureRandom.hex(5)
 	end
+
 end
 
