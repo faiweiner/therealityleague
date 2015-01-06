@@ -79,5 +79,20 @@
 				Built by Fai Weiner for GA's WDI-5
 				#status
 			%footer
-				#feedbackBox
+				%button.btn.btn-primary#feedbackBox{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"}
 					%i.glyphicon.glyphicon-comment
+			/ Modal
+			#myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+				.modal-dialog
+					.modal-content
+						.modal-header
+							%button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+								%span{"aria-hidden" => "true"} &times;
+							%h4#myModalLabel.modal-title Feedback
+						.modal-body
+							\...
+						.modal-footer
+							%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+							%button.btn.btn-primary{:type => "button"} Save changes
+	
+					
