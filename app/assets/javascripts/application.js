@@ -34,9 +34,17 @@ var defaults = {
 console.log('X-Editable defaults initialized');
 
 $(document).ready(function () {
+
+	var clearField = function (fieldId) {
+		var targetfieldId = '#' + fieldId;
+		var targetField = $(targetfieldId);
+		targetField.val('');
+	};
+
 	if ($('#feedbackBox')) {
 		$('#new_message').submit(function (e) {
 			var formData = $(this).serializeArray();
+			var responseMessage;
 			$.ajax({
 				url : '/messages',
 				type: 'POST',
@@ -45,19 +53,25 @@ $(document).ready(function () {
 					messagetype:		formData[3].value,
 					messagecomment:	formData[4].value
 				}},
-				success: function(data, textStatus, jqXHR) {
-					console.log(data.responseJSON);
+				dataType: 'JSON',
+				success: function (data, textStatus, jqXHR) {
 				},
-				error:function (data, jqXHR, textStatus) {
-					var message = data.responseJSON.error;
-					console.log(jqXHR);
-					console.log(textStatus);
+				failure: function (data, jqXHR, textStatus) {
 				}
+			}).done(function (data){
+				$responseBox = $('#post-response-box')
+				$responseBox.addClass('alert-success');
+				var successMessage = data.success;
+				$responseBox.text(data.success);
+
+				clearField('message_user_id');
+				clearField('message_messagetype');
+				clearField('message_messagecomment');
+								
 			});
 
+
 			e.preventDefault(); //STOP default action
-		 
-			$("#ajaxform").submit(); //Submit  the FORM
 		});
 	};
 });
