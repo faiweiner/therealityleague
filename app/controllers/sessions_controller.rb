@@ -8,6 +8,7 @@ class SessionsController	< ApplicationController
 	def login_attempt
 		user = User.find_by(:email => params[:email])
 		if user.present? && user.authenticate(params[:password])
+			user.save
 			session[:user_id] = user.id
 			if user.admin?
 				redirect_to admin_path

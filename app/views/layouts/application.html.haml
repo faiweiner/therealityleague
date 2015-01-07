@@ -3,7 +3,7 @@
 	%head
 		%title The Reality League
 		/ %link{:href => "http://fonts.googleapis.com/css?family=Patua+One|Open+Sans", :rel => "stylesheet", :type => "text/css"}/
-		%link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", :rel => "stylesheet"}/
+		/ %link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", :rel => "stylesheet"}/
 		= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
 		= javascript_include_tag 'application', 'data-turbolinks-track' => false
 		= csrf_meta_tags
@@ -103,6 +103,4 @@
 									.form-group
 										%button.btn.btn-default.btn-sm#form-cancel-button{:type => "button", :data => {"dismiss" => "modal"}} 
 											Close
-										/ %button.btn.btn-primary.btn-sm#submitComment{:type => "button"}
-										/ 	Submit
 										= f.submit "Submit", :type => "submit", class: "btn btn-primary btn-sm", id: "form-submit-button"				

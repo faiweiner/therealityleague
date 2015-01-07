@@ -7,9 +7,7 @@
 			%h6
 				Contestant count:
 				= round.contestants.count
-				.btn.btn-xs.btn-default
-					Clear all
-		.col-lg-12#roundDisplay{"data-contestants-count" => round.contestants.count, "data-index" => i + 1 }
+		.col-lg-12.roundDisplay{"data-contestants-count" => round.contestants.count, "data-index" => i + 1 }
 			- round.contestants.order(name: :asc).each do |contestant|
 				.contestants-selected
 					.thumbnail.contestant-thumbnail
