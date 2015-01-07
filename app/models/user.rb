@@ -12,10 +12,7 @@
 #  admin            :boolean          default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
-<<<<<<< HEAD
-=======
 #  last_logged_in   :datetime
->>>>>>> 4817aefcdf6537037f9df170d5150afd3beb3624
 #
 
 class User < ActiveRecord::Base

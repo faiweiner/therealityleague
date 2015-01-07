@@ -144,7 +144,7 @@ roster1 = Roster.create(:user_id => user1.id, :league_id => league1.id)
 roster2 = Roster.create(:user_id => user1.id, :league_id => league2.id)
 
 
-roster1.contestants << [bachelor19cont4, bachelor19cont7, bachelor19cont15, bachelor19cont18, bachelor19cont18]
+roster1.contestants << [bachelor19cont4, bachelor19cont7, bachelor19cont15, bachelor19cont18, bachelor19cont26]
 
 
 survival1 = Survival.create(:show_id => show1.id, :description => 'Receives a rose in Week 1', :points_asgn => 10)

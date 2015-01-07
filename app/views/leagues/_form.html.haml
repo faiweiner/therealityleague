@@ -4,9 +4,10 @@
 			%h1 Edit league
 		- else
 			%h1 Start a league
+	-# Form starts
 	.panel-body{:id => ("league_creation" unless params[:id])}
 		= form_for(@league) do |f|
-			/ Errors Message
+			-# Errors Message
 			- if @league.errors.any?
 				.row.form-group.alert.alert-danger{:role => "alert"}
 					%h4
@@ -17,78 +18,87 @@
 							%li= message
 			.row
 				= f.hidden_field :commissioner_id, value: @current_user.id
-			/ Name of League
+			-# League Name
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :league_name, "League Name"
 					%br/
-				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
+				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And make it snappy!"}, :title => "Enter League Name"} 
 					= f.text_field :name, class:"form-control", :placeholder => "Enter name here", :required => true
-			/ Select show to filter season
+			-# Select show to filter season
 			.row.form-group
 				.col-md-3.text-right
 					= label_tag :show
-				.col-md-6{:id => "league_show", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
+				.col-md-6{:id => "league_show", :data => {:toggle => "popover", :trigger => "hover", :content => "More shows to come."}, :title => "Select Show"} 
 					- if @league_show_id
 						.div#popupDisabler.hidden= @league_show_id
 						= select_tag(:show_id, options_for_select(Show.select_show, @league_show_id), {class: "form-control step1"})
 					- else
 						= select_tag(:show_list, (), {:prompt => "Select a show", class: "form-control step1", :required => true})
-			/ Select reality show's season
+			-# Select reality show's season
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :season
 					%br/
-				.col-md-6{:id => "league_season", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Enter League Name"} 
+				.col-md-6{:id => "league_season"}
 					- if @league_season_id && @league.active?
 						= f.select(:season, options_for_select(Season.select_season, @league_season_id), {:include_blank => "Select a season"}, {class: "form-control step2"})
-						Premieres: #{@league.season.premiere_date.strftime("%m/%d/%Y")}
+						- if @league.season.premiere_date.past?
+							Premiered:
+						- else
+							Premieres:
+						#{@league.season.premiere_date.strftime("%m/%d/%Y")}
 					- else
 						= f.select(:season_id, [], {:include_blank => "Select a season"}, class: "form-control step2", :required => true)
-			/	Type
+			-#	Type
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :type
 					%br/
-				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "And here's some amazing content. It's very engaging. Right?"}, :title => "Dismissible popover"} 
+				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "Click the button above to learn more."}, :title => "Fantasy vs. Elimination"} 
 					- if @league.type
 						= f.select(:type, options_for_select(League.select_type, @league.type), {}, {class: "form-control step3"})
 					- else
-						= f.select(:type, [], {:include_blank => "Select draft type"}, class: "form-control step3")
-			/ / Contestant Count Box
-			/ .row#seasonContestantCount.hidden
-			/ 	.col-lg-6.col-md-6.col-lg-offset-3.col-md-offset-3
-			/ 		.caption
-			/ 			Please select team and contestant limit below. There are 
-			/ 			%br/
-			/ 			%span 0
-			/ 			contestant(s) in this season and up to
-			/ Contestant Limit Box
+						= f.select(:type, [], {:include_blank => "Select league type"}, class: "form-control step3")
 			.row#contestantLimitBox.hidden
 				.col-lg-6.col-md-6.col-lg-offset-3.col-md-offset-3
 					.caption
 						Each team can draft
 						%span 0
 						contestant(s).
-			/ Participant Cap
-			.row.form-group#participantCapField.hidden
-				.col-md-3.text-right
-					= f.label :participant_cap, "Max # of Teams"
-				.col-md-6
-					= f.number_field :participant_cap, id: "participantCap", min: 2, max: 30, class: "form-control step4", placeholder: "Select max number of teams in this league"
-			/ Draft Limit
-			.row.form-group#draftLimitField.hidden
-				.col-md-3.text-right
-					= f.label :draft_limit, "Contestant Limit"
-				.col-md-6
-					= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: "Select max number of contestants per team"
-			/ Draft deadline
+			-# Participant Cap
+			- if @league.participant_cap.present?
+				.row.form-group#participantCapField
+					.col-md-3.text-right
+						= f.label :participant_cap, "Max # of Teams"
+					.col-md-6
+						= f.number_field :participant_cap, id: "participantCap", class: "form-control step4", placeholder: @league.participant_cap, disabled: true
+			- else	
+				.row.form-group#participantCapField.hidden
+					.col-md-3.text-right
+						= f.label :participant_cap, "Max # of Teams"
+					.col-md-6
+						= f.number_field :participant_cap, id: "participantCap", min: 2, max: 30, class: "form-control step4", placeholder: "Select max number of teams in this league"
+			-# Draft Limit
+			- if @league.draft_limit.present?
+				.row.form-group#draftLimitField
+					.col-md-3.text-right
+						= f.label :draft_limit, "Limit # of Contestants Per Team"
+					.col-md-6
+						= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: @league.draft_limit, disabled: true
+			- else
+				.row.form-group#draftLimitField.hidden
+					.col-md-3.text-right
+						= f.label :draft_limit, "Limit # of Contestants Per Team"
+					.col-md-6
+						= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: "Select max number of contestants per team"
+			-# Draft deadline
 			.row.form-group#draftDatePickerField.hidden
 				.col-md-3.text-right#draftDateLabel
 					= f.label :draft_deadline
 				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
 					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", :id => "draftDateInput", default: Date.today}
-			/ Public or private league, public default
+			-# Public or private league, public default
 			.row.form-group
 				.col-md-3.text-right
 					= f.label :league_access, "League Access"
@@ -110,7 +120,7 @@
 					.col-md-6
 						= f.radio_button :scoring_system, 2
 						= f.label(:custom, 'Custom')
-			/ Submit
+			-# Submit
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9
 					- if params[:id]

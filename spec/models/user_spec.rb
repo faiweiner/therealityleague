@@ -12,6 +12,9 @@
 #  admin            :boolean          default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  last_logged_in   :datetime
+#
+
 <<<<<<< HEAD
 =======
 #  last_logged_in   :datetime
