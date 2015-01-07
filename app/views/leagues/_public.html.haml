@@ -39,7 +39,7 @@
 						%td= league.type
 						%td
 							- if league.users.include? (@current_user)
-								= link_to "Manage roster", league_path(league.id), class: "btn btn-default btn-sm"
+								= link_to "Go To League", league_path(league.id), class: "btn btn-default btn-sm"
 							- else
 								= link_to "Join", league_path(league.id), class: "btn btn-default btn-sm"
 		- else

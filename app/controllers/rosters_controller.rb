@@ -59,6 +59,7 @@ class RostersController < ApplicationController
 			@eps_count = @season.episodes.count
 			@eps_left = @eps_record - @eps_count
 			@contestants = @roster.contestants.order(name: :asc)
+			raise
 		when "Bracket"
 			@contestants_rounds = []
 			@rounds.each_with_index do |round, index|

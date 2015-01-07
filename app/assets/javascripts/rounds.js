@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	if ($('#bracketBoard').length > 0) {
 		console.log('Round Selection Board initialized');
+		$bracketBoard = $('#bracketBoard');
 		$availableContestantBoard = $('#availableContestant');
 		$roundEditBoard = $('#roundEdit');
 		$roundsDisplayBoard = $('#roundDisplay');
@@ -26,15 +27,9 @@ $(document).ready(function () {
 				type: 'POST',
 				success: function (msg) {
 				}
-			}).done(function () {
-			});
-			$.ajax({
-				url: '/rounds/' + selectedRoundId,
-				type: 'GET',
-				success: function (msg) {
-					var partial = msg;
-					$availableContestantBoard.html(partial);
-				}
+			}).done(function (msg) {			
+				$roundEditBoard.html(msg);
+				toggleRoundDisplay(roundId);
 			});
 		};
 
@@ -69,10 +64,10 @@ $(document).ready(function () {
 				var roundDisplay = $(searchTerm);
 				if (roundsIds[i] == activeRoundId) {
 					$activeRoundDisplay = $(searchTerm);
-					$activeRoundDisplay.removeClass('hidden');
+					$activeRoundDisplay.show();
 				} else {
 					$inactiveRoundDisplay = $(searchTerm);
-					$inactiveRoundDisplay.addClass('hidden');
+					$inactiveRoundDisplay.hide();
 				}
 			}
 		};
@@ -112,11 +107,10 @@ $(document).ready(function () {
 
 		// ========= universal click listeners ========= //
 
-		// --- for adding/removing contestants from Round --- //
-		$('.glyphicon').on('click', function (event) {
+		// // --- for adding/removing contestants from Round --- //
+		$bracketBoard.on('click', $('.glyphicon'), function (event) {
 			// records which element is being clicked
 			$element = event.target;
-
 			// set arguments for roundOperation
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
@@ -134,7 +128,6 @@ $(document).ready(function () {
 					roundId = $element.dataset.roundId;
 					break;
 			};
-
 			roundOperation (operation, contestantId, roundId, $element);
 		});
 		

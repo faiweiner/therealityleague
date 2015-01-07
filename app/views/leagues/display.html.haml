@@ -6,23 +6,43 @@
 	.alert.alert-warning{:role => "alert"}= flash[:notice] 
 .panel.panel-default#league_view
 	.panel-body
-		.col-lg-12
-			- if @league.public_access == true
-				%h2= @league.name + " (public)"
-			- else
-				%h2= @league.name  + " (private)"
+		.col-lg-8
+			%h2= @league.name
 			%p
 				= @league.season.show.name + ": "
 				= @league.season.name
 			= render "/shows/scoring_system"
 			- if @league.active? && @comm_this_league == true
 				- if @participants.count <= 1
-					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-primary btn-sm" 
+					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-sm" 
 				- else
 					= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
 				= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
 			- elsif @a_participant == false && @league.active?
-				= button_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default"
+				= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default btn-sm"
+		.col-lg-4
+			.panel.panel-default
+				.panel-body
+					League Type: Public
+					- if @league.participant_cap.present?
+						%br/
+						League Members:
+						= @league.users.count
+						\/
+						= @league.participant_cap
+						Participants
+					- if @league.season.premiere_date.future?
+						%br/
+						Premieres: 
+						= @league.season.premiere_date.strftime("%B %d")
+					- else
+						%br/
+						Premiered: 
+						= @league.season.premiere_date.strftime("%B %d")
+					- if @league.draft_deadline.present?
+						%br/
+						Draft Deadline: 
+						= @league.draft_deadline.strftime("%B %d")
 	- case @league.type
 	- when "Elimination"
 		= render partial: "leagues/elimination/ranking"

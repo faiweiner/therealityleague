@@ -72,6 +72,7 @@ class RoundsController < ApplicationController
 		@round.contestants << contestant unless @round.contestants.include? contestant
 
 		respond_to do |format|
+			format.html { render partial: "current_bracket", :remote => true }
 			format.js {
 				render :json => {
 					:round => @round,
