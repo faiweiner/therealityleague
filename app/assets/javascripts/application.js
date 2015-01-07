@@ -36,16 +36,20 @@ console.log('X-Editable defaults initialized');
 $(document).ready(function () {
 	if ($('#feedbackBox')) {
 		$('#new_message').submit(function (e) {
-			var postData = $(this).serializeArray();
+			var formData = $(this).serializeArray();
 			$.ajax({
 				url : '/messages',
 				type: 'POST',
-				data : postData,
+				data: {message: {
+					user_id: 				formData[2].value,
+					messagetype:		formData[3].value,
+					messagecomment:	formData[4].value
+				}},
 				success: function(data, textStatus, jqXHR) {
 					console.log(data.responseJSON);
 				},
 				error:function (data, jqXHR, textStatus) {
-					console.log(data.responseJSON.error);
+					var message = data.responseJSON.error;
 					console.log(jqXHR);
 					console.log(textStatus);
 				}

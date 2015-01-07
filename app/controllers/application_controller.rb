@@ -130,6 +130,7 @@ class ApplicationController < ActionController::Base
 
 	def new_message
 		@message = Message.new	
+		set_current_user
 	end
 
 	private 

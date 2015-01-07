@@ -8,28 +8,20 @@ class MessagesController < ActionController::Base
 	end
 
 	def create
-		if @current_user 
-			@message = Message.new
-			@message.user_id = @current_user.id
-			if @message.save	
-				@message.save
-				respond_to do |format|
-					format.js {
-						render :json => {
-							:success => "Thank you, your comment has been submitted."
-						}
+
+		@message = Message.new
+		@message.user_id = params[:message][:user_id]
+		@message.messagetype = params[:message][:messagetype]
+		@message.messagecomment = params[:message][:messagecomment]
+		if @message.save
+			respond_to do |format|
+				format.js {
+					render :json => {
+						:success => "Thank you, your comment has been submitted."
 					}
-				end
-			else
-				respond_to do |format|
-					format.js {
-						render :json => {
-							:error => "Something went wrong and your message has not been submitted, please try again."
-						}
-					}
-				end
+				}
 			end
-		else 
+		else
 			respond_to do |format|
 				format.json { 
 					render :json => { :error => "You must be logged in to submit a comment." }, 

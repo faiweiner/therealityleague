@@ -12,4 +12,8 @@
 
 class Message < ActiveRecord::Base
 	belongs_to :user, inverse_of: :messages
+
+	validates :user_id, presence: true, :on => :create
+	validates :messagetype, presence: true, :on => :create
+	validates :messagecomment, presence: true, :on => :create
 end

@@ -79,34 +79,31 @@
 				Built by Fai Weiner for GA's WDI-5
 				#status
 			%footer
-				%button.btn.btn-primary#feedbackBox{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"}
+				%button.btn.btn-primary#feedbackBox{"data-target" => "#commentModal", "data-toggle" => "modal", :type => "button"}
 					%i.glyphicon.glyphicon-comment
 				/ Modal
-				#myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+				#commentModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
 					.modal-dialog
 						.modal-content
 							.modal-header
 								%button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
 									%span{"aria-hidden" => "true"} &times;
-								%h4#myModalLabel.modal-title Feedback
+								%h4#commentModalLabel.modal-title Feedback
 							= form_for(@message, :method => "POST", :id => "commentForm") do |f|
 								.modal-body
-									.row.form-group
-										.col-md-2.col-lg-2
-											= f.label :messagetype, "Type"
-										.col-md-10.col-lg-10
-											= f.select(:messagetype, options_for_select([["Feature Request"], ["Report a Bug"]]), class: "form-control")
-									.row.form-group
-										.col-md-2.col-lg-2
-											= f.label :messagecomment, "Comment/Questions"
-										.col-md-10.col-lg-10
-											= f.text_area :messagecomment
-									.row.form-group
-										.col-md-12.col-lg-12
-											%button.btn.btn-default.btn-sm{:type => "button", :data => {"dismiss" => "modal"}} 
-												Cancel
-											/ %button.btn.btn-primary.btn-sm#submitComment{:type => "button"}
-											/ 	Submit
-											= f.submit "Submit", :type => "submit", class: "btn btn-primary btn-sm"
+									.form-group
+										= f.hidden_field :user_id, value: @current_user.id
+									.form-group
+										= f.label :messagetype, "Type"
+										= f.select(:messagetype, options_for_select([["Feature Request"], ["Report a Bug"]]), {}, {class:"form-control"})
+									.form-group
+										= f.label :messagecomment, "Comment/Questions"
+										= f.text_area :messagecomment, class:"form-control"
+									.form-group
+										%button.btn.btn-default.btn-sm{:type => "button", :data => {"dismiss" => "modal"}} 
+											Cancel
+										/ %button.btn.btn-primary.btn-sm#submitComment{:type => "button"}
+										/ 	Submit
+										= f.submit "Submit", :type => "submit", class: "btn btn-primary btn-sm"
 	
 					
