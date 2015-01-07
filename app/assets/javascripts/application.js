@@ -32,3 +32,28 @@ var defaults = {
 };
 
 console.log('X-Editable defaults initialized');
+
+$(document).ready(function () {
+	if ($('#feedbackBox')) {
+		$('#new_message').submit(function (e) {
+			var postData = $(this).serializeArray();
+			$.ajax({
+				url : '/messages',
+				type: 'POST',
+				data : postData,
+				success: function(data, textStatus, jqXHR) {
+					console.log(data.responseJSON);
+				},
+				error:function (data, jqXHR, textStatus) {
+					console.log(data.responseJSON.error);
+					console.log(jqXHR);
+					console.log(textStatus);
+				}
+			});
+
+			e.preventDefault(); //STOP default action
+		 
+			$("#ajaxform").submit(); //Submit  the FORM
+		});
+	};
+});

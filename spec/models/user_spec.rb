@@ -9,9 +9,9 @@
 #  avatar           :string(255)
 #  oauth_token      :string(255)
 #  oauth_expires_at :datetime
+#  admin            :boolean          default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
-#  admin            :boolean          default(FALSE)
 #
 
 require 'rails_helper'

@@ -44,6 +44,7 @@ Rails.application.routes.draw do
 	post		'leagues/access' => 'leagues#access', :as => :league_access
 
 	resources :users
+	resources :messages
 	
 	post	'rosters/:roster_id/add/:contestant_id' => 'rosters#add', :as => :roster_add
 	post	'rosters/:roster_id/remove/:contestant_id' => 'rosters#remove', :as => :roster_remove

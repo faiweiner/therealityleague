@@ -1,0 +1,21 @@
+#myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+	.modal-dialog
+		.modal-content
+			.modal-header
+				%button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+					%span{"aria-hidden" => "true"} &times;
+				%h4#myModalLabel.modal-title Feedback
+			.modal-body
+				= form_for(@message, class: "form-horizontal"), :role => "form", :html => {:multipart => true}) do |f|
+					.row.form-group
+						= f.label :user_id
+						= f.number_field :user_id, placeholder: @current_user.username, value: @current_user.id
+					.row.form-group
+						= f.label :type
+						= f.field :type
+					.row.form-group
+						= f.label :message
+						= f.field :type
+			.modal-footer
+				%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+				%button.btn.btn-primary{:type => "button"} Save changes
