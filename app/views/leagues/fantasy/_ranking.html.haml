@@ -14,10 +14,13 @@
 						%td= participant[0]
 						%td= participant[1]
 						%td
-							- if User.where(username: participant[0]).first.id == @current_user.id
-								= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
+							- if participant[0] == @current_user.username
 								- if @league.active?
-									= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
+									- if @league.rosters.where(user_id: @current_user.id).first.contestants.empty?
+										= link_to "Build Roster", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
+									- else
+										= link_to "View", roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
+										= link_to "Edit", edit_roster_path(@participants_roster_id[participant[0]]), class:"btn btn-primary btn-sm"
 								- if @current_user.id != @league.commissioner_id && @league.draft_deadline == nil
 									= link_to "Leave League", roster_path(@participants_roster_id[participant[0]]), :action => "destroy", :method => "delete", :leave_league => @league.id, class:"btn-sm pull-right"		
 							- else

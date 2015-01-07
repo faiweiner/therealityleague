@@ -170,11 +170,12 @@ class LeaguesController < ApplicationController
 				# end
 				# @participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
 			end
-
 			# sort roster to reflect current leads
 			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
 			
 		end
+
+		
 
 		respond_to do |format|
 			format.html

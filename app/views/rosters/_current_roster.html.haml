@@ -1,6 +1,6 @@
 %h3 
 	Roster Board
-	= link_to "Back to League", roster_path(@roster.id), class: "btn btn-default btn-sm"
+	= link_to "Back to League", league_path(@roster.league), class: "btn btn-default btn-sm"
 
 %p
 	- if @league.draft_limit

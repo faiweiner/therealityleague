@@ -113,19 +113,19 @@
 				.col-md-3.text-right
 					= f.label :scoring_system, "Scoring System"
 					%br/
-				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Choose between standard scoring system for a show's contestant, or customize your league's scoring scheme."}, :title => "Select Scoring System"}
+				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Coming Soon - Choose between standard scoring system for a show's contestant, or customize your league's scoring scheme."}, :title => "Standard vs. Custom"}
 					.col-md-6
-						= f.radio_button :scoring_system, 1, :checked => "checked"
+						= f.radio_button :scoring_system, 1, :checked => "checked", :disabled => true 
 						= f.label(:standard, 'Standard')
 					.col-md-6
-						= f.radio_button :scoring_system, 2
+						= f.radio_button :scoring_system, 2, :disabled => true 
 						= f.label(:custom, 'Custom')
 			-# Submit
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9
 					- if params[:id]
-						= f.submit "Update League", :class => "btn btn-default"
-						= link_to("Cancel", league_path(@league.id), class:'btn btn-default')
+						= f.submit "Update League", class: "btn btn-primary"
+						= link_to("Cancel", league_path(@league.id), class: 'btn btn-default')
 					- else
-						= f.submit "Create League", :class => "btn btn-default"
-						= link_to("Cancel", leagues_path, class:'btn btn-default')
+						= f.submit "Create League", class: "btn btn-primary"
+						= link_to("Cancel", leagues_path, class: 'btn btn-default')
