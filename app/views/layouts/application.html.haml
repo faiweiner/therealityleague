@@ -91,8 +91,7 @@
 								%h4#commentModalLabel.modal-title Feedback
 							= form_for(@message, :method => "POST", :id => "commentForm") do |f|
 								.modal-body#commentModalBody
-									.form-group.alert#post-response-box
-										Alert Here.
+									.form-group.alert#post-response-box{:style => "display: none"}
 									.form-group
 										= f.hidden_field(:user_id, value: @current_user.id)
 									.form-group#post-type-box
@@ -106,6 +105,4 @@
 											Close
 										/ %button.btn.btn-primary.btn-sm#submitComment{:type => "button"}
 										/ 	Submit
-										= f.submit "Submit", :type => "submit", class: "btn btn-primary btn-sm", id: "form-submit-button"
-	
-					
+										= f.submit "Submit", :type => "submit", class: "btn btn-primary btn-sm", id: "form-submit-button"				
