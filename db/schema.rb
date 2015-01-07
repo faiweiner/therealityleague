@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106022232) do
+ActiveRecord::Schema.define(version: 20150107171931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150106022232) do
     t.datetime "air_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "expected_survivors"
   end
 
   create_table "events", force: true do |t|
@@ -92,6 +93,7 @@ ActiveRecord::Schema.define(version: 20150106022232) do
     t.string   "messagecomment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "page_url"
   end
 
   create_table "rosters", force: true do |t|

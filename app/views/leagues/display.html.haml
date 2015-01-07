@@ -23,7 +23,17 @@
 		.col-lg-4
 			.panel.panel-default
 				.panel-body
-					League Type: Public
+					League Access:
+					- if @league.public_access == true
+						Public
+					- else 
+						Private
+					%br/
+					League Type:
+					- if @league.type == "Fantasy"
+						Fantasy
+					- elsif @league.type == "Elimination"
+						Elimination					
 					- if @league.participant_cap.present?
 						%br/
 						League Members:

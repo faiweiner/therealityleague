@@ -2,11 +2,12 @@
 #
 # Table name: episodes
 #
-#  id         :integer          not null, primary key
-#  season_id  :integer
-#  air_date   :datetime
-#  created_at :datetime
-#  updated_at :datetime
+#  id                 :integer          not null, primary key
+#  season_id          :integer
+#  air_date           :datetime
+#  created_at         :datetime
+#  updated_at         :datetime
+#  expected_survivors :integer
 #
 
 class Episode < ActiveRecord::Base

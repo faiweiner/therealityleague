@@ -8,11 +8,11 @@ class MessagesController < ActionController::Base
 	end
 
 	def create
-
 		@message = Message.new
 		@message.user_id = params[:message][:user_id]
 		@message.messagetype = params[:message][:messagetype]
 		@message.messagecomment = params[:message][:messagecomment]
+		@message.page_url = params[:message][:pageurl]
 		if @message.save
 			respond_to do |format|
 				format.js {

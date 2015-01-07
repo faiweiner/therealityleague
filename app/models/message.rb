@@ -8,6 +8,7 @@
 #  messagecomment :string(255)
 #  created_at     :datetime
 #  updated_at     :datetime
+#  page_url       :string(255)
 #
 
 class Message < ActiveRecord::Base

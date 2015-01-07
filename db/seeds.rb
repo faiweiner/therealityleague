@@ -98,16 +98,16 @@ league1.users << [user1]
 league2.users << [user1]
 
 
-bachelor19ep1 = Episode.create(:season_id => bachelor19.id, :air_date => '05/01/2015')
-bachelor19ep2 = Episode.create(:season_id => bachelor19.id, :air_date => '12/01/2015')
-bachelor19ep3 = Episode.create(:season_id => bachelor19.id, :air_date => '19/01/2015')
-bachelor19ep4 = Episode.create(:season_id => bachelor19.id, :air_date => '26/01/2015')
-bachelor19ep5 = Episode.create(:season_id => bachelor19.id, :air_date => '2/02/2015')
-bachelor19ep6 = Episode.create(:season_id => bachelor19.id, :air_date => '9/02/2015')
-bachelor19ep7 = Episode.create(:season_id => bachelor19.id, :air_date => '16/02/2015')
-bachelor19ep8 = Episode.create(:season_id => bachelor19.id, :air_date => '23/02/2015')
-bachelor19ep9 = Episode.create(:season_id => bachelor19.id, :air_date => '2/03/2015')
-bachelor19ep10 = Episode.create(:season_id => bachelor19.id, :air_date => '9/03/2015')
+bachelor19ep1 = Episode.create(:season_id => bachelor19.id, :air_date => '05/01/2015', :expected_survivors => 19)
+bachelor19ep2 = Episode.create(:season_id => bachelor19.id, :air_date => '12/01/2015', :expected_survivors => 16)
+bachelor19ep3 = Episode.create(:season_id => bachelor19.id, :air_date => '19/01/2015', :expected_survivors => 13)
+bachelor19ep4 = Episode.create(:season_id => bachelor19.id, :air_date => '26/01/2015', :expected_survivors => 11)
+bachelor19ep5 = Episode.create(:season_id => bachelor19.id, :air_date => '2/02/2015', :expected_survivors => 8)
+bachelor19ep6 = Episode.create(:season_id => bachelor19.id, :air_date => '9/02/2015', :expected_survivors => 5)
+bachelor19ep7 = Episode.create(:season_id => bachelor19.id, :air_date => '16/02/2015', :expected_survivors => 4)
+bachelor19ep8 = Episode.create(:season_id => bachelor19.id, :air_date => '23/02/2015', :expected_survivors => 3)
+bachelor19ep9 = Episode.create(:season_id => bachelor19.id, :air_date => '2/03/2015', :expected_survivors => 2)
+bachelor19ep10 = Episode.create(:season_id => bachelor19.id, :air_date => '9/03/2015', :expected_survivors => 1)
 
 bachelor19cont1 = Contestant.create(:name =>'Alissa', :season_id => bachelor19.id, :age => 24, :gender => 'female', :image => '/assets/the_bachelor/season19/alissa.jpg', :occupation => 'Flight Attendant', :description => 'Hometown: Hamilton, NJ')
 bachelor19cont2 = Contestant.create(:name =>'Amanda', present: false, :season_id => bachelor19.id, :age => 24, :gender => 'female', :image => '/assets/the_bachelor/season19/amanda.jpg', :occupation => 'Ballet Teacher', :description => 'Hometown: Lake in the Hills, IL')

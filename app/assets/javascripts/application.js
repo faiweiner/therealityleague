@@ -67,7 +67,8 @@ $(document).ready(function () {
 				data: {message: {
 					user_id: 				formData[2].value,
 					messagetype:		formData[3].value,
-					messagecomment:	formData[4].value
+					messagecomment:	formData[4].value,
+					pageurl:				window.location.pathname
 				}},
 				dataType: 'JSON',
 				success: function (data, textStatus, jqXHR) {
