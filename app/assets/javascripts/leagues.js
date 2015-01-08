@@ -113,7 +113,6 @@ $(document).ready(function () {
 						contestantLimitNum = Math.floor(contestantCount / parseInt(response));
 						$contestantLimitBox.children().children().find('span').css('font-weight:bold');
 						$contestantLimitBox.children().children().find('span').text(contestantLimitNum);
-						// $draftLimitField.find('#draftLimit').val(contestantLimitNum);
 					}
 				}
 			]
