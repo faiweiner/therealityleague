@@ -86,16 +86,10 @@
 						= f.label :draft_limit, "Limit # of Contestants Per Team"
 					.col-md-6
 						= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: @league.draft_limit, disabled: true
-			- else
-				.row.form-group#draftLimitField.hidden
-					.col-md-3.text-right
-						= f.label :draft_limit, "Limit # of Contestants Per Team"
-					.col-md-6
-						= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: "Select max number of contestants per team"
 			-# Draft deadline
 			.row.form-group#draftDatePickerField.hidden
 				.col-md-3.text-right#draftDateLabel
-					= f.label :draft_deadline
+					= f.label :draft_deadline, "Draft Deadline"
 				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
 					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", :id => "draftDateInput", default: Date.today}
 			-# Public or private league, public default

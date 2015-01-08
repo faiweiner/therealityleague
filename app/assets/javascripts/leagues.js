@@ -99,12 +99,10 @@ $(document).ready(function () {
 						console.log(leagueType);
 						if (leagueType == 'Fantasy') {
 							$participantCapField.removeClass('hidden');
-							$draftDatePickerField.removeClass('hidden');	
 							$contestantLimitBox.removeClass('hidden');
 						} else if (leagueType == 'Elimination') {
 							$participantCapField.addClass('hidden');
 							$contestantLimitBox.addClass('hidden');
-							$draftDatePickerField.addClass('hidden');
 						};
 					}
 				},		// end Step 3
@@ -115,7 +113,7 @@ $(document).ready(function () {
 						contestantLimitNum = Math.floor(contestantCount / parseInt(response));
 						$contestantLimitBox.children().children().find('span').css('font-weight:bold');
 						$contestantLimitBox.children().children().find('span').text(contestantLimitNum);
-						$draftLimitField.find('#draftLimit').val(contestantLimitNum);
+						// $draftLimitField.find('#draftLimit').val(contestantLimitNum);
 					}
 				}
 			]

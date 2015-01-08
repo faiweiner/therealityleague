@@ -5,10 +5,11 @@
 #  id             :integer          not null, primary key
 #  user_id        :integer
 #  messagetype    :string(255)
-#  messagecomment :string(255)
+#  messagecomment :text
 #  created_at     :datetime
 #  updated_at     :datetime
 #  page_url       :string(255)
+#  resolved       :boolean          default(FALSE)
 #
 
 class Message < ActiveRecord::Base

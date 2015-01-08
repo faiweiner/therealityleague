@@ -13,13 +13,13 @@
 				= @league.season.name
 			= render "/shows/scoring_system"
 			- if @league.active? && @comm_this_league == true
-				- if @participants.count <= 1
-					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-default btn-sm" 
+				- if @participants.count < 2
+					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-warning btn-sm" 
 				- else
 					= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
 				= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
 			- elsif @a_participant == false && @league.active?
-				= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-default btn-sm"
+				= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
 		.col-lg-4
 			.panel.panel-default
 				.panel-body
@@ -53,6 +53,8 @@
 						%br/
 						Draft Deadline: 
 						= @league.draft_deadline.strftime("%B %d")
+						%p
+					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-xs" 
 	- case @league.type
 	- when "Elimination"
 		= render partial: "leagues/elimination/ranking"

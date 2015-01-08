@@ -267,7 +267,6 @@ class LeaguesController < ApplicationController
 			:public_access, 
 			:type,
 			:participant_cap, 
-			:draft_limit,
 			:draft_deadline,
 			:draft_order, 
 			:scoring_system, 

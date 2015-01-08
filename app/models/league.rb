@@ -32,7 +32,7 @@ class League < ActiveRecord::Base
 
 	# FIXME! Come bck to deal with dependencies please
 
-	before_save :set_up_league
+	before_save :set_up_league, :set_draft_limit
 
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
@@ -63,6 +63,11 @@ class League < ActiveRecord::Base
 		self.league_password = SecureRandom.hex(5)
 	end
 
+	def gen_draft_limit
+		season = Season.find(self.season_id)
+		self.draft_limit = (season.contestants.count / self.participant_cap).floor
+	end
+
 	def set_up_league
 		if public_access == true # if the league is public
 			gen_league_key
@@ -71,4 +76,10 @@ class League < ActiveRecord::Base
 			gen_league_password
 		end
 	end	
+
+	def set_draft_limit
+		if participant_cap != nil
+			gen_draft_limit
+		end
+	end
 end
