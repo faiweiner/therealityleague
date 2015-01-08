@@ -67,7 +67,7 @@ class LeaguesController < ApplicationController
 			# automatically creates a league roster for the user
 			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
 			roster.save
-
+			
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = "valid"
@@ -78,7 +78,7 @@ class LeaguesController < ApplicationController
 			flash[:color] = "invalid"
 			render :new
 		end
-		
+
 	end
 
 	def edit
