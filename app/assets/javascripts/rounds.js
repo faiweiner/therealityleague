@@ -57,6 +57,21 @@ $(document).ready(function () {
 
 		// ----- BEGIN client-side ----- //
 
+		var detectActiveRoundByElement = function (element) {
+			var detectedActiveRoundId = element.dataset.roundId;
+			return detectedActiveRoundId;
+		};
+
+		var detectActiveRoundByEnvironment = function () {
+			var roundsDisplaysList = $('.round-display');
+			for (var i = 0; i < roundsDisplaysList.length; i++) {
+				if ($(roundsDisplaysList[i]).css('display') == 'block') {
+					var activeRoundId = $(roundsDisplaysList[i]).data().roundId;
+					return activeRoundId;
+				};
+			};
+		};
+
 		// hides all round display except the active one
 		var toggleRoundDisplay = function (activeRoundId) {
 			for (var i = 0; i < roundsCount; i++) {
@@ -89,19 +104,13 @@ $(document).ready(function () {
 			$siblings = $(searchTerm).siblings();
 			console.log($siblings);
 			console.log(element);
-			$siblings.removeClass('btn-primary', 'selected');
-			$(element).addClass('btn-primary');
-
+			$siblings.removeClass('btn-primary selected');
+			$(element).addClass('btn-primary selected');
+			activeRoundId = detectActiveRoundByElement(element);
 		};
 
 
-		var detectActiveRound = function (roundId) {
-			var $siblings = $( "li.btn.btn-block" ).siblings();
-			$siblings.removeClass('btn-primary', 'selected');
-			$element.classList.add('btn-primary', 'selected');
-			selectedRoundId = roundId;
-			return selectedRoundId;
-		};
+
 		// detects which operation to execute
 
 		var roundOperation = function (operation, contestantId, roundId, element) {
@@ -135,13 +144,14 @@ $(document).ready(function () {
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
 			var originBoxNumber = $element.dataset.originBoxNumber;
+			var activeRoundId = detectActiveRoundByEnvironment();
 			var roundId;
 			// sets operation based on myClass value
 
 			switch (myClass) {
 				case 'add-round glyphicon glyphicon-plus':
 					var operation = 'add-round';
-					roundId = selectedRoundId;
+					roundId = activeRoundId;
 					break;
 				case 'remove-round glyphicon glyphicon-remove':
 					var operation = 'remove-round';
@@ -162,7 +172,7 @@ $(document).ready(function () {
 			toggleEpisodeButton($element);
 		});
 
-		$bracketBoard.on('click', '.btn.btn-default.btn-sm.round-toggle', function (event) {
+		$bracketBoard.on('click', '.btn.btn-default.btn-xs.round-toggle', function (event) {
 			// records which element is being clicked
 			$element = event.target; 
 			console.log($element);

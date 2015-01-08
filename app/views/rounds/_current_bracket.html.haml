@@ -4,10 +4,20 @@
 		.col-lg-12
 			%h4
 				Round #{i + 1}:
-				= round.contestants.count
-				\/
-				= round.episode.expected_survivors 
-				contestants
+				- if round == @rounds_collection.first || round == @upcoming_rounds[0]
+					.btn.btn-default.btn-xs.round-toggle.previous-button.disabled{"data-round-id" => @rounds_collection[i-1].id}
+						Previous
+					.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
+						Next			
+				- elsif round == @rounds_collection.last
+					.btn.btn-default.btn-xs.round-toggle.previous-button{"data-round-id" => @rounds_collection[i-1].id}
+						Previous
+					= link_to "Finish", rounds_path(@league.id, @current_user.id), class: "btn btn-default btn-xs round-toggle.finish-button"
+				- else
+					.btn.btn-default.btn-xs.round-toggle.previous-button{"data-round-id" => @rounds_collection[i-1].id}
+						Previous
+					.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
+						Next
 		.col-lg-12.roundDisplay{"data-contestants-count" => round.contestants.count, "data-index" => i + 1 }
 			- round.contestants.order(name: :asc).each do |contestant|
 				.contestants-selected
@@ -20,14 +30,7 @@
 							.action
 								%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
 		.col-lg-12
-			- if round == @rounds_collection.first || round == @upcoming_rounds[0]
-				.btn.btn-default.btn-sm.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
-					Next			
-			- elsif round == @rounds_collection.last
-				.btn.btn-default.btn-sm.round-toggle.finish-button
-					Finish
-			- else
-				.btn.btn-default.btn-sm.round-toggle.previous-button{"data-round-id" => @rounds_collection[i-1].id}
-					Previous
-				.btn.btn-default.btn-sm.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
-					Next
+			= round.contestants.count
+			\/
+			= round.episode.expected_survivors 
+			Contestants
