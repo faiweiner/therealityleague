@@ -287,15 +287,9 @@ input.form-control.input-small {
 }
 
 // Elimination Bracket Viewing
-
-#roundSelector {
-	border: 1px solid red;
-}
-
-#roundViewPort {
-	display: inline-block;
-	border: 1px solid blue;
-}
+tr.strike-through {
+	color: #BFBFBF;
+	text-decoration: line-through }
 
 ul.bracketList {
 	width: 100%;

@@ -18,6 +18,16 @@
 						Previous
 					.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
 						Next
+			%h6
+				- if round.contestants.count == round.episode.expected_survivors 
+					%i.glyphicon.glyphicon-ok-circle
+				- elsif round.contestants.count > round.episode.expected_survivors
+					%i.glyphicon.glyphicon-remove-circle	
+				= round.contestants.count
+				\/
+				= round.episode.expected_survivors 
+				Contestants
+
 		.col-lg-12.roundDisplay{"data-contestants-count" => round.contestants.count, "data-index" => i + 1 }
 			- round.contestants.order(name: :asc).each do |contestant|
 				.contestants-selected
@@ -29,8 +39,3 @@
 								= contestant.name
 							.action
 								%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
-		.col-lg-12
-			= round.contestants.count
-			\/
-			= round.episode.expected_survivors 
-			Contestants

@@ -9,32 +9,30 @@
 		.col-md-2.col-lg-4.text-right
 			- if @league.active?
 				%h4.small
-					Deadline: #{@league.season.premiere_date.strftime("%B %d")}
+					Deadline: #{@league.draft_deadline.strftime("%B %d")}
 			- if @user == @current_user && @league.active?
 				- if @rounds_collection.count == 0
 					= link_to "Build Elimination Bracket", rounds_create_path(@league.id), class: "btn btn-default btn-sm"
 				- else
-					= link_to "Edit Rounds", rounds_edit_path(@league.id), class: "btn btn-default btn-sm"
+					= link_to "Edit Bracket", rounds_edit_path(@league.id), class: "btn btn-default btn-sm"
 			= link_to "Back to League", league_path(@league.id), class: "btn btn-default btn-sm"
-	.panel-body
 		/ Contestant Board
-		#roundSelector.col-lg-12
-			%p Click on a round to view your contestant selection.
-			- @rounds_collection.each_with_index do |round, i|
-				.btn.btn-default.btn-sm
-					- if round == @rounds_collection.last
-						Final Round
-					- else
-						Round #{ i + 1 }
-		#roundViewPort
-			%ul.bracketList.row
-			- @rounds_collection.each do |round|
-				%li.bracketItem
-					.panel
-						%h4= @rounds_collection.rindex(round)
-						- round.contestants.order(name: :asc).each do |contestant|	
-							.row
-								.col-lg-12
-									= contestant.name
-
-		/ END Bracket Board
+		#roundViewPort.col-lg-12
+			.bracketList
+				- @rounds_collection.each_with_index do |round, i|
+					.bracketItem.col-lg-2.col-md-2.col-sm-2.col-xs-2
+						%table.table.table-bordered.table-condensed.table-hover
+							%thead
+								- if round == @rounds_collection.last
+									%th Finale
+								- else
+									%th Episode #{ i + 1 }
+							%tbody
+								- @season.contestants.order(name: :asc).each do |contestant|
+									- if round.contestants.include? contestant
+										%tr
+											%td= contestant.name
+									- else
+										%tr.strike-through
+											%td= contestant.name
+							/ END Bracket Board

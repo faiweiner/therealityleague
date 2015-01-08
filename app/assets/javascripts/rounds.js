@@ -16,11 +16,12 @@ $(document).ready(function () {
 		// Button changer
 		$saveButton = $('#saveButton');
 
-
 		$selectedRoundButton = $('.btn.btn-block.btn-sm.btn-primary.selected')
 		var selectedRoundId = $selectedRoundButton.data().roundId;
-		// ----- Begin server-side ----- //
+
+		// ========== Begin server-side ========== //
 		
+		// --- adding/removing contestants from round by round ID --- //
 		var addContestantToRound = function (contestantId, roundId) {
 			$.ajax({
 				url: '/rounds/' + roundId + '/add/' + contestantId,
@@ -39,24 +40,17 @@ $(document).ready(function () {
 				type:	'POST',
 				success: function (msg) {
 				}
-			}).done(function (response) {
-	
+			}).done(function (msg) {
+				$roundEditBoard.html(msg);
+				toggleRoundDisplay(roundId);
 			});
 		};
 
-		var goToNextRound = function (roundId) {
-			$.ajax({
-				url:	'/rounds/round/' + roundId + '/save',
-				type:	'GET',
-				success: function (msg) {
+		// ========== END server-side ========== //
 
-				}
-			});
-		};
-		// ----- END server-side ----- //
+		// ========== BEGIN client-side ========== //
 
-		// ----- BEGIN client-side ----- //
-
+		// --- Retrieving round ID --- //
 		var detectActiveRoundByElement = function (element) {
 			var detectedActiveRoundId = element.dataset.roundId;
 			return detectedActiveRoundId;
@@ -72,6 +66,7 @@ $(document).ready(function () {
 			};
 		};
 
+		// --- Round Display Toggle --- //
 		// hides all round display except the active one
 		var toggleRoundDisplay = function (activeRoundId) {
 			for (var i = 0; i < roundsCount; i++) {
@@ -87,8 +82,11 @@ $(document).ready(function () {
 			}
 		};
 
+		// toggle between episode buttons (make active)
+		// function for element - click into element
 		var toggleEpisodeButton = function (element) {
 			var classList = element.classList;
+
 			var searchTerm = 'li'
 			for (var i = 0; i < classList.length; i++) {
 				switch (classList[i]) {
@@ -100,14 +98,26 @@ $(document).ready(function () {
 						break;
 				}
 			}
-			console.log(searchTerm);
 			$siblings = $(searchTerm).siblings();
-			console.log($siblings);
-			console.log(element);
 			$siblings.removeClass('btn-primary selected');
 			$(element).addClass('btn-primary selected');
-			activeRoundId = detectActiveRoundByElement(element);
 		};
+
+		// function for ID - change from environment
+		var toggleEpisodeButtonById = function (roundId) {
+			var searchTerm = 'li.btn.btn-block'
+			$siblings = $(searchTerm).siblings();
+			var element;
+
+			for (var i = 0; i < $siblings.length; i++) {
+				if ($siblings[i].dataset.roundId == roundId) {
+					element = $siblings[i];
+				}
+			}
+			$siblings.removeClass('btn-primary selected');
+			$(element).addClass('btn-primary selected');
+		};
+
 
 
 
@@ -175,12 +185,13 @@ $(document).ready(function () {
 		$bracketBoard.on('click', '.btn.btn-default.btn-xs.round-toggle', function (event) {
 			// records which element is being clicked
 			$element = event.target; 
-			console.log($element);
 			var targetRoundId = $element.dataset.roundId;
 			toggleRoundDisplay(targetRoundId);
+			toggleEpisodeButtonById($element.dataset.roundId);
 		});
 
 		// --- standard toggle to display --- //
 		toggleRoundDisplay(activeRoundId);
+
 	};
 });

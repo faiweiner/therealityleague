@@ -73,11 +73,11 @@ class RoundsController < ApplicationController
 		# adding a contestant to a round
 		@round = Round.includes(:contestants).find(params[:round_id])
 		@league = @round.league
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 
 		@round.contestants << contestant unless @round.contestants.include? contestant
 
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
 		@upcoming_rounds = []
 			@rounds_collection.each do |round|
 			if round.episode.air_date.future?
@@ -100,10 +100,12 @@ class RoundsController < ApplicationController
 	def remove
 		# removing a contestant from a round
 		@round = Round.includes(:contestants).find(params[:round_id])
+		@league = @round.league
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 
 		@round.contestants.destroy(contestant)
 
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
 		@upcoming_rounds = []
 			@rounds_collection.each do |round|
 			if round.episode.air_date.future?
@@ -111,7 +113,16 @@ class RoundsController < ApplicationController
 			end
 		end
 
-		redirect_to rounds_edit_path(@round.league.id)
+		respond_to do |format|
+			format.html { render partial: "current_bracket", :remote => true }
+			format.js {
+				render :json => {
+					:round => @round,
+					:contestants => @round.contestants
+				}
+			}
+		end
+
 	end
 	
 	def save
