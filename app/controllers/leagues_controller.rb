@@ -152,6 +152,17 @@ class LeaguesController < ApplicationController
 			end
 			@ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
 
+			deadline_alert = nil
+
+			if @league.active? && (@participants.exclude? @current_user)
+				deadline_alert = "Last day to submit a bracket is #{@league.draft_deadline.strftime('%B %d')} -- Join the league TODAY!"
+			elsif @rounds_collection.nil?
+				deadline_alert = "Last day to submit a bracket is #{@league.draft_deadline.strftime('%B %d')}."
+			elsif @rounds_collection.present? && @league.draft_deadline > DateTime.now
+				deadline_alert = "Last day to make changes to your bracket is #{@league.draft_deadline.strftime('%B %d')}."
+			end
+
+			@alert_messages = [deadline_alert]
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
 			@participants_ranking = {}
@@ -187,6 +198,21 @@ class LeaguesController < ApplicationController
 			# sort roster to reflect current leads
 			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
 			
+			deadline_alert = nil
+
+			@league.rosters.filter(user_id: @current_user.id).empty?
+			raise
+
+			deadline_alert = "Last day to submit a bracket is on #{@league.draft_deadline.strftime('%B %d')} -- Join the league today."
+			
+			if @league.active? && @league.participant_cap.present?
+				spots_left = @league.participant_cap - @league.users
+				availability_message = "Hurry, there are only #{spots_left} spots left in this league!"
+				@alert_messages = [deadline_alert, availability_message]
+			else
+				@alert_messages = [deadline_alert]
+			end
+
 		end
 
 		respond_to do |format|
