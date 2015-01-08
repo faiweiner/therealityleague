@@ -28,9 +28,16 @@ class RoundsController < ApplicationController
 		@league = League.includes(:users, :rounds).find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		@episodes_collection = @season.episodes
-
+		
 		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
 		@rounds_ids = @rounds_collection.pluck(:id)
+
+		@upcoming_rounds = []
+		@rounds_collection.each do |round|
+			if round.episode.air_date.future?
+				@upcoming_rounds << round
+			end
+		end
 
 		@available_contestants = @season.contestants.where(present: true).order(name: :asc)
 		respond_to do |format|

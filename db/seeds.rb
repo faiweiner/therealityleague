@@ -42,7 +42,7 @@ season3 = Season.create(
 	:name => 'Sean Lowe', 
 	:number => 17, 
 	:show_id => show1.id, 
-	:premiere_date => '01/07/2013', 
+	:premiere_date => '07/07/2013', 
 	:finale_date => '01/12/2013', 
 	:description => 'The best bachelor ever - Sean Lowe is the man!', 
 	:episode_count => 10, 
@@ -83,16 +83,21 @@ league1 = Fantasy.create(
 	:commissioner_id => user1.id, 
 	:season_id => bachelor19.id, 
 	:public_access => true,
-	:type => 'Fantasy', 
+	:type => 'Fantasy',
 	:draft_limit => 5,
-	:scoring_system => 1)
+	:draft_deadline => '10/01/2015',
+	:scoring_system => 1,
+	:active => true)
 
 league2 = Elimination.create(
 	:name => 'Public Bachelor Elimination League', 
 	:commissioner_id => user1.id, 
 	:season_id => bachelor19.id, 
-	:type => 'Elimination', 
-	:scoring_system => 1)
+	:public_access => true,
+	:type => 'Elimination',
+	:draft_deadline => '10/01/2015',
+	:scoring_system => 1,
+	:active => true)
 
 league1.users << [user1]
 league2.users << [user1]

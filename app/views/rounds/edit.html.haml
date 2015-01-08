@@ -18,11 +18,15 @@
 					= render partial: "avail_contestants"
 				%ul#board.col-lg-2{"data-rounds-count" => @rounds_collection.count, "data-rounds-ids" => @rounds_ids}
 					- @rounds_collection.each_with_index do |round, i|
-						- if round == @rounds_collection.first
-							%li.btn.btn-block.btn-sm.btn-default.btn-primary.selected{"data-index" => i + 1, "data-round-id" => round.id}
-								Episode #{ i + 1 }
+						- if round.episode.air_date.future?
+							- if round == @upcoming_rounds[0]
+								%li.btn.btn-block.btn-sm.btn-default.btn-primary.selected{"data-index" => i + 1, "data-round-id" => round.id}
+									Episode #{ i + 1 }
+							- else
+								%li.btn.btn-block.btn-sm.btn-default{"data-index" => i + 1, "data-round-id" => round.id}
+									Episode #{ i + 1 }								
 						- else
-							%li.btn.btn-block.btn-sm.btn-default{"data-index" => i + 1, "data-round-id" => round.id}
+							%li.btn.btn-block.btn-sm.btn-default.disabled{"data-index" => i + 1, "data-round-id" => round.id}
 								- if round == @rounds_collection.last
 									Final Episode
 								- else

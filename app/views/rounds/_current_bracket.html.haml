@@ -6,7 +6,8 @@
 				Round #{i + 1}:
 				= round.contestants.count
 				\/
-				16 contestants
+				= round.episode.expected_survivors 
+				contestants
 		.col-lg-12.roundDisplay{"data-contestants-count" => round.contestants.count, "data-index" => i + 1 }
 			- round.contestants.order(name: :asc).each do |contestant|
 				.contestants-selected
