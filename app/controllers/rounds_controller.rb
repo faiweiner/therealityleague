@@ -105,7 +105,7 @@ class RoundsController < ApplicationController
 
 		@round.contestants.destroy(contestant)
 
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).includes(:contestants)
 		@upcoming_rounds = []
 			@rounds_collection.each do |round|
 			if round.episode.air_date.future?
@@ -118,7 +118,8 @@ class RoundsController < ApplicationController
 			format.js {
 				render :json => {
 					:round => @round,
-					:contestants => @round.contestants
+					:contestants => @round.contestants,
+					:rounds_collection =>	@rounds_collection
 				}
 			}
 		end
