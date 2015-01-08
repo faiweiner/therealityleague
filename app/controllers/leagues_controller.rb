@@ -71,12 +71,14 @@ class LeaguesController < ApplicationController
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = "valid"
+			
 			redirect_to league_path(@league.id)
 		else
 			flash[:notice] = "Something went wrong and we were unable to save your league"
 			flash[:color] = "invalid"
 			render :new
 		end
+		
 	end
 
 	def edit
