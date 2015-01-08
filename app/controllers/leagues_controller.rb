@@ -131,15 +131,26 @@ class LeaguesController < ApplicationController
 
 		# ========== FOR ELIMINATION ========== #
 		when "Elimination"
+			rounds_collection = @league.rounds.where(user_id: @current_user.id)
+			rounds_contestants_collection = []
+			rounds_collection.each do |round| 
+				round.contestants.each do |contestant|
+					rounds_contestants_collection << contestant
+				end
+			end
+
+			rounds_contestants_collection.uniq!
+
 			@participants_ranking = {}
 			@participants.each_with_index do |participant, i|
 				@participants_ranking[i] = {
 					:participant => participant,
-					:score => participant.calculate_total_rounds_points(@league)
+					:score => participant.calculate_total_rounds_points(@league),
+					:rounds_collection => rounds_collection,
+					:rounds_contestants_collection => rounds_contestants_collection
 				}
 			end
 			@ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
-
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
 			@participants_ranking = {}
@@ -176,8 +187,6 @@ class LeaguesController < ApplicationController
 			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
 			
 		end
-
-		
 
 		respond_to do |format|
 			format.html
