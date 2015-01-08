@@ -18,6 +18,7 @@
 #  active          :boolean          default(TRUE)
 #  created_at      :datetime
 #  updated_at      :datetime
+#  locked          :boolean          default(FALSE)
 #
 
 class Elimination < League

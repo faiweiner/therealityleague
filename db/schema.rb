@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150107171931) do
+ActiveRecord::Schema.define(version: 20150108004034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20150107171931) do
     t.boolean  "active",          default: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "locked",          default: false
   end
 
   create_table "leagues_schemes", id: false, force: true do |t|

@@ -20,14 +20,14 @@
 							.action
 								%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
 		.col-lg-12
-			- if round == @rounds_collection.first
-				.btn.btn-default.btn-md.saveButton
+			- if round == @rounds_collection.first || round == @upcoming_rounds[0]
+				.btn.btn-default.btn-sm.saveButton
 					Next			
 			- elsif round == @rounds_collection.last
-				.btn.btn-default.btn-md.finishButton
+				.btn.btn-default.btn-sm.finishButton
 					Finish
 			- else
-				.btn.btn-default.btn-md.previousButton
+				.btn.btn-default.btn-sm.previousButton
 					Previous
-				.btn.btn-default.btn-md.saveButton
+				.btn.btn-default.btn-sm.saveButton
 					Next
