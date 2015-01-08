@@ -1,14 +1,14 @@
 $(document).ready(function () {
 	if ($('#bracketBoard').length > 0) {
 		console.log('Round Selection Board initialized');
-		$bracketBoard = $('#bracketBoard');
+		$bracketBoard = $('#bracketBoard');								// overaching DIV covering the below
 		$availableContestantBoard = $('#availableContestant');
 		$roundEditBoard = $('#roundEdit');
-		$roundsDisplayBoard = $('#roundDisplay');
+		$episodeBoard = $('#episodeBoard');
 
 		// Server data
-		var roundsCount = $('#board').data().roundsCount;
-		var roundsIds = $('#board').data().roundsIds;
+		var roundsCount = $('#episodeBoard').data().roundsCount;
+		var roundsIds = $('#episodeBoard').data().roundsIds;
 
 		// Client-side data
 		var activeRoundId = $("li.btn-primary.selected").data().roundId;
@@ -72,6 +72,36 @@ $(document).ready(function () {
 			}
 		};
 
+		var toggleEpisodeButton = function (element) {
+			var classList = element.classList;
+			var searchTerm = 'li'
+			for (var i = 0; i < classList.length; i++) {
+				switch (classList[i]) {
+					case 'btn':
+						searchTerm += '.' + classList[i]
+						break;
+					case 'btn-block':
+						searchTerm += '.' + classList[i]
+						break;
+				}
+			}
+			console.log(searchTerm);
+			$siblings = $(searchTerm).siblings();
+			console.log($siblings);
+			console.log(element);
+			$siblings.removeClass('btn-primary', 'selected');
+			$(element).addClass('btn-primary');
+
+		};
+
+
+		var detectActiveRound = function (roundId) {
+			var $siblings = $( "li.btn.btn-block" ).siblings();
+			$siblings.removeClass('btn-primary', 'selected');
+			$element.classList.add('btn-primary', 'selected');
+			selectedRoundId = roundId;
+			return selectedRoundId;
+		};
 		// detects which operation to execute
 
 		var roundOperation = function (operation, contestantId, roundId, element) {
@@ -93,16 +123,6 @@ $(document).ready(function () {
 					goToNextRound(roundId);
 					break;
 			}
-		};
-
-		var detectRound = function (roundId) {
-			var $siblings = $( "li.btn.btn-block" ).siblings();
-			$siblings.removeClass('btn-primary', 'selected');
-			$element.classList.add('btn-primary', 'selected');
-			selectedRoundId = roundId;
-			searchTerm = '#' + selectedRoundId;
-			$roundDisplay = $(searchTerm);
-			toggleRoundDisplay(selectedRoundId);
 		};
 
 		// ========= universal click listeners ========= //
@@ -134,14 +154,23 @@ $(document).ready(function () {
 
 		// --- for selecting Round --- //
 
-		$('.btn.btn-block.btn-sm').on('click', function (event) {
+		$episodeBoard.on('click', '.btn.btn-block.btn-sm', function (event) {
 			// records which element is being clicked
 			$element = event.target; 
 			var roundId = $element.dataset.roundId;
-
-			detectRound(roundId);
+			toggleRoundDisplay(roundId);
+			toggleEpisodeButton($element);
 		});
 
+		$bracketBoard.on('click', '.btn.btn-default.btn-sm.round-toggle', function (event) {
+			// records which element is being clicked
+			$element = event.target; 
+			console.log($element);
+			var targetRoundId = $element.dataset.roundId;
+			toggleRoundDisplay(targetRoundId);
+		});
+
+		// --- standard toggle to display --- //
 		toggleRoundDisplay(activeRoundId);
 	};
 });

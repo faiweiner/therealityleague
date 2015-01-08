@@ -78,6 +78,13 @@ class RoundsController < ApplicationController
 
 		@round.contestants << contestant unless @round.contestants.include? contestant
 
+		@upcoming_rounds = []
+			@rounds_collection.each do |round|
+			if round.episode.air_date.future?
+				@upcoming_rounds << round
+			end
+		end
+
 		respond_to do |format|
 			format.html { render partial: "current_bracket", :remote => true }
 			format.js {
@@ -87,6 +94,7 @@ class RoundsController < ApplicationController
 				}
 			}
 		end
+
 	end
 
 	def remove
@@ -95,6 +103,13 @@ class RoundsController < ApplicationController
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 
 		@round.contestants.destroy(contestant)
+
+		@upcoming_rounds = []
+			@rounds_collection.each do |round|
+			if round.episode.air_date.future?
+				@upcoming_rounds << round
+			end
+		end
 
 		redirect_to rounds_edit_path(@round.league.id)
 	end

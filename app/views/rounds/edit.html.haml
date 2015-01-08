@@ -16,7 +16,7 @@
 			.row
 				#availableContestant.col-lg-5
 					= render partial: "avail_contestants"
-				%ul#board.col-lg-2{"data-rounds-count" => @rounds_collection.count, "data-rounds-ids" => @rounds_ids}
+				%ul#episodeBoard.col-lg-2{"data-rounds-count" => @rounds_collection.count, "data-rounds-ids" => @rounds_ids}
 					- @rounds_collection.each_with_index do |round, i|
 						- if round.episode.air_date.future?
 							- if round == @upcoming_rounds[0]
