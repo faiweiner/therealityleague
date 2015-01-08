@@ -151,6 +151,7 @@ class LeaguesController < ApplicationController
 				}
 			end
 			@ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
+
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
 			@participants_ranking = {}
