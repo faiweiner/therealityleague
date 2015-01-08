@@ -2,8 +2,6 @@
 	.alert.alert-success{:role => "alert"}= flash[:notice]
 - elsif flash[:notice] && flash[:color] == "invalid"
 	.alert.alert-danger{:role => "alert"}= flash[:notice]
-- elsif flash[:notice] && flash[:color] == "warning"
-	.alert.alert-warning{:role => "alert"}= flash[:notice] 
 .panel.panel-default#league_view
 	.panel-body
 		.col-lg-8
@@ -20,6 +18,8 @@
 				= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" 
 			- elsif @a_participant == false && @league.active?
 				= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
+			- if flash[:notice2] && flash[:color2] == "warning"
+				.alert.alert-warning{:role => "alert"}= flash[:notice2] 
 		.col-lg-4
 			.panel.panel-default
 				.panel-body
@@ -55,6 +55,7 @@
 						= @league.draft_deadline.strftime("%B %d")
 						%p
 					= link_to "Edit League", edit_league_path, class:"btn btn-default btn-xs" 
+
 	- case @league.type
 	- when "Elimination"
 		= render partial: "leagues/elimination/ranking"
