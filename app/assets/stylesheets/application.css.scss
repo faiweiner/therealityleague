@@ -142,13 +142,13 @@ div {
 			filter: alpha(opacity=50);
 		}
 	}
-
 	&.contestant-thumbnail {
+		display: inline-block;
 		position: relative;
 		min-height: auto;
 		max-height: 100px;
 		max-width: 100px;
-		padding-bottom: 40px;
+		margin-right: 10px;
 		> img {
 			height: 100px;
 			width: 100px;
@@ -159,34 +159,80 @@ div {
 			&.nonselected-contestant {
 			}
 		}
-	}
-
-	.caption {
-		position: absolute;
-		padding: 3px;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		width: 100%;
-		background-color: black;
-		font-size: 12px;
-		text-align: center;
-		color: white;  
-		opacity: 0.6; /* transparency */  
-		filter: alpha(opacity=60); /* IE transparency */  
-		border-radius: 0 0 3px 3px;
-		.contestant-name {
+		.caption {
+			width: 100%;
+			position: absolute;
+			background-color: black;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			padding: 3px;
+			font-size: 12px;
+			text-align: center;
+			color: white;  
+			opacity: 0.6; /* transparency */  
+			filter: alpha(opacity=60); /* IE transparency */  
+			border-radius: 0 0 3px 3px;
 		}
+		.veil {
+			height: 77px;
+			width: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}	
 		.action {
-			.glyphicon-remove {
+			&.disabled {
+				height: 100px;
+				width: 100px;
+				background-color: white;
+				opacity: 0.2; /* transparency */  
+				filter: alpha(opacity=20); /* IE transparency */  
+				position: absolute;
+				left: 0;
+				top: 0;
 				color: red;
+				i {
+					padding: 33px;
+					font-size: 30px;
+				}				
 			}
-			.glyphicon-ok {
+			&.pick {
+				height: 100px;
+				width: 100px;
+				background-color: black;
+				border: 2px solid green;
+				opacity: 0.6; /* transparency */  
+				filter: alpha(opacity=60); /* IE transparency */  
+				position: absolute;
+				display: none;
+				left: 0;
+				top: 0;
 				color: green;
+				i {
+					padding: 33px;
+					font-size: 30px;
+				}
+			}
+			&.discard {
+				height: 100px;
+				width: 100px;
+				background-color: black;
+				border: 2px solid gray;
+				opacity: 0.6; /* transparency */  
+				filter: alpha(opacity=60); /* IE transparency */  
+				position: absolute;
+				display: none;
+				left: 0;
+				top: 0;
+				color: red;
+				i {
+					padding: 33px;
+					font-size: 30px;
+				}
 			}
 		}
 	}
-
 
 	p {  
 		padding: 0px;  
