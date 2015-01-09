@@ -28,16 +28,22 @@ class RoundsController < ApplicationController
 	def edit
 		@league = League.includes(:users, :rounds).find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
-		@episodes_collection = @season.episodes
+		@episodes_collection = @season.episodes.order(air_date: :asc)
 
 		# -- collection of rounds by this user for this league
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
 		@rounds_ids_collection = @rounds_collection.pluck(:id)
 		@upcoming_rounds = []
 		@rounds_collection.each do |round|
 			if round.episode.air_date.future?
 				@upcoming_rounds << round
 			end
+		end
+
+		# -- get an ordered array of rounds and episodes together
+		@rounds_episodes_collection = []
+		@rounds_collection.each do |round|
+			@rounds_episodes_collection << {round.id => round.episode_id}
 		end
 
 		# -- get information about contestant for rounds.js
