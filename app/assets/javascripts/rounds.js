@@ -10,6 +10,7 @@ $(document).ready(function () {
 		var roundsCount = $('#episodeBoard').data().roundsCount;
 		var roundsIds = $('#episodeBoard').data().roundsIds;
 
+		debugger
 		// Client-side data
 		var activeRoundId = $("li.btn-primary.selected").data().roundId;
 

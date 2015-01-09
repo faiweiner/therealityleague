@@ -27,15 +27,20 @@
 				\/
 				= round.episode.expected_survivors 
 				Contestants
+		
+		.col-lg-12.contestantsDisplay
+			- @contestants.each do |contestant|
+				.thumbnail.contestant-thumbnail
+					%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
+					.caption
+						.contestant-name
+							= contestant.name
+					- if @contestants_data_collection[contestant.id][:absent_episodes_collection].include? round.episode.id
+						.action.disabled
+					- elsif @contestants_data_collection[contestant.id][:rounds_picked_collection].include? round.id
+						.action.pick
+							%i.remove-round.glyphicon.glyphicon-ok{"data-contestant-id" => contestant, "data-round-id" => round.id}
+					- else
+						.action.discard
+							%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant, "data-round-id" => round.id}
 
-		.col-lg-12.roundDisplay{"data-contestants-count" => round.contestants.count, "data-index" => i + 1 }
-			- round.contestants.order(name: :asc).each do |contestant|
-				.contestants-selected
-					.thumbnail.contestant-thumbnail
-						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
-						/ %img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
-						.caption
-							.contestant-name
-								= contestant.name
-							.action
-								%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
