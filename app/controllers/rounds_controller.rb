@@ -4,6 +4,7 @@ class RoundsController < ApplicationController
 		@rounds_collection = Round.includes(:league, :user).where(league_id: params[:league_id], user_id: params[:user_id])
 		@league = League.includes(:season).find(params[:league_id])
 		@season = @league.season
+		@episodes_id = @season.episodes.pluck(:id) 
 		@user = User.find(params[:user_id])
 		show = @season.show
 		origin_box = params[:origin_box_number].to_i			#contestant box will always be -1
@@ -28,10 +29,10 @@ class RoundsController < ApplicationController
 		@league = League.includes(:users, :rounds).find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		@episodes_collection = @season.episodes
-		
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
-		@rounds_ids = @rounds_collection.pluck(:id)
 
+		# -- collection of rounds by this user for this league
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
+		@rounds_ids_collection = @rounds_collection.pluck(:id)
 		@upcoming_rounds = []
 		@rounds_collection.each do |round|
 			if round.episode.air_date.future?
@@ -39,13 +40,42 @@ class RoundsController < ApplicationController
 			end
 		end
 
-		@available_contestants = @season.contestants.where(present: true).order(name: :asc)
+		# -- get information about contestant for rounds.js
+		@contestants = @season.contestants.order(name: :asc)
+		@contestants_data_collection = {}
+		@contestants.each do |contestant|
+
+			if contestant.present == false 
+				eliminated = true
+				elimination_episode = contestant.episode_id 
+			else
+				elimination = true
+				elimination_episode = nil
+			end
+
+			## -- get the rounds which the contestant is picked
+			rounds_picked = []
+			@rounds_collection.each do |round|
+				rounds_picked << round.id if round.contestants.include? contestant
+			end
+
+			# -- collection for rounds.js
+			@contestants_data_collection[contestant.id] = {
+				:img => contestant.image,
+				:alt => contestant.name,
+				:rounds_picked => rounds_picked,
+				:eliminated => eliminated,
+				:elimination_episode => elimination_episode
+			}
+		end
+
 		respond_to do |format|
 			format.html
 			format.js {
 				render :json => {
+					:rounds_ids => @rounds_ids_collection,
 					:rounds_collection => @rounds_collection,
-					:rounds_ids => @rounds_ids
+					:contestants_data_collection => @contestants_data_collection
 				}
 			}
 		end
