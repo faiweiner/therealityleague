@@ -2,7 +2,6 @@ $(document).ready(function () {
 	if ($('#bracketBoard').length > 0) {
 		console.log('Round Selection Board initialized');
 		$bracketBoard = $('#bracketBoard');								// overaching DIV covering the below
-		$availableContestantBoard = $('#availableContestant');
 		$roundEditBoard = $('#roundEdit');
 		$episodeBoard = $('#episodeBoard');
 
@@ -10,10 +9,9 @@ $(document).ready(function () {
 		var roundsCount = $('#episodeBoard').data().roundsCount;
 		var roundsIds = $('#episodeBoard').data().roundsIds;
 
-		debugger
 		// Client-side data
-		var activeRoundId = $("li.btn-primary.selected").data().roundId;
-
+		var activeRoundId = $('li.btn-primary.selected').data().roundId;
+		
 		// Button changer
 		$saveButton = $('#saveButton');
 
@@ -51,7 +49,7 @@ $(document).ready(function () {
 
 		// ========== BEGIN client-side ========== //
 
-		// --- Retrieving round ID --- //
+		// --- Retrieving round ID --- //8
 		var detectActiveRoundByElement = function (element) {
 			var detectedActiveRoundId = element.dataset.roundId;
 			return detectedActiveRoundId;
@@ -65,6 +63,64 @@ $(document).ready(function () {
 					return activeRoundId;
 				};
 			};
+		};
+
+		var selectNavCheckElement = function (activeRoundId) {
+			var activeNavElement = $('.alert.nav-check').filter(function () { 
+				return (($(this).data().roundId == activeRoundId) == true);
+			});
+			return $(activeNavElement);
+		};
+
+		var detectNavCheckStatus = function (activeRoundId) {
+			var activeNavCheck = $('.alert.nav-check').filter(function () { 
+				if (($(this).data().roundId == activeRoundId) == true) {
+					return $(this).data().status;
+				};
+			});
+			return $(activeNavCheck).data().status;
+		};
+
+		var updateAlertNavCheck = function (element, message, pickDifference) {
+			$element = $(element);
+			$element.removeClass('alert-warning');
+			$element.addClass('alert-danger');
+			$element.html(message);
+			$element.children('span').text(pickDifference)
+		};
+
+		var messageGenerator = function (pickDifference, alertStatus) {
+			var SliderOne = {
+				A: (pickDifference > 0),
+				B: (pickDifference === 0),
+				C: (pickDifference < 0)
+			};
+
+			var SliderTwo = {
+				A: "warning",
+				B: "success",
+				C: "danger"
+			};
+
+			// Set state
+			var s1 = SliderOne.A,
+					s2 = SliderTwo.B;
+
+			// Switch state
+			switch (s1 | s2) {
+				case SliderOne.A | SliderTwo.A:
+				case SliderOne.A | SliderTwo.C:
+					return 'You have too many contestants for this round! Select <span class="round-difference strong"></span> more contestants you think will bite the dust this episode.';
+					break;
+				case SliderOne.C | SliderTwo.A:
+				case SliderOne.C | SliderTwo.C:
+					return 'Add <span class="round-difference strong"><span> more contestants before moving onto the next round.';
+					break;
+				case SliderOne.B | SliderTwo.B:
+				default:
+					return 'You\'re good to go! Click "Next" to construct the next round.';
+					break;
+			}
 		};
 
 		// --- Round Display Toggle --- //
@@ -147,8 +203,20 @@ $(document).ready(function () {
 
 		// ========= universal click listeners ========= //
 
+		// --- pull up i div for selection -- //
+		$('.thumbnail.contestant-thumbnail')
+		.mouseenter(function (event) {
+			$target = $(event.target);
+			$siblings = $target.siblings('.action');
+			$siblings.toggle();
+		})
+		.mouseleave(function (event) {
+			// $target = $(event.fromElement);
+			// console.log($target);
+		});
+
 		// // --- for adding/removing contestants from Round --- //
-		$bracketBoard.on('click', $('.glyphicon'), function (event) {
+		$roundEditBoard.on('click', $('i.glyphicon'), function (event) {
 			// records which element is being clicked
 			$element = event.target;
 			// set arguments for roundOperation
@@ -160,11 +228,11 @@ $(document).ready(function () {
 			// sets operation based on myClass value
 
 			switch (myClass) {
-				case 'add-round glyphicon glyphicon-plus':
+				case 'glyphicon glyphicon-ok':
 					var operation = 'add-round';
 					roundId = activeRoundId;
 					break;
-				case 'remove-round glyphicon glyphicon-remove':
+				case 'glyphicon glyphicon-remove':
 					var operation = 'remove-round';
 					roundId = $element.dataset.roundId;
 					break;
@@ -172,23 +240,33 @@ $(document).ready(function () {
 			roundOperation (operation, contestantId, roundId, $element);
 		});
 		
-
-		// --- for selecting Round --- //
-
+		// ========= for selecting Round ========= //
+		// --------- Episode Board Buttons --------- //
 		$episodeBoard.on('click', '.btn.btn-block.btn-sm', function (event) {
-			// records which element is being clicked
 			$element = event.target; 
 			var roundId = $element.dataset.roundId;
 			toggleRoundDisplay(roundId);
 			toggleEpisodeButton($element);
 		});
 
+		// --------- Previous/Next Buttons --------- //
 		$bracketBoard.on('click', '.btn.btn-default.btn-xs.round-toggle', function (event) {
-			// records which element is being clicked
 			$element = event.target; 
-			var targetRoundId = $element.dataset.roundId;
-			toggleRoundDisplay(targetRoundId);
-			toggleEpisodeButtonById($element.dataset.roundId);
+
+			// calculate contestant difference (too much or not enough)
+			var pickDifference = parseInt(
+				$(selectNavCheckElement(activeRoundId)).data().roundDifference
+			);
+
+
+			var message = messageGenerator(pickDifference, detectNavCheckStatus(activeRoundId));
+
+			var element = selectNavCheckElement(activeRoundId);
+			updateAlertNavCheck (element, message, pickDifference);
+
+			// var targetRoundId = $element.dataset.roundId;
+			// toggleRoundDisplay(targetRoundId);
+			// toggleEpisodeButtonById($element.dataset.roundId);
 		});
 
 		// --- standard toggle to display --- //
