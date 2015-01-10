@@ -1,7 +1,40 @@
+// var oReq = new XMLHttpRequest;
+
+// var getXMLHttpRequest = function () {	
+// 	if (window.XMLHttpRequest) {
+// 		return new window.XMLHttpRequest;
+// 	} else {
+// 		try {
+// 			return new ActiveXObject("MSXML2.XMLHTTP.3.0");
+// 		}
+// 		catch(ex) {
+// 			return null;
+// 		}
+// 	}
+// }
+
+// var handler = function () {
+// 	if (oReq.readyState == 4 /* complete */) {
+// 		if (oReq.status == 200) {
+// 			console.log(oReq.responseText);
+// 		}
+// 	}
+// };
+
+// var oReq = getXMLHttpRequest();
+
+// if (oReq != null) {
+// 	oReq.open("GET", document.url, true);
+// 	oReq.onreadystatechange = handler;
+// 	oReq.send();
+// } else {
+// 	window.console.log("AJAX (XMLHTTP) not supported.");
+// }
+
 $(document).ready(function () {
 	if ($('#bracketBoard').length > 0) {
 		console.log('Round Selection Board initialized');
-		$bracketBoard = $('#bracketBoard');								// overaching DIV covering the below
+		$bracketBoard = $('#bracketBoard');               // overaching DIV covering the below
 		$roundEditBoard = $('#roundEdit');
 		$episodeBoard = $('#episodeBoard');
 
@@ -27,7 +60,7 @@ $(document).ready(function () {
 				type: 'POST',
 				success: function (msg) {
 				}
-			}).done(function (msg) {			
+			}).done(function (msg) {      
 				$roundEditBoard.html(msg);
 				toggleRoundDisplay(roundId);
 			});
@@ -35,8 +68,8 @@ $(document).ready(function () {
 
 		var removeContestantFromRound = function (contestantId, roundId) {
 			$.ajax({
-				url:	'/rounds/' +  roundId + '/remove/' + contestantId,
-				type:	'POST',
+				url:  '/rounds/' +  roundId + '/remove/' + contestantId,
+				type: 'POST',
 				success: function (msg) {
 				},
 				error: function (msg) {}
@@ -217,18 +250,18 @@ $(document).ready(function () {
 		},'.thumbnail.contestant-thumbnail');
 
 		// $('.thumbnail.contestant-thumbnail').hover(
-		// 	function (event) {
-		// 		var $thumbnailFamily;
-		// 		$(this).toggleClass('hover');
-		// 		$thumbnailFamily = $(this).children();
-		// 		$actionPanel = ($thumbnailFamily[3]);
-		// 		$actionPanel.setAttribute('style','display:block');
-		// 	}, function (event) {
-		// 		$(this).toggleClass('hover');
-		// 		$thumbnailFamily = $(this).children();
-		// 		$actionPanel = ($thumbnailFamily[3]);
-		// 		$actionPanel.setAttribute('style','display:none');
-		// 	}
+		//  function (event) {
+		//    var $thumbnailFamily;
+		//    $(this).toggleClass('hover');
+		//    $thumbnailFamily = $(this).children();
+		//    $actionPanel = ($thumbnailFamily[3]);
+		//    $actionPanel.setAttribute('style','display:block');
+		//  }, function (event) {
+		//    $(this).toggleClass('hover');
+		//    $thumbnailFamily = $(this).children();
+		//    $actionPanel = ($thumbnailFamily[3]);
+		//    $actionPanel.setAttribute('style','display:none');
+		//  }
 		// );
 
 		// // --- for adding/removing contestants from Round --- //

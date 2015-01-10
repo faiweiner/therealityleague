@@ -139,66 +139,7 @@ class RoundsController < ApplicationController
 	end
 
 	def remove
-		# removing a contestant from a round
-		@round = Round.includes(:contestants).find(params[:round_id])
-		@league = @round.league
-		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
-
-		@round.contestants.destroy(contestant)
-		@contestants = @round.contestants
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).includes(:contestants)
-
-		@episodes_collection = @league.season.episodes.order(air_date: :asc)
-		@episodes_ids_collection = @episodes_collection.pluck(:id)
-
-		@contestants_data_collection = {}
-		@contestants.each do |contestant|
-			## -- produces a collection of episodes (ID) where that contestant is absent 
-			## -- (i.e) this contestant has already been eliminated.
-			present_episodes = []
-			absent_episodes = []
-			@episodes_ids_collection.each_with_index do |episode_id, i|
-				unless contestant.episode_id.nil?
-					if episode_id >= contestant.episode_id
-						absent_episodes << episode_id
-					else
-						present_episodes << episode_id
-					end
-				end
-				present_episodes << episode_id
-			end
-
-			## -- get the rounds which the contestant is picked
-			rounds_picked = []
-			@rounds_collection.each do |round|
-				rounds_picked << round.id if round.contestants.include? contestant
-			end
-
-			# -- collection for rounds.js
-			@contestants_data_collection[contestant.id] = {
-				:rounds_picked_collection => rounds_picked,
-				:absent_episodes_collection => absent_episodes
-			}
-		end
-
-		@upcoming_rounds = []
-			@rounds_collection.each do |round|
-			if round.episode.air_date.future?
-				@upcoming_rounds << round
-			end
-		end
-
-		respond_to do |format|
-			format.html { render partial: "current_bracket", :remote => true }
-			format.js {
-				render :json => {
-					:round => @round,
-					:contestants => @round.contestants,
-					:rounds_collection =>	@rounds_collection
-				}
-			}
-		end
-
+		process_and_return(params[:contestant_id], params[:round_id], "remove")
 	end
 	
 	def save
@@ -246,7 +187,7 @@ class RoundsController < ApplicationController
 		end
 	end
 
-	private
+	protected
 
 	def process_and_return(contestant_id, round_id, action)
 		contestant = Contestant.find(contestant_id) if contestant_id != nil
@@ -265,7 +206,7 @@ class RoundsController < ApplicationController
 		@episodes_ids_collection = @episodes_collection.pluck(:id)
 		
 		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).includes(:contestants)
-		@contestants = @rounds_collection.find(round.id).contestants
+		@contestants = @season.contestants.order(name: :asc)
 		
 		@contestants_data_collection = {}
 		@contestants.each do |contestant|

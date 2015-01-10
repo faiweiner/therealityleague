@@ -32,7 +32,7 @@
 									- if round.contestants.include? contestant
 										%tr
 											%td= contestant.name
-									- else
+									- elsif contestant
 										%tr.strike-through
 											%td= contestant.name
 							/ END Bracket Board

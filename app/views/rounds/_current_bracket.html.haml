@@ -1,7 +1,12 @@
 - @rounds_collection.each_with_index do |round, i|
 
 	.row.round-display{"id" => round.id, "data-round-id" => round.id}
-		.col-lg-12
+		.col-lg-12#round-navigation
+			.progress-container
+				Loading...
+				.progress
+					.progress-bar.progress-bar-success.progress-bar-striped{:role => "progressbar", "aria-valuenow" => 40, "aria-volumein" => 0, "ariavaluemax" => 100, "style" => "width: 40%"}
+						%span.sr-only 40% Complete
 			%h4
 				Round #{i + 1}:
 				- if round == @rounds_collection.first || round == @upcoming_rounds[0]
@@ -20,27 +25,51 @@
 						Next
 			%h6
 				- if round.contestants.count == round.episode.expected_survivors 
-					%i.glyphicon.glyphicon-ok-circle
+					.alert.nav-check.alert-success{:role => "alert", "data-status" => "success", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
+						Click "Next" to construct your bracket for the next episode. 
+						%br/
+						%br/
+						Make changes to your bracket anytime up to the draft's deadline.
 				- elsif round.contestants.count > round.episode.expected_survivors
-					%i.glyphicon.glyphicon-remove-circle	
-				= round.contestants.count
-				\/
-				= round.episode.expected_survivors 
-				Contestants
-		
-		.col-lg-12.contestantsDisplay
-			- @contestants.each do |contestant|
-				.thumbnail.contestant-thumbnail
-					%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
-					.caption
-						.contestant-name
-							= contestant.name
-					- if @contestants_data_collection[contestant.id][:absent_episodes_collection].include? round.episode.id
+					.alert.nav-check.alert-warning{:role => "alert", "data-round-id" => round.id, "data-status" => "warning", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
+						Remove 
+						%span.round-difference.strong{"data-round-id" => round.id}
+							= pluralize((round.contestants.count - round.episode.expected_survivors).to_i, "contestant")
+						who you think will get eliminated during this episode.
+				- else
+					.alert.nav-check.alert-warning{:role => "alert", "data-round-id" => round.id, "data-status" => "warning", "data-round-difference" => (round.contestants.count - round.episode.expected_survivors).abs}
+						Select 
+						%span.round-difference.strong{"data-round-id" => round.id}
+							= pluralize((round.contestants.count - round.episode.expected_survivors).abs, "contestant")
+						who you think will make it to the next round.
+		.col-lg-12.contestants-display
+			- @contestants.where(present: true).each do |contestant|
+				- if @contestants_data_collection[contestant.id][:absent_episodes_collection].include? round.episode.id
+					.thumbnail.contestant-thumbnail.eliminated
+						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
+						.veil
+						.caption
+							.contestant-name
+								= contestant.name
 						.action.disabled
-					- elsif @contestants_data_collection[contestant.id][:rounds_picked_collection].include? round.id
-						.action.pick
-							%i.remove-round.glyphicon.glyphicon-ok{"data-contestant-id" => contestant, "data-round-id" => round.id}
-					- else
-						.action.discard
-							%i.remove-round.glyphicon.glyphicon-remove{"data-contestant-id" => contestant, "data-round-id" => round.id}
+				- elsif @contestants_data_collection[contestant.id][:rounds_picked_collection].include? round.id
+					.thumbnail.contestant-thumbnail.selected
+						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
+						.veil
+						.caption
+							.contestant-name
+								= contestant.name
+						.action.selected.discard
+							%i.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
+				- else
+					.thumbnail.contestant-thumbnail.available
+						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
+						.veil
+						.caption
+							.contestant-name
+								= contestant.name
+						.action.available.pick
+							%i.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
+
+
 
