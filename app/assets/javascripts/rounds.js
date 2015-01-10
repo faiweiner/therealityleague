@@ -38,7 +38,8 @@ $(document).ready(function () {
 				url:	'/rounds/' +  roundId + '/remove/' + contestantId,
 				type:	'POST',
 				success: function (msg) {
-				}
+				},
+				error: function (msg) {}
 			}).done(function (msg) {
 				$roundEditBoard.html(msg);
 				toggleRoundDisplay(roundId);
@@ -110,7 +111,7 @@ $(document).ready(function () {
 			switch (s1 | s2) {
 				case SliderOne.A | SliderTwo.A:
 				case SliderOne.A | SliderTwo.C:
-					return 'You have too many contestants for this round! Select <span class="round-difference strong"></span> more contestants you think will bite the dust this episode.';
+					return 'Too many contestants! Select <span class="round-difference strong"></span> more contestants you think will bite the dust this episode.';
 					break;
 				case SliderOne.C | SliderTwo.A:
 				case SliderOne.C | SliderTwo.C:
@@ -183,10 +184,6 @@ $(document).ready(function () {
 		var roundOperation = function (operation, contestantId, roundId, element) {
 			$element = element;
 			var $parent = $element.parentElement.parentElement.parentElement.parentElement;
-
-			if ($parent.className == "contestants-selected") {
-				$parent.remove();
-			}
 		
 			switch (operation) {
 				case 'add-round':
@@ -195,34 +192,52 @@ $(document).ready(function () {
 				case 'remove-round':
 					removeContestantFromRound(contestantId, roundId);
 					break;
-				case 'save-next':
-					goToNextRound(roundId);
-					break;
 			}
 		};
 
 		// ========= universal click listeners ========= //
 
-		// --- pull up i div for selection -- //
-		$('.thumbnail.contestant-thumbnail')
-		.mouseenter(function (event) {
-			$target = $(event.target);
-			$siblings = $target.siblings('.action');
-			$siblings.toggle();
-		})
-		.mouseleave(function (event) {
-			// $target = $(event.fromElement);
-			// console.log($target);
-		});
+		// HOVER listener
+		$bracketBoard.on({
+			mouseenter: function () {
+				$(this).find('.thumbnail.contestant-thumbnail');
+				$(this).toggleClass('hover');
+				var $thumbnailFamily;
+				$thumbnailFamily = $(this).children();
+				$actionPanel = ($thumbnailFamily[3]);
+				$actionPanel.setAttribute('style','display:block');
+				},
+			mouseleave: function () {
+				$(this).find('.thumbnail.contestant-thumbnail');
+				$(this).toggleClass('hover');
+				$thumbnailFamily = $(this).children();
+				$actionPanel = ($thumbnailFamily[3]);
+				$actionPanel.setAttribute('style','display:none');
+				}
+		},'.thumbnail.contestant-thumbnail');
+
+		// $('.thumbnail.contestant-thumbnail').hover(
+		// 	function (event) {
+		// 		var $thumbnailFamily;
+		// 		$(this).toggleClass('hover');
+		// 		$thumbnailFamily = $(this).children();
+		// 		$actionPanel = ($thumbnailFamily[3]);
+		// 		$actionPanel.setAttribute('style','display:block');
+		// 	}, function (event) {
+		// 		$(this).toggleClass('hover');
+		// 		$thumbnailFamily = $(this).children();
+		// 		$actionPanel = ($thumbnailFamily[3]);
+		// 		$actionPanel.setAttribute('style','display:none');
+		// 	}
+		// );
 
 		// // --- for adding/removing contestants from Round --- //
-		$roundEditBoard.on('click', $('i.glyphicon'), function (event) {
+		$bracketBoard.on('click', $('i.glyphicon'), function (event) {
 			// records which element is being clicked
 			$element = event.target;
 			// set arguments for roundOperation
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
-			var originBoxNumber = $element.dataset.originBoxNumber;
 			var activeRoundId = detectActiveRoundByEnvironment();
 			var roundId;
 			// sets operation based on myClass value
@@ -230,13 +245,14 @@ $(document).ready(function () {
 			switch (myClass) {
 				case 'glyphicon glyphicon-ok':
 					var operation = 'add-round';
-					roundId = activeRoundId;
+					roundId = $element.dataset.roundId;;
 					break;
 				case 'glyphicon glyphicon-remove':
 					var operation = 'remove-round';
 					roundId = $element.dataset.roundId;
 					break;
 			};
+
 			roundOperation (operation, contestantId, roundId, $element);
 		});
 		
