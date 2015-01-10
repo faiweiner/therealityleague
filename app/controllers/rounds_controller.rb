@@ -15,11 +15,19 @@ class RoundsController < ApplicationController
 	def create
 		@league = League.find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
-		
+
 		# @season must already have recorded episodes in order to work
 		@episodes_collection = @season.episodes
 		@episodes_collection.each do |episode|
 			round = Round.find_or_create_by!(:user_id => @current_user.id, :league_id => @league.id, :episode_id => episode.id)
+	
+			# populate the first(ep.2) round with all contestants
+			if episode.first? && @season.show.name == "The Bachelor"
+				@season.contestants.each do |contestant|
+					round.contestants << contestant
+				end
+			end
+
 		end
 
 		redirect_to rounds_edit_path(@league.id)
@@ -49,18 +57,21 @@ class RoundsController < ApplicationController
 			@rounds_episodes_collection << {round.id => round.episode_id}
 		end
 
+		case @season.show.name 
+		when "The Bachelor" 
+			if @league.draft_deadline.future? && (@episodes_collection[0].air_date.past? && @episodes_collection[1].air_date.future?)
+				if @rounds_collection[1].contestants.empty?
+					@rounds_collection[0].contestants.where(present: true).each do |contestant|
+						@rounds_collection[1].contestants << contestant unless @rounds_collection[1].contestants.include? contestant
+					end
+				end
+			end
+		end
+
 		# -- get information about contestant for rounds.js
 		@contestants = @season.contestants.order(name: :asc)
 		@contestants_data_collection = {}
 		@contestants.each do |contestant|
-
-			if contestant.present == false 
-				eliminated = true
-				elimination_episode = contestant.episode_id 
-			else
-				elimination = true
-				elimination_episode = nil
-			end
 
 			## -- produces a collection of episodes (ID) where that contestant is absent 
 			## -- (i.e) this contestant has already been eliminated.
@@ -77,7 +88,7 @@ class RoundsController < ApplicationController
 				present_episodes << episode_id
 			end
 
-			## -- get the rounds which the contestant is picked
+			## -- get the rounds which the contestant is picked by the user
 			rounds_picked = []
 			@rounds_collection.each do |round|
 				rounds_picked << round.id if round.contestants.include? contestant
@@ -88,11 +99,7 @@ class RoundsController < ApplicationController
 
 			# -- collection for rounds.js
 			@contestants_data_collection[contestant.id] = {
-				:img => contestant.image,
-				:alt => contestant.name,
-				:rounds_picked => rounds_picked,
-				:eliminated => eliminated,
-				:elimination_episode => elimination_episode,
+				:rounds_picked_collection => rounds_picked,
 				:absent_episodes_collection => absent_episodes
 			}
 		end
@@ -107,7 +114,6 @@ class RoundsController < ApplicationController
 				}
 			}
 		end
-
 	end
 
 	def singleedit
@@ -129,31 +135,7 @@ class RoundsController < ApplicationController
 	end
 
 	def add
-		# adding a contestant to a round
-		@round = Round.includes(:contestants).find(params[:round_id])
-		@league = @round.league
-		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
-
-		@round.contestants << contestant unless @round.contestants.include? contestant
-
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id)
-		@upcoming_rounds = []
-			@rounds_collection.each do |round|
-			if round.episode.air_date.future?
-				@upcoming_rounds << round
-			end
-		end
-
-		respond_to do |format|
-			format.html { render partial: "current_bracket", :remote => true }
-			format.js {
-				render :json => {
-					:round => @round,
-					:contestants => @round.contestants
-				}
-			}
-		end
-
+		process_and_return(params[:contestant_id], params[:round_id], "add")
 	end
 
 	def remove
@@ -163,8 +145,42 @@ class RoundsController < ApplicationController
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
 
 		@round.contestants.destroy(contestant)
-
+		@contestants = @round.contestants
 		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).includes(:contestants)
+
+		@episodes_collection = @league.season.episodes.order(air_date: :asc)
+		@episodes_ids_collection = @episodes_collection.pluck(:id)
+
+		@contestants_data_collection = {}
+		@contestants.each do |contestant|
+			## -- produces a collection of episodes (ID) where that contestant is absent 
+			## -- (i.e) this contestant has already been eliminated.
+			present_episodes = []
+			absent_episodes = []
+			@episodes_ids_collection.each_with_index do |episode_id, i|
+				unless contestant.episode_id.nil?
+					if episode_id >= contestant.episode_id
+						absent_episodes << episode_id
+					else
+						present_episodes << episode_id
+					end
+				end
+				present_episodes << episode_id
+			end
+
+			## -- get the rounds which the contestant is picked
+			rounds_picked = []
+			@rounds_collection.each do |round|
+				rounds_picked << round.id if round.contestants.include? contestant
+			end
+
+			# -- collection for rounds.js
+			@contestants_data_collection[contestant.id] = {
+				:rounds_picked_collection => rounds_picked,
+				:absent_episodes_collection => absent_episodes
+			}
+		end
+
 		@upcoming_rounds = []
 			@rounds_collection.each do |round|
 			if round.episode.air_date.future?
@@ -202,10 +218,6 @@ class RoundsController < ApplicationController
 		end
 	end
 
-	def previous
-		
-	end
-
 	def display
 		@round = Round.includes(:episode, :contestants).find(params[:round_id])
 		@selected_contestants = @round.contestants.order(name: :asc)
@@ -232,6 +244,86 @@ class RoundsController < ApplicationController
 				}
 			}
 		end
+	end
+
+	private
+
+	def process_and_return(contestant_id, round_id, action)
+		contestant = Contestant.find(contestant_id) if contestant_id != nil
+		round = Round.includes(:league, :contestants).find(round_id)
+		
+		case action
+		when "add"
+			round.contestants << contestant unless round.contestants.include? contestant
+		when "remove"
+			round.contestants.destroy(contestant)
+		end
+
+		@league = round.league
+		@season = @league.season
+		@episodes_collection = @season.episodes.order(air_date: :asc)
+		@episodes_ids_collection = @episodes_collection.pluck(:id)
+		
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).includes(:contestants)
+		@contestants = @rounds_collection.find(round.id).contestants
+		
+		@contestants_data_collection = {}
+		@contestants.each do |contestant|
+			present_episodes = []
+			absent_episodes = []
+			@episodes_ids_collection.each_with_index do |episode_id, i|
+				unless contestant.episode_id.nil?
+					if episode_id >= contestant.episode_id
+						absent_episodes << episode_id
+					else
+						present_episodes << episode_id
+					end
+				end
+				present_episodes << episode_id
+			end
+
+			## -- get the rounds which the contestant is picked
+			rounds_picked = []
+			@rounds_collection.each do |round|
+				rounds_picked << round.id if round.contestants.include? contestant
+			end
+
+			# -- collection for rounds.js
+			@contestants_data_collection[contestant.id] = {
+				:rounds_picked_collection => rounds_picked,
+				:absent_episodes_collection => absent_episodes
+			}
+
+		end
+		
+		@upcoming_rounds = []
+			@rounds_collection.each do |round|
+			if round.episode.air_date.future?
+				@upcoming_rounds << round
+			end
+		end
+
+		respond_to do |format|
+			format.html { 
+				render partial: "current_bracket", :remote => true 
+			}
+			format.json { 
+				render :json => {
+					:round => round,
+					:contestants => @contestants,
+					:rounds_collection =>	@rounds_collection
+				}
+			}
+			# format.json { 
+			# 	render :json => {
+			# 		:contestants_data_collection[contestant.id] => {
+			# 			:rounds_picked_collection => rounds_picked,
+			# 			:absent_episodes_collection => absent_episodes	
+			# 		}
+			# 	}
+			# }
+		end
+
 	end
 
 end

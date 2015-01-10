@@ -153,10 +153,18 @@ div {
 			height: 100px;
 			width: 100px;
 			border-radius: 3px;
-			&.selected-contestant {
-				border: 3px solid green;
+		}
+		&.selected {
+			img {
+				border: 4px solid green;			
 			}
-			&.nonselected-contestant {
+		}
+		&.available {
+			img {
+				background-color: black;
+				opacity: 0.8; /* transparency */  
+				filter: alpha(opacity=80); /* IE transparency */ 
+				border: 4px solid gray;	
 			}
 		}
 		.caption {
@@ -197,11 +205,11 @@ div {
 					font-size: 30px;
 				}				
 			}
-			&.pick {
+			&.available.pick {
 				height: 100px;
 				width: 100px;
 				background-color: black;
-				border: 2px solid green;
+				border: 4px solid green;
 				opacity: 0.6; /* transparency */  
 				filter: alpha(opacity=60); /* IE transparency */  
 				position: absolute;
@@ -214,11 +222,11 @@ div {
 					font-size: 30px;
 				}
 			}
-			&.discard {
+			&.selected.discard {
 				height: 100px;
 				width: 100px;
 				background-color: black;
-				border: 2px solid gray;
+				border: 4px solid red;
 				opacity: 0.6; /* transparency */  
 				filter: alpha(opacity=60); /* IE transparency */  
 				position: absolute;
@@ -229,11 +237,12 @@ div {
 				i {
 					padding: 33px;
 					font-size: 30px;
-				}
+				};
 			}
 		}
 	}
-
+	&.hover {
+	}
 	p {  
 		padding: 0px;  
 		margin-bottom: 0px; 
