@@ -90,13 +90,8 @@ $(document).ready(function () {
 		};
 
 		var detectActiveRoundByEnvironment = function () {
-			var roundsDisplaysList = $('.round-display');
-			for (var i = 0; i < roundsDisplaysList.length; i++) {
-				if ($(roundsDisplaysList[i]).css('display') == 'block') {
-					var activeRoundId = $(roundsDisplaysList[i]).data().roundId;
-					return activeRoundId;
-				};
-			};
+			var activeRoundId = $('li.btn-primary.selected').data().roundId;
+			return activeRoundId;
 		};
 
 		var selectNavCheckElement = function (activeRoundId) {
@@ -160,6 +155,8 @@ $(document).ready(function () {
 		// --- Round Display Toggle --- //
 		// hides all round display except the active one
 		var toggleRoundDisplay = function (activeRoundId) {
+			console.log(activeRoundId);
+		
 			for (var i = 0; i < roundsCount; i++) {
 				var searchTerm = '#' + roundsIds[i]
 				var roundDisplay = $(searchTerm);
@@ -200,6 +197,7 @@ $(document).ready(function () {
 			$siblings = $(searchTerm).siblings();
 			var element;
 
+		
 			for (var i = 0; i < $siblings.length; i++) {
 				if ($siblings[i].dataset.roundId == roundId) {
 					element = $siblings[i];
@@ -268,6 +266,7 @@ $(document).ready(function () {
 		$bracketBoard.on('click', $('i.glyphicon'), function (event) {
 			// records which element is being clicked
 			$element = event.target;
+
 			// set arguments for roundOperation
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
@@ -301,21 +300,34 @@ $(document).ready(function () {
 		// --------- Previous/Next Buttons --------- //
 		$bracketBoard.on('click', '.btn.btn-default.btn-xs.round-toggle', function (event) {
 			$element = event.target; 
+			activeRoundId = detectActiveRoundByEnvironment();
+			var status = detectNavCheckStatus(activeRoundId);
+			var roundDifference;
+			$arr = $('.alert.nav-check');
+			$arr = jQuery.grep($arr, function (a) {
+				return $(a).data().roundId == activeRoundId
+			});
 
-			// calculate contestant difference (too much or not enough)
-			var pickDifference = parseInt(
-				$(selectNavCheckElement(activeRoundId)).data().roundDifference
-			);
+			if ($element.classList.contains('previous-button')) {
+				targetRoundId = activeRoundId - 1;
+				toggleRoundDisplay(targetRoundId);
+			
+				toggleEpisodeButtonById($element.dataset.roundId);
+			
+			} else if ($element.classList.contains('next-button')) {
+				switch (status) {
+					case 'warning':
+						var message = messageGenerator(roundDifference, status);
+						break;
+					case 'success':
+						var targetRoundId = $element.dataset.roundId;
+						var element = selectNavCheckElement(activeRoundId);
+						toggleRoundDisplay(targetRoundId);
+						toggleEpisodeButtonById($element.dataset.roundId);
+						break;
+				}
+			}
 
-
-			var message = messageGenerator(pickDifference, detectNavCheckStatus(activeRoundId));
-
-			var element = selectNavCheckElement(activeRoundId);
-			updateAlertNavCheck (element, message, pickDifference);
-
-			// var targetRoundId = $element.dataset.roundId;
-			// toggleRoundDisplay(targetRoundId);
-			// toggleEpisodeButtonById($element.dataset.roundId);
 		});
 
 		// --- standard toggle to display --- //

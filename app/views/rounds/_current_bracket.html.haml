@@ -25,7 +25,7 @@
 						Next
 			%h6
 				- if round.contestants.count == round.episode.expected_survivors 
-					.alert.nav-check.alert-success{:role => "alert", "data-status" => "success", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
+					.alert.nav-check.alert-success{:role => "alert", "data-round-id" => round.id, "data-status" => "success", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
 						Click "Next" to construct your bracket for the next episode. 
 						%br/
 						%br/
@@ -33,7 +33,7 @@
 				- elsif round.contestants.count > round.episode.expected_survivors
 					.alert.nav-check.alert-warning{:role => "alert", "data-round-id" => round.id, "data-status" => "warning", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
 						Remove 
-						%span.round-difference.strong{"data-round-id" => round.id}
+						%span.round-difference.strong{"data-round-id" => round.id, "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
 							= pluralize((round.contestants.count - round.episode.expected_survivors).to_i, "contestant")
 						who you think will get eliminated during this episode.
 				- else
