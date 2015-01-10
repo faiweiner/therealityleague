@@ -161,10 +161,9 @@ div {
 		}
 		&.available {
 			img {
-				background-color: black;
-				opacity: 0.8; /* transparency */  
-				filter: alpha(opacity=80); /* IE transparency */ 
-				border: 4px solid gray;	
+				opacity: 0.5; /* transparency */  
+				filter: alpha(opacity=50); /* IE transparency */ 
+				border: 4px solid red;	
 			}
 		}
 		.caption {
