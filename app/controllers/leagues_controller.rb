@@ -200,10 +200,9 @@ class LeaguesController < ApplicationController
 			
 			deadline_alert = nil
 
-			@league.rosters.filter(user_id: @current_user.id).empty?
-			raise
+			@league.rosters.where(user_id: @current_user.id).empty?
 
-			deadline_alert = "Last day to submit a bracket is on #{@league.draft_deadline.strftime('%B %d')} -- Join the league today."
+			deadline_alert = "Last day to submit a roster is on #{@league.draft_deadline.strftime('%B %d')}."
 			
 			if @league.active? && @league.participant_cap.present?
 				spots_left = @league.participant_cap - @league.users
