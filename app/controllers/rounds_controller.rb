@@ -53,22 +53,8 @@ class RoundsController < ApplicationController
 			end
 		end
 
-		# -- get an ordered array of rounds and episodes together
-		@rounds_episodes_collection = []
-		@rounds_collection.each do |round|
-			@rounds_episodes_collection << {round.id => round.episode_id}
-		end
 
-		case @season.show.name 
-		when "The Bachelor" 
-			if @league.draft_deadline.future? && (@episodes_collection[0].air_date.past? && @episodes_collection[1].air_date.future?)
-				if @rounds_collection[1].contestants.empty?
-					@rounds_collection[0].contestants.where(present: true).each do |contestant|
-						@rounds_collection[1].contestants << contestant unless @rounds_collection[1].contestants.include? contestant
-					end
-				end
-			end
-		end
+
 
 		# -- get information about contestant for rounds.js
 		@contestants = @season.contestants.order(name: :asc)
@@ -255,6 +241,46 @@ class RoundsController < ApplicationController
 
 	protected
 
+	def get_round_data(league_id)
+		@league = League.includes(:users, :rounds, :season).find(params[:league_id])	
+		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+
+		@episodes_collection = @league.season.episodes.order(air_date: :asc)
+		@episodes_ids_collection = @episodes_collection.pluck(:id)
+		
+		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
+		@rounds_ids_collection = @rounds_collection.pluck(:id)
+
+		@upcoming_rounds = []
+		@rounds_collection.each_with_index do |round, i|
+			if round.episode.air_date.future?
+				@upcoming_rounds << round
+				if round == @upcoming_rounds[0] && round.contestants.empty?
+					round.contestants << @season.contestants.where(present: true)
+				end
+			end
+		end
+
+		# SPECIAL CASE FOR THE BACHELOR #
+
+		case @season.show.name 
+		when "The Bachelor" 
+			if @league.draft_deadline.future? && (@episodes_collection[0].air_date.past? && @episodes_collection[1].air_date.future?)
+				if @rounds_collection[1].contestants.empty?
+					@rounds_collection[0].contestants.where(present: true).each do |contestant|
+						@rounds_collection[1].contestants << contestant unless @rounds_collection[1].contestants.include? contestant
+					end
+				end
+			end
+		end
+
+
+
+
+
+			
+	end
+
 	def process_and_return(contestant_id, round_id, action)
 		contestant = Contestant.find(contestant_id) if contestant_id != nil
 		round = Round.includes(:league, :contestants).find(round_id)
@@ -268,13 +294,15 @@ class RoundsController < ApplicationController
 
 		@league = round.league
 		@season = @league.season
+
 		@episodes_collection = @season.episodes.order(air_date: :asc)
 		@episodes_ids_collection = @episodes_collection.pluck(:id)
 		
 		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).includes(:contestants)
+		@rounds_ids_collection = @rounds_collection.pluck(:id)
+
 		@contestants = @season.contestants.order(name: :asc)
-		
-		@contestants_data_collection = {}
+		@contestants_data_collection = Hash.new
 		@contestants.each do |contestant|
 			present_episodes = []
 			absent_episodes = []
