@@ -135,11 +135,13 @@ $(document).ready(function () {
 			var s1 = SliderOne.A,
 					s2 = SliderTwo.B;
 
+			var message;
 			// Switch state
 			switch (s1 | s2) {
 				case SliderOne.A | SliderTwo.A:
 				case SliderOne.A | SliderTwo.C:
-					return 'Too many contestants! Select <span class="round-difference strong"></span> more contestants you think will bite the dust this episode.';
+					message = 'Almost there!';
+					return message;
 					break;
 				case SliderOne.C | SliderTwo.A:
 				case SliderOne.C | SliderTwo.C:
@@ -150,6 +152,8 @@ $(document).ready(function () {
 					return 'You\'re good to go! Click "Next" to construct the next round.';
 					break;
 			}
+			$('.alert.nav-check');
+			debugger
 		};
 
 		// --- Round Display Toggle --- //
@@ -302,7 +306,8 @@ $(document).ready(function () {
 			$element = event.target; 
 			activeRoundId = detectActiveRoundByEnvironment();
 			var status = detectNavCheckStatus(activeRoundId);
-			var roundDifference;
+			roundNavigation = $element.parentElement.parentElement.children[1];
+			var roundDifference = $(roundNavigation.children[0]).data().roundDifference;
 			$arr = $('.alert.nav-check');
 			$arr = jQuery.grep($arr, function (a) {
 				return $(a).data().roundId == activeRoundId
@@ -313,13 +318,13 @@ $(document).ready(function () {
 				toggleRoundDisplay(targetRoundId);
 			
 				toggleEpisodeButtonById($element.dataset.roundId);
-			
 			} else if ($element.classList.contains('next-button')) {
+				debugger
 				switch (status) {
-					case 'warning':
+					case 'alert-warning':		
 						var message = messageGenerator(roundDifference, status);
 						break;
-					case 'success':
+					case 'alert-success':		
 						var targetRoundId = $element.dataset.roundId;
 						var element = selectNavCheckElement(activeRoundId);
 						toggleRoundDisplay(targetRoundId);
