@@ -7,9 +7,6 @@
 				= @season.name
 			%p 
 		.col-md-2.col-lg-4.text-right
-			- if @league.active?
-				%h4.small
-					Deadline: #{@league.draft_deadline.strftime("%B %d")}
 			- if @user == @current_user && @league.active?
 				- if @rounds_collection.count == 0
 					= button_to "Build Elimination Bracket", rounds_create_path(@league.id), method: "POST", class: "btn btn-default btn-sm"
@@ -29,10 +26,14 @@
 									%th Episode #{ i + 1 }
 							%tbody
 								- @season.contestants.order(name: :asc).each do |contestant|
-									- if round.contestants.include? contestant
-										%tr
-											%td= contestant.name
-									- elsif contestant
+									- if contestant.present == false
 										%tr.strike-through
 											%td= contestant.name
+									- else
+										- if round.contestants.include? contestant
+											%tr.selected-contestant
+												%td= contestant.name
+										- else
+											%tr
+												%td= contestant.name
 							/ END Bracket Board

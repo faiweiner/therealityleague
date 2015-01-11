@@ -27,7 +27,6 @@ class RoundsController < ApplicationController
 					round.contestants << contestant
 				end
 			end
-
 		end
 
 		redirect_to rounds_edit_path(@league.id)
@@ -70,7 +69,7 @@ class RoundsController < ApplicationController
 
 		# -- get information about contestant for rounds.js
 		@contestants = @season.contestants.order(name: :asc)
-		@contestants_data_collection = {}
+		@contestants_data_collection = Hash.new
 		@contestants.each do |contestant|
 
 			## -- produces a collection of episodes (ID) where that contestant is absent 
@@ -101,6 +100,22 @@ class RoundsController < ApplicationController
 			@contestants_data_collection[contestant.id] = {
 				:rounds_picked_collection => rounds_picked,
 				:absent_episodes_collection => absent_episodes
+			}
+		end
+
+
+		@rounds_data_collection = Hash.new
+		@rounds_collection.each do |round|
+
+			round_status = "alert-success"
+			count_difference = round.contestants.count - round.episode.expected_survivors
+			round_action = "landing"
+			
+			@rounds_data_collection[round.id] = {
+				:round_status => round_status,
+				:count_difference => 0,
+				:round_action => round_action,
+				:round_message => get_round_message(round.id, round_status, count_difference, round_action)
 			}
 		end
 
@@ -255,16 +270,66 @@ class RoundsController < ApplicationController
 					:rounds_collection =>	@rounds_collection
 				}
 			}
-			# format.json { 
-			# 	render :json => {
-			# 		:contestants_data_collection[contestant.id] => {
-			# 			:rounds_picked_collection => rounds_picked,
-			# 			:absent_episodes_collection => absent_episodes	
-			# 		}
-			# 	}
-			# }
 		end
+	end
 
+	def get_round_message(round_id, status, count_difference, round_action)
+		round_message = Hash.new
+		case status
+		when "alert-success"
+			round_message = {
+				:contentHero => "Your roster has been completed!",
+				:contentSupport => {
+					:a => "You can make changes to the roster until the league's draft deadline on",
+					:b => ""
+				},
+				:contentCountDifference => nil,
+				:contentDate => "#{@league.draft_deadline.strftime("%D")}."
+			}
+		when "alert-warning"
+			if action == "add"
+				round_message = {
+					:contentHero => "There's still room in your roster.",
+					:contentSupport => {
+						:a => "Add",
+						:b => "to complete your roster."
+					},
+					:contentCountDifference => count_difference,
+					:contentDate => nil
+				}
+			elsif action == "overadd"
+				round_message = {
+					:contentHero => "You don't have enough room to add another contestant!",
+					:contentSupport => {
+						:a => "Please remove a contestant from your current roster before adding a new one.",
+						:b => ""
+					},
+					:contentCountDifference => nil,
+					:contentDate => nil
+				}
+			else action == "landing"
+				round_message = {
+					:contentHero => "Pick your contestants!",
+					:contentSupport => {
+						:a => "Add",
+						:b => "to your roster before the league's draft deadline on"
+					},
+					:contentCountDifference => count_difference.abs,
+					:contentDate => "#{@league.draft_deadline.strftime("%D")}."
+				}				
+			end
+		when "alert-danger"
+			round_message = {
+				:contentHero => "You have too many contestants in your roster!",
+				:contentSupport => {
+					:a => "Remove",
+					:b => "to complete your roster."
+				},
+				:contentCountDifference => count_difference,
+				:contentDate => nil
+			}		
+		else
+		end		
 	end
 
 end

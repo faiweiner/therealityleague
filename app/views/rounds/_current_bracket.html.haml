@@ -2,11 +2,6 @@
 
 	.row.round-display{"id" => round.id, "data-round-id" => round.id}
 		.col-lg-12#round-navigation
-			.progress-container
-				Loading...
-				.progress
-					.progress-bar.progress-bar-success.progress-bar-striped{:role => "progressbar", "aria-valuenow" => 40, "aria-volumein" => 0, "ariavaluemax" => 100, "style" => "width: 40%"}
-						%span.sr-only 40% Complete
 			%h4
 				Round #{i + 1}:
 				- if round == @rounds_collection.first || round == @upcoming_rounds[0]
@@ -24,28 +19,15 @@
 					.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
 						Next
 			%h6
-				- if round.contestants.count == round.episode.expected_survivors 
-					.alert.nav-check.alert-success{:role => "alert", "data-round-id" => round.id, "data-status" => "success", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
-						%span
-							%strong Fantastic!
-						Click "Next" to construct your bracket for the next episode. 
-						%br/
-						%br/
-						Make changes to your bracket anytime up to the draft's deadline.
-				- elsif round.contestants.count > round.episode.expected_survivors
-					.alert.nav-check.alert-warning{:role => "alert", "data-round-id" => round.id, "data-status" => "warning", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
-						Remove 
-						%span.round-difference
-							%strong{"data-round-id" => round.id, "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
-								= pluralize((round.contestants.count - round.episode.expected_survivors).to_i, "contestant")
-						who you think will get eliminated during this episode.
-				- else
-					.alert.nav-check.alert-warning{:role => "alert", "data-round-id" => round.id, "data-status" => "warning", "data-round-difference" => (round.contestants.count - round.episode.expected_survivors).abs}
-						Select 
-						%span.round-difference
-							%strong{"data-round-id" => round.id}
-								= pluralize((round.contestants.count - round.episode.expected_survivors).abs, "contestant")
-						who you think will make it to the next round.
+				.alert.nav-check{:class => @rounds_data_collection[round.id][:round_status], :role => "alert", "data-round-id" => round.id, "data-status" => "success", "data-round-difference" => @rounds_data_collection[round.id][:count_difference]}
+					%span
+						%strong= @rounds_data_collection[round.id][:round_message][:contentHero]
+					= @rounds_data_collection[round.id][:round_message][:contentSupport][:a]
+					= pluralize(@rounds_data_collection[round.id][:round_message][:contentCountDifference], "contestant") if @rounds_data_collection[round.id][:round_message][:contentCountDifference]
+					= @rounds_data_collection[round.id][:round_message][:contentSupport][:b]
+					%strong
+						= @rounds_data_collection[round.id][:round_message][:contentDate]
+					%br/
 		.col-lg-12.contestants-display
 			- @contestants.where(present: true).each do |contestant|
 				- if @contestants_data_collection[contestant.id][:absent_episodes_collection].include? round.episode.id
@@ -60,7 +42,8 @@
 					.thumbnail.contestant-thumbnail.selected
 						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
 						.veil
-						.caption
+							%i.marker.glyphicon.glyphicon-ok
+						.caption.selected-caption
 							.contestant-name
 								= contestant.name
 						.action.selected.discard
@@ -74,6 +57,5 @@
 								= contestant.name
 						.action.available.pick
 							%i.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
-
 
 
