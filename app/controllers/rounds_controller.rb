@@ -44,9 +44,12 @@ class RoundsController < ApplicationController
 		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
 		@rounds_ids_collection = @rounds_collection.pluck(:id)
 		@upcoming_rounds = []
-		@rounds_collection.each do |round|
+		@rounds_collection.each_with_index do |round, i|
 			if round.episode.air_date.future?
 				@upcoming_rounds << round
+				if round == @upcoming_rounds[0] && round.contestants.empty?
+					round.contestants << @season.contestants.where(present: true)
+				end
 			end
 		end
 
@@ -96,8 +99,45 @@ class RoundsController < ApplicationController
 			## -- get episodes where contestant is absent (i.e. already eliminated)
 			absent_episode = []
 
+			contestant_round_data = Hash.new
+			round_data = Hash.new
+			status = ""
+			label = ""
+			action = ""
+			glyphicon = ""
+			@rounds_collection.each_with_index do |round, i|
+				if contestant.present == false									# ELIMINATED contestants (on show level)
+					status = "eliminated"
+					label = "ELIMINATED"
+					action = "available pick eliminated"
+					glyphicon = "glyphicon glyphicon-minus"
+				elsif round.contestants.include? contestant			# contestant included in a round
+					status = "selected"
+					label = ""
+					action = "selected discard"
+					glyphicon = "glyphicon glyphicon-remove"
+				elsif @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
+					status = "last-picked"
+					label = ""
+					action = "available pick"
+					glyphicon = "glyphicon glyphicon-ok"
+				else
+					status = "doode"
+					label = "hate this bitch she aint chosen"
+					action = "FIX ME"
+					glyphicon = "glyphicon glyphicon-remove"
+				end
+				round_data[round.id] = {
+					:status => status,
+					:label => label,
+					:action => action,
+					:glyphicon => glyphicon
+				}
+			end
+
 			# -- collection for rounds.js
 			@contestants_data_collection[contestant.id] = {
+				:round_data => round_data,
 				:rounds_picked_collection => rounds_picked,
 				:absent_episodes_collection => absent_episodes
 			}
@@ -105,16 +145,16 @@ class RoundsController < ApplicationController
 		
 		@rounds_data_collection = Hash.new
 		round_status = ""
+		@round_action = "landing"
 		@rounds_collection.each do |round|
 
 			count_difference = round.contestants.count - round.episode.expected_survivors
-			round_action = "landing"
 			
 			case count_difference == 0
 			when true
 				round_status = "alert-success"
 			when false
-				if count_difference > 0
+				if count_difference < 4
 					round_status = "alert-danger"
 				else
 					round_status = "alert-warning"
@@ -124,8 +164,8 @@ class RoundsController < ApplicationController
 			@rounds_data_collection[round.id] = {
 				:round_status => round_status,
 				:count_difference => count_difference,
-				:round_action => round_action,
-				:round_message => get_round_message(round.id, round_status, count_difference, round_action)
+				:round_action => @round_action,
+				:round_message => get_round_message(round.id, round_status, count_difference, @round_action),
 			}
 		end
 
@@ -275,7 +315,6 @@ class RoundsController < ApplicationController
 
 			round_status = ""
 			count_difference = round.contestants.count - round.episode.expected_survivors
-			round_action = action
 	
 			case count_difference == 0
 			when true
@@ -287,6 +326,8 @@ class RoundsController < ApplicationController
 					round_status = "alert-warning"
 				end
 			end
+
+			round_action = action
 			
 			@rounds_data_collection[round.id] = {
 				:round_status => round_status,
@@ -311,6 +352,7 @@ class RoundsController < ApplicationController
 
 	def get_round_message(round_id, status, count_difference, action)
 		round_message = Hash.new
+
 		case status
 		when "alert-success"
 			round_message = {
@@ -322,7 +364,7 @@ class RoundsController < ApplicationController
 				:contentCountDifference => nil,
 				:contentDate => "#{@league.draft_deadline.strftime("%D")}."
 			}
-		when "alert-warning"
+		when "alert-warning"			
 			if action == "add"
 				round_message = {
 					:contentHero => "",
@@ -333,6 +375,16 @@ class RoundsController < ApplicationController
 					:contentCountDifference => count_difference,
 					:contentDate => nil
 				}
+			elsif action == "landing"
+				round_message = {
+					:contentHero => "Who will bite the dust?",
+					:contentSupport => {
+						:a => "Discard ",
+						:b => "you think will get eliminated during this episode."
+					},
+					:contentCountDifference => count_difference,
+					:contentDate => "#{@league.draft_deadline.strftime("%D")}."
+				}	
 			elsif action == "overadd"
 				round_message = {
 					:contentHero => "TOOK TOOK",
@@ -343,28 +395,49 @@ class RoundsController < ApplicationController
 					:contentCountDifference => nil,
 					:contentDate => nil
 				}
-			else action == "landing"
+			elsif action == "remove"
 				round_message = {
-					:contentHero => "Pick your contestants!",
+					:contentHero => "Keep going!",
 					:contentSupport => {
-						:a => "Add",
-						:b => "to your roster before the league's draft deadline on"
+						:a => "Discard",
+						:b => "more before moving on to the next round."
 					},
-					:contentCountDifference => count_difference.abs,
-					:contentDate => "#{@league.draft_deadline.strftime("%D")}."
-				}				
+					:contentCountDifference => count_difference,
+					:contentDate => nil
+				}
 			end
 		when "alert-danger"
-			round_message = {
-				:contentHero => "You have too many contestants in your roster!",
-				:contentSupport => {
-					:a => "Remove",
-					:b => "to complete your roster."
-				},
-				:contentCountDifference => count_difference,
-				:contentDate => nil
-			}		
-		else
+			if action == "landing"
+				round_message = {
+					:contentHero => "Build your bracket!",
+					:contentSupport => {
+						:a => "Add",
+						:b => "before proceeding to the next round."
+					},
+					:contentCountDifference => count_difference.abs,
+					:contentDate => nil
+				}	
+			elsif action == "add"
+				round_message = {
+					:contentHero => "Too many contestants!",
+					:contentSupport => {
+						:a => "You must remove",
+						:b => "before proceeding to the next round."
+					},
+					:contentCountDifference => count_difference,
+					:contentDate => nil
+				}
+			elsif action == "remove"
+				round_message = {
+					:contentHero => "Keep going!",
+					:contentSupport => {
+						:a => "Discard",
+						:b => "more before moving on to the next round."
+					},
+					:contentCountDifference => count_difference,
+					:contentDate => nil
+				}
+			end
 		end		
 	end
 
