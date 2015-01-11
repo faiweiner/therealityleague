@@ -1,30 +1,10 @@
 - @rounds_collection.each_with_index do |round, i|
-
 	.row.round-display{"id" => round.id, "data-round-id" => round.id}
 		.col-lg-12#round-navigation
 			%h4
 				Round #{i + 1}:
-				- if round == @rounds_collection.first || round == @upcoming_rounds[0]
-					.btn.btn-default.btn-xs.round-toggle.previous-button.disabled{"data-round-id" => @rounds_collection[i-1].id}
-						Previous
-					.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
-						Next			
-				- elsif round == @rounds_collection.last
-					.btn.btn-default.btn-xs.round-toggle.previous-button{"data-round-id" => @rounds_collection[i-1].id}
-						Previous
-					= link_to "Finish", rounds_path(@league.id, @current_user.id), class: "btn btn-default btn-xs round-toggle.finish-button"
-				- else
-					.btn.btn-default.btn-xs.round-toggle.previous-button{"data-round-id" => @rounds_collection[i-1].id}
-						Previous
-					.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id}
-						Next
 			%h6
-				.alert.nav-check{:class => @rounds_data_collection[round.id][:round_status], :role => "alert", "data-round-id" => round.id, "data-status" => "success", "data-round-difference" => @rounds_data_collection[round.id][:count_difference]}
-					= round.episode.expected_survivors
-					%br/
-					= round.contestants.count
-					%br/
-					= round.contestants.count - round.episode.expected_survivors
+				.alert.nav-check{:class => @rounds_data_collection[round.id][:round_status], :role => "alert", "data-round-id" => round.id, "data-status" => @rounds_data_collection[round.id][:round_status], "data-round-difference" => @rounds_data_collection[round.id][:count_difference]}
 					%strong
 						= @rounds_data_collection[round.id][:round_message][:contentHero]
 					= @rounds_data_collection[round.id][:round_message][:contentSupport][:a]
@@ -33,36 +13,33 @@
 					%strong
 						= @rounds_data_collection[round.id][:round_message][:contentDate]
 					%br/
-
-
+					%br/
+					- if round == @rounds_collection.first || round.id == @upcoming_rounds_ids[0]
+						.btn.btn-default.btn-xs.round-toggle.previous-button.disabled{"data-round-id" => @rounds_collection[i-1].id}
+							Previous
+						.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id, "data-action" => "bulk-add"}
+							Next			
+					- elsif round == @rounds_collection.last
+						.btn.btn-default.btn-xs.round-toggle.previous-button{"data-round-id" => @rounds_collection[i-1].id, "data-action" => "none"}
+							Previous
+						= link_to "Finish", rounds_path(@league.id, @current_user.id), class: "btn btn-default btn-xs round-toggle btn-primary finish-button", "data-action" => "finish"
+					- else
+						.btn.btn-default.btn-xs.round-toggle.previous-button{"data-round-id" => @rounds_collection[i-1].id, "data-action" => "none"}
+							Previous
+						.btn.btn-default.btn-xs.round-toggle.next-button{"data-round-id" => @rounds_collection[i+1].id, "data-action" => "bulk-add"}
+							Next
+			contestants count
+			= round.contestants.count
+			expected survivors
+			= round.episode.expected_survivors
 		.col-lg-12.contestants-display
-			- @contestants.where(present: true).each do |contestant|
-				- if @contestants_data_collection[contestant.id][:absent_episodes_collection].include? round.episode.id
-					.thumbnail.contestant-thumbnail.eliminated
-						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
-						.veil
-						.caption
-							.contestant-name
-								= contestant.name
-						.action.disabled
-				- elsif @contestants_data_collection[contestant.id][:rounds_picked_collection].include? round.id
-					.thumbnail.contestant-thumbnail.selected
-						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
-						.veil
-							%i.marker.glyphicon.glyphicon-ok
-						.caption.selected-caption
-							.contestant-name
-								= contestant.name
-						.action.selected.discard
-							%i.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
-				- else
-					.thumbnail.contestant-thumbnail.available
-						%img{:src => "#{contestant.image}", :alt => "#{contestant.name}"} 
-						.veil
-						.caption
-							.contestant-name
-								= contestant.name
-						.action.available.pick
-							%i.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-round-id" => round.id}
-
+			- @contestants.each do |contestant|
+				.thumbnail.contestant-thumbnail{class: @contestants_data_collection[contestant.id][:round_data][round.id][:status]}
+					%img.half-res{:src => "#{contestant.image}", :alt => "#{contestant.name}"}
+					.veil
+						= @contestants_data_collection[contestant.id][:round_data][round.id][:label]
+					.caption
+						.contestant-name= contestant.name
+					.action{class: @contestants_data_collection[contestant.id][:round_data][round.id][:action]}
+						%i{class: @contestants_data_collection[contestant.id][:round_data][round.id][:glyphicon], "data-contestant-id" => contestant.id, "data-round-id" => round.id}
 

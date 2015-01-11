@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 	get		'rounds/:round_id' => 'rounds#display', :as => :round_display
 	get		'rounds/edit/:round_id' => 'rounds#singleedit', :as => :round_edit
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add
+	post	'rounds/:round_id/bulk' => 'rounds#bulk_add', :as => :round_bulk_add
 	post	'rounds/:round_id/remove/:contestant_id' => 'rounds#remove', :as => :round_remove
 	get		'rounds/round/:round_id/save' => 'rounds#save', :as => :round_save
 	resources :rounds

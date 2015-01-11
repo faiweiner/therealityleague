@@ -37,119 +37,19 @@ class RoundsController < ApplicationController
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		
 		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
-		data_package = get_round_data(params[:league_id])
-
-		@episodes_collection = data_package[:episodes_collection]
-		@episodes_ids_collection = data_package[:episodes_ids_collection]
-		@rounds_collection = data_package[:rounds_collection]
-		@rounds_ids_collection = data_package[:rounds_ids_collection]
-		@upcoming_rounds_ids = data_package[:upcoming_rounds_ids]
+		static_data_pack = get_static_data(@league.id)
+		data_package = get_round_data(@league.id, "landing")
 		
-		raise
-
+		@episodes_collection = static_data_pack[:episodes_collection]
+		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
+		@rounds_collection = static_data_pack[:rounds_collection]
+		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
+		@upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
+		@contestants_data_collection = data_package[:contestants_data_collection]
 		
-
-
-
-
-
-		# -- get information about contestant for rounds.js
-
-
-		@contestants.each do |contestant|
-
-			## -- produces a collection of episodes (ID) where that contestant is absent 
-			## -- (i.e) this contestant has already been eliminated.
-			present_episodes = []
-			absent_episodes = []
-			@episodes_ids_collection.each_with_index do |episode_id, i|
-				unless contestant.episode_id.nil?
-					if episode_id >= contestant.episode_id
-						absent_episodes << episode_id
-					else
-						present_episodes << episode_id
-					end
-				end
-				present_episodes << episode_id
-			end
-
-			## -- get the rounds which the contestant is picked by the user
-			rounds_picked = []
-			@rounds_collection.each do |round|
-				rounds_picked << round.id if round.contestants.include? contestant
-			end
-
-			## -- get episodes where contestant is absent (i.e. already eliminated)
-			absent_episode = []
-
-			contestant_round_data = Hash.new
-			round_data = Hash.new
-			status = ""
-			label = ""
-			action = ""
-			glyphicon = ""
-			@rounds_collection.each_with_index do |round, i|
-				if contestant.present == false									# ELIMINATED contestants (on show level)
-					status = "eliminated"
-					label = "ELIMINATED"
-					action = "available pick eliminated"
-					glyphicon = "glyphicon glyphicon-minus"
-				elsif round.contestants.include? contestant			# contestant included in a round
-					status = "selected"
-					label = ""
-					action = "selected discard"
-					glyphicon = "glyphicon glyphicon-remove"
-				elsif @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
-					status = "last-picked"
-					label = ""
-					action = "available pick"
-					glyphicon = "glyphicon glyphicon-ok"
-				else
-					status = "doode"
-					label = "hate this bitch she aint chosen"
-					action = "FIX ME"
-					glyphicon = "glyphicon glyphicon-remove"
-				end
-				round_data[round.id] = {
-					:status => status,
-					:label => label,
-					:action => action,
-					:glyphicon => glyphicon
-				}
-			end
-
-			# -- collection for rounds.js
-			@contestants_data_collection[contestant.id] = {
-				:round_data => round_data,
-				:rounds_picked_collection => rounds_picked,
-				:absent_episodes_collection => absent_episodes
-			}
-		end
-		
-		@rounds_data_collection = Hash.new
-		round_status = ""
-		@round_action = "landing"
-		@rounds_collection.each do |round|
-
-			count_difference = round.contestants.count - round.episode.expected_survivors
-			
-			case count_difference == 0
-			when true
-				round_status = "alert-success"
-			when false
-				if count_difference < 4
-					round_status = "alert-danger"
-				else
-					round_status = "alert-warning"
-				end
-			end
-
-			@rounds_data_collection[round.id] = {
-				:round_status => round_status,
-				:count_difference => count_difference,
-				:round_action => @round_action,
-				:round_message => get_round_message(round.id, round_status, count_difference, @round_action),
-			}
+		if @season.show.name == "The Bachelor" && @rounds_collection[0].contestants.empty?
+			bulk_add_contestants(@upcoming_rounds_ids[1], @upcoming_rounds_ids)
+			bulk_add_contestants(@upcoming_rounds_ids[1], @upcoming_rounds_ids)
 		end
 
 		respond_to do |format|
@@ -189,6 +89,10 @@ class RoundsController < ApplicationController
 
 	def remove
 		process_and_return(params[:contestant_id], params[:round_id], "remove")
+	end
+
+	def bulk_add
+		process_and_return(params[:contestant_id], params[:round_id], "bulk_add")
 	end
 	
 	def save
@@ -239,18 +143,21 @@ class RoundsController < ApplicationController
 	protected
 
 	def bulk_add_contestants(round_id, rounds_ids_collection)
-		round = Round.find(round_id)
+		round = Round.includes(:league).find(round_id)
+		season = round.league.season
 		rounds_array = rounds_ids_collection
 		round_index = rounds_array.index(round.id).to_i
 		
-		if round.contestants.empty? && round.episode.air_date.future?
+		if round.league.draft_deadline.future? && round.episode.air_date.future?
 			if round_index == 0
-				round.contestants << @season.contestants.where(present: true)
+				season.contestants.where(present: true).each do |contestant|
+					round.contestants << contestant unless round.contestants.include? contestant
+				end
 				return "Added contestants to current round."
 			else
 				prev_round_id = rounds_array[round_index - 1]
 				prev_round = Round.find(prev_round_id)
-				round.contestants << roundA.contestants
+				round.contestants = roundA.contestants.dup
 				return "Added contestants from previous round to current round."
 			end
 		else
@@ -258,49 +165,152 @@ class RoundsController < ApplicationController
 		end
 	end
 
+	def bulk_delete_contestants(round_id)
+		round = Round.includes(:league).find(round_id)
+		round.contestants.each do |contestant|
+			round.contestants.destroy(contestant)
+		end
+	end
 
-	def get_round_data(league_id)
-		@league = League.includes(:users, :rounds, :season).find(params[:league_id])	
-		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
-		@contestants = @season.contestants.order(name: :asc)
+	def get_static_data(league_id)
+		league = League.includes(:users, :rounds, :season).find(league_id)	
+		rounds_collection = league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
+		rounds_ids_collection = rounds_collection.pluck(:id)
+		episodes_collection = league.season.episodes.order(air_date: :asc)
+		episodes_ids_collection = episodes_collection.pluck(:id)
+		contestants_collection = league.season.contestants.order(name: :asc)
 
-		@episodes = @league.season.episodes.order(air_date: :asc)
-		@episodes_ids_collection = @episodes.pluck(:id)
-		
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
-		@rounds_ids_collection = @rounds_collection.pluck(:id)
-		@upcoming_rounds_ids = []
-		@rounds_data_collection = Hash.new
-
-		@rounds_collection.each_with_index do |round|
-			@upcoming_rounds_ids << round.id if round.episode.air_date.future?
-		
-
+		upcoming_rounds_ids = []
+		rounds_collection.each do |round|
+			upcoming_rounds_ids << round.id if round.episode.air_date.future?
 		end
 
+		static_data_pack = Hash.new
+		static_data_pack = {
+			:rounds_collection => rounds_collection,
+			:rounds_ids_collection => rounds_ids_collection,
+			:episodes_collection => episodes_collection,
+			:episodes_ids_collection => episodes_ids_collection,
+			:contestants_collection => contestants_collection,
+			:upcoming_rounds_ids => upcoming_rounds_ids
+		}
+		return static_data_pack
+	end
+	
+	def get_round_data(league_id, round_action)
+		@league = League.includes(:users, :rounds, :season).find(league_id)	
+		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		
+		static_data_pack = get_static_data(@league.id)
+
+		@contestants = static_data_pack[:contestants_collection]
+		@rounds_collection = static_data_pack[:rounds_collection]
+		@upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
+		@episodes_collection = static_data_pack[:episodes_collection]
+		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
+
+		@rounds_data_collection = Hash.new
+		prev_round_id, next_round_id = 0
+		@rounds_collection.each_with_index do |round, i|
+			prev_round_id = @rounds_collection[i-1].id if @rounds_collection[i-1].present?
+			next_round_id = @rounds_collection[i+1].id if @rounds_collection[i+1].present?
+		end
+		# ==== CONTESTANTS DATA ====
 		@contestants_data_collection = Hash.new
+		@contestants.each do |contestant|
+			present_episodes_ids = []
+			absent_episodes_ids = []
 
-		# SPECIAL CASE FOR THE BACHELOR #
-
-		case @season.show.name 
-		when "The Bachelor" 
-			if @league.draft_deadline.future? && (@episodes[0].air_date.past? && @episodes[1].air_date.future?)
-				if @rounds_collection[1].contestants.empty?
-					@rounds_collection[0].contestants.where(present: true).each do |contestant|
-						@rounds_collection[1].contestants << contestant unless @rounds_collection[1].contestants.include? contestant
+			@episodes_ids_collection.each_with_index do |episode_id, i|
+				unless contestant.episode_id.nil?
+					if episode_id >= contestant.episode_id
+						absent_episodes_ids << episode_id
+					else
+						present_episodes_ids << episode_id
 					end
 				end
+				present_episodes_ids << episode_id
 			end
+
+			contestant_round_data = Hash.new
+			round_data = Hash.new
+			status = ""
+			label = ""
+			action_element_label = ""
+			glyphicon = ""
+			@rounds_collection.each_with_index do |round, i|
+				if contestant.present == false									# ELIMINATED contestants (on show level)
+					status = "eliminated"
+					label = "ELIMINATED"
+					action_element_label = "available pick eliminated"
+					glyphicon = ""
+				elsif round.contestants.include? contestant			# contestant included in a round
+					status = "selected"
+					label = ""
+					action_element_label = "selected discard"
+					glyphicon = "glyphicon glyphicon-remove"
+				elsif @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
+					status = "last-picked"
+					label = ""
+					action_element_label = "available pick"
+					glyphicon = "glyphicon glyphicon-ok"
+				else
+					status = "eliminated"
+					label = ""
+					action_element_label = "available pick eliminated"
+					glyphicon = ""
+				end
+				round_data[round.id] = {
+					:status => status,
+					:label => label,
+					:action => action_element_label,
+					:glyphicon => glyphicon
+				}
+			end
+
+			# -- collection for rounds.js
+			@contestants_data_collection[contestant.id] = {
+				:round_data => round_data,
+				:present_episodes_ids => present_episodes_ids,
+				:absent_episodes_ids => absent_episodes_ids
+			}
+
+		end
+		# ==== END CONTESTANT DATA ==== #
+		
+		# ==== ROUND DATA ==== #
+		@rounds_data_collection = Hash.new
+		round_status = ""
+		@rounds_collection.each do |round|
+
+			count_difference = round.contestants.count - round.episode.expected_survivors
+			
+			case count_difference == 0
+			when true
+				round_status = "alert-success"
+			when false
+				if count_difference < 0
+					round_status = "alert-danger"
+				else
+					round_status = "alert-warning"
+				end
+			end
+
+			@rounds_data_collection[round.id] = {
+				:round_status => round_status,
+				:count_difference => count_difference,
+				:round_action => round_action,
+				:round_message => get_round_message(round.id, round_status, count_difference, round_action),
+				:prev_round_id => prev_round_id,
+				:next_round_id => next_round_id
+			}
 		end
 
+		# ==== END ROUND DATA ==== #
 
 		data_package = {
-			:episodes_collection => @episodes,
-			:episodes_ids_collection => @episodes_ids_collection,
-			:rounds_collection => @rounds_collection,
-			:rounds_ids_collection => @rounds_ids_collection,
-			:upcoming_rounds_ids => @upcoming_rounds_ids,
-			:contestants_data_collection => @contestants_data_collection
+			:contestants_data_collection => @contestants_data_collection,
+			:rounds_data_collection => @rounds_data_collection
 		}
 
 		return data_package
@@ -310,96 +320,35 @@ class RoundsController < ApplicationController
 	def process_and_return(contestant_id, round_id, action)
 		contestant = Contestant.find(contestant_id) if contestant_id != nil
 		round = Round.includes(:league, :contestants).find(round_id)
+		@league = round.league
+		@season = @league.season
+		@contestants = @season.contestants.order(name: :asc)
 		
+		static_data_pack = get_static_data(@league.id)
+
 		case action
 		when "add"
 			round.contestants << contestant unless round.contestants.include? contestant
 		when "remove"
 			round.contestants.destroy(contestant)
-		end
-
-		@league = round.league
-		@season = @league.season
-
-		@episodes_collection = @season.episodes.order(air_date: :asc)
-		@episodes_ids_collection = @episodes_collection.pluck(:id)
-		
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).includes(:contestants)
-		@rounds_ids_collection = @rounds_collection.pluck(:id)
-
-		@contestants = @season.contestants.order(name: :asc)
-		@contestants_data_collection = Hash.new
-		@contestants.each do |contestant|
-			present_episodes = []
-			absent_episodes = []
-			@episodes_ids_collection.each_with_index do |episode_id, i|
-				unless contestant.episode_id.nil?
-					if episode_id >= contestant.episode_id
-						absent_episodes << episode_id
-					else
-						present_episodes << episode_id
-					end
-				end
-				present_episodes << episode_id
-			end
-
-			## -- get the rounds which the contestant is picked
-			rounds_picked = []
-			@rounds_collection.each do |round|
-				rounds_picked << round.id if round.contestants.include? contestant
-			end
-
-			# -- collection for rounds.js
-			@contestants_data_collection[contestant.id] = {
-				:rounds_picked_collection => rounds_picked,
-				:absent_episodes_collection => absent_episodes
-			}
-
-		end
-		
-		@upcoming_rounds = []
-			@rounds_collection.each do |round|
-			if round.episode.air_date.future?
-				@upcoming_rounds << round
-			end
-		end
-
-		@rounds_data_collection = Hash.new
-		@rounds_collection.each do |round|
-
-			round_status = ""
-			count_difference = round.contestants.count - round.episode.expected_survivors
-	
-			case count_difference == 0
-			when true
-				round_status = "alert-success"
-			when false
-				if count_difference > 0
-					round_status = "alert-danger"
-				else
-					round_status = "alert-warning"
-				end
-			end
-
-			round_action = action
-			
-			@rounds_data_collection[round.id] = {
-				:round_status => round_status,
-				:count_difference => 0,
-				:round_action => round_action,
-				:round_message => get_round_message(round.id, round_status, count_difference, round_action)
-			}
+		when "bulk_add"
+			bulk_add_contestants(round_id, static_data_pack[:upcoming_rounds_ids])
 		end		
+
+
+		data_package = get_round_data(@league.id, action)	
+		@episodes_collection = static_data_pack[:episodes_collection]
+		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
+		@rounds_collection = static_data_pack[:rounds_collection]
+		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
+		@upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
+		@contestants_data_collection = data_package[:contestants_data_collection]
+		@rounds_data_collection = data_package[:rounds_data_collection]
+		
+
 		respond_to do |format|
 			format.html { 
 				render partial: "current_bracket", :remote => true 
-			}
-			format.json { 
-				render :json => {
-					:round => round,
-					:contestants => @contestants,
-					:rounds_collection =>	@rounds_collection
-				}
 			}
 		end
 	end
@@ -412,19 +361,19 @@ class RoundsController < ApplicationController
 			round_message = {
 				:contentHero => "Fantastic!",
 				:contentSupport => {
-					:a => "Click \"Next\" to pick contestants for the next episode.",
-					:b => ""
+					:a => "Click \"Next\" to pick contestants for the next episode",
+					:b => "or \"Finish\" if you've selected the sole winner!"
 				},
 				:contentCountDifference => nil,
-				:contentDate => "#{@league.draft_deadline.strftime("%D")}."
+				:contentDate => nil
 			}
 		when "alert-warning"			
 			if action == "add"
 				round_message = {
-					:contentHero => "",
+					:contentHero => "Oops! ",
 					:contentSupport => {
-						:a => "Add",
-						:b => "to complete your roster."
+						:a => "You didn't discard enough contestants for this this episode. Remove",
+						:b => "before moving on to the next episode."
 					},
 					:contentCountDifference => count_difference,
 					:contentDate => nil
@@ -441,12 +390,12 @@ class RoundsController < ApplicationController
 				}	
 			elsif action == "overadd"
 				round_message = {
-					:contentHero => "TOOK TOOK",
+					:contentHero => "Oops!",
 					:contentSupport => {
-						:a => "Please remove a contestant from your current roster before adding a new one.",
-						:b => ""
+						:a => "You didn't discard enough contestants for this this episode. Remove",
+						:b => "before moving on to the next episode."
 					},
-					:contentCountDifference => nil,
+					:contentCountDifference => count_difference,
 					:contentDate => nil
 				}
 			elsif action == "remove"
@@ -463,32 +412,32 @@ class RoundsController < ApplicationController
 		when "alert-danger"
 			if action == "landing"
 				round_message = {
-					:contentHero => "Build your bracket!",
+					:contentHero => "Who will make it to the next round?",
 					:contentSupport => {
-						:a => "Add",
-						:b => "before proceeding to the next round."
+						:a => "Select",
+						:b => "you think will make it through the episode."
 					},
 					:contentCountDifference => count_difference.abs,
 					:contentDate => nil
 				}	
 			elsif action == "add"
 				round_message = {
-					:contentHero => "Too many contestants!",
+					:contentHero => "Keep going!",
 					:contentSupport => {
-						:a => "You must remove",
-						:b => "before proceeding to the next round."
+						:a => "Select",
+						:b => "you think will make it through the episode."
 					},
-					:contentCountDifference => count_difference,
+					:contentCountDifference => count_difference.abs,
 					:contentDate => nil
 				}
 			elsif action == "remove"
 				round_message = {
 					:contentHero => "Keep going!",
 					:contentSupport => {
-						:a => "Discard",
-						:b => "more before moving on to the next round."
+						:a => "Select",
+						:b => "you think will make it through the episode."
 					},
-					:contentCountDifference => count_difference,
+					:contentCountDifference => count_difference.abs,
 					:contentDate => nil
 				}
 			end

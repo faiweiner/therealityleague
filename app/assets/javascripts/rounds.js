@@ -66,6 +66,18 @@ $(document).ready(function () {
 			});
 		};
 
+		var bulkAddContestantsToRound = function (roundId) {
+			$.ajax({
+				url: '/rounds/' + roundId + '/bulk',
+				type: 'POST',
+				success: function (msg) {
+				}
+			}).done(function (msg) {      
+				$roundEditBoard.html(msg);
+				toggleRoundDisplay(roundId);
+			});
+		};
+
 		var removeContestantFromRound = function (contestantId, roundId) {
 			$.ajax({
 				url:  '/rounds/' +  roundId + '/remove/' + contestantId,
@@ -118,43 +130,43 @@ $(document).ready(function () {
 			$element.children('span').text(pickDifference)
 		};
 
-		var messageGenerator = function (pickDifference, alertStatus) {
-			var SliderOne = {
-				A: (pickDifference > 0),
-				B: (pickDifference === 0),
-				C: (pickDifference < 0)
-			};
+		// var messageGenerator = function (pickDifference, alertStatus) {
+		// 	var SliderOne = {
+		// 		A: (pickDifference > 0),
+		// 		B: (pickDifference === 0),
+		// 		C: (pickDifference < 0)
+		// 	};
 
-			var SliderTwo = {
-				A: "warning",
-				B: "success",
-				C: "danger"
-			};
+		// 	var SliderTwo = {
+		// 		A: "warning",
+		// 		B: "success",
+		// 		C: "danger"
+		// 	};
 
-			// Set state
-			var s1 = SliderOne.A,
-					s2 = SliderTwo.B;
+		// 	// Set state
+		// 	var s1 = SliderOne.A,
+		// 			s2 = SliderTwo.B;
 
-			var message;
-			// Switch state
-			switch (s1 | s2) {
-				case SliderOne.A | SliderTwo.A:
-				case SliderOne.A | SliderTwo.C:
-					message = 'Almost there!';
-					return message;
-					break;
-				case SliderOne.C | SliderTwo.A:
-				case SliderOne.C | SliderTwo.C:
-					return 'Add <span class="round-difference strong"><span> more contestants before moving onto the next round.';
-					break;
-				case SliderOne.B | SliderTwo.B:
-				default:
-					return 'You\'re good to go! Click "Next" to construct the next round.';
-					break;
-			}
-			$('.alert.nav-check');
-			debugger
-		};
+		// 	var message;
+		// 	// Switch state
+		// 	switch (s1 | s2) {
+		// 		case SliderOne.A | SliderTwo.A:
+		// 		case SliderOne.A | SliderTwo.C:
+		// 			message = 'Almost there!';
+		// 			return message;
+		// 			break;
+		// 		case SliderOne.C | SliderTwo.A:
+		// 		case SliderOne.C | SliderTwo.C:
+		// 			return 'Add <span class="round-difference strong"><span> more contestants before moving onto the next round.';
+		// 			break;
+		// 		case SliderOne.B | SliderTwo.B:
+		// 		default:
+		// 			return 'You\'re good to go! Click "Next" to construct the next round.';
+		// 			break;
+		// 	}
+		// 	$('.alert.nav-check');
+		// 	debugger
+		// };
 
 		// --- Round Display Toggle --- //
 		// hides all round display except the active one
@@ -304,35 +316,21 @@ $(document).ready(function () {
 		// --------- Previous/Next Buttons --------- //
 		$bracketBoard.on('click', '.btn.btn-default.btn-xs.round-toggle', function (event) {
 			$element = event.target; 
-			activeRoundId = detectActiveRoundByEnvironment();
-			var status = detectNavCheckStatus(activeRoundId);
-			roundNavigation = $element.parentElement.parentElement.children[1];
-			var roundDifference = $(roundNavigation.children[0]).data().roundDifference;
-			$arr = $('.alert.nav-check');
-			$arr = jQuery.grep($arr, function (a) {
-				return $(a).data().roundId == activeRoundId
-			});
-
-			if ($element.classList.contains('previous-button')) {
-				targetRoundId = activeRoundId - 1;
-				toggleRoundDisplay(targetRoundId);
-			
-				toggleEpisodeButtonById($element.dataset.roundId);
-			} else if ($element.classList.contains('next-button')) {
-				debugger
-				switch (status) {
-					case 'alert-warning':		
-						var message = messageGenerator(roundDifference, status);
-						break;
-					case 'alert-success':		
-						var targetRoundId = $element.dataset.roundId;
-						var element = selectNavCheckElement(activeRoundId);
-						toggleRoundDisplay(targetRoundId);
-						toggleEpisodeButtonById($element.dataset.roundId);
-						break;
-				}
+			var targetRoundId = $element.dataset.roundId;
+			var status = $element.parentElement.dataset.status;
+			var action = $element.dataset.action;
+			switch (status) {
+				case 'alert-warning':		
+					var message = messageGenerator(roundDifference, status);
+					break;
+				case 'alert-success':		
+					if (action == "bulk-add") {
+						bulkAddContestantsToRound(targetRoundId);
+					};
+					break;			
 			}
-
+			toggleRoundDisplay(targetRoundId);
+			toggleEpisodeButtonById(targetRoundId);
 		});
 
 		// --- standard toggle to display --- //

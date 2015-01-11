@@ -21,7 +21,7 @@
 					#padding-for-episode-column
 					- @rounds_collection.each_with_index do |round, i|
 						- if round.episode.air_date.future?
-							- if round == @upcoming_rounds[0]
+							- if round.id == @upcoming_rounds_ids[0]
 								%li.btn.btn-block.btn-sm.btn-default.btn-primary.selected{"data-index" => i + 1, "data-round-id" => round.id}
 									Episode #{ i + 1 }
 							- else
