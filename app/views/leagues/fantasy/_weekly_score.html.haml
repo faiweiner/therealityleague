@@ -12,8 +12,5 @@
 					%tr
 						%td= participant.username
 						- @league.season.episode_count.times do |i|
-							/ - if @participants_roster_weekly[participant.username][:roster_rounds_id][i]
-							/ 	%td= @participants_roster_weekly[participant.username][:roster_rounds_id][i][1]
-							/ - else
-							/ 	%td --
+							%td --
 						%td= @participants_roster_total[participant.username] 

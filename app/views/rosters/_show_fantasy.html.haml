@@ -1,60 +1,47 @@
-.panel-body
-	#score-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
-		%table#rosterScoreBoard.table.table-hover
-			%h3 Weekly Score
-			%thead
-				%th.col-md-2 Contestants
-				- if @eps_count > 0
-					- @eps_count.times do |i|
-						%th= i + 1
-					- @eps_left.times do |i|
-						%th= i + @eps_count 
-				- elsif @eps_count.zero?
-					- @eps_record.times do |i|
-						%th -
-				%th.col-md-1 Total
-			%tbody
-				- @contestants.each do |contestant|
-					%tr
-						%td= contestant.name
-						- if @eps_count > 0
-							- @episodes.each do |episode|
-								%td= contestant.calculate_points_per_episode(episode.id)
-							- @eps_left.times do
-								%td -
-						- elsif @eps_count.zero?
-							- @eps_record.times do |i|
-								%td -
-						%td= contestant.calculate_total_points
-				%tr.active
+/ Contestant Board
+.col-lg-12
+	- if @roster.user_id == @current_user.id
+		%h3 Your Roster
+	- else
+		%h3= @roster.user.username + "'s Contestants" 
+	%br/
+	#rosterBoard
+		- @selected_contestants.each do |contestant|
+			.thumbnail.contestant-thumbnail
+				= image_tag contestant.image
+				.caption
+					= contestant.name
+/ Display Score
+#score-display.col-xs-12.col-sm-12.col-md-12.col-lg-12
+	%table#rosterScoreBoard.table.table-hover
+		%h3 Weekly Score
+		%thead
+			%th.col-md-2 Contestants
+			- if @eps_count > 0
+				- @eps_count.times do |i|
+					%th= i + 1
+				- @eps_left.times do |i|
+					%th= i + @eps_count 
+			- elsif @eps_count.zero?
+				- @eps_record.times do |i|
+					%th -
+			%th.col-md-1 Total
+		%tbody
+			- @contestants.each do |contestant|
+				%tr
+					%td= contestant.name
+					- if @eps_count > 0
+						- @episodes.each do |episode|
+							%td= contestant.calculate_points_per_episode(episode.id)
+						- @eps_left.times do
+							%td -
+					- elsif @eps_count.zero?
+						- @eps_record.times do |i|
+							%td -
+					%td= contestant.calculate_total_points
+			%tr.active
+				%td
+				- @eps_record.times do |i|
 					%td
-					- @eps_record.times do |i|
-						%td
-					%td= @roster.calculate_total_roster_points
-	/ Contestant Board
-	/ Roster Board
-	.col-lg-12
-		- if @roster.user_id == @current_user.id
-			%h3 Your Roster
-		- else
-			%h3= @roster.user.username + "'s Contestants" 
-		%br/
-		#rosterBoard
-			- @selected_contestants.each do |contestant|
-				.col-xs-2.col-sm-2.col-md-2.col-lg-2
-					.thumbnail.thumbnail-current-roster
-						= image_tag contestant.image
-						.caption
-							= contestant.name
-	/ END Roster Board
-	#contestantBoard.col-lg-12
-		%h3 Available Contestants
-		- @available_contestants.each do |contestant|
-			.col-xs-2.col-sm-2.col-md-2.col-lg-2
-				.thumbnail.thumbnail-available-contestants
-					= image_tag contestant.image
-					.caption
-						= contestant.name
-	/ END Contestant Board
-
+				%td= @roster.calculate_total_roster_points
 

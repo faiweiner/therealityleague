@@ -11,10 +11,9 @@
 				- if @roster.contestants.any?
 					= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
 			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
-	- if @contestants.any?
-		= render partial: "show_fantasy"
-	- else
-		.panel-body
+		- if @contestants.any?
+			= render partial: "show_fantasy"
+		- else
 			.col-lg-12.text-center
 				%h2= @roster.league.draft_deadline.strftime("%B %d, %Y") if @roster.league.draft_deadline
 				- if @league.type == "Fantasy"

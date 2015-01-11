@@ -50,31 +50,11 @@ class RostersController < ApplicationController
 		@season = Season.includes(:contestants, :episodes).find(@league.season_id)
 		@show = @season.show
 
-		case @league.type
-		when "Fantasy"
-			@episodes = @season.episodes
-			@eps_record = @season.episode_count
-			@eps_count = @season.episodes.count
-			@eps_left = @eps_record - @eps_count
-			@contestants = @roster.contestants.order(name: :asc)
-		when "Bracket"
-			@contestants_rounds = []
-			@rounds.each_with_index do |round, index|
-				round = {
-					:round => (index + 1),
-					:contestants => [
-						round.contestants.map.each_with_index do |c,i| 
-							{ :name => c.name, 
-								:id => c.id, 
-								:points_round => c.calculate_points_per_round(round.id)
-							}
-						end
-					],
-					:points_total => round.calculate_round_points
-				}
-				@contestants_rounds.push round
-			end
-		end
+		@episodes = @season.episodes
+		@eps_record = @season.episode_count
+		@eps_count = @season.episodes.count
+		@eps_left = @eps_record - @eps_count
+		@contestants = @roster.contestants.order(name: :asc)
 
 		if @league.active?
 			@all_contestants = @season.contestants
@@ -232,24 +212,6 @@ class RostersController < ApplicationController
 		
 	end
 
-	# def available
-	# 	@roster = Roster.includes(:contestants).find(params[:roster_id])
-	# 	all_contestants = Contestant.where(season_id: @roster.league.season).order(name: :asc)
-	# 	@available_contestants = []
-	# 	all_contestants.select do |contestant|
-	# 		unless @roster.contestants.include? contestant
-	# 			@available_contestants.push contestant
-	# 		end
-	# 	end
-	# 	@available_contestants
-	# 	respond_to do |format|
-	# 		format.html { render :partial => "current_available_contestants" }
-	# 		format.js {
-	# 			render :json => {}
-	# 		}
-	# 	end
-	# end
-	# ===========
 
 	private
 
@@ -269,7 +231,7 @@ class RostersController < ApplicationController
 					:b => ""
 				},
 				:contentCountDifference => nil,
-				:contentDate => nil
+				:contentDate => "#{@league.draft_deadline.strftime("%D")}."
 			}
 		when "alert-warning"
 			if action == "add"
