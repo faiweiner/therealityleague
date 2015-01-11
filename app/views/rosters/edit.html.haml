@@ -1,18 +1,16 @@
 .panel.panel-default
 	.panel-body
-		.col-md-10.col-lg-10
+		.col-md-9.col-lg-9
 			%h3= @roster.league.name
 			%p
 				= @roster.league.season.show.name + ": "
 				= @roster.league.season.name
 			%p 
-		.col-lg-2.text-right
+		.col-md-3.col-lg-3.text-right
+			= link_to "Back to League", league_path(@roster.league), class: "btn btn-default btn-sm"
 			%h4.small
 				Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
 			%p.small
 				League Limit: #{ @roster.league.draft_limit } contestants
-	.panel-body
-		/ Contestant Board
-		#contestantBoard.col-lg-12
-			= render partial: "rosters/current_roster"
-		/ END Contestant Board
+	.panel-body#roster-board
+		= render partial: "rosters/current_roster"

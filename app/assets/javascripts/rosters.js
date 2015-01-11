@@ -3,8 +3,8 @@ $(document).ready(function () {
 	if ($('#contestantBoard').length > 0) {
 		console.log('Rosters for contestant board initialized');
 		// sets up the contestantBoard and rosterBoard
+		$rosterBoard = $('#roster-board');
 		$contestantBoard = $('#contestantBoard');
-		$rosterBoard = $('#rosterBoard');
 		$rosterCountDisplay = $('#rosterCountDisplay');
 		// ================== GLOBAL FUNCTIONS ================== //
 
@@ -15,28 +15,9 @@ $(document).ready(function () {
 				url: '/rosters/' + rosterId + '/add' + '/' + contestantId,
 				type: 'POST',
 				success: function (msg) {
-					var partial = msg;
-					$contestantBoard.html(partial);
 				}
-			}).done(function (data) {
-
-				// Getting contestant count for roster
-				$.get( "/rosters/" + rosterId + "/current", function (data) {
-				}, 'json')
-				.done(function (data) {
-					var contestantsCount = data.contestantsCount;
-					var leagueLimit = data.leagueLimit;
-				});
-
-				// refreshing roster board
-				$.ajax({
-					url: '/rosters/' + rosterId + '/current',
-					type: 'GET',
-					success: function (msg) {
-						var partial = msg;
-						$rosterBoard.html(partial);
-					}
-				});	
+			}).done(function (msg) {
+				$rosterBoard.html(msg);
 			});
 		};
 
@@ -46,29 +27,11 @@ $(document).ready(function () {
 				url: '/rosters/' + rosterId + '/remove' + '/' + contestantId,
 				type: 'POST',
 				success: function (msg) {
-					var partial = msg;
-					$contestantBoard.html(partial);
 				}
+			}).done(function (msg) {
+				$rosterBoard.html(msg);
 			});
-
-			// Getting contestant count for roster
-			var contestantsCount = $.get( '/rosters/' + rosterId + '/current', function (data) {
-				contestantsCount = data ;
-			}, 'json');
-
-			// refreshing roster board
-			$.ajax({
-				url: '/rosters/' + rosterId + '/current',
-				type: 'GET',
-				success: function (msg) {
-					var partial = msg;
-					$rosterBoard.html(partial);
-				}
-			});	
 		};
-
-
-		
 
 		// ----- END server-side ----- //
 
@@ -87,27 +50,43 @@ $(document).ready(function () {
 		};
 
 		// ========= universal click listener ========= //
-		$(this).on('click', function (event) {
+
+		// HOVER listener
+		$rosterBoard.on({
+			mouseenter: function () {
+				$(this).find('.thumbnail.contestant-thumbnail');
+				$(this).toggleClass('hover');
+				var $thumbnailFamily;
+				$thumbnailFamily = $(this).children();
+				$actionPanel = ($thumbnailFamily[3]);
+				$actionPanel.setAttribute('style','display:block');
+				},
+			mouseleave: function () {
+				$(this).find('.thumbnail.contestant-thumbnail');
+				$(this).toggleClass('hover');
+				$thumbnailFamily = $(this).children();
+				$actionPanel = ($thumbnailFamily[3]);
+				$actionPanel.setAttribute('style','display:none');
+				}
+		},'.thumbnail.contestant-thumbnail');
+
+		$rosterBoard.on('click', $('i.glyphicon'), function (event) {
 			// records which element is being clicked
 			$element = event.target;
+
 			// set arguments for rosterOperator
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
 			var rosterId	= $element.dataset.rosterId;
+
 			// sets operation based on myClass value
 
 			switch (myClass) {
-				case 'add-button glyphicon glyphicon-plus':
+				case 'glyphicon glyphicon-ok':
 					var operation = 'add-roster';
 					break;
-				case 'remove-button glyphicon glyphicon-remove':
+				case 'glyphicon glyphicon-remove':
 					var operation = 'remove-roster';
-					break;
-				case 'add-round glyphicon glyphicon-arrow-right':
-					var operation = 'add-round';
-					break;
-				case 'remove-round glyphicon glyphicon-remove':
-					var operation = 'remove-round';
 					break;
 			};
 

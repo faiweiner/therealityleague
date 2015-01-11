@@ -25,25 +25,23 @@ class RostersController < ApplicationController
 		@roster = Roster.includes(:league).find(params[:id])
 		@league = @roster.league
 		@season = @league.season
-		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
-		@selected_contestants = @roster.contestants.order(name: :asc)
-		
-		case @league.type
-		when "Fantasy"
-			@selected_contestants = @roster.contestants.order(name: :asc)
-		when "Bracket"
-			@eps_record = @season.episode_count
+		@contestants = @season.contestants.order(name: :asc)
+		@selected_contestants = @roster.contestants.order(name: :asc)	
+
+		roster_action = "landing"
+		count_difference = @roster.contestants.count - @league.draft_limit
+		@roster_status = ""
+
+		if count_difference == 0
+			@roster_status = "alert-success"
+		elsif count_difference > 0
+			@roster_status = "alert-danger"
+		else
+			@roster_status = "alert-warning"
 		end
-		respond_to do |format|
-			format.html
-			format.js {
-				render :json => {
-					:allContestants => @all_contestants,
-					:selectedContestants => @selected_contestants,
-					:rosterContestantCount => @selected_contestants.count
-				}
-			}
-		end		
+
+		@roster_message = Hash.new
+		@roster_message = get_roster_messsage(@roster_status, count_difference, roster_action)
 	end
 
 	def display
@@ -126,28 +124,94 @@ class RostersController < ApplicationController
 	def add
 		# adding contestants to rosters, because when you join a league, a roster is automatically created 
 		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
+		@league = @roster.league
 		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil
-		# limits are only available for Fantasy-type leagues
 
-		if @roster.league.draft_limit.present?
-			if @roster.contestants.count + 1 <= @roster.league.draft_limit
-				@roster.contestants << contestant unless @roster.contestants.include? contestant
-			end
-		elsif @roster.league.draft_limit.nil? 		# if there is no limit (Bracket-type)
-			@roster.contestants << contestant unless @roster.contestants.include? contestant
-		end
+		@season = @league.season
+		@contestants = @season.contestants.order(name: :asc)
+		@selected_contestants = @roster.contestants.order(name: :asc)
 		
-		redirect_to roster_current_path(@roster.id)
+		@roster_status = ""
+		roster_action = "add"
+		count_difference = 0
+
+		# go through this process if there is a draft limit
+		if @league.draft_limit.present?
+
+			# check if adding to the roster will go over the limit
+			unless @roster.contestants.count + 1 > @league.draft_limit
+				@roster.contestants << contestant unless @roster.contestants.include? contestant
+				count_difference = (@roster.contestants.count - @league.draft_limit).abs
+				
+				case count_difference	== 0
+				when true
+					@roster_status = "alert-success"
+				when false
+					@roster_status = "alert-warning"
+				end
+			# cannot add if you've already met the limit
+			else
+				@roster_status = "alert-warning"
+				roster_action = "overadd"
+			end
+		
+		# for special leagues with no draft limit
+		elsif @league.draft_limit.nil? 
+			@roster.contestants << contestant unless @roster.contestants.include? contestant
+			@roster_status = "alert-success"
+			roster_action = "add"
+		end
+
+		@roster_message = Hash.new
+		@roster_message = get_roster_messsage(@roster_status, count_difference, roster_action)
+
+		respond_to do |format|
+			format.html { 
+				render partial: "current_roster", :remote => true 
+			}
+			format.json {
+				render :json => {
+					:contestants => @contestants
+				}
+			}
+		end
 	end
 
 	def remove
 		# removing contestants from rosters
 		@roster = Roster.includes(:contestants).find(params[:roster_id])
+		@league = @roster.league
+		@season = @league.season	
 
-		contestant = Contestant.find(params[:contestant_id])
+		contestant = Contestant.find(params[:contestant_id]) if params[:contestant_id] != nil		
 		@roster.contestants.destroy(contestant)
 
-		redirect_to roster_current_path(@roster.id)
+		@contestants = Contestant.where(season_id: @season.id).order(name: :asc)
+		@selected_contestants = @roster.contestants.order(name: :asc)
+
+		@roster_status = ""
+		roster_action = "remove"
+		count_difference = @roster.contestants.count - @league.draft_limit
+
+		case count_difference == 0
+		when true
+			@roster_status = "alert-success"
+		when false
+			if count_difference > 0
+				@roster_status = "alert-danger"
+			else
+				@roster_status = "alert-warning"
+			end
+		end
+			
+		@roster_message = Hash.new
+		@roster_message = get_roster_messsage(@roster_status, count_difference, roster_action)
+
+		respond_to do |format|
+			format.html { 
+				render partial: "current_roster", :remote => true 
+			}
+		end
 	end
 
 	# ======== rendering CONTESTANTS for roster edit page ======== #
@@ -156,7 +220,7 @@ class RostersController < ApplicationController
 		@roster = Roster.includes(:league, :contestants).find(params[:roster_id])
 		@league = @roster.league
 		@season = @league.season
-		@all_contestants = Contestant.where(season_id: @league.season).order(name: :asc)
+		@contestants = Contestant.where(season_id: @league.season.id).order(name: :asc)
 		@selected_contestants = @roster.contestants.order(name: :asc)
 		@contestantsCount = @selected_contestants.count
 		respond_to do |format|
@@ -191,6 +255,66 @@ class RostersController < ApplicationController
 
 	def roster_params
 		params.require(:roster).permit(:user_id, :league_id)
+	end
+
+	def get_roster_messsage(status, count_difference, action)
+		@roster_message = Hash.new
+
+		case status
+		when "alert-success"
+			@roster_message = {
+				:contentHero => "Your roster has been completed!",
+				:contentSupport => {
+					:a => "You can make changes to the roster until the league's draft deadline on",
+					:b => ""
+				},
+				:contentCountDifference => nil,
+				:contentDate => nil
+			}
+		when "alert-warning"
+			if action == "add"
+				@roster_message = {
+					:contentHero => "There's still room in your roster.",
+					:contentSupport => {
+						:a => "Add",
+						:b => "to complete your roster."
+					},
+					:contentCountDifference => count_difference,
+					:contentDate => nil
+				}
+			elsif action == "overadd"
+				@roster_message = {
+					:contentHero => "You don't have enough room to add another contestant!",
+					:contentSupport => {
+						:a => "Please remove a contestant from your current roster before adding a new one.",
+						:b => ""
+					},
+					:contentCountDifference => nil,
+					:contentDate => nil
+				}
+			else action == "landing"
+				@roster_message = {
+					:contentHero => "Pick your contestants!",
+					:contentSupport => {
+						:a => "Add",
+						:b => "to your roster before the league's draft deadline on"
+					},
+					:contentCountDifference => count_difference.abs,
+					:contentDate => "#{@league.draft_deadline.strftime("%D")}."
+				}				
+			end
+		when "alert-danger"
+			@roster_message = {
+				:contentHero => "You have too many contestants in your roster!",
+				:contentSupport => {
+					:a => "Remove",
+					:b => "to complete your roster."
+				},
+				:contentCountDifference => count_difference,
+				:contentDate => nil
+			}		
+		else
+		end
 	end
 end
 

@@ -272,8 +272,8 @@ $(document).ready(function () {
 			var contestantId = $element.dataset.contestantId;
 			var activeRoundId = detectActiveRoundByEnvironment();
 			var roundId;
+		
 			// sets operation based on myClass value
-
 			switch (myClass) {
 				case 'glyphicon glyphicon-ok':
 					var operation = 'add-round';

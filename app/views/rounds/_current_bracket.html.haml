@@ -26,6 +26,8 @@
 			%h6
 				- if round.contestants.count == round.episode.expected_survivors 
 					.alert.nav-check.alert-success{:role => "alert", "data-round-id" => round.id, "data-status" => "success", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
+						%span
+							%strong Fantastic!
 						Click "Next" to construct your bracket for the next episode. 
 						%br/
 						%br/
@@ -33,14 +35,16 @@
 				- elsif round.contestants.count > round.episode.expected_survivors
 					.alert.nav-check.alert-warning{:role => "alert", "data-round-id" => round.id, "data-status" => "warning", "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
 						Remove 
-						%span.round-difference.strong{"data-round-id" => round.id, "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
-							= pluralize((round.contestants.count - round.episode.expected_survivors).to_i, "contestant")
+						%span.round-difference
+							%strong{"data-round-id" => round.id, "data-round-difference" => round.contestants.count - round.episode.expected_survivors}
+								= pluralize((round.contestants.count - round.episode.expected_survivors).to_i, "contestant")
 						who you think will get eliminated during this episode.
 				- else
 					.alert.nav-check.alert-warning{:role => "alert", "data-round-id" => round.id, "data-status" => "warning", "data-round-difference" => (round.contestants.count - round.episode.expected_survivors).abs}
 						Select 
-						%span.round-difference.strong{"data-round-id" => round.id}
-							= pluralize((round.contestants.count - round.episode.expected_survivors).abs, "contestant")
+						%span.round-difference
+							%strong{"data-round-id" => round.id}
+								= pluralize((round.contestants.count - round.episode.expected_survivors).abs, "contestant")
 						who you think will make it to the next round.
 		.col-lg-12.contestants-display
 			- @contestants.where(present: true).each do |contestant|

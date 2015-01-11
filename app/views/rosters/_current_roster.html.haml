@@ -1,30 +1,35 @@
-%h3 
-	Roster Board
-	= link_to "Back to League", league_path(@roster.league), class: "btn btn-default btn-sm"
-
-%p
-	- if @league.draft_limit
-		#{ @selected_contestants.count } out of #{ @league.draft_limit }.
-	- else
-		You have #{ @selected_contestants.count } #{ pluralize_without_count(@selected_contestants.count, "contestant", nil) } on your roster.
-	Click
-	%i.glyphicon.glyphicon-ok
-	to add or
-	%i.glyphicon.glyphicon-remove
-	to remove a contestant from your roster.	
-- @all_contestants.each do |contestant|
-	.contestants-panel.col-lg-2
-		.thumbnail.contestant-thumbnail
+#contestantBoard.col-lg-12
+	%h3 
+		Roster Board
+	%h6
+		.alert.nav-check{:class => @roster_status, :role => "alert", "data-roster-id" => @roster.id, "data-status" => "success", "data-roster-difference" => @roster_message[:contentCountDifference]}
+			%span
+				%strong= @roster_message[:contentHero]
+			= @roster_message[:contentSupport][:a]
+			= pluralize(@roster_message[:contentCountDifference], "contestant") if @roster_message[:contentCountDifference]
+			= @roster_message[:contentSupport][:b]
+			%strong
+				= @roster_message[:contentDate]
+			%br/
+	- @contestants.each do |contestant|
+		.contestants-panel.col-lg-2
 			- if @selected_contestants.include? contestant
-				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+				.thumbnail.contestant-thumbnail.selected
+					%img.full-res{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "selected-contestant"}/ 
+					.veil
+						%i.marker.glyphicon.glyphicon-ok
+					.caption.selected-caption
+						.contestant-name
+							= contestant.name
+					.action.selected.discard
+						%i.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
 			- else
-				%img{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "nonselected-contestant"}/ 
-			.caption
-				.contestant-name
-					= contestant.name
-				.action
-					- if @selected_contestants.include? contestant
-						%i.remove-button.glyphicon.glyphicon-remove{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-					- else
-						%i.add-button.glyphicon.glyphicon-plus{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
-#saveRoster.col-lg-12
+				.thumbnail.contestant-thumbnail.available
+					%img.full-res{:src => "#{contestant.image}", :alt => "#{contestant.name}", class: "available-contestant"}/ 
+					.veil
+					.caption
+						.contestant-name
+							= contestant.name
+					.action.available.pick
+						%i.glyphicon.glyphicon-ok{"data-contestant-id" => contestant.id, "data-roster-id" => @roster.id}
+	#saveRoster.col-lg-12
