@@ -102,18 +102,28 @@ class RoundsController < ApplicationController
 				:absent_episodes_collection => absent_episodes
 			}
 		end
-
-
+		
 		@rounds_data_collection = Hash.new
+		round_status = ""
 		@rounds_collection.each do |round|
 
-			round_status = "alert-success"
 			count_difference = round.contestants.count - round.episode.expected_survivors
 			round_action = "landing"
 			
+			case count_difference == 0
+			when true
+				round_status = "alert-success"
+			when false
+				if count_difference > 0
+					round_status = "alert-danger"
+				else
+					round_status = "alert-warning"
+				end
+			end
+
 			@rounds_data_collection[round.id] = {
 				:round_status => round_status,
-				:count_difference => 0,
+				:count_difference => count_difference,
 				:round_action => round_action,
 				:round_message => get_round_message(round.id, round_status, count_difference, round_action)
 			}
@@ -125,7 +135,8 @@ class RoundsController < ApplicationController
 				render :json => {
 					:rounds_ids => @rounds_ids_collection,
 					:rounds_collection => @rounds_collection,
-					:contestants_data_collection => @contestants_data_collection
+					:contestants_data_collection => @contestants_data_collection,
+					:rounds_data_collection => @rounds_data_collection
 				}
 			}
 		end
@@ -259,6 +270,31 @@ class RoundsController < ApplicationController
 			end
 		end
 
+		@rounds_data_collection = Hash.new
+		@rounds_collection.each do |round|
+
+			round_status = ""
+			count_difference = round.contestants.count - round.episode.expected_survivors
+			round_action = action
+	
+			case count_difference == 0
+			when true
+				round_status = "alert-success"
+			when false
+				if count_difference > 0
+					round_status = "alert-danger"
+				else
+					round_status = "alert-warning"
+				end
+			end
+			
+			@rounds_data_collection[round.id] = {
+				:round_status => round_status,
+				:count_difference => 0,
+				:round_action => round_action,
+				:round_message => get_round_message(round.id, round_status, count_difference, round_action)
+			}
+		end		
 		respond_to do |format|
 			format.html { 
 				render partial: "current_bracket", :remote => true 
@@ -273,14 +309,14 @@ class RoundsController < ApplicationController
 		end
 	end
 
-	def get_round_message(round_id, status, count_difference, round_action)
+	def get_round_message(round_id, status, count_difference, action)
 		round_message = Hash.new
 		case status
 		when "alert-success"
 			round_message = {
-				:contentHero => "Your roster has been completed!",
+				:contentHero => "Fantastic!",
 				:contentSupport => {
-					:a => "You can make changes to the roster until the league's draft deadline on",
+					:a => "Click \"Next\" to pick contestants for the next episode.",
 					:b => ""
 				},
 				:contentCountDifference => nil,
@@ -289,7 +325,7 @@ class RoundsController < ApplicationController
 		when "alert-warning"
 			if action == "add"
 				round_message = {
-					:contentHero => "There's still room in your roster.",
+					:contentHero => "",
 					:contentSupport => {
 						:a => "Add",
 						:b => "to complete your roster."
@@ -299,7 +335,7 @@ class RoundsController < ApplicationController
 				}
 			elsif action == "overadd"
 				round_message = {
-					:contentHero => "You don't have enough room to add another contestant!",
+					:contentHero => "TOOK TOOK",
 					:contentSupport => {
 						:a => "Please remove a contestant from your current roster before adding a new one.",
 						:b => ""

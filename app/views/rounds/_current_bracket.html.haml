@@ -20,14 +20,21 @@
 						Next
 			%h6
 				.alert.nav-check{:class => @rounds_data_collection[round.id][:round_status], :role => "alert", "data-round-id" => round.id, "data-status" => "success", "data-round-difference" => @rounds_data_collection[round.id][:count_difference]}
-					%span
-						%strong= @rounds_data_collection[round.id][:round_message][:contentHero]
+					= round.episode.expected_survivors
+					%br/
+					= round.contestants.count
+					%br/
+					= round.contestants.count - round.episode.expected_survivors
+					%strong
+						= @rounds_data_collection[round.id][:round_message][:contentHero]
 					= @rounds_data_collection[round.id][:round_message][:contentSupport][:a]
 					= pluralize(@rounds_data_collection[round.id][:round_message][:contentCountDifference], "contestant") if @rounds_data_collection[round.id][:round_message][:contentCountDifference]
 					= @rounds_data_collection[round.id][:round_message][:contentSupport][:b]
 					%strong
 						= @rounds_data_collection[round.id][:round_message][:contentDate]
 					%br/
+
+
 		.col-lg-12.contestants-display
 			- @contestants.where(present: true).each do |contestant|
 				- if @contestants_data_collection[contestant.id][:absent_episodes_collection].include? round.episode.id
