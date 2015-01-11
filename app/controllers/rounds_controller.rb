@@ -37,28 +37,25 @@ class RoundsController < ApplicationController
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		
 		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
-		@episodes_collection = @season.episodes.order(air_date: :asc)
-		@episodes_ids_collection = @episodes_collection.pluck(:id)
+		data_package = get_round_data(params[:league_id])
 
-		# -- collection of rounds by this user for this league
-		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
-		@rounds_ids_collection = @rounds_collection.pluck(:id)
-		@upcoming_rounds = []
-		@rounds_collection.each_with_index do |round, i|
-			if round.episode.air_date.future?
-				@upcoming_rounds << round
-				if round == @upcoming_rounds[0] && round.contestants.empty?
-					round.contestants << @season.contestants.where(present: true)
-				end
-			end
-		end
+		@episodes_collection = data_package[:episodes_collection]
+		@episodes_ids_collection = data_package[:episodes_ids_collection]
+		@rounds_collection = data_package[:rounds_collection]
+		@rounds_ids_collection = data_package[:rounds_ids_collection]
+		@upcoming_rounds_ids = data_package[:upcoming_rounds_ids]
+		
+		raise
+
+		
+
 
 
 
 
 		# -- get information about contestant for rounds.js
-		@contestants = @season.contestants.order(name: :asc)
-		@contestants_data_collection = Hash.new
+
+
 		@contestants.each do |contestant|
 
 			## -- produces a collection of episodes (ID) where that contestant is absent 
@@ -241,31 +238,53 @@ class RoundsController < ApplicationController
 
 	protected
 
+	def bulk_add_contestants(round_id, rounds_ids_collection)
+		round = Round.find(round_id)
+		rounds_array = rounds_ids_collection
+		round_index = rounds_array.index(round.id).to_i
+		
+		if round.contestants.empty? && round.episode.air_date.future?
+			if round_index == 0
+				round.contestants << @season.contestants.where(present: true)
+				return "Added contestants to current round."
+			else
+				prev_round_id = rounds_array[round_index - 1]
+				prev_round = Round.find(prev_round_id)
+				round.contestants << roundA.contestants
+				return "Added contestants from previous round to current round."
+			end
+		else
+			return "You cannot bulk add because round already contains contestants."
+		end
+	end
+
+
 	def get_round_data(league_id)
 		@league = League.includes(:users, :rounds, :season).find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		@contestants = @season.contestants.order(name: :asc)
 
-		@episodes_collection = @league.season.episodes.order(air_date: :asc)
-		@episodes_ids_collection = @episodes_collection.pluck(:id)
+		@episodes = @league.season.episodes.order(air_date: :asc)
+		@episodes_ids_collection = @episodes.pluck(:id)
 		
 		@rounds_collection = @league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
 		@rounds_ids_collection = @rounds_collection.pluck(:id)
+		@upcoming_rounds_ids = []
+		@rounds_data_collection = Hash.new
 
-		@upcoming_rounds = []
-		@rounds_collection.each_with_index do |round, i|
-			if round.episode.air_date.future?
-				@upcoming_rounds << round
-				if round == @upcoming_rounds[0] && round.contestants.empty?
-					round.contestants << @season.contestants.where(present: true)
-				end
-			end
+		@rounds_collection.each_with_index do |round|
+			@upcoming_rounds_ids << round.id if round.episode.air_date.future?
+		
+
 		end
+
+		@contestants_data_collection = Hash.new
 
 		# SPECIAL CASE FOR THE BACHELOR #
 
 		case @season.show.name 
 		when "The Bachelor" 
-			if @league.draft_deadline.future? && (@episodes_collection[0].air_date.past? && @episodes_collection[1].air_date.future?)
+			if @league.draft_deadline.future? && (@episodes[0].air_date.past? && @episodes[1].air_date.future?)
 				if @rounds_collection[1].contestants.empty?
 					@rounds_collection[0].contestants.where(present: true).each do |contestant|
 						@rounds_collection[1].contestants << contestant unless @rounds_collection[1].contestants.include? contestant
@@ -275,10 +294,17 @@ class RoundsController < ApplicationController
 		end
 
 
+		data_package = {
+			:episodes_collection => @episodes,
+			:episodes_ids_collection => @episodes_ids_collection,
+			:rounds_collection => @rounds_collection,
+			:rounds_ids_collection => @rounds_ids_collection,
+			:upcoming_rounds_ids => @upcoming_rounds_ids,
+			:contestants_data_collection => @contestants_data_collection
+		}
 
+		return data_package
 
-
-			
 	end
 
 	def process_and_return(contestant_id, round_id, action)
