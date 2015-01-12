@@ -118,7 +118,7 @@ class LeaguesController < ApplicationController
 			@a_participant = false
 		end
 		
-		if @league.draft_deadline
+		if @league.draft_deadline.preseent?
 			@league_deadline_set = true
 			@league_commenced = true if @league.draft_deadline <= Date.today
 		else
