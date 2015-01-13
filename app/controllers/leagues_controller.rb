@@ -158,7 +158,7 @@ class LeaguesController < ApplicationController
 				deadline_alert = "Last day to submit a bracket is #{@league.draft_deadline.strftime('%B %d')} -- Join the league TODAY!"
 			elsif @rounds_collection.nil?
 				deadline_alert = "Last day to submit a bracket is #{@league.draft_deadline.strftime('%B %d')}."
-			elsif @rounds_collection.present? && @league.draft_deadline > DateTime.now
+			elsif @rounds_collection.present? && @league.draft_deadline.future?
 				deadline_alert = "Last day to make changes to your bracket is #{@league.draft_deadline.strftime('%B %d')}."
 			end
 
