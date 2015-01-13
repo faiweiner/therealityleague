@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 	# For APIs, you may want to use :null_session instead.
 	protect_from_forgery with: :exception
 	before_action :set_current_user, :get_shows, :new_message
-	
+
 	def export_show_list
 		@export_show_list = Show.all
 		respond_to do |format|
@@ -165,6 +165,10 @@ class ApplicationController < ActionController::Base
 		end
 	end
 	
+	def check_if_admin
+		return false if User.where(id: session[:user_id]).first.admin == true
+	end
+
 	def set_current_user
 		if session[:user_id].present? 
 			@current_user = User.where(:id => session[:user_id]).first

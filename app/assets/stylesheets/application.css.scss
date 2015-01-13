@@ -59,6 +59,10 @@ p, ol, ul, td {
 	line-height: 18px;
 }
 
+small.sm {
+	font-size: 13px;
+}
+
 .jumbotron p {
 	font-size: 16px;  
 }
@@ -441,4 +445,8 @@ li.bracketItem {
 #padding-for-episode-column {
 	height: 42px;
 	width: 100%;
+}
+
+img.line-marker {
+	height: 15px;
 }

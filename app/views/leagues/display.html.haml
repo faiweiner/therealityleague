@@ -1,40 +1,56 @@
-- if flash[:notice] && flash[:color] == "valid"
-	.alert.alert-success{:role => "alert"}= flash[:notice]
-- elsif flash[:notice] && flash[:color] == "invalid"
-	.alert.alert-danger{:role => "alert"}= flash[:notice]
+- if flash[:notice].present? 
+	.alert{class: "alert-#{flash[:color]}", role: "alert"}
+		= flash[:notice]
 .panel.panel-default#league_view
 	.panel-body
-		.col-lg-8
+		.col-lg-12
+			= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm pull-right" if @league.active? && @comm_this_league == true
 			%h2= @league.name
 			%p
 				= @league.season.show.name + ": "
 				= @league.season.name
-			= render "/shows/scoring_system"
-			- if @league.active? && @comm_this_league == true
-				- if @participants.count < 2
-					= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-warning btn-sm" 
-				- else
-					= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
-			- elsif @a_participant == false && @league.active?
-				= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
-		.col-md-2.col-lg-4.text-right
-			= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" if @league.active? && @comm_this_league == true
-		.col-lg-12.col-md-12.col-sm-12.col-xs-12
-			%br/
+			#league-action-panel
+				= render "/shows/scoring_system"
+				- if @league.active? && @comm_this_league == true
+					- if @participants.count < 2
+						= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-warning btn-sm" 
+				- if @alert.present?
+					%p
+					.alert#alert-panel{class: "alert-#{@alert[:color]}", role: "alert"}
+						= @alert[:message]
+			
 
-			- if @alert_messages.present?
-				.alert.alert-info.alert-dismissible{:role => "alert"}
-					%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
-						%span{"aria-hidden" => true} x
-					- @alert_messages.each do |message|
-						= message
-	- case @league.type
-	- when "Elimination"
-		= render partial: "leagues/elimination/ranking"
-		- if @league.season.episode_count
-			= render partial: "leagues/elimination/weekly_score"
-	- when "Fantasy"
-		= render partial: "leagues/fantasy/ranking"			
-		- if @league.season.episode_count
-			= render partial: "leagues/fantasy/weekly_score"
+		/ 		- else
+		/ 			= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
+		/ 	- elsif @a_participant == false && @league.active?
+		/ 		= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
+		/ .col-md-2.col-lg-4.text-right
+
+		/ .col-lg-12.col-md-12.col-sm-12.col-xs-12
+		/ 	%br/
+
+		/ 	- if @alert_messages.present?
+		/ 		.alert.alert-info.alert-dismissible{:role => "alert"}
+		/ 			%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
+		/ 				%span{"aria-hidden" => true} x
+		/ 			- @alert_messages.each do |message|
+		/ 				= message
+
+
+
+
+
+	/ - case @league.type
+
+
+
+
+	/ - when "Elimination"
+	/ 	= render partial: "leagues/elimination/ranking"
+	/ 	- if @league.season.episode_count
+	/ 		= render partial: "leagues/elimination/weekly_score"
+	/ - when "Fantasy"
+	/ 	= render partial: "leagues/fantasy/ranking"			
+	/ 	- if @league.season.episode_count
+	/ 		= render partial: "leagues/fantasy/weekly_score"
 

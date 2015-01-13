@@ -1,0 +1,66 @@
+.panel.panel-default
+	- if @rosters.any? || @leagues.any?
+		.panel-body
+			.col-lg-12.col-md-12.col-sm-12
+				%h2 Dashboard
+			.panel-body
+				%h3
+					= pluralize_without_count(@rosters.count, "Roster", text = nil) if @rosters.present?
+					and
+					= pluralize_without_count(@leagues.count, "League", text = nil) if @leagues.present?
+					.pull-right
+						.caption 
+							%img.line-marker{:src => "/assets/icons/star.png", :alt => "Commissioner Star"}
+							%small.sm Commissioner 
+				%table.table.table-hover#current-leagues-table
+					%thead
+						%tr
+							%th.col-lg-4 League Name
+							%th.col-lg-1 Type
+							%th.col-lg-2 Season
+							%th.col-lg-2 Status
+							%th.col-lg-1 Action
+					%tbody
+						- @leagues.each do |league|
+							%tr
+								%td
+									%img.line-marker{:src => "#{@leagues_imgs[league][0]}", :alt => "#{@leagues_imgs[league][1]}"}
+									%img.line-marker{:src => "#{@leagues_imgs[league][2]}", :alt => "#{@leagues_imgs[league][3]}"}
+									= link_to league.name, league_path(league.id)
+								%td= league.type
+								%td= link_to league.season.show.name+": "+league.season.name, season_path(league.season.id)
+								%td= @leagues_imgs[league][4]
+
+								%td
+									= link_to "View", league_path(league.id), class: "btn btn-default btn-sm"
+/ - elsif @past_leagues.present?
+/ .panel-body
+/ 	%h3
+/ 		Past 
+/ 		= pluralize_without_count(@past_leagues.count.count, "League", text = nil) 
+/ 	%table.table.table-hover#past-leagues-table
+/ 		%thead
+/ 			%tr
+/ 				%th.col-lg-4 League Name
+/ 				%th.col-lg-1 Type
+/ 				%th.col-lg-4 Season
+/ 				%th.col-lg-1 Action
+/ 		%tbody
+/ 			- @past_leagues.each do |league|
+/ 				%tr
+/ 					%td
+/ 						= league.name
+/ 						- if league.commissioner_id == @current_user.id
+/ 							%img{:src => "/assets/ref.png", class: "icon"}
+/ 					%td
+/ 						= league.season.name
+/ 					%td
+/ 						- if league.public_access?
+/ 							Public
+/ 						- else
+/ 							Private
+/ 					%td
+/ 						-
+/ 						= link_to "View", league_path(league.id), class: "btn btn-default btn-sm"
+/ 	%p
+/ 		= image_tag("/assets/ref.png") + "   Commissioner"

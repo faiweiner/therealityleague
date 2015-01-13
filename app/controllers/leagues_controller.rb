@@ -1,39 +1,57 @@
 class LeaguesController < ApplicationController
 
-	before_action :check_if_logged_in, :except => [:index, :new]
-	skip_before_action :verify_authenticity_token, :only => [:results]
-	before_action :save_login_state, :only => [:new, :search, :results]
-	before_action :get_league, :only => [:edit, :invite]
-	before_action :private_restriction, :only => [:display]
-	before_action :commissioner_restriction?, :only => [:edit]
+	before_action :check_if_logged_in
+	before_action :save_login_state, only: [:new, :search, :results]
+	before_action :get_league, only: [:display, :edit, :invite]
+	before_action :private_restriction, only: [:display]
+	before_action :commissioner?, only: [:edit]
+	skip_before_action :verify_authenticity_token, only: [:results]
 
 	attr_accessor :name, :league_key, :league_password
 	
 	def index
-		if @current_user == nil
-			flash[:notice] = "You must be a registered user to view leagues. Please sign up or sign in."
-			flash[:color] = "invalid"
-			redirect_to new_user_path
-		end		
-
-		# List of all leagues for full app's admin
-		@all_leagues = League.all
-
-		if @current_user.present?
-			# List of participating leagues
-			@leagues = @current_user.leagues.where(:active => true)
-			@past_leagues = @current_user.leagues.where(:active => false)
-			if @past_leagues.nil?
-				flash[:notice] = "You have yet to compete in a league."
-			end
-			
-			# List of leagues of which user is the commissioner
-			@comm_leagues = League.where(commissioner_id: @current_user.id)
-			# @league_players = @league.users
-			@all_leagues = @current_user.leagues
-			# Get user's roster for that particular league
-			@rosters = @current_user.rosters
+		if @current_user.admin?
+			@leagues = League.where(active: true).order(:created_at)
+			@rosters = @current_user.rosters if @current_user.rosters.any?
+			@past_leagues = League.where(active: false).order(:created_at)
+		elsif @current_user.leagues == true
+			@leagues = @current_user.leagues.where(active: true).order(:created_at)
+			@rosters = @current_user.rosters if @current_user.rosters.any?
+			@past_leagues = @current_user.leagues.where(active: false).order(:created_at)			
+		else
+			flash[:notice] = "You have yet to compete in a league."
+			flash[:color] = "warning"
 		end
+		
+		@leagues_imgs = Hash.new
+
+		@leagues.each do |league|
+			if league.commissioner_id == @current_user.id
+				comm_icon = "/assets/icons/star.png"
+				alt1 = "comm star"
+				action = "Manage"
+			else
+				comm_icon = nil
+				alt1 = nil
+				action = "View"
+			end
+			if league.public_access?
+				private_icon = nil
+				alt2 = nil
+			else
+				private_icon = "/assets/icons/private.png"
+				alt2 = "private"
+			end
+			if league.locked?
+				status = "Commenced"
+			elsif league.draft_deadline.future?
+				status = "Drafting Period"
+			else
+				status = "--"
+			end
+			@leagues_imgs[league] = [comm_icon, alt1, private_icon, alt2, status]
+		end
+
 	end
 
 	def new
@@ -82,11 +100,7 @@ class LeaguesController < ApplicationController
 	end
 
 	def edit
-		if commissioner_restriction? == false
-			flash[:notice] = "This account is not authorized to edit the current league."
-			flash[:color] = "prohibited"
-			redirect_to league_path(params[:id])
-		end
+		# automatic redirect out of page if not a commissioner
 		@league_show_id = @league.season.show_id
 		@league_season_id = @league.season_id
 		@league_type = @league.type
@@ -100,32 +114,98 @@ class LeaguesController < ApplicationController
 	end
 
 	def destroy
-		@league = League.find params[:id]
+		@league = League.find(params[:id])
 		@league.destroy
 		redirect_to leagues_path
 	end
 
 	def display
-		@participants = @league.users
 		@show = @league.season.show
+		@participants = @league.users
 		@rules = Show.get_schemes(@show.id)
-		@a_participant = nil
-		p_id = @participants.pluck(:id)
-		
-		if p_id.include? @current_user.id
-			@a_participant = true
-		else
-			@a_participant = false
-		end
-		
-		if @league.draft_deadline
-			@league_deadline_set = true
-			@league_commenced = true if @league.draft_deadline <= Date.today
-		else
-			@league_deadline_set = false
+		board_type = ""
+		case @league.type
+		when "Fantasy"
+			board_type = "roster"
+		when "Elimination"
+			board_type = "bracket"
 		end
 
-		@comm_this_league = true if @league.commissioner_id == @current_user.id
+		@participants_ids_collection = @participants.pluck(:id)
+		
+		@action_panel = Hash.new
+		@alert = Hash.new
+		if @participants.include? @current_user
+			@action_panel[:include_current_user] = true
+		else
+			@action_panel[:include_current_user] = false
+		end
+
+		count = nil
+		if @league.participant_cap.present?
+			count = @league.participant_cap - @participants.count
+		end
+
+
+		# ============ ALERTS ============ #
+		# ---- if commissioner ---- #
+		if @league.active? && @current_user.id == @league.commissioner_id
+			if @participants.count == 1
+				@alert[:state] = "available"
+				@alert[:message] = "Don't play by yourself - invite friends to join the league before the league deadline!"
+				@alert[:message2] = ""
+				@alert[:color] = "warning"
+			elsif count && count < 3
+			# participant cap avails
+				@alert[:state] = "limited"
+				@alert[:message] = "There's still #{pluralize_without_count(count, "spot")} left in your league."
+				@alert[:message2] = ""
+				@alert[:color] = "warning"
+			elsif count && count == 0
+				@alert[:state] = "full"
+				@alert[:message] = "This league is full."
+				@alert[:message2] = ""
+				@alert[:color] = "info"
+			else
+				@alert[:state] = "available"
+				@alert[:message] = "The more the merrier! Why not invite more people to join?"
+				@alert[:message2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+				@alert[:color] = "info"	
+			end	
+		elsif @league.active
+			if @league.pubic_access?
+				if count && count > 3
+					@alert[:state] = "limited"
+					@alert[:message] = "There's still #{pluralize_without_count(count, "spot")} left in this league. Click \"Join League\" now before the league fills up!"
+					@alert[:message2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+					@alert[:color] = "warning"
+				elsif count && count <= 3
+					@alert[:state] = "danger"
+					@alert[:message] = "HURRY! There are only #{pluralize_without_count(count, "spot")} left in this league. Click \"Join League\" now before the league fills up!"
+					@alert[:message2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+					@alert[:color] = "warning"				
+				else
+				# if there's no participant limit
+					@alert[:state] = "available"
+					@alert[:message] = "The more the merrier - join this league today!"
+					@alert[:message2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+					@alert[:color] = "info"
+				end
+			# no private access case because outside users cannot see this league anyway.
+			end
+		else
+			@alert[:state] = "inactive"
+			@alert[:message] = "This league is no longer active. Why not search for another league to join?"
+			@alert[:message2] = ""
+			@alert[:color] = "warning"	
+		end
+
+		# if @league.draft_deadline
+		# 	@league_deadline_set = true
+		# 	@league_commenced = true if @league.draft_deadline <= Date.today
+		# else
+		# 	@league_deadline_set = false
+		# end
 
 		case @league.type
 
@@ -153,14 +233,6 @@ class LeaguesController < ApplicationController
 			@ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
 
 			deadline_alert = nil
-
-			if @league.active? && (@participants.exclude? @current_user)
-				deadline_alert = "Last day to submit a bracket is #{@league.draft_deadline.strftime('%B %d')} -- Join the league TODAY!"
-			elsif @rounds_collection.nil?
-				deadline_alert = "Last day to submit a bracket is #{@league.draft_deadline.strftime('%B %d')}."
-			elsif @rounds_collection.present? && @league.draft_deadline > DateTime.now
-				deadline_alert = "Last day to make changes to your bracket is #{@league.draft_deadline.strftime('%B %d')}."
-			end
 
 			@alert_messages = [deadline_alert]
 		# ========== FOR FANTASY ========== #
@@ -212,16 +284,6 @@ class LeaguesController < ApplicationController
 				@alert_messages = [deadline_alert]
 			end
 
-		end
-
-		respond_to do |format|
-			format.html
-			format.js { 		
-				render :json => {
-					:leagueId => @league.id,
-					:exportParticipants => @participants
-				} 
-			}
 		end
 	end
 
@@ -318,21 +380,21 @@ class LeaguesController < ApplicationController
 
 	def private_restriction
 		@league = League.find(params[:id])
-		if @league.public_access == false
-			if @league.users.include? @current_user == false
-				flash[:notice] = "You do not have permission to access this private league."
-				flash[:color] = "prohibited"
-				redirect_to leagues_path
-			end
+		if (@league.public_access? == false) && (@leagues.users.include? @current_user == false)
+		# if league is private AND @current_user is not a member
+			flash[:notice] = "You do not have permission to access this private league."
+			flash[:color] = "danger"
+			redirect_to leagues_path
 		end
 	end
 
-	def commissioner_restriction?
+	def commissioner_restriction
 		@league = League.find(params[:id])
-		if @current_user.id == @league.commissioner_id
-			return true
-		else
-			return false
+		if @league.commissioner_id != @current_user
+			flash[:notice] = "This account is not authorized to edit the current league."
+			flash[:color] = "prohibited"			
+			redirect_to league_path(params[:id])
 		end
 	end
+
 end
