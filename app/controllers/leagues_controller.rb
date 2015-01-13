@@ -202,15 +202,16 @@ class LeaguesController < ApplicationController
 
 			@league.rosters.where(user_id: @current_user.id).empty?
 
-			deadline_alert = "Last day to submit a roster is on #{@league.draft_deadline.strftime('%B %d')}."
+			@alert_messages = []
+			# deadline_alert = "Last day to submit a roster is on #{@league.try(:draft_deadline).strftime('%B %d')}."
 			
-			if @league.active? && @league.participant_cap.present?
-				spots_left = @league.participant_cap - @league.users
-				availability_message = "Hurry, there are only #{spots_left} spots left in this league!"
-				@alert_messages = [deadline_alert, availability_message]
-			else
-				@alert_messages = [deadline_alert]
-			end
+			# if @league.active? && @league.participant_cap.present?
+			# 	spots_left = @league.participant_cap - @league.users
+			# 	availability_message = "Hurry, there are only #{spots_left} spots left in this league!"
+			# 	@alert_messages = [deadline_alert, availability_message]
+			# else
+			# 	@alert_messages = [deadline_alert]
+			# end
 
 		end
 

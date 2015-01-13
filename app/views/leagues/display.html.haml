@@ -9,32 +9,32 @@
 			%p
 				= @league.season.show.name + ": "
 				= @league.season.name
-/ 		= render "/shows/scoring_system"
-/ 		- if @league.active? && @comm_this_league == true
-/ 			- if @participants.count < 2
-/ 				= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-warning btn-sm" 
-/ 			- else
-/ 				= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
-/ 		- elsif @a_participant == false && @league.active?
-/ 			= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
-/ 	.col-md-2.col-lg-4.text-right
-/ 		= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" if @league.active? && @comm_this_league == true
-/ 	.col-lg-12.col-md-12.col-sm-12.col-xs-12
-/ 		%br/
+		= render "/shows/scoring_system"
+		- if @league.active? && @comm_this_league == true
+			- if @participants.count < 2
+				= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-warning btn-sm" 
+			- else
+				= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
+		- elsif @a_participant == false && @league.active?
+			= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
+	.col-md-2.col-lg-4.text-right
+		= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" if @league.active? && @comm_this_league == true
+	.col-lg-12.col-md-12.col-sm-12.col-xs-12
+		%br/
 
-/ 		- if @alert_messages.present?
-/ 			.alert.alert-info.alert-dismissible{:role => "alert"}
-/ 				%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
-/ 					%span{"aria-hidden" => true} x
-/ 				- @alert_messages.each do |message|
-/ 					= message
-/ - case @league.type
-/ - when "Elimination"
-/ 	= render partial: "leagues/elimination/ranking"
-/ 	- if @league.season.episode_count
-/ 		= render partial: "leagues/elimination/weekly_score"
-/ - when "Fantasy"
-/ 	= render partial: "leagues/fantasy/ranking"			
-/ 	- if @league.season.episode_count
-/ 		= render partial: "leagues/fantasy/weekly_score"
+		- if @alert_messages.present?
+			.alert.alert-info.alert-dismissible{:role => "alert"}
+				%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
+					%span{"aria-hidden" => true} x
+				- @alert_messages.each do |message|
+					= message
+- case @league.type
+- when "Elimination"
+	= render partial: "leagues/elimination/ranking"
+	- if @league.season.episode_count
+		= render partial: "leagues/elimination/weekly_score"
+- when "Fantasy"
+	= render partial: "leagues/fantasy/ranking"			
+	- if @league.season.episode_count
+		= render partial: "leagues/fantasy/weekly_score"
 
