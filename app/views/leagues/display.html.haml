@@ -20,14 +20,6 @@
 	.col-md-2.col-lg-4.text-right
 		= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm" if @league.active? && @comm_this_league == true
 	.col-lg-12.col-md-12.col-sm-12.col-xs-12
-		%br/
-
-		- if @alert_messages.present?
-			.alert.alert-info.alert-dismissible{:role => "alert"}
-				%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
-					%span{"aria-hidden" => true} x
-				- @alert_messages.each do |message|
-					= message
 - case @league.type
 - when "Elimination"
 	= render partial: "leagues/elimination/ranking"
