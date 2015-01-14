@@ -1,0 +1,8 @@
+.panel.panel-default
+	.panel-body
+		.col-lg-12.col-md-12.col-sm-12
+			%h2 Upcoming Shows
+			- @seasons.each do |season|
+				%h4
+					= "#{season.show.name}:"
+					= season.name

@@ -1,8 +1,12 @@
-- if flash[:notice].present?
-	.alert{class: "alert-#{ @alert[:type] }", role: "alert"}
-		= @alert[:message]
+- if flash[:button].present?
+	.alert{class: "alert-#{flash[:color]}", role: "alert"}
+		%strong=	flash[:notice]
+		%p= flash[:subtext]
+		%p
+		- flash[:button].each_with_index do |button, i|
+			= link_to flash[:button][i][0], flash[:button][i][1], class: "#{flash[:button][i][2]}"
+- elsif flash[:notice].present?
+	.alert{class: "alert-#{flash[:color]}", role: "alert"}
+		= flash[:notice]
 - if @leagues.present?
 	= render partial: "manage"
-- else
-	= render partial: "nav_league_access"
-	= render partial: "matrix"

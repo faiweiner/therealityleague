@@ -4,27 +4,34 @@
 .panel.panel-default#league_view
 	.panel-body
 		.col-lg-12
-			= link_to "Edit League", edit_league_path, class:"btn btn-default btn-sm pull-right" if @league.active? && @comm_this_league == true
+			= link_to "Edit League", edit_league_path, class: "btn btn-default btn-sm pull-right" if @league.active? && @comm_this_league == true
 			%h2= @league.name
 			%p
 				= @league.season.show.name + ": "
 				= @league.season.name
 			#league-action-panel
-				= render "/shows/scoring_system"
-				- if @league.active? && @comm_this_league == true
-					- if @participants.count < 2
-						= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class:"btn btn-warning btn-sm" 
+				= render partial: "/shows/scoring_system"
+				= link_to "#{@invite_button[0]}", @invite_button[1], class: "huzzah #{@invite_button[2]}"
+				%p
+					= @check
+				/ - if @league.active? && @league.commissioner_id == @current_user.id
+				/ 	- if @participants.count <= 2
+				/ 		= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class: "btn btn-primary btn-sm"
+				/ 	- else
+				/ 		= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class: "btn btn-default btn-sm"
+				/ - elsif @league.active? && @participants.include? @current_user == false
+				/ 	Hi
+				/ - else
+				/ 	HO
+				/ - elsif @league.active? && 
+				/ 	= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
+				/ - else
+				/ 	Ho
 				- if @alert.present?
 					%p
 					.alert#alert-panel{class: "alert-#{@alert[:color]}", role: "alert"}
 						= @alert[:message]
-			
 
-		/ 		- else
-		/ 			= link_to "Invite Participants", league_invite_path(@league.id), class:"btn btn-default btn-sm" 
-		/ 	- elsif @a_participant == false && @league.active?
-		/ 		= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
-		/ .col-md-2.col-lg-4.text-right
 
 		/ .col-lg-12.col-md-12.col-sm-12.col-xs-12
 		/ 	%br/

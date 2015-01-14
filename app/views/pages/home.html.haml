@@ -1,41 +1,14 @@
-- if flash[:notice] && flash[:color] == "valid"
-	.alert.alert-success{:role => "alert"}= flash[:notice]
-- elsif flash[:notice] && flash[:color] == "invalid"
-	.alert.alert-warning{:role => "alert"}= flash[:notice]
-	/
-- if @current_user.present?
-	.modal.fade#first_time_user_prompt{"aria-hidden" => "true", "aria-labelledby" => "mySmallModalLabel", :role => "dialog", :tabindex => "-1"}
-		.modal-dialog.modal-md
-			.modal-content
-				.modal-body#modal-direction-1
-					%p Directions 1
-					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus aliquid sequi velit ex modi amet veniam. Quam ipsum possimus culpa accusantium perspiciatis praesentium suscipit cum rem provident, vitae, vero delectus!
-				.modal-body#modal-direction-2.hidden
-					%p Directions 2
-					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus aliquid sequi velit ex modi amet veniam. Quam ipsum possimus culpa accusantium perspiciatis praesentium suscipit cum rem provident, vitae, vero delectus!
-				.modal-body#modal-direction-3.hidden
-					%p Directions 3
-					%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus aliquid sequi velit ex modi amet veniam. Quam ipsum possimus culpa accusantium perspiciatis praesentium suscipit cum rem provident, vitae, vero delectus!
-				.modal-body#modal-pagination
-					%ul.pagination.pagination-sm
-						%li
-							%a{:href => "#"} &laquo;
-						%li.active
-							%a#modal-page-1{:href => "#"} 1
-						%li
-							%a#modal-page-2{:href => "#"} 2
-						%li
-							%a#modal-page-3{:href => "#"} 3
-						%li
-							%a{:href => "#"} &raquo;
-				.modal-footer
-					%button.btn.btn-default.btn-sm{"data-dismiss" => "modal", :type => "button"} Skip intro
-	/ CURRENT USER PRESENT
-	/ ====================================================
-	= render partial: "/leagues/nav_league_access"
+- if flash[:button].present?
+	.alert{class: "alert-#{flash[:color]}", role: "alert"}
+		%strong=	flash[:notice]
+		%p= flash[:subtext]
+		%p
+		- flash[:button].each_with_index do |button, i|
+			= link_to flash[:button][i][0], flash[:button][i][1], class: "#{flash[:button][i][2]}"
+- if @current_user
+	= render partial: "promo"
+	= render partial: "instructions"
 - else
-	/ IF CURRENT USER DOES NOT EXIST
-	/ ====================================================
 	.jumbotron
 		%h1 Welcome to The Reality League 
 		%h3 The best place to play Fantasy Reality TV

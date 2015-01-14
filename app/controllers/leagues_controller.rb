@@ -14,44 +14,51 @@ class LeaguesController < ApplicationController
 			@leagues = League.where(active: true).order(:created_at)
 			@rosters = @current_user.rosters if @current_user.rosters.any?
 			@past_leagues = League.where(active: false).order(:created_at)
-		elsif @current_user.leagues == true
+		elsif @current_user.leagues.any?
 			@leagues = @current_user.leagues.where(active: true).order(:created_at)
 			@rosters = @current_user.rosters if @current_user.rosters.any?
 			@past_leagues = @current_user.leagues.where(active: false).order(:created_at)			
 		else
-			flash[:notice] = "You have yet to compete in a league."
+			flash[:notice] = "Oh snapssss!"
+			flash[:subtext] = "Looks like you aren't part of any league yet. What would you like to do?"
 			flash[:color] = "warning"
+
+			flash[:button] = []
+			flash[:button][0] = ["Find and Join a League", "/leagues/search", "btn btn-sm btn-default"]
+			flash[:button][1] = ["Create a League", "/leagues/new", "btn btn-sm btn-default"]
+			return
 		end
 		
 		@leagues_imgs = Hash.new
 
-		@leagues.each do |league|
-			if league.commissioner_id == @current_user.id
-				comm_icon = "/assets/icons/star.png"
-				alt1 = "comm star"
-				action = "Manage"
-			else
-				comm_icon = nil
-				alt1 = nil
-				action = "View"
+		if @leagues
+			@leagues.each do |league|
+				if league.commissioner_id == @current_user.id
+					comm_icon = "/assets/icons/star.png"
+					alt1 = "comm star"
+					action = "Manage"
+				else
+					comm_icon = nil
+					alt1 = nil
+					action = "View"
+				end
+				if league.public_access?
+					private_icon = nil
+					alt2 = nil
+				else
+					private_icon = "/assets/icons/private.png"
+					alt2 = "private"
+				end
+				if league.locked?
+					status = "Commenced"
+				elsif league.draft_deadline.future?
+					status = "Drafting Period"
+				else
+					status = "--"
+				end
+				@leagues_imgs[league] = [comm_icon, alt1, private_icon, alt2, status]
 			end
-			if league.public_access?
-				private_icon = nil
-				alt2 = nil
-			else
-				private_icon = "/assets/icons/private.png"
-				alt2 = "private"
-			end
-			if league.locked?
-				status = "Commenced"
-			elsif league.draft_deadline.future?
-				status = "Drafting Period"
-			else
-				status = "--"
-			end
-			@leagues_imgs[league] = [comm_icon, alt1, private_icon, alt2, status]
 		end
-
 	end
 
 	def new
@@ -193,6 +200,7 @@ class LeaguesController < ApplicationController
 				end
 			# no private access case because outside users cannot see this league anyway.
 			end
+		
 		else
 			@alert[:state] = "inactive"
 			@alert[:message] = "This league is no longer active. Why not search for another league to join?"
@@ -200,12 +208,35 @@ class LeaguesController < ApplicationController
 			@alert[:color] = "warning"	
 		end
 
-		# if @league.draft_deadline
-		# 	@league_deadline_set = true
-		# 	@league_commenced = true if @league.draft_deadline <= Date.today
-		# else
-		# 	@league_deadline_set = false
-		# end
+		@check = "NEVER GOT ANYWHERE"
+		@invite_button = []
+		if @league.active?
+			# active league
+			if @league.commissioner_id == @current_user.id
+				# if commissioner
+				if count && count > 0
+					@invite_button[0] = "Invite More Participants"
+					@invite_button[1] = league_invite_path(@league.id)
+					@invite_button[2] = "btn btn-sm btn-default"
+					@check = "there is count, less than count"
+				elsif count && count == 0
+					@invite_button[0] = "League is Full"
+					@invite_button[1] = ""
+					@invite_button[2] = "btn btn-sm btn-disabled"
+					@check = "count is zero"
+				else
+					@invite_button[0] = "Invite More Participants"
+					@invite_button[1] = league_invite_path(@league.id)
+					@invite_button[2] = "btn btn-sm btn-primary"
+				end
+			elsif @participants.include? @current_user
+				# not commissioner, but a member
+				@check = "got here"
+			end
+		else
+			# inactive league
+			@invite_button[0], @invite_button[1], @invite_button[2] = ""
+		end
 
 		case @league.type
 

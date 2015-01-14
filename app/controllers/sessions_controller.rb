@@ -10,20 +10,24 @@ class SessionsController	< ApplicationController
 		if user.present? && user.authenticate(params[:password])
 			user.save
 			session[:user_id] = user.id
-			if user.admin?
-				redirect_to admin_path
-			elsif	user.leagues.count > 0
+			flash[:button] = []
+			if user.leagues.any?
 				flash[:notice] = "Welcome back, #{user.username}!"
-				flash[:color] = "valid"
+				flash[:color] = "success"
 				redirect_to leagues_path
-			else
-				flash[:notice] = "Welcome!"	
-				flash[:color] = "valid"
+			elsif user.leagues.empty?
+				flash[:notice] = "Welcome back, #{user.username}!"
+				flash[:subtext] = "You currently don't have a league - would you like to join one?"	
+				flash[:color] = "success"
+				flash[:button][0] = ["Join a League", "/leagues/search", "btn btn-sm btn-default"]
 				redirect_to root_path
+			else
+				flash[:notice] = "Welcome!"
+				flash[:color] = "success"
 			end
 		else
 			flash[:notice] = "Invalid login. Please try again."
-			flash[:color] = "invalid"
+			flash[:color] = "warning"
       redirect_to login_path
 		end
 	end
