@@ -12,11 +12,9 @@ class LeaguesController < ApplicationController
 	def index
 		if @current_user.admin?
 			@leagues = League.where(active: true).order(:created_at)
-			@rosters = @current_user.rosters if @current_user.rosters.any?
 			@past_leagues = League.where(active: false).order(:created_at)
 		elsif @current_user.leagues.any?
 			@leagues = @current_user.leagues.where(active: true).order(:created_at)
-			@rosters = @current_user.rosters if @current_user.rosters.any?
 			@past_leagues = @current_user.leagues.where(active: false).order(:created_at)			
 		else
 			flash[:notice] = "Oh snapssss!"
@@ -220,8 +218,8 @@ class LeaguesController < ApplicationController
 				if spots.nil?
 					@status = "available"
 					@alert_class = "info"
-					@alert[0] = "The more the merrier!"
-					@alert[1] = "This league is open for public."
+					@alert[0] = "This league is open to the public."
+					@alert[1] = ""
 					@alert[2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
 					@invite_button[0] = "Join This League"
 					@invite_button[1] = join_path

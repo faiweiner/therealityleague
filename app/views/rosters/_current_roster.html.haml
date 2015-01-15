@@ -10,7 +10,10 @@
 			= @roster_message[:contentSupport][:b]
 			%strong
 				= @roster_message[:contentDate]
-			%br/
+			- if @action_button
+				%br/
+				%br/
+				= link_to "#{@action_button[0]}", @action_button[1], class: "#{@action_button[2]}"
 	- @contestants.each do |contestant|
 		.contestants-panel.col-lg-2
 			- if @selected_contestants.include? contestant

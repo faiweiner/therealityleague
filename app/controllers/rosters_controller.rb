@@ -18,6 +18,8 @@ class RostersController < ApplicationController
 		league = League.find(params[:league_id])
 		Roster.find_or_create_by!(:user_id => @current_user.id, :league_id => league.id)
 		league.users << @current_user
+		flash[:notice] = "You've successfully join #{league.name}!"
+		flash[:color] = "success"	
 		redirect_to league_path(league.id)
 	end
 
@@ -42,6 +44,9 @@ class RostersController < ApplicationController
 
 		@roster_message = Hash.new
 		@roster_message = get_roster_messsage(@roster_status, count_difference, roster_action)
+		
+		@action_button = nil
+		@action_button = get_roster_action(@roster_status, @league.id)
 	end
 
 	def display
@@ -144,6 +149,9 @@ class RostersController < ApplicationController
 
 		@roster_message = Hash.new
 		@roster_message = get_roster_messsage(@roster_status, count_difference, roster_action)
+		
+		@action_button = nil
+		@action_button = get_roster_action(@roster_status, @league.id)
 
 		respond_to do |format|
 			format.html { 
@@ -187,6 +195,9 @@ class RostersController < ApplicationController
 		@roster_message = Hash.new
 		@roster_message = get_roster_messsage(@roster_status, count_difference, roster_action)
 
+		@action_button = nil
+		@action_button = get_roster_action(@roster_status, @league.id)
+
 		respond_to do |format|
 			format.html { 
 				render partial: "current_roster", :remote => true 
@@ -219,13 +230,20 @@ class RostersController < ApplicationController
 		params.require(:roster).permit(:user_id, :league_id)
 	end
 
+	def get_roster_action(status, league_id)
+		@action_button = []
+		case status
+		when "alert-success"
+			@action_button = ["Back to League", league_path(league_id), "btn btn-xs btn-primary"]
+		end
+	end
+
 	def get_roster_messsage(status, count_difference, action)
 		@roster_message = Hash.new
-
 		case status
 		when "alert-success"
 			@roster_message = {
-				:contentHero => "Your roster has been completed!",
+				:contentHero => "Your roster is completed!",
 				:contentSupport => {
 					:a => "You can make changes to the roster until the league's draft deadline on",
 					:b => ""

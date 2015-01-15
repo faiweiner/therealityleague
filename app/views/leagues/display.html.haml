@@ -16,7 +16,7 @@
 						%p
 							.alert#alert-panel.alert-dismissible{class: "alert-#{@alert_class}", role: "alert"}
 								%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
-									%span{"aria-hidden" => true} x
+									%span.small{"aria-hidden" => true} &times;
 								%p
 									- @alert.each_with_index do |alert, i|
 										%strong= @alert[i] if i == 0
