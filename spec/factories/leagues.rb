@@ -19,6 +19,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  locked          :boolean          default(FALSE)
+#  full            :boolean          default(FALSE)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

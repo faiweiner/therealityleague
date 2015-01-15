@@ -19,6 +19,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  locked          :boolean          default(FALSE)
+#  full            :boolean          default(FALSE)
 #
 
 class League < ActiveRecord::Base
@@ -33,7 +34,7 @@ class League < ActiveRecord::Base
 	# FIXME! Come bck to deal with dependencies please
 
 	before_save :set_up_league, :set_draft_limit
-
+	after_initialize :update_full_field
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
 	validates :draft_deadline, :presence => true
@@ -67,6 +68,12 @@ class League < ActiveRecord::Base
 	def gen_draft_limit
 		season = Season.find(self.season_id)
 		self.draft_limit = (season.contestants.count / self.participant_cap).floor
+	end
+
+	def update_full_field
+		if self.participant_cap && self.participant_cap == self.users.count
+			self.full = true 	
+		end
 	end
 
 	def set_up_league
