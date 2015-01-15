@@ -90,7 +90,16 @@ class SeasonsController < ApplicationController
 		@show = @season.show
 		@rules = Show.get_schemes(@show.id)
 		@contestants = @season.contestants.order("name ASC")
-		@contestants_ranking = @season.contestants.includes(:events).order("episode_id DESC")
+
+		@contestant_status_collection = []
+		@contestants.each_with_index do |contestant, i|
+			if contestant.present?
+				@contestant_status_collection[i] = ""
+			else
+				@contestant_status_collection[i] = "eliminated"
+			end
+		end
+		@contestants_ranking = @season.contestants.includes(:events).order(:name)
 
 		render_admin
 	end

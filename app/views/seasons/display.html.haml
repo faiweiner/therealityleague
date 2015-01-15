@@ -22,12 +22,12 @@
 	.panel-body
 		.col-lg-12
 			%h4 Contestants
-			- @contestants.each do |contestant|
+			- @contestants.each_with_index do |contestant, i|
 				.col-xs-3.col-sm-2.col-md-2.col-lg-2
-					.thumbnail.contestant-thumbnail{class: "eliminated"}
+					.thumbnail.contestant-thumbnail{class: "#{@contestant_status_collection[i]}"}
 						%img.half-res{:src => "#{contestant.image}", :alt => "#{contestant.name}"}/
 						.veil
-							ELIMINATED
+							= @contestant_status_collection[i].upcase
 						.caption
 							.contestant-name= contestant.name
 		.col-lg-12.text-right
@@ -51,4 +51,4 @@
 								- @season.episodes.each_with_index do |episode, i|
 									%td
 										= link_to contestant.calculate_points_per_episode(episode.id), episode_path(episode.id)
-								%td= contestant.status_on_show
+								%td= @contestant_status_collection[index].capitalize
