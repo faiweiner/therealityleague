@@ -5,8 +5,6 @@
 				%h2 Dashboard
 			.panel-body
 				%h3
-					= pluralize_without_count(@rosters.count, "Roster", text = nil) if @rosters.present?
-					and
 					= pluralize_without_count(@leagues.count, "League", text = nil) if @leagues.present?
 					.pull-right
 						.caption 
@@ -37,7 +35,7 @@
 / .panel-body
 / 	%h3
 / 		Past 
-/ 		= pluralize_without_count(@past_leagues.count.count, "League", text = nil) 
+/ 		= pluralize_without_count(@past_leagues.count, "League", text = nil) 
 / 	%table.table.table-hover#past-leagues-table
 / 		%thead
 / 			%tr

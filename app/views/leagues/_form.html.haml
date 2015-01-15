@@ -1,9 +1,10 @@
 .panel.panel-default
-	.panel-body.panel
-		- if params[:id]
-			%h1 Edit league
-		- else
-			%h1 Start a league
+	.panel-body
+		.col-lg-12.col-md-12.col-sm-12
+			- if params[:id]
+				%h2 Edit league
+			- else
+				%h2 Start a league
 	-# Form starts
 	.panel-body{:id => ("league_creation" unless params[:id])}
 		= form_for(@league) do |f|

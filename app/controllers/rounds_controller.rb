@@ -16,6 +16,7 @@ class RoundsController < ApplicationController
 		@league = League.find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 
+		@league.users << @current_user
 		# @season must already have recorded episodes in order to work
 		@episodes_collection = @season.episodes
 		@episodes_collection.each do |episode|

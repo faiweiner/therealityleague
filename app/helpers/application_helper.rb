@@ -6,5 +6,3 @@ module ApplicationHelper
 		end
 	end
 end 
-
-# link_to("Settings", edit_user_path(@current_user))

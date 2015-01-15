@@ -11,53 +11,27 @@
 				= @league.season.name
 			#league-action-panel
 				= render partial: "/shows/scoring_system"
-				= link_to "#{@invite_button[0]}", @invite_button[1], class: "huzzah #{@invite_button[2]}"
 				%p
-					= @check
-				/ - if @league.active? && @league.commissioner_id == @current_user.id
-				/ 	- if @participants.count <= 2
-				/ 		= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class: "btn btn-primary btn-sm"
-				/ 	- else
-				/ 		= link_to "Invite Participants", league_invite_path(@league.id), id: "comm-one", class: "btn btn-default btn-sm"
-				/ - elsif @league.active? && @participants.include? @current_user == false
-				/ 	Hi
-				/ - else
-				/ 	HO
-				/ - elsif @league.active? && 
-				/ 	= link_to "Join League", rosters_path(@league.id), :action => "join", :league_id => @league.id, :method => :post, class:"btn btn-warning btn-sm"
-				/ - else
-				/ 	Ho
-				- if @alert.present?
-					%p
-					.alert#alert-panel{class: "alert-#{@alert[:color]}", role: "alert"}
-						= @alert[:message]
-
-
-		/ .col-lg-12.col-md-12.col-sm-12.col-xs-12
-		/ 	%br/
-
-		/ 	- if @alert_messages.present?
-		/ 		.alert.alert-info.alert-dismissible{:role => "alert"}
-		/ 			%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
-		/ 				%span{"aria-hidden" => true} x
-		/ 			- @alert_messages.each do |message|
-		/ 				= message
-
-
-
-
-
-	/ - case @league.type
-
-
-
-
-	/ - when "Elimination"
-	/ 	= render partial: "leagues/elimination/ranking"
-	/ 	- if @league.season.episode_count
-	/ 		= render partial: "leagues/elimination/weekly_score"
-	/ - when "Fantasy"
-	/ 	= render partial: "leagues/fantasy/ranking"			
-	/ 	- if @league.season.episode_count
-	/ 		= render partial: "leagues/fantasy/weekly_score"
+					- if @alert.present?
+						%p
+							.alert#alert-panel.alert-dismissible{class: "alert-#{@alert_class}", role: "alert"}
+								%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
+									%span{"aria-hidden" => true} x
+								%p
+									- @alert.each_with_index do |alert, i|
+										%strong= @alert[i] if i == 0
+										= @alert[i] unless i == 0
+								- if @invite_button.length == 3
+									%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "huzzah #{@invite_button[2]}"
+								- elsif @invite_button.length > 3
+									%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
+		- case @league.type
+		- when "Elimination"
+			= render partial: "leagues/elimination/ranking"
+			- if @league.season.episode_count
+				= render partial: "leagues/elimination/weekly_score"
+		- when "Fantasy"
+			= render partial: "leagues/fantasy/ranking"			
+			- if @league.season.episode_count
+				= render partial: "leagues/fantasy/weekly_score"
 

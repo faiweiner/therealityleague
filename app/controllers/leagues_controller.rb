@@ -130,6 +130,7 @@ class LeaguesController < ApplicationController
 		@show = @league.season.show
 		@participants = @league.users
 		@rules = Show.get_schemes(@show.id)
+		@show_title = "#{@show.name}: #{@league.season.name}"
 		board_type = ""
 		case @league.type
 		when "Fantasy"
@@ -148,94 +149,147 @@ class LeaguesController < ApplicationController
 			@action_panel[:include_current_user] = false
 		end
 
-		count = nil
+		spots = nil
 		if @league.participant_cap.present?
-			count = @league.participant_cap - @participants.count
+			spots = @league.participant_cap - @participants.count
 		end
-
+		
+		# ============ CASES ============ #
+		case @league.type
+		when "Fantasy"
+			join_path = rosters_path(@league.id)
+		when "Elimination"
+			join_path = rounds_create_path(@league.id)
+		end
 
 		# ============ ALERTS ============ #
-		# ---- if commissioner ---- #
-		if @league.active? && @current_user.id == @league.commissioner_id
-			if @participants.count == 1
-				@alert[:state] = "available"
-				@alert[:message] = "Don't play by yourself - invite friends to join the league before the league deadline!"
-				@alert[:message2] = ""
-				@alert[:color] = "warning"
-			elsif count && count < 3
-			# participant cap avails
-				@alert[:state] = "limited"
-				@alert[:message] = "There's still #{pluralize_without_count(count, "spot")} left in your league."
-				@alert[:message2] = ""
-				@alert[:color] = "warning"
-			elsif count && count == 0
-				@alert[:state] = "full"
-				@alert[:message] = "This league is full."
-				@alert[:message2] = ""
-				@alert[:color] = "info"
-			else
-				@alert[:state] = "available"
-				@alert[:message] = "The more the merrier! Why not invite more people to join?"
-				@alert[:message2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-				@alert[:color] = "info"	
-			end	
-		elsif @league.active
-			if @league.pubic_access?
-				if count && count > 3
-					@alert[:state] = "limited"
-					@alert[:message] = "There's still #{pluralize_without_count(count, "spot")} left in this league. Click \"Join League\" now before the league fills up!"
-					@alert[:message2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-					@alert[:color] = "warning"
-				elsif count && count <= 3
-					@alert[:state] = "danger"
-					@alert[:message] = "HURRY! There are only #{pluralize_without_count(count, "spot")} left in this league. Click \"Join League\" now before the league fills up!"
-					@alert[:message2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-					@alert[:color] = "warning"				
-				else
-				# if there's no participant limit
-					@alert[:state] = "available"
-					@alert[:message] = "The more the merrier - join this league today!"
-					@alert[:message2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-					@alert[:color] = "info"
-				end
-			# no private access case because outside users cannot see this league anyway.
-			end
-		
-		else
-			@alert[:state] = "inactive"
-			@alert[:message] = "This league is no longer active. Why not search for another league to join?"
-			@alert[:message2] = ""
-			@alert[:color] = "warning"	
-		end
-
-		@check = "NEVER GOT ANYWHERE"
+		@status = ""
+		@alert_class = ""
+		@alert = []
 		@invite_button = []
-		if @league.active?
-			# active league
-			if @league.commissioner_id == @current_user.id
-				# if commissioner
-				if count && count > 0
-					@invite_button[0] = "Invite More Participants"
-					@invite_button[1] = league_invite_path(@league.id)
-					@invite_button[2] = "btn btn-sm btn-default"
-					@check = "there is count, less than count"
-				elsif count && count == 0
-					@invite_button[0] = "League is Full"
-					@invite_button[1] = ""
-					@invite_button[2] = "btn btn-sm btn-disabled"
-					@check = "count is zero"
+		
+		# ------ leagues ACTIVE ------ #
+		if @league.active? & @league.locked == false
+			# ------ member of the league ------ #
+			if @league.users.include? @current_user
+				# ------ commissioner of the league ------ #
+				if @league.commissioner_id == @current_user.id
+					# ------ solo memmber ------ #
+					if spots
+						if spots == 0
+							@status = "full"
+							@alert_class = "success"
+							@alert[0] = "Your league is now full."
+							@alert[1] = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+							@invite_button[0] = "Do something"
+							@invite_button[1] = "#"
+							@invite_button[2] = "btn btn-sm btn-default"
+						elsif spots < 3
+							@status = "limited"
+							@alert_class = "danger"
+							@alert[0] = "Only #{spots} #{"spot".pluralize(spots)} left in this league!"
+							@alert[1] = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+							@invite_button[0] = "Do something"
+							@invite_button[1] = "#"
+							@invite_button[2] = "btn btn-sm btn-default"	
+						else
+							@status = "available"
+							@alert_class = "warning"
+							@alert[0] = "#{spots} #{"spot".pluralize(spots)} left in this league."
+							@alert[1] = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+							@invite_button[0] = "Do something"
+							@invite_button[1] = "#"
+							@invite_button[2] = "btn btn-sm btn-default"													
+						end
+					elsif @participants.count < 2
+						@status = "available"
+						@alert_class = "warning"
+						@alert[0] = "Don't play by yourself."
+						@alert[1] = "Invite friends to join the league before the league commences!"
+						@invite_button[0] = "Invite Participants"
+						@invite_button[1] = league_invite_path(@league.id)
+						@invite_button[2] = "btn btn-sm btn-default"
+					end
+				# ------ NOT the commissioner ------ #
 				else
-					@invite_button[0] = "Invite More Participants"
-					@invite_button[1] = league_invite_path(@league.id)
-					@invite_button[2] = "btn btn-sm btn-primary"
+
 				end
-			elsif @participants.include? @current_user
-				# not commissioner, but a member
-				@check = "got here"
+			# ------ NOT member of the league ------ #
+			else
+				# ------ no participant cap------ #
+				if spots.nil?
+					@status = "available"
+					@alert_class = "info"
+					@alert[0] = "The more the merrier!"
+					@alert[1] = "This league is open for public."
+					@alert[2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+					@invite_button[0] = "Join This League"
+					@invite_button[1] = join_path
+					@invite_button[2] = "btn btn-sm btn-default"
+					@invite_button[3] = "join"
+					@invite_button[4] = @league.id
+					@invite_button[5] = "POST"		
+				# ------ participant cap exists ------ #
+				else
+					if spots == 0
+						@status = "full"
+						@alert_class = "danger"
+						@alert[0] = "This league is completely full."
+						@alert[1] = "Would you like to search other available leagues?"
+						@invite_button[0] = "Search other leagues"
+						@invite_button[1] = "/leagues/search"
+						@invite_button[2] = "btn btn-sm btn-default"
+					elsif spots <= 3
+						# if there is a cap and less than 3 spots left
+						@status = "danger"
+						@alert_class = "warning"				
+						@alert[0] = "HURRY!" 
+						@alert[1] = "There are only #{spots} #{"spot".pluralize(spots)} left in this league. Click \"Join League\" now before the league fills up!"
+						@alert[2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+						@invite_button[0] = "Join This League"
+
+						@invite_button[1] = join_path
+						@invite_button[2] = "btn btn-sm btn-default"
+						@invite_button[3] = "join"
+						@invite_button[4] = @league.id
+						@invite_button[5] = "POST"	
+					else
+						# if there is a cap and there are some room left
+						@status = "limited"
+						@alert_class = "warning"
+						@alert[0] = "#{spots} #{"spot".pluralize(spots)} left in this league."
+						@alert[1] = "Join today before this league fills up!"
+						@alert[2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+						@invite_button[0] = "Join This League"
+						@invite_button[1] = join_path
+						@invite_button[2] = "btn btn-sm btn-default"
+						@invite_button[3] = "join"
+						@invite_button[4] = @league.id
+						@invite_button[5] = "POST"								
+					end
+				end
 			end
+
+		# ------ leagues INACTIVE ------ #
+		elsif @league.locked == true
+			@status = "locked"
+			@alert_class = "success"
+			@alert[0] = "The league has commenced."
+			@alert[1] = ""
+			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%D")}"
+			@invite_button[0] = ""
+			@invite_button[1] = ""
+			@invite_button[2] = ""	
+		# ------ leagues INACTIVE ------ #
 		else
-			# inactive league
-			@invite_button[0], @invite_button[1], @invite_button[2] = ""
+			@status = "inactive"
+			@alert_class = "warning"
+			@alert[0] = "This league is no longer active."
+			@alert[1] = ""
+			@alert[2] = "Why not search for another league to join?"
+			@invite_button[0] = "Search other leagues"
+			@invite_button[1] = "/leagues/search"
+			@invite_button[2] = "btn btn-sm btn-default"		
 		end
 
 		case @league.type
@@ -306,14 +360,6 @@ class LeaguesController < ApplicationController
 			@league.rosters.where(user_id: @current_user.id).empty?
 
 			deadline_alert = "Last day to submit a roster is on #{@league.draft_deadline.strftime('%B %d')}."
-			
-			if @league.active? && @league.participant_cap.present?
-				spots_left = @league.participant_cap - @league.users
-				availability_message = "Hurry, there are only #{spots_left} spots left in this league!"
-				@alert_messages = [deadline_alert, availability_message]
-			else
-				@alert_messages = [deadline_alert]
-			end
 
 		end
 	end
