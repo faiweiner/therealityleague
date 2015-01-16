@@ -54,27 +54,44 @@ class RoundsController < ApplicationController
 		else
 			@active_round = @rounds_collection.find(@upcoming_rounds_ids_collection[0])
 		end
+
 		@active_round_index = @rounds_ids_collection.index(@active_round.id)
 		@active_round_title = ""
-		@previous_button_class = ""
-		@next_button_class = ""
+		@previous_button = []
+		@next_button = []
+		@previous_button[0] = "Previous"
+		@previous_button[1] = "btn-default btn-xs round-toggle previous-button"
+		@previous_button[2] = ""
+		@next_button[0] = "Next"
+		@next_button[1] = "btn-default btn-xs round-toggle next-button"
+		@next_button[2] = ""
 		@previous_round_id = nil
 		@next_round_id = nil
 
 		if @active_round == @rounds_collection.first
 			@active_round_title = "Round #{@active_round_index + 1}"
-			@previous_button_class = "btn-default btn-xs round-toggle previous-button disabled"
-			@next_button_class = "btn-default btn-xs round-toggle next-button"
+			@previous_button[1] = "btn-default btn-xs round-toggle previous-button disabled"
+			if @rounds_data_collection[@active_round.id][:round_status] == "alert-warning"
+				@next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
+			end
+			@next_button[2] = "bulk-add"
 			@previous_round_id = nil
 			@next_round_id = @rounds_ids_collection[1]
 		elsif	@active_round == @rounds_collection.last
 			@active_round_title = "Final Round"
-			@previous_button_class = "btn-default btn-xs round-toggle previous-button"
-			@next_button_class = "btn-default btn-xs round-toggle next-button disabled"
+			@previous_button[1] = "btn-default btn-xs round-toggle previous-button"
+			@next_button[0] = "Finish"
+			@next_button[1] = "btn-default btn-xs round-toggle next-button"
+			@previous_round_id = @round_ids_collection[-2]
+			@next_round_id = nil
 		else
 			@active_round_title = "Round #{@active_round_index + 1}"
-			@previous_button_class = "btn-default btn-xs round-toggle previous-button"
-			@next_button_class = "btn-default btn-xs round-toggle next-button"
+			if @rounds_data_collection[@active_round.id][:round_status] == "alert-warning"
+				@next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
+			end
+			@next_button[2] = "bulk-add"
+			@previous_round_id = @rounds_ids_collection[@active_round_index - 1]
+			@next_round_id = @rounds_ids_collection[@active_round_index + 1]
 		end
 
 
