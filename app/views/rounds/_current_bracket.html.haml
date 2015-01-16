@@ -29,7 +29,7 @@
 				%img.half-res{:src => "#{contestant.image}", :alt => "#{contestant.name}"}
 				.veil
 					= @contestants_data_collection[contestant.id][:round_data][@active_round.id][:label]
-					%i.marker{class: @contestants_data_collection[contestant.id][:round_data][@active_round.id][:i_label]}
+					%i{class: @contestants_data_collection[contestant.id][:round_data][@active_round.id][:i_label]}
 				.caption
 					.contestant-name= contestant.name
 				.action{class: @contestants_data_collection[contestant.id][:round_data][@active_round.id][:action]}

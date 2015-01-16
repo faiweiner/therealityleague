@@ -276,32 +276,45 @@ class RoundsController < ApplicationController
 			action_element_label = ""
 			glyphicon = ""
 			@rounds_collection.each_with_index do |round, i|
-				if contestant.present? == false									# ELIMINATED contestants (on show level)
+				# ELIMINATED contestants (on show level)
+				if contestant.present? == false									
 					status = "eliminated"
 					label = "ELIMINATED"
 					action_element_label = "available pick eliminated"
 					glyphicon = ""
-				elsif round.contestants.include? contestant			# contestant included in a round
-					status = "selected"
-					label = ""
-					i_label = "glyphicon glyphicon-ok"
-					action_element_label = "selected discard"
-					glyphicon = "glyphicon glyphicon-remove"
-				elsif @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
-					status = "last-picked"
-					label = ""
-					action_element_label = "available pick"
-					glyphicon = "glyphicon glyphicon-ok"
-				elsif @rounds_collection[i-1].contestants.include? contestant == false
-					status = "not-picked"
-					label = "NOT PICKED"
-					action_element_label = "available pick eliminated"
-					glyphicon = ""
+				# PRESENT contestants
 				else
-					status = "not-picked"
-					label = ""
-					action_element_label = "available pick"
-					glyphicon = "glyphicon glyphicon-ok"
+					# in current round?
+					if round.contestants.include? contestant			# contestant included in a round
+						status = "selected"
+						label = ""
+						i_label = "marker glyphicon glyphicon-ok"
+						action_element_label = "selected discard"
+						glyphicon = "glyphicon glyphicon-remove"
+					# NOT in current round
+					else
+						# was contestant picked in the last round?
+						if @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
+							status = "last-picked"
+							label = "PICKED LAST ROUND"
+							i_label = ""
+							action_element_label = "available pick"
+							glyphicon = "glyphicon glyphicon-ok"
+						# if contestant wasn't picked in the last round
+						else
+							if round == @rounds_collection[0]
+								status = "not-picked"
+								label = "AVAILABLE"
+								action_element_label = "available pick eliminated"
+								glyphicon = ""
+							else
+								status = "eliminated"
+								label = "NOT PICKED LAST ROUND"
+								action_element_label = "available pick eliminated"
+								glyphicon = ""
+							end
+						end
+					end
 				end
 				round_data[round.id] = {
 					:status => status,
