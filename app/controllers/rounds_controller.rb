@@ -16,7 +16,7 @@ class RoundsController < ApplicationController
 		@league = League.find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 
-		@league.users << @current_user
+		@league.users << @current_user unless @league.users.include? @current_user
 		# @season must already have recorded episodes in order to work
 		@episodes_collection = @season.episodes
 		@episodes_collection.each_with_index do |episode, i|
@@ -25,7 +25,7 @@ class RoundsController < ApplicationController
 			# populate the first(ep.2) round with all contestants
 			if @season.show.name == "The Bachelor" && episode == episode[0]
 				@season.contestants.each do |contestant|
-					round.contestants << contestant
+					round.contestants << contestant unless round.contestants.include? contestant
 				end
 				raise
 			end
