@@ -23,15 +23,14 @@ class RoundsController < ApplicationController
 			round = Round.find_or_create_by!(:user_id => @current_user.id, :league_id => @league.id, :episode_id => episode.id)
 	
 			# populate the first(ep.2) round with all contestants
-			if @season.show.name == "The Bachelor" && episode == episode[0]
+			if i == 0
 				@season.contestants.each do |contestant|
 					round.contestants << contestant unless round.contestants.include? contestant
 				end
-				raise
 			end
 		end
 
-		redirect_to rounds_edit_path(@league.id)
+		redirect_to rounds_edit_path(@league.id, "first")
 	end
 
 	def edit
@@ -66,7 +65,7 @@ class RoundsController < ApplicationController
 
 		# populating first round with all contetants - user can eliminate people off of round
 		if @rounds_collection[0].contestants.empty?
-			bulk_add_contestants(@rounds_collection[0], @rounds_ids_collection)
+			bulk_add_contestants(@rounds_collection[0].id, @rounds_ids_collection)
 		end
 	end
 
@@ -119,6 +118,12 @@ class RoundsController < ApplicationController
 
 	def display
 		@round = Round.includes(:episode, :contestants).find(params[:round_id])
+		previous_round = Round.find(@round.id - 1)
+		if @round.contestants.empty?
+			previous_round.contestants.each do |contestant|
+				@round.contestants << contestant unless @round.contestants.include? contestant
+			end
+		end
 		@league = League.includes(:users, :rounds).find(@round.league.id)	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 	
@@ -150,7 +155,7 @@ class RoundsController < ApplicationController
 
 		# populating first round with all contetants - user can eliminate people off of round
 		if @rounds_collection[0].contestants.empty?
-			bulk_add_contestants(@rounds_collection[0], @rounds_ids_collection)
+			bulk_add_contestants(@rounds_collection[0].id, @rounds_ids_collection)
 		end
 
 		respond_to do |format|
@@ -206,6 +211,10 @@ class RoundsController < ApplicationController
 		round.contestants.each do |contestant|
 			round.contestants.destroy(contestant)
 		end
+	end
+
+	def get_small_static_data(league_id, round_id)
+		league = League.includes(:users, :rounds, :season).find(league_id)	
 	end
 
 	def get_static_data(league_id)
@@ -304,9 +313,9 @@ class RoundsController < ApplicationController
 						else
 							if round == @rounds_collection[0]
 								status = "not-picked"
-								label = "AVAILABLE"
+								label = ""
 								action_element_label = "available pick eliminated"
-								glyphicon = ""
+								glyphicon = "glyphicon glyphicon-ok"
 							else
 								status = "eliminated"
 								label = "NOT PICKED LAST ROUND"
@@ -391,7 +400,6 @@ class RoundsController < ApplicationController
 		when "bulk_add"
 			bulk_add_contestants(round_id, static_data_pack[:upcoming_rounds_ids])
 		end		
-
 
 		data_package = get_round_data(@league.id, action)	
 		@episodes_collection = static_data_pack[:episodes_collection]
@@ -539,7 +547,7 @@ class RoundsController < ApplicationController
 				next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
 			when "alert-success"
 				if static_data_pack[:rounds_collection].find(next_round_id).contestants.empty?
-					next_button[2] = "bulk-add"
+					next_button[2] = "next"
 				end
 			end
 		elsif	round == static_data_pack[:rounds_collection].last
@@ -558,7 +566,7 @@ class RoundsController < ApplicationController
 				next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
 			when "alert-success"
 				if static_data_pack[:rounds_collection].find(next_round_id).contestants.empty?
-					next_button[2] = "bulk-add"
+					next_button[2] = "next"
 				end
 			end
 		end
