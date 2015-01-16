@@ -19,14 +19,15 @@ class RoundsController < ApplicationController
 		@league.users << @current_user
 		# @season must already have recorded episodes in order to work
 		@episodes_collection = @season.episodes
-		@episodes_collection.each do |episode|
+		@episodes_collection.each_with_index do |episode, i|
 			round = Round.find_or_create_by!(:user_id => @current_user.id, :league_id => @league.id, :episode_id => episode.id)
 	
 			# populate the first(ep.2) round with all contestants
-			if episode.first? && @season.show.name == "The Bachelor"
+			if @season.show.name == "The Bachelor" && episode == episode[0]
 				@season.contestants.each do |contestant|
 					round.contestants << contestant
 				end
+				raise
 			end
 		end
 
@@ -45,25 +46,44 @@ class RoundsController < ApplicationController
 		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
 		@rounds_collection = static_data_pack[:rounds_collection]
 		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
-		@upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
+		@upcoming_rounds_ids_collection = static_data_pack[:upcoming_rounds_ids]
 		@contestants_data_collection = data_package[:contestants_data_collection]
-		
-		if @season.show.name == "The Bachelor" && @rounds_collection[0].contestants.empty?
-			bulk_add_contestants(@upcoming_rounds_ids[1], @upcoming_rounds_ids)
-			bulk_add_contestants(@upcoming_rounds_ids[1], @upcoming_rounds_ids)
+
+		if params[:round_id]
+			@active_round = @rounds_collection.find(params[:round_id])
+		else
+			@active_round = @rounds_collection.find(@upcoming_rounds_ids_collection[0])
+		end
+		@active_round_index = @rounds_ids_collection.index(@active_round.id)
+		@active_round_title = ""
+		@previous_button_class = ""
+		@next_button_class = ""
+		@previous_round_id = nil
+		@next_round_id = nil
+
+		if @active_round == @rounds_collection.first
+			@active_round_title = "Round #{@active_round_index + 1}"
+			@previous_button_class = "btn-default btn-xs round-toggle previous-button disabled"
+			@next_button_class = "btn-default btn-xs round-toggle next-button"
+			@previous_round_id = nil
+			@next_round_id = @rounds_ids_collection[1]
+		elsif	@active_round == @rounds_collection.last
+			@active_round_title = "Final Round"
+			@previous_button_class = "btn-default btn-xs round-toggle previous-button"
+			@next_button_class = "btn-default btn-xs round-toggle next-button disabled"
+		else
+			@active_round_title = "Round #{@active_round_index + 1}"
+			@previous_button_class = "btn-default btn-xs round-toggle previous-button"
+			@next_button_class = "btn-default btn-xs round-toggle next-button"
 		end
 
-		respond_to do |format|
-			format.html
-			format.js {
-				render :json => {
-					:rounds_ids => @rounds_ids_collection,
-					:rounds_collection => @rounds_collection,
-					:contestants_data_collection => @contestants_data_collection,
-					:rounds_data_collection => @rounds_data_collection
-				}
-			}
+
+
+		# populating first round with all contetants - user can eliminate people off of round
+		if @rounds_collection[0].contestants.empty?
+			bulk_add_contestants(@rounds_collection[0], @rounds_ids_collection)
 		end
+
 	end
 
 	def singleedit
@@ -240,7 +260,7 @@ class RoundsController < ApplicationController
 			action_element_label = ""
 			glyphicon = ""
 			@rounds_collection.each_with_index do |round, i|
-				if contestant.present == false									# ELIMINATED contestants (on show level)
+				if contestant.present? == false									# ELIMINATED contestants (on show level)
 					status = "eliminated"
 					label = "ELIMINATED"
 					action_element_label = "available pick eliminated"
@@ -255,10 +275,15 @@ class RoundsController < ApplicationController
 					label = ""
 					action_element_label = "available pick"
 					glyphicon = "glyphicon glyphicon-ok"
-				else
-					status = "eliminated"
-					label = ""
+				elsif @rounds_collection[i-1].contestants.include? contestant == false
+					status = ""
+					label = "NOT PICKED"
 					action_element_label = "available pick eliminated"
+					glyphicon = ""
+				else
+					status = ""
+					label = ""
+					action_element_label = "available pick"
 					glyphicon = ""
 				end
 				round_data[round.id] = {

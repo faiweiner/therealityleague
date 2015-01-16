@@ -13,10 +13,7 @@
 		#bracketBoard.col-lg-12
 			.row
 				#roundEdit.col-lg-10
-					- if @rounds_collection.count == 0
-						= render partial: "empty_bracket"
-					- else
-						= render partial: "current_bracket"
+					= render partial: "current_bracket"
 				%ul#episodeBoard.col-lg-2{"data-rounds-count" => @rounds_collection.count, "data-rounds-ids" => @rounds_ids_collection}
 					#padding-for-episode-column
 					- @rounds_collection.each_with_index do |round, i|
