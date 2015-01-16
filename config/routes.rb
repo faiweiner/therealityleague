@@ -62,7 +62,6 @@ Rails.application.routes.draw do
 	post	'rounds/:league_id' => 'rounds#create', :as => :rounds_create
 	get		'rounds/:league_id/:user_id' => 'rounds#index', :as => :rounds
 	get		'rounds/:round_id' => 'rounds#display', :as => :round_display
-	get		'rounds/edit/:round_id' => 'rounds#singleedit', :as => :round_edit
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add
 	post	'rounds/:round_id/bulk' => 'rounds#bulk_add', :as => :round_bulk_add
 	post	'rounds/:round_id/remove/:contestant_id' => 'rounds#remove', :as => :round_remove

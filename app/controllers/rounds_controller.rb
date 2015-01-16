@@ -69,24 +69,6 @@ class RoundsController < ApplicationController
 		end
 	end
 
-	def singleedit
-		@round = Round.includes(:user, :league).find(params[:round_id])	
-		@league = @round.league
-		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
-		@episodes_collection = @season.episodes
-
-		@available_contestants = @season.contestants.where(present: true).order(name: :asc)
-		respond_to do |format|
-			format.html
-			format.js {
-				render :json => {
-					:rounds_collection => @rounds_collection,
-					:rounds_ids => @rounds_ids
-				}
-			}
-		end
-	end
-
 	def add
 		process_and_return(params[:contestant_id], params[:round_id], "add")
 	end
