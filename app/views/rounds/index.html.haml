@@ -11,7 +11,7 @@
 				- if @rounds_collection.count == 0
 					= button_to "Build Elimination Bracket", rounds_create_path(@league.id), method: "POST", class: "btn btn-default btn-sm"
 				- elsif @league.locked == false
-					= link_to "Edit Bracket", rounds_edit_path(@league.id), class: "btn btn-default btn-sm"
+					= link_to "Edit Bracket", rounds_edit_path(nil), class: "btn btn-default btn-sm"
 			= link_to "Back to League", league_path(@league.id), class: "btn btn-default btn-sm"
 		/ Contestant Board
 		#roundViewPort.col-lg-12

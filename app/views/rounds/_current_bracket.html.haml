@@ -3,7 +3,7 @@
 	.col-lg-12#round-navigation
 		%h4= @active_round_title
 		%h6
-			.alert.nav-check{:class => @rounds_data_collection[@active_round.id][:round_status], :role => "alert", "data-round-id" => @active_round.id, "data-status" => @rounds_data_collection[@active_round.id][:round_status], "data-round-difference" => @rounds_data_collection[@active_round.id][:count_difference]}
+			.alert.nav-check{:class => @rounds_data_collection[@active_round.id][:round_status], :role => "alert", "data-league-id" => @league.id, "data-round-id" => @active_round.id, "data-status" => @rounds_data_collection[@active_round.id][:round_status], "data-round-difference" => @rounds_data_collection[@active_round.id][:count_difference]}
 				%strong
 					= @rounds_data_collection[@active_round.id][:round_message][:contentHero]
 				= @rounds_data_collection[@active_round.id][:round_message][:contentSupport][:a]

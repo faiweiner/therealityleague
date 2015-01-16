@@ -37,7 +37,7 @@ $(document).ready(function () {
 		$bracketBoard = $('#bracketBoard');               // overaching DIV covering the below
 		$roundEditBoard = $('#roundEdit');
 		$episodeBoard = $('#episodeBoard');
-
+		$roundNavBoard = $('#round-navigation')
 		// Server data
 		var roundsCount = $('#episodeBoard').data().roundsCount;
 		var roundsIds = $('#episodeBoard').data().roundsIds;
@@ -62,7 +62,6 @@ $(document).ready(function () {
 				}
 			}).done(function (msg) {      
 				$roundEditBoard.html(msg);
-				toggleRoundDisplay(roundId);
 			});
 		};
 
@@ -72,9 +71,8 @@ $(document).ready(function () {
 				type: 'POST',
 				success: function (msg) {
 				}
-			}).done(function (msg) {      
+			}).done(function (msg) {   
 				$roundEditBoard.html(msg);
-				toggleRoundDisplay(roundId);
 			});
 		};
 
@@ -87,9 +85,21 @@ $(document).ready(function () {
 				error: function (msg) {}
 			}).done(function (msg) {
 				$roundEditBoard.html(msg);
-				toggleRoundDisplay(roundId);
 			});
 		};
+
+		var refreshRoundEditBoard = function (roundId, leagueId) {
+			var msg;
+			$.ajax({
+				url: '/rounds/' + roundId,
+				type: 'GET',
+				success: function (msg) {
+				}
+			}).done(function (msg) {    
+				$roundEditBoard.html(msg);
+				toggleEpisodeButtonById(roundId);	
+			});
+		};			
 
 		// ========== END server-side ========== //
 
@@ -129,44 +139,6 @@ $(document).ready(function () {
 			$element.html(message);
 			$element.children('span').text(pickDifference)
 		};
-
-		// var messageGenerator = function (pickDifference, alertStatus) {
-		// 	var SliderOne = {
-		// 		A: (pickDifference > 0),
-		// 		B: (pickDifference === 0),
-		// 		C: (pickDifference < 0)
-		// 	};
-
-		// 	var SliderTwo = {
-		// 		A: "warning",
-		// 		B: "success",
-		// 		C: "danger"
-		// 	};
-
-		// 	// Set state
-		// 	var s1 = SliderOne.A,
-		// 			s2 = SliderTwo.B;
-
-		// 	var message;
-		// 	// Switch state
-		// 	switch (s1 | s2) {
-		// 		case SliderOne.A | SliderTwo.A:
-		// 		case SliderOne.A | SliderTwo.C:
-		// 			message = 'Almost there!';
-		// 			return message;
-		// 			break;
-		// 		case SliderOne.C | SliderTwo.A:
-		// 		case SliderOne.C | SliderTwo.C:
-		// 			return 'Add <span class="round-difference strong"><span> more contestants before moving onto the next round.';
-		// 			break;
-		// 		case SliderOne.B | SliderTwo.B:
-		// 		default:
-		// 			return 'You\'re good to go! Click "Next" to construct the next round.';
-		// 			break;
-		// 	}
-		// 	$('.alert.nav-check');
-		// 	debugger
-		// };
 
 		// --- Round Display Toggle --- //
 		// hides all round display except the active one
@@ -279,10 +251,9 @@ $(document).ready(function () {
 		// );
 
 		// // --- for adding/removing contestants from Round --- //
-		$bracketBoard.on('click', $('i.glyphicon'), function (event) {
+		$bracketBoard.on('click', $('.glyphicon'), function (event) {
 			// records which element is being clicked
 			$element = event.target;
-
 			// set arguments for roundOperation
 			var myClass = $element.className;
 			var contestantId = $element.dataset.contestantId;
@@ -308,33 +279,30 @@ $(document).ready(function () {
 		// --------- Episode Board Buttons --------- //
 		$episodeBoard.on('click', '.btn.btn-block.btn-sm', function (event) {
 			$element = event.target; 
+			debugger
 			var roundId = $element.dataset.roundId;
-			toggleRoundDisplay(roundId);
+			// toggleRoundDisplay(roundId);
 			toggleEpisodeButton($element);
 		});
 
 		// --------- Previous/Next Buttons --------- //
-		$bracketBoard.on('click', '.btn.btn-default.btn-xs.round-toggle', function (event) {
+		$bracketBoard.on('click', $('.round-toggle'), function (event) {
 			$element = event.target; 
 			var targetRoundId = $element.dataset.roundId;
-			var status = $element.parentElement.dataset.status;
+			var leagueId = $element.parentElement.parentElement.dataset.leagueId;
+			var status = $element.parentElement.parentElement.dataset.status;
 			var action = $element.dataset.action;
-			switch (status) {
-				case 'alert-warning':		
-					var message = messageGenerator(roundDifference, status);
+			switch (action) {
+				case 'previous':
+					refreshRoundEditBoard(targetRoundId, leagueId);
 					break;
-				case 'alert-success':		
-					if (action == "bulk-add") {
-						bulkAddContestantsToRound(targetRoundId);
-					};
-					break;			
+				case 'next':
+					refreshRoundEditBoard(targetRoundId, leagueId);
+					break;
+				case 'bulk-add':
+					bulkAddContestantsToRound(targetRoundId);
+					break;
 			}
-			toggleRoundDisplay(targetRoundId);
-			toggleEpisodeButtonById(targetRoundId);
 		});
-
-		// --- standard toggle to display --- //
-		toggleRoundDisplay(activeRoundId);
-
 	};
 });

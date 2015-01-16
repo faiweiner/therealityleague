@@ -21,6 +21,6 @@
 									= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
 								- else
 									= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
-									= link_to "Edit", rounds_edit_path(@league.id), class: "btn btn-primary btn-sm" 
+									= link_to "Edit", rounds_edit_path(@league.id, "first"), class: "btn btn-primary btn-sm" 
 							- else
 								= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-default btn-sm"
