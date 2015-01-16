@@ -3,8 +3,7 @@
 		= flash[:notice]
 .panel.panel-default#league_view
 	.panel-body
-		.col-lg-8
-			= link_to "Edit League", edit_league_path, class: "btn btn-default btn-sm pull-right" if @league.active? && @comm_this_league == true
+		.col-lg-10.col-md-10.col-sm-10
 			%h2= @league.name
 			%p
 				= @league.season.show.name + ": "

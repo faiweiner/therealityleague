@@ -1,26 +1,22 @@
-.panel-body
-	.col-lg-12
-		%h3 League Ranking
-		%table.table.table-hover
-			%thead
-				%th Rank
-				%th Participants
-				%th Total Pts
-				%th Actions
-			%tbody
-				- @ranking.each_with_index do |ranking, i|
-					%tr 
-						%td= i + 1
-						%td= ranking[1][:participant].username
-						%td= ranking[1][:score]
-						%td
-							- if ranking[1][:participant] == @current_user && @league.active?
-								- if ranking[1][:rounds_collection].empty? || ranking[1][:rounds_contestants_collection].empty?
-									= link_to "Build Elimination Bracket", rounds_create_path(@league.id), :action => "create", :method => "post", class: "btn btn-primary btn-sm" 
-								- elsif @league.locked?
-									= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
-								- else
-									= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
-									= link_to "Edit", rounds_edit_path(@league.id, "first"), class: "btn btn-primary btn-sm" 
-							- else
-								= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-default btn-sm"
+%h3 League Ranking
+%table.table.table-hover
+	%thead
+		%th Rank
+		%th Participants
+		%th Total Pts
+		%th Actions
+	%tbody
+		- @ranking.each_with_index do |ranking, i|
+			%tr 
+				%td= i + 1
+				%td= ranking[1][:participant].username
+				%td= ranking[1][:score]
+				%td
+					- if ranking[1][:participant] == @current_user && @league.active?
+						- if ranking[1][:rounds_collection].empty? || ranking[1][:rounds_contestants_collection].empty?
+							= link_to "Build Elimination Bracket", rounds_create_path(@league.id), :action => "create", :method => "post", class: "btn btn-primary btn-sm" 
+						- else
+							= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
+							= link_to "Edit", rounds_edit_path(@league.id), class: "btn btn-primary btn-sm" 
+					- else
+						= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-default btn-sm"

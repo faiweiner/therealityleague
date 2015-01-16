@@ -352,7 +352,6 @@ class LeaguesController < ApplicationController
 			@league.rosters.where(user_id: @current_user.id).empty?
 
 			deadline_alert = "Last day to submit a roster is on #{@league.draft_deadline.strftime('%B %d')}."
-
 		end
 	end
 
