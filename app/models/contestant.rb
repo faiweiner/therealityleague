@@ -59,4 +59,9 @@ class Contestant < ActiveRecord::Base
 		Event.where(contestant_id: self.id).sum("points_earned")
 	end
 
+	private
+	
+	def set_present
+		
+	end
 end

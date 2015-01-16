@@ -2,10 +2,8 @@
 	- if @leagues.any?
 		.panel-body
 			.col-lg-12.col-md-12.col-sm-12
-				%h2 Dashboard
-			.panel-body
-				%h3
-					= pluralize_without_count(@leagues.count, "League", text = nil)
+				%h2 
+					Dashboard
 					.pull-right
 						.caption 
 							%img.line-marker{:src => "/assets/icons/star.png", :alt => "Commissioner Star"}

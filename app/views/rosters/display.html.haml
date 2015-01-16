@@ -7,8 +7,7 @@
 				= @roster.league.season.name
 		.col-lg-3.text-right
 			- if @roster.user_id == @current_user.id
-				%h4.small Deadline: #{@roster.league.season.premiere_date.strftime("%B %d")}
-				- if @roster.contestants.any?
+				- if @roster.contestants.any? && @roster.league.locked == false
 					= link_to "Edit roster", edit_roster_path(@roster.id), class:"btn btn-primary btn-sm"
 			= link_to "Back to league", league_path(@roster.league.id), class:"btn btn-default btn-sm"
 		- if @contestants.any?

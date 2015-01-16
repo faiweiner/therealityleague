@@ -5,16 +5,8 @@
 				= @season.show.name + ": "
 				= @season.name
 			%p
-				- if @season.expired
-					Run Date:
-					= @season.premiere_date.strftime("%B %d, %Y")
-					\-
-					= @season.finale_date.strftime("%B %d, %Y")
-				- else
-					Premieres: 
-					= @season.premiere_date.strftime("%B %d")
-			- if @season.expired == false
-				= link_to "Find a league", leagues_search_path, class:"btn btn-primary btn-sm"
+				Premiere Date:
+				= @season.premiere_date.strftime("%D")
 			= render "shows/scoring_system"
 		.col-lg-5.text-right
 			= link_to "Back to #{@season.show.name}", show_path(@season.show.id), class:"btn btn-default btn-sm"

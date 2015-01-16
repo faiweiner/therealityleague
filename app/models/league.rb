@@ -32,7 +32,6 @@ class League < ActiveRecord::Base
 	has_and_belongs_to_many :schemes
 
 	# FIXME! Come bck to deal with dependencies please
-
 	before_save :set_up_league, :set_draft_limit
 	after_initialize :update_full_field
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
@@ -50,9 +49,15 @@ class League < ActiveRecord::Base
 
 	def self.search_by_show_name(query)
 	end
-
+	
 	def self.select_type
 		@type = [["Fantasy", "Fantasy"],["Elimination", "Elimination"]]		
+	end
+	
+	def lock_league
+		if self.draft_deadline.past?
+			self.update!(locked: true)
+		end
 	end
 	
 	private
@@ -72,7 +77,7 @@ class League < ActiveRecord::Base
 
 	def update_full_field
 		if self.participant_cap && self.participant_cap == self.users.count
-			self.full = true 	
+			self.update!(full: true)
 		end
 	end
 

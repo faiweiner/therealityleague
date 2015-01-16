@@ -3,7 +3,7 @@
 		= flash[:notice]
 .panel.panel-default#league_view
 	.panel-body
-		.col-lg-12
+		.col-lg-8
 			= link_to "Edit League", edit_league_path, class: "btn btn-default btn-sm pull-right" if @league.active? && @comm_this_league == true
 			%h2= @league.name
 			%p
@@ -12,19 +12,19 @@
 			#league-action-panel
 				= render partial: "/shows/scoring_system"
 				%p
-					- if @alert.present?
-						%p
-							.alert#alert-panel.alert-dismissible{class: "alert-#{@alert_class}", role: "alert"}
-								%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
-									%span.small{"aria-hidden" => true} &times;
-								%p
-									- @alert.each_with_index do |alert, i|
-										%strong= @alert[i] if i == 0
-										= @alert[i] unless i == 0
-								- if @invite_button.length == 3
-									%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "huzzah #{@invite_button[2]}"
-								- elsif @invite_button.length > 3
-									%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
+		- if @alert.present?
+			.col-lg-4
+				.alert#alert-panel.alert-dismissible{class: "alert-#{@alert_class}", role: "alert"}
+					%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
+						%span.small{"aria-hidden" => true} &times;
+					%p
+						- @alert.each_with_index do |alert, i|
+							%strong= @alert[i] if i == 0
+							= @alert[i] unless i == 0
+					- if @invite_button.length == 3
+						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "huzzah #{@invite_button[2]}"
+					- elsif @invite_button.length > 3
+						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
 		- case @league.type
 		- when "Elimination"
 			= render partial: "leagues/elimination/ranking"

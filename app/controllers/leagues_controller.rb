@@ -93,12 +93,12 @@ class LeaguesController < ApplicationController
 			
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
-			flash[:color] = "valid"
+			flash[:color] = "success"
 			
 			redirect_to league_path(@league.id)
 		else
 			flash[:notice] = "Something went wrong and we were unable to save your league"
-			flash[:color] = "invalid"
+			flash[:color] = "danger"
 			render :new
 		end
 
@@ -125,6 +125,7 @@ class LeaguesController < ApplicationController
 	end
 
 	def display
+		@league.lock_league
 		@show = @league.season.show
 		@participants = @league.users
 		@rules = Show.get_schemes(@show.id)
@@ -175,34 +176,27 @@ class LeaguesController < ApplicationController
 					# ------ solo memmber ------ #
 					if spots
 						if spots == 0
-							@status = "full"
-							@alert_class = "success"
-							@alert[0] = "Your league is now full."
-							@alert[1] = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
-							@invite_button[0] = "Do something"
-							@invite_button[1] = "#"
-							@invite_button[2] = "btn btn-sm btn-default"
+						elsif @participants.count == 1
+							@status = "available"
+							@alert_class = "warning"
+							@alert[0] = ""
+							@alert[1] = "Invite friends to join the league before the league commences!"
+							@invite_button[0] = "Invite Participants"
+							@invite_button[1] = league_invite_path(@league.id)
+							@invite_button[2] = "btn btn-sm btn-default"						
 						elsif spots < 3
 							@status = "limited"
 							@alert_class = "danger"
 							@alert[0] = "Only #{spots} #{"spot".pluralize(spots)} left in this league!"
-							@alert[1] = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+							@alert[1] = ""
 							@invite_button[0] = "Do something"
 							@invite_button[1] = "#"
-							@invite_button[2] = "btn btn-sm btn-default"	
-						else
-							@status = "available"
-							@alert_class = "warning"
-							@alert[0] = "#{spots} #{"spot".pluralize(spots)} left in this league."
-							@alert[1] = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
-							@invite_button[0] = "Do something"
-							@invite_button[1] = "#"
-							@invite_button[2] = "btn btn-sm btn-default"													
+							@invite_button[2] = "btn btn-sm btn-default"												
 						end
 					elsif @participants.count < 2
 						@status = "available"
 						@alert_class = "warning"
-						@alert[0] = "Don't play by yourself."
+						@alert[0] = ""
 						@alert[1] = "Invite friends to join the league before the league commences!"
 						@invite_button[0] = "Invite Participants"
 						@invite_button[1] = league_invite_path(@league.id)

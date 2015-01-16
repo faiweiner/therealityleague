@@ -1,16 +1,15 @@
-.panel-body
-	.col-lg-12
-		%table.table.table-hover
-			%h3 Participants' Weekly Scores
-			%thead
-				%th Participants
-				- @league.season.episode_count.times do |i|
-					%th= i+1
-				%th Total
-			%tbody
-				- @participants.each_with_index do |participant, index|
-					%tr
-						%td= participant.username
-						- @league.season.episode_count.times do |i|
-							%td --
-						%td= @participants_roster_total[participant.username] 
+.col-lg-12
+	%table.table.table-hover
+		%h3 Participants' Weekly Scores
+		%thead
+			%th Participants
+			- @league.season.episode_count.times do |i|
+				%th= i+1
+			%th Total
+		%tbody
+			- @participants.each_with_index do |participant, index|
+				%tr
+					%td= participant.username
+					- @league.season.episode_count.times do |i|
+						%td --
+					%td= @participants_roster_total[participant.username] 
