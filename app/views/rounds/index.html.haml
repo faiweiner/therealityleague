@@ -6,7 +6,8 @@
 				= @season.show.name + ": "
 				= @season.name
 			%p 
-		.col-md-2.col-lg-4.text-right
+		.col-md-4.col-lg-4.text-right
+
 			- if @user == @current_user && @league.active?
 				- if @rounds_collection.count == 0
 					= button_to "Build Elimination Bracket", rounds_create_path(@league.id), method: "POST", class: "btn btn-default btn-sm"

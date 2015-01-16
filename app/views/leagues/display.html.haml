@@ -3,7 +3,7 @@
 		= flash[:notice]
 .panel.panel-default#league_view
 	.panel-body
-		.col-lg-10.col-md-10.col-sm-10
+		.col-lg-8.col-md-8.col-sm-8
 			%h2= @league.name
 			%p
 				= @league.season.show.name + ": "
@@ -26,11 +26,13 @@
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
 		- case @league.type
 		- when "Elimination"
-			= render partial: "leagues/elimination/ranking"
-			- if @league.season.episode_count
-				= render partial: "leagues/elimination/weekly_score"
+			.col-lg-12.col-md-12.col-sm-12
+				= render partial: "leagues/elimination/ranking"
+				- if @league.season.episode_count
+					= render partial: "leagues/elimination/weekly_score"
 		- when "Fantasy"
-			= render partial: "leagues/fantasy/ranking"			
-			- if @league.season.episode_count
-				= render partial: "leagues/fantasy/weekly_score"
+			.col-lg-12.col-md-12.col-sm-12
+				= render partial: "leagues/fantasy/ranking"			
+				- if @league.season.episode_count
+					= render partial: "leagues/fantasy/weekly_score"
 
