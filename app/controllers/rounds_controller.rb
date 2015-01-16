@@ -274,6 +274,7 @@ class RoundsController < ApplicationController
 			round_data = Hash.new
 			status = ""
 			label = ""
+			i_label = ""
 			action_element_label = ""
 			glyphicon = ""
 			@rounds_collection.each_with_index do |round, i|
@@ -285,6 +286,7 @@ class RoundsController < ApplicationController
 				elsif round.contestants.include? contestant			# contestant included in a round
 					status = "selected"
 					label = ""
+					i_label = "glyphicon glyphicon-ok"
 					action_element_label = "selected discard"
 					glyphicon = "glyphicon glyphicon-remove"
 				elsif @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
@@ -293,19 +295,20 @@ class RoundsController < ApplicationController
 					action_element_label = "available pick"
 					glyphicon = "glyphicon glyphicon-ok"
 				elsif @rounds_collection[i-1].contestants.include? contestant == false
-					status = ""
+					status = "not-picked"
 					label = "NOT PICKED"
 					action_element_label = "available pick eliminated"
 					glyphicon = ""
 				else
-					status = ""
+					status = "not-picked"
 					label = ""
 					action_element_label = "available pick"
-					glyphicon = ""
+					glyphicon = "glyphicon glyphicon-ok"
 				end
 				round_data[round.id] = {
 					:status => status,
 					:label => label,
+					:i_label => i_label,
 					:action => action_element_label,
 					:glyphicon => glyphicon
 				}
@@ -362,8 +365,8 @@ class RoundsController < ApplicationController
 
 	def process_and_return(contestant_id, round_id, action)
 		contestant = Contestant.find(contestant_id) if contestant_id != nil
-		round = Round.includes(:league, :contestants).find(round_id)
-		@league = round.league
+		@active_round = Round.includes(:league, :contestants).find(round_id)
+		@league = @active_round.league
 		@season = @league.season
 		@contestants = @season.contestants.order(name: :asc)
 		
@@ -371,9 +374,9 @@ class RoundsController < ApplicationController
 
 		case action
 		when "add"
-			round.contestants << contestant unless round.contestants.include? contestant
+			@active_round.contestants << contestant unless @active_round.contestants.include? contestant
 		when "remove"
-			round.contestants.destroy(contestant)
+			@active_round.contestants.destroy(contestant)
 		when "bulk_add"
 			bulk_add_contestants(round_id, static_data_pack[:upcoming_rounds_ids])
 		end		
@@ -387,11 +390,57 @@ class RoundsController < ApplicationController
 		@upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
 		@contestants_data_collection = data_package[:contestants_data_collection]
 		@rounds_data_collection = data_package[:rounds_data_collection]
-		
+
+		# FIXME
+		# action_package = get_round_actions(@active_round.id, @rounds_data_collection[@active_round.id][:round_status])
+	
+		@active_round_index = @rounds_ids_collection.index(@active_round.id)
+		@active_round_title = ""
+		@previous_button = []
+		@next_button = []
+		@previous_button[0] = "Previous"
+		@previous_button[1] = "btn-default btn-xs round-toggle previous-button"
+		@previous_button[2] = ""
+		@next_button[0] = "Next"
+		@next_button[1] = "btn-default btn-xs round-toggle next-button"
+		@next_button[2] = ""
+		@previous_round_id = nil
+		@next_round_id = nil
+
+		if @active_round == @rounds_collection.first
+			@active_round_title = "Round #{@active_round_index + 1}"
+			@previous_button[1] = "btn-default btn-xs round-toggle previous-button disabled"
+			if @rounds_data_collection[@active_round.id][:round_status] == "alert-warning"
+				@next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
+			end
+			@next_button[2] = "bulk-add"
+			@previous_round_id = nil
+			@next_round_id = @rounds_ids_collection[1]
+		elsif	@active_round == @rounds_collection.last
+			@active_round_title = "Final Round"
+			@previous_button[1] = "btn-default btn-xs round-toggle previous-button"
+			@next_button[0] = "Finish"
+			@next_button[1] = "btn-default btn-xs round-toggle next-button"
+			@previous_round_id = @round_ids_collection[-2]
+			@next_round_id = nil
+		else
+			@active_round_title = "Round #{@active_round_index + 1}"
+			if @rounds_data_collection[@active_round.id][:round_status] == "alert-warning"
+				@next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
+			end
+			@next_button[2] = "bulk-add"
+			@previous_round_id = @rounds_ids_collection[@active_round_index - 1]
+			@next_round_id = @rounds_ids_collection[@active_round_index + 1]
+		end
 
 		respond_to do |format|
 			format.html { 
 				render partial: "current_bracket", :remote => true 
+			}
+			format.json {
+				render :json => {
+					:round_id => @active_round.id
+				}
 			}
 		end
 	end
@@ -485,6 +534,49 @@ class RoundsController < ApplicationController
 				}
 			end
 		end		
+	end
+
+	def get_round_actions(round_id, status)
+		# FIXME
+		@active_round_title = ""
+		@previous_button = []
+		@next_button = []
+		@previous_button[0] = "Previous"
+		@previous_button[1] = "btn-default btn-xs round-toggle previous-button"
+		@previous_button[2] = ""
+		@next_button[0] = "Next"
+		@next_button[1] = "btn-default btn-xs round-toggle next-button"
+		@next_button[2] = ""
+		@previous_round_id = nil
+		@next_round_id = nil	
+
+		if @active_round == @rounds_collection.first
+			@active_round_title = "Round #{@active_round_index + 1}"
+			@previous_button[1] = "btn-default btn-xs round-toggle previous-button disabled"
+			if @rounds_data_collection[@active_round.id][:round_status] == "alert-warning"
+				@next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
+			end
+			@next_button[2] = "bulk-add"
+			@previous_round_id = nil
+			@next_round_id = @rounds_ids_collection[1]
+		elsif	@active_round == @rounds_collection.last
+			@active_round_title = "Final Round"
+			@previous_button[1] = "btn-default btn-xs round-toggle previous-button"
+			@next_button[0] = "Finish"
+			@next_button[1] = "btn-default btn-xs round-toggle next-button"
+			@previous_round_id = @round_ids_collection[-2]
+			@next_round_id = nil
+		else
+			@active_round_title = "Round #{@active_round_index + 1}"
+			if @rounds_data_collection[@active_round.id][:round_status] == "alert-warning"
+				@next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
+			end
+			@next_button[2] = "bulk-add"
+			@previous_round_id = @rounds_ids_collection[@active_round_index - 1]
+			@next_round_id = @rounds_ids_collection[@active_round_index + 1]
+		end
+
+
 	end
 
 end

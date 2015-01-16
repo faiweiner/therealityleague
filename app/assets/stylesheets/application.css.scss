@@ -157,7 +157,7 @@ div {
 				border-radius: 3px;			
 			}
 		}
-		&.last-picked {
+		&.last-picked, &.not-picked {
 			img {
 				border: 4px solid gray; 
 				border-radius: 3px;			
