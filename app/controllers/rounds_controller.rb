@@ -36,6 +36,7 @@ class RoundsController < ApplicationController
 	def edit
 		@league = League.includes(:users, :rounds).find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		@contestants = @season.contestants
 		
 		if params[:round_id] == "first"
 			@active_round = @league.rounds.where(user_id: @current_user.id).first
@@ -44,15 +45,14 @@ class RoundsController < ApplicationController
 		end
 		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
 		static_data_pack = get_static_data(@league.id)
-		data_package = get_round_data(@league.id, "landing")
-
+		round_data_package = get_round_data(@active_round.id, @league.id, "landing")
+		
+		@round_data_collection = round_data_package
 		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
-		@rounds_collection = static_data_pack[:rounds_collection]
 		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
 		@upcoming_rounds_ids_collection = static_data_pack[:upcoming_rounds_ids]
-		@contestants_data_collection = data_package[:contestants_data_collection]
-
-		action_packet = get_round_actions(@active_round, static_data_pack, @rounds_data_collection[@active_round.id])
+	
+		action_packet = get_round_actions(@active_round, static_data_pack, round_data_package)
 		@episode_pack = get_episode_action(@active_round.id, @rounds_ids_collection)
 
 		@active_round_index = action_packet[:active_round_index]
@@ -63,8 +63,8 @@ class RoundsController < ApplicationController
 		@next_round_id = action_packet[:next_round_id]
 
 		# populating first round with all contetants - user can eliminate people off of round
-		if @rounds_collection[0].contestants.empty?
-			bulk_add_contestants(@rounds_collection[0].id, @rounds_ids_collection)
+		if @active_round.contestants.empty?
+			bulk_add_contestants(@active_round.id, @rounds_ids_collection)
 		end
 	end
 
@@ -110,14 +110,11 @@ class RoundsController < ApplicationController
 	
 	# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
 		static_data_pack = get_static_data(@league.id)
-		data_package = get_round_data(@league.id, "landing")
+		round_data_package = get_round_data(@round.id, @league.id, "landing")
 		
-		@episodes_collection = static_data_pack[:episodes_collection]
 		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
-		@rounds_collection = static_data_pack[:rounds_collection]
 		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
 		@upcoming_rounds_ids_collection = static_data_pack[:upcoming_rounds_ids]
-		@contestants_data_collection = data_package[:contestants_data_collection]
 
 		if params[:round_id] == "first"
 			@active_round = @rounds_collection.find(@upcoming_rounds_ids_collection[0])
@@ -200,168 +197,151 @@ class RoundsController < ApplicationController
 
 	def get_static_data(league_id)
 		league = League.includes(:users, :rounds, :season).find(league_id)	
-		rounds_collection = league.rounds.where(:user_id => @current_user.id).order(episode_id: :asc)
-		rounds_ids_collection = rounds_collection.pluck(:id)
-		episodes_collection = league.season.episodes.order(air_date: :asc)
-		episodes_ids_collection = episodes_collection.pluck(:id)
-		contestants_collection = league.season.contestants.order(name: :asc)
+		rounds_ids_collection = league.rounds.pluck(:id)
+		episodes_ids_collection = league.season.episodes.pluck(:id)
+		contestants_ids_collection = league.season.contestants.order(name: :asc).pluck(:id)
 
 		upcoming_rounds_ids = []
-		rounds_collection.each do |round|
-			upcoming_rounds_ids << round.id if round.episode.air_date.future?
+		rounds_ids_collection.each do |id|
+			upcoming_rounds_ids << id if Round.find(id).episode.air_date.future?
 		end
 
 		static_data_pack = Hash.new
 		static_data_pack = {
-			:rounds_collection => rounds_collection,
 			:rounds_ids_collection => rounds_ids_collection,
-			:episodes_collection => episodes_collection,
 			:episodes_ids_collection => episodes_ids_collection,
-			:contestants_collection => contestants_collection,
+			:contestants_ids_collection => contestants_ids_collection,
 			:upcoming_rounds_ids => upcoming_rounds_ids
 		}
 		return static_data_pack
 	end
 	
-	def get_round_data(league_id, round_action)
+	def get_round_data(round_id, league_id, round_action)
 		@league = League.includes(:users, :rounds, :season).find(league_id)	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		
 		static_data_pack = get_static_data(@league.id)
+		
+		rounds_ids_collection = static_data_pack[:rounds_ids_collection]
+		episodes_ids_collection = static_data_pack[:episodes_ids_collection]
+		contestants_ids_collection = static_data_pack[:contestants_ids_collection]
+		upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
 
-		@contestants = static_data_pack[:contestants_collection]
-		@rounds_collection = static_data_pack[:rounds_collection]
-		@upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
-		@episodes_collection = static_data_pack[:episodes_collection]
-		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
+		current_round = Round.find(round_id)
+		current_round_index = rounds_ids_collection.index(current_round.id)
+		
+		puts current_round.id
+		puts rounds_ids_collection
+		puts current_round_index
 
-		@rounds_data_collection = Hash.new
-		prev_round_id, next_round_id = 0
-		@rounds_collection.each_with_index do |round, i|
-			prev_round_id = @rounds_collection[i-1].id if @rounds_collection[i-1].present?
-			next_round_id = @rounds_collection[i+1].id if @rounds_collection[i+1].present?
+		previous_round, previous_round_id, next_round, next_round_id = nil
+		previous_round_index = current_round_index - 1
+		next_round_index = current_round_index + 1
+
+		if current_round.id == rounds_ids_collection[0]
+			previous_round = nil
+			next_round = Round.find(rounds_ids_collection[(next_round_index)])
+			next_round_id = next_round.id
+		elsif current_round.id == rounds_ids_collection[-1]
+			previous_round = Round.find(rounds_ids_collection[previous_round_index])
+			previous_round_id = previous_round.id
+			next_round = nil
+		else
+			previous_round = Round.find(rounds_ids_collection[previous_round_index])
+			previous_round_id = previous_round.id
+			next_round = Round.find(rounds_ids_collection[next_round_index])
+			next_round_id = next_round.id
 		end
+
 		# ==== CONTESTANTS DATA ====
-		@contestants_data_collection = Hash.new
-		@contestants.each do |contestant|
-			present_episodes_ids = []
-			absent_episodes_ids = []
-
-			@episodes_ids_collection.each_with_index do |episode_id, i|
-				unless contestant.episode_id.nil?
-					if episode_id >= contestant.episode_id
-						absent_episodes_ids << episode_id
-					else
-						present_episodes_ids << episode_id
-					end
-				end
-				present_episodes_ids << episode_id
-			end
-
-			contestant_round_data = Hash.new
-			round_data = Hash.new
+		round_contestants_data_collection = Hash.new
+		contestants_ids_collection.each_with_index do |contestant_id, i|
+			contestant = Contestant.where(id: contestant_id).first
 			status = ""
 			label = ""
 			i_label = ""
 			action_element_label = ""
 			glyphicon = ""
-			@rounds_collection.each_with_index do |round, i|
-				# ELIMINATED contestants (on show level)
-				if contestant.present? == false									
-					status = "eliminated"
-					label = "ELIMINATED"
-					action_element_label = "available pick eliminated"
-					glyphicon = ""
-				# PRESENT contestants
+
+			# ELIMINATED contestants (on show level)
+			if contestant.present? == false									
+				status = "eliminated"
+				label = "ELIMINATED"
+				action_element_label = "available pick eliminated"
+				glyphicon = ""
+			# PRESENT contestants
+			else
+				# in current round?
+				if current_round.contestants.include? contestant			# contestant included in a round
+					status = "selected"
+					label = ""
+					i_label = "marker glyphicon glyphicon-ok"
+					action_element_label = "selected discard"
+					glyphicon = "glyphicon glyphicon-remove"
+				# NOT in current round
 				else
-					# in current round?
-					if round.contestants.include? contestant			# contestant included in a round
-						status = "selected"
+					# was contestant picked in the last round?
+					if previous_round.present? && (previous_round.contestants.include? contestant)			# contestant included in LAST round
+						status = "last-picked"
 						label = ""
-						i_label = "marker glyphicon glyphicon-ok"
-						action_element_label = "selected discard"
-						glyphicon = "glyphicon glyphicon-remove"
-					# NOT in current round
+						i_label = ""
+						action_element_label = "available pick"
+						glyphicon = "glyphicon glyphicon-ok"
+					# if contestant wasn't picked in the last round
 					else
-						# was contestant picked in the last round?
-						if @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
-							status = "last-picked"
+						if current_round_index == 0
+							status = "not-picked"
 							label = ""
-							i_label = ""
-							action_element_label = "available pick"
+							action_element_label = "available pick eliminated"
 							glyphicon = "glyphicon glyphicon-ok"
-						# if contestant wasn't picked in the last round
 						else
-							if round == @rounds_collection[0]
-								status = "not-picked"
-								label = ""
-								action_element_label = "available pick eliminated"
-								glyphicon = "glyphicon glyphicon-ok"
-							else
-								status = "eliminated"
-								label = "NOT PICKED LAST ROUND"
-								action_element_label = "available pick eliminated"
-								glyphicon = ""
-							end
+							status = "eliminated"
+							label = "NOT PICKED LAST ROUND"
+							action_element_label = "available pick eliminated"
+							glyphicon = ""
 						end
 					end
 				end
-				round_data[round.id] = {
-					:status => status,
-					:label => label,
-					:i_label => i_label,
-					:action => action_element_label,
-					:glyphicon => glyphicon
-				}
 			end
-
-			# -- collection for rounds.js
-			@contestants_data_collection[contestant.id] = {
-				:round_data => round_data,
-				:present_episodes_ids => present_episodes_ids,
-				:absent_episodes_ids => absent_episodes_ids
+			round_contestants_data_collection[contestant_id] = {
+				:status => status,
+				:label => label,
+				:i_label => i_label,
+				:action => action_element_label,
+				:glyphicon => glyphicon
 			}
-
 		end
 		# ==== END CONTESTANT DATA ==== #
 		
 		# ==== ROUND DATA ==== #
-		@rounds_data_collection = Hash.new
+		@round_data_collection = Hash.new
 		round_status = ""
-		@rounds_collection.each do |round|
-
-			count_difference = round.contestants.count - round.episode.expected_survivors
-			
-			case count_difference == 0
-			when true
-				round_status = "alert-success"
-			when false
-				if count_difference < 0
-					round_status = "alert-danger"
-				else
-					round_status = "alert-warning"
-				end
+		count_difference = current_round.contestants.count - current_round.episode.expected_survivors
+		
+		case count_difference == 0
+		when true
+			round_status = "alert-success"
+		when false
+			if count_difference < 0
+				round_status = "alert-danger"
+			else
+				round_status = "alert-warning"
 			end
-
-			@rounds_data_collection[round.id] = {
-				:round_status => round_status,
-				:count_difference => count_difference,
-				:round_action => round_action,
-				:round_message => get_round_message(round.id, round_status, count_difference, round_action),
-				:prev_round_id => prev_round_id,
-				:next_round_id => next_round_id
-			}
 		end
+
+		@round_data_collection = {
+			:round_contestants_data_collection => round_contestants_data_collection,
+			:round_status => round_status,
+			:count_difference => count_difference,
+			:round_action => round_action,
+			:round_message => get_round_message(current_round.id, round_status, count_difference, round_action),
+			:prev_round_id => previous_round_id,
+			:next_round_id => next_round_id
+		}
 
 		# ==== END ROUND DATA ==== #
 
-		data_package = {
-			:contestants_data_collection => @contestants_data_collection,
-			:rounds_data_collection => @rounds_data_collection
-		}
-
-		return data_package
-
+		return @round_data_collection
 	end
 
 	def process_and_return(contestant_id, round_id, action)
@@ -371,7 +351,7 @@ class RoundsController < ApplicationController
 		@season = @league.season
 		@contestants = @season.contestants.order(name: :asc)
 		
-		static_data_pack = get_static_data(@league.id)
+		static_data_package = get_static_data(@league.id)
 
 		case action
 		when "add"
@@ -379,27 +359,23 @@ class RoundsController < ApplicationController
 		when "remove"
 			@active_round.contestants.destroy(contestant)
 		when "bulk_add"
-			bulk_add_contestants(round_id, static_data_pack[:upcoming_rounds_ids])
+			bulk_add_contestants(round_id, static_data_package[:upcoming_rounds_ids])
 		end		
 
-		data_package = get_round_data(@league.id, action)	
-		@episodes_collection = static_data_pack[:episodes_collection]
-		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
-		@rounds_collection = static_data_pack[:rounds_collection]
-		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
-		@upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
-		@contestants_data_collection = data_package[:contestants_data_collection]
-		@rounds_data_collection = data_package[:rounds_data_collection]
+		round_data_package = get_round_data(round_id, @league.id, action)	
+		@rounds_ids_collection = static_data_package[:rounds_ids_collection]
+		@episodes_ids_collection = static_data_package[:episodes_ids_collection]
+		@contestants_ids_collection = static_data_package[:contestants_ids_collection]
+		@upcoming_rounds_ids = static_data_package[:upcoming_rounds_ids]
 
-		# FIXME
-		action_packet = get_round_actions(@active_round, static_data_pack, @rounds_data_collection[@active_round.id])
+		action_package = get_round_actions(@active_round, static_data_package, round_data_package)
 	
-		@active_round_index = action_packet[:active_round_index]
-		@active_round_title = action_packet[:active_round_title]
-		@previous_button = action_packet[:previous_button]
-		@next_button = action_packet[:next_button]
-		@previous_round_id = action_packet[:previous_round_id]
-		@next_round_id = action_packet[:next_round_id]
+		@active_round_index = action_package[:active_round_index]
+		@active_round_title = action_package[:active_round_title]
+		@previous_button = action_package[:previous_button]
+		@next_button = action_package[:next_button]
+		@previous_round_id = action_package[:previous_round_id]
+		@next_round_id = action_package[:next_round_id]
 
 		respond_to do |format|
 			format.html { 
@@ -518,7 +494,7 @@ class RoundsController < ApplicationController
 	end
 
 	def get_round_actions(round, static_data_pack, round_data_collection)
-		action_packet = Hash.new 
+		action_package = Hash.new 
 		active_round_index = static_data_pack[:rounds_ids_collection].index(round.id)
 		active_round_title = ""
 		previous_button = []
@@ -532,9 +508,9 @@ class RoundsController < ApplicationController
 		previous_round_id = nil
 		next_round_id = nil	
 
-		action_packet[:active_round_index] = active_round_index
+		action_package[:active_round_index] = active_round_index
 
-		if round == static_data_pack[:rounds_collection].first
+		if round.id == static_data_pack[:rounds_ids_collection].first
 			active_round_title = "Round #{active_round_index + 1}"
 			previous_button[1] = "btn-default btn-xs round-toggle previous-button disabled"
 			previous_round_id = nil
@@ -544,11 +520,11 @@ class RoundsController < ApplicationController
 			when "alert-warning"
 				next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
 			when "alert-success"
-				if static_data_pack[:rounds_collection].find(next_round_id).contestants.empty?
+				if Round.find(next_round_id).contestants.empty?
 					next_button[2] = "next"
 				end
 			end
-		elsif	round == static_data_pack[:rounds_collection].last
+		elsif	round.id == static_data_pack[:rounds_ids_collection].last
 			active_round_title = "Final Round"
 			previous_button[1] = "btn-default btn-xs round-toggle previous-button"
 			next_button[0] = "Finish"
@@ -563,20 +539,20 @@ class RoundsController < ApplicationController
 			when "alert-warning"
 				next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
 			when "alert-success"
-				if static_data_pack[:rounds_collection].find(next_round_id).contestants.empty?
+				if Round.find(next_round_id).contestants.empty?
 					next_button[2] = "next"
 				end
 			end
 		end
 
-		action_packet[:active_round_index] = active_round_index
-		action_packet[:active_round_title] = active_round_title
-		action_packet[:previous_button] = previous_button
-		action_packet[:next_button] = next_button
-		action_packet[:previous_round_id] = previous_round_id
-		action_packet[:next_round_id] = next_round_id
+		action_package[:active_round_index] = active_round_index
+		action_package[:active_round_title] = active_round_title
+		action_package[:previous_button] = previous_button
+		action_package[:next_button] = next_button
+		action_package[:previous_round_id] = previous_round_id
+		action_package[:next_round_id] = next_round_id
 
-		return action_packet
+		return action_package
 	end
 
 end

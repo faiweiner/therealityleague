@@ -3,14 +3,14 @@
 	.col-lg-12#round-navigation
 		%h4= @active_round_title
 		%h6
-			.alert.nav-check{:class => @rounds_data_collection[@active_round.id][:round_status], :role => "alert", "data-league-id" => @league.id, "data-round-id" => @active_round.id, "data-status" => @rounds_data_collection[@active_round.id][:round_status], "data-round-difference" => @rounds_data_collection[@active_round.id][:count_difference]}
+			.alert.nav-check{:class => @round_data_collection[:round_status], :role => "alert", "data-league-id" => @league.id, "data-round-id" => @active_round.id, "data-status" => @round_data_collection[:round_status], "data-round-difference" => @round_data_collection[:count_difference]}
 				%strong
-					= @rounds_data_collection[@active_round.id][:round_message][:contentHero]
-				= @rounds_data_collection[@active_round.id][:round_message][:contentSupport][:a]
-				= pluralize(@rounds_data_collection[@active_round.id][:round_message][:contentCountDifference], "contestant") if @rounds_data_collection[@active_round.id][:round_message][:contentCountDifference]
-				= @rounds_data_collection[@active_round.id][:round_message][:contentSupport][:b]
+					= @round_data_collection[:round_message][:contentHero]
+				= @round_data_collection[:round_message][:contentSupport][:a]
+				= pluralize(@round_data_collection[:round_message][:contentCountDifference], "contestant") if @round_data_collection[:round_message][:contentCountDifference]
+				= @round_data_collection[:round_message][:contentSupport][:b]
 				%strong
-					= @rounds_data_collection[@active_round.id][:round_message][:contentDate]
+					= @round_data_collection[:round_message][:contentDate]
 					%br/
 					%br/
 					.btn{class: @previous_button[1], "data-round-id" => @previous_round_id, "data-action" => @previous_button[2]}
@@ -25,13 +25,13 @@
 
 	.col-lg-12.contestants-display
 		- @contestants.each do |contestant|
-			.thumbnail.contestant-thumbnail{class: @contestants_data_collection[contestant.id][:round_data][@active_round.id][:status]}
-				%img.half-res{:src => "#{contestant.image}", :alt => "#{contestant.name}"}
+			.thumbnail.contestant-thumbnail{class: @round_data_collection[:round_contestants_data_collection][contestant.id][:status]}
+				%img.half-res{:src => "#{contestant.image}", :alt => "#{contestant.name}"}/
 				.veil
-					= @contestants_data_collection[contestant.id][:round_data][@active_round.id][:label]
-					%i{class: @contestants_data_collection[contestant.id][:round_data][@active_round.id][:i_label]}
+					= @round_data_collection[:round_contestants_data_collection][contestant.id][:label]
+					%i{class: @round_data_collection[:round_contestants_data_collection][contestant.id][:i_label]}
 				.caption
 					.contestant-name= contestant.name
-				.action{class: @contestants_data_collection[contestant.id][:round_data][@active_round.id][:action]}
-					%i{class: @contestants_data_collection[contestant.id][:round_data][@active_round.id][:glyphicon], "data-contestant-id" => contestant.id, "data-round-id" => @active_round.id}
+				.action{class: @round_data_collection[:round_contestants_data_collection][contestant.id][:action]}
+					%i{class: @round_data_collection[:round_contestants_data_collection][contestant.id][:glyphicon], "data-contestant-id" => contestant.id, "data-round-id" => @active_round.id}
 
