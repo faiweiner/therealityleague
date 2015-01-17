@@ -1,3 +1,5 @@
+require 'date'
+
 class LeaguesController < ApplicationController
 
 	before_action :check_if_logged_in
@@ -125,7 +127,6 @@ class LeaguesController < ApplicationController
 	end
 
 	def display
-		@league.lock_league
 		@show = @league.season.show
 		@participants = @league.users
 		@rules = Show.get_schemes(@show.id)
@@ -180,7 +181,7 @@ class LeaguesController < ApplicationController
 							@status = "available"
 							@alert_class = "warning"
 							@alert[0] = ""
-							@alert[1] = "Invite friends to join the league before the league commences!"
+							@alert[1] = "Invite friends to join the league before the league commences on #{@league.draft_deadline.strftime("%D")}!"
 							@invite_button[0] = "Invite Participants"
 							@invite_button[1] = league_invite_path(@league.id)
 							@invite_button[2] = "btn btn-sm btn-default"						
@@ -204,7 +205,7 @@ class LeaguesController < ApplicationController
 					end
 				# ------ NOT the commissioner ------ #
 				else
-
+					if @league.draft_deadline.
 				end
 			# ------ NOT member of the league ------ #
 			else
@@ -442,8 +443,22 @@ class LeaguesController < ApplicationController
 			:active)
 	end
 
+	def remaining(date, event)
+		intervals = [["day", 1], ["hour", 24], ["minute", 60], ["second", 60]]
+		elapsed = DateTime.now - date
+		tense = elapsed > 0 ? "since" : "until"
+		interval = 1.0
+		parts = intervals.collect do |name, new_interval|
+			interval /= new_interval
+			number, elapsed = elapsed.abs.divmod(interval)
+			"#{number.to_i} #{name}#{"s" unless number == 1}"
+		end
+		puts "#{parts.join(", ")} #{tense} #{event}."
+	end
+
 	def get_league
 		@league = League.includes(:users, :season).find(params[:id]).becomes(League)
+		@league.lock_league if @league.draft_deadline.past?
 	end
 
 	def private_restriction

@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
 		if @current_user.nil?
 			session[:user_id] = "unassigned"
 			flash[:notice] = "Please sign in to proceed." # FIXME to add a URL tracker for back-tracking
-			flash[:color] = "invalid"
+			flash[:color] = "alert-warning"
 			redirect_to(login_path) 
 		end
 	end

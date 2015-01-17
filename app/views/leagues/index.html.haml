@@ -6,7 +6,7 @@
 		- flash[:button].each_with_index do |button, i|
 			= link_to flash[:button][i][0], flash[:button][i][1], class: "#{flash[:button][i][2]}"
 - elsif flash[:notice].present?
-	.alert{class: "alert-#{flash[:color]}", role: "alert"}
+	.alert{class: "#{flash[:color]}", role: "alert"}
 		= flash[:notice]
 - if @leagues.present?
 	= render partial: "manage"

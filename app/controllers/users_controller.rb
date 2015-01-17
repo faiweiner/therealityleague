@@ -17,11 +17,11 @@ class UsersController < ApplicationController
 			session[:user_id] = @user.id
 			flash[:notice] = "You've successfully signed up."
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
-			flash[:color] = "valid"
+			flash[:color] = "alert-success"
 			redirect_to root_path
 		else
 			flash[:notice] = "Unsuccessful sign up, please try again."
-			flash[:color] = "invalid"
+			flash[:color] = "alert-warning"
 			render :new
 		end
 	end
@@ -34,11 +34,11 @@ class UsersController < ApplicationController
 		@user = @current_user
 		if @current_user.update(user_params)
 			flash[:notice] = "You've successfully updated."
-			flash[:color] = "valid"		
+			flash[:color] = "alert-success"		
 			redirect_to user_path
 		else
 			flash[:notice] = "Something went wrong, try again."
-			flash[:color] = "invalid"		
+			flash[:color] = "alert-warning"		
 			redirect_to edit_user_path(@current_user.id)
 		end
 	end

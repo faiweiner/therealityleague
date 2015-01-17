@@ -13,7 +13,7 @@ class SessionsController	< ApplicationController
 			flash[:button] = []
 			if user.leagues.any?
 				flash[:notice] = "Welcome back, #{user.username}!"
-				flash[:color] = "success"
+				flash[:color] = "alert-success"
 				redirect_to leagues_path
 			elsif user.leagues.empty?
 				flash[:notice] = "Welcome back, #{user.username}!"
@@ -23,11 +23,11 @@ class SessionsController	< ApplicationController
 				redirect_to root_path
 			else
 				flash[:notice] = "Welcome!"
-				flash[:color] = "success"
+				flash[:color] = "alert-success"
 			end
 		else
 			flash[:notice] = "Invalid login. Please try again."
-			flash[:color] = "warning"
+			flash[:color] = "alert-warning"
       redirect_to login_path
 		end
 	end

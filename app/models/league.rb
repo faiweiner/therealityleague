@@ -34,9 +34,10 @@ class League < ActiveRecord::Base
 	# FIXME! Come bck to deal with dependencies please
 	before_save :set_up_league, :set_draft_limit
 	after_initialize :update_full_field
+
 	validates :name, :presence => true, :length => { :minimum => 3 }, :on => :create
 	validates :commissioner_id, :presence => true
-	validates :draft_deadline, :presence => true
+	validates :draft_deadline, :presence => true, :on => :create
 
 	# sarch functions
 	def self.search_by_key(query)
@@ -55,9 +56,7 @@ class League < ActiveRecord::Base
 	end
 	
 	def lock_league
-		if self.draft_deadline.past?
-			self.update!(locked: true)
-		end
+		self.update!(locked: true)
 	end
 	
 	private
@@ -76,8 +75,8 @@ class League < ActiveRecord::Base
 	end
 
 	def update_full_field
-		if self.participant_cap && self.participant_cap == self.users.count
-			self.update!(full: true)
+		if self.full == false
+			self.update!(full: true) if self.participant_cap && self.participant_cap == self.users.count
 		end
 	end
 
