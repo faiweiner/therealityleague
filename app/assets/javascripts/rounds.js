@@ -279,10 +279,9 @@ $(document).ready(function () {
 		// --------- Episode Board Buttons --------- //
 		$episodeBoard.on('click', '.btn.btn-block.btn-sm', function (event) {
 			$element = event.target; 
-			debugger
 			var roundId = $element.dataset.roundId;
-			// toggleRoundDisplay(roundId);
-			toggleEpisodeButton($element);
+			var leagueId = $element.parentElement.dataset.leagueId;
+			refreshRoundEditBoard(roundId, leagueId)
 		});
 
 		// --------- Previous/Next Buttons --------- //

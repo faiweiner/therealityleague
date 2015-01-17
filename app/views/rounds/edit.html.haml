@@ -14,9 +14,9 @@
 			.row
 				#roundEdit.col-lg-10
 					= render partial: "current_bracket"
-				%ul#episodeBoard.col-lg-2{"data-rounds-count" => @rounds_ids_collection.count, "data-rounds-ids" => @rounds_ids_collection}
+				%ul#episodeBoard.col-lg-2{"data-rounds-count" => @rounds_ids_collection.count, "data-rounds-ids" => @rounds_ids_collection, "data-league-id" => @league.id}
 					#padding-for-episode-column
 					- @episode_pack.each_with_index do |episode, i|
-						%li{class: episode[3], "data-index" => episode[1], "data-round-id" => episode[0]}
+						%li{class: episode[4], "data-index" => episode[1], "data-round-id" => episode[0], "data-round-pick-status" => episode[3]}
 							= episode[2]						
 		/ END Bracket Board

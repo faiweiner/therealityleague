@@ -17,12 +17,6 @@
 						= @previous_button[0]
 					.btn{class: @next_button[1], "data-round-id" => @next_round_id, "data-action" => @next_button[2]}
 						= @next_button[0]
-
-			contestants count
-			%strong= @active_round.contestants.count
-			expected survivors
-			%strong= @active_round.episode.expected_survivors
-
 	.col-lg-12.contestants-display
 		- @contestants.each do |contestant|
 			.thumbnail.contestant-thumbnail{class: @round_data_collection[:round_contestants_data_collection][contestant.id][:status]}

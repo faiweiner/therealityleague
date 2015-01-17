@@ -234,7 +234,7 @@ class RostersController < ApplicationController
 		@action_button = []
 		case status
 		when "alert-success"
-			@action_button = ["Back to League", league_path(league_id), "btn btn-xs btn-primary"]
+			@action_button = ["Finish", league_path(league_id), "btn btn-xs btn-primary"]
 		end
 	end
 
