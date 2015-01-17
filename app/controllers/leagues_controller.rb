@@ -205,7 +205,6 @@ class LeaguesController < ApplicationController
 					end
 				# ------ NOT the commissioner ------ #
 				else
-					if @league.draft_deadline.
 				end
 			# ------ NOT member of the league ------ #
 			else
