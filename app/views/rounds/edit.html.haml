@@ -14,20 +14,9 @@
 			.row
 				#roundEdit.col-lg-10
 					= render partial: "current_bracket"
-				%ul#episodeBoard.col-lg-2{"data-rounds-count" => @rounds_collection.count, "data-rounds-ids" => @rounds_ids_collection}
+				%ul#episodeBoard.col-lg-2{"data-rounds-count" => @rounds_ids_collection.count, "data-rounds-ids" => @rounds_ids_collection}
 					#padding-for-episode-column
-					- @rounds_collection.each_with_index do |round, i|
-						- if round.episode.air_date.future?
-							- if round.id == @upcoming_rounds_ids[0]
-								%li.btn.btn-block.btn-sm.btn-default.btn-primary.selected{"data-index" => i + 1, "data-round-id" => round.id}
-									Episode #{ i + 1 }
-							- else
-								%li.btn.btn-block.btn-sm.btn-default{"data-index" => i + 1, "data-round-id" => round.id}
-									Episode #{ i + 1 }								
-						- else
-							%li.btn.btn-block.btn-sm.btn-default.disabled{"data-index" => i + 1, "data-round-id" => round.id}
-								- if round == @rounds_collection.last
-									Final Episode
-								- else
-									Episode #{ i + 1 }
+					- @episode_pack.each_with_index do |episode, i|
+						%li{class: episode[3], "data-index" => episode[1], "data-round-id" => episode[0]}
+							= episode[2]						
 		/ END Bracket Board

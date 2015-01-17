@@ -37,25 +37,24 @@ class RoundsController < ApplicationController
 		@league = League.includes(:users, :rounds).find(params[:league_id])	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		
+		if params[:round_id] == "first"
+			@active_round = @league.rounds.where(user_id: @current_user.id).first
+		else
+			@active_round = @league.rounds.find(params[:round_id])
+		end
 		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
 		static_data_pack = get_static_data(@league.id)
 		data_package = get_round_data(@league.id, "landing")
 
-		@episodes_collection = static_data_pack[:episodes_collection]
 		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
 		@rounds_collection = static_data_pack[:rounds_collection]
 		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
 		@upcoming_rounds_ids_collection = static_data_pack[:upcoming_rounds_ids]
 		@contestants_data_collection = data_package[:contestants_data_collection]
 
-		if params[:round_id] == "first"
-			@active_round = @rounds_collection.find(@upcoming_rounds_ids_collection[0])
-		else
-			@active_round = @rounds_collection.find(params[:round_id])
-		end
-
 		action_packet = get_round_actions(@active_round, static_data_pack, @rounds_data_collection[@active_round.id])
-		
+		@episode_pack = get_episode_action(@active_round.id, @rounds_ids_collection)
+
 		@active_round_index = action_packet[:active_round_index]
 		@active_round_title = action_packet[:active_round_title]
 		@previous_button = action_packet[:previous_button]
@@ -100,8 +99,8 @@ class RoundsController < ApplicationController
 
 	def display
 		@round = Round.includes(:episode, :contestants).find(params[:round_id])
-		previous_round = Round.find(@round.id - 1)
-		if @round.contestants.empty?
+		previous_round = Round.where(id: @round.id - 1).first
+		if @round.contestants.empty? && previous_round.any?
 			previous_round.contestants.each do |contestant|
 				@round.contestants << contestant unless @round.contestants.include? contestant
 			end
@@ -287,7 +286,7 @@ class RoundsController < ApplicationController
 						# was contestant picked in the last round?
 						if @rounds_collection[i-1].contestants.include? contestant			# contestant included in LAST round
 							status = "last-picked"
-							label = "PICKED LAST ROUND"
+							label = ""
 							i_label = ""
 							action_element_label = "available pick"
 							glyphicon = "glyphicon glyphicon-ok"
@@ -407,7 +406,24 @@ class RoundsController < ApplicationController
 				render partial: "current_bracket", :remote => true 
 			}
 		end
+	end
 
+	def get_episode_action(round_id, rounds_ids_collection)
+		@episodes_action = []
+		rounds_ids_collection.each_with_index do |id, index|
+			@episodes_action[index] = [id, index + 1, "Episode #{index + 1}"]
+			round = Round.find(id)
+			if round.episode.air_date.future?
+				if round.id == round_id
+					@episodes_action[index].push("btn btn-block btn-sm btn-default btn-primary selected")
+				else
+					@episodes_action[index].push("btn btn-block btn-sm btn-default")
+				end
+			else
+				@episodes_action[index].push("btn btn-block btn-sm btn-default disabled")
+			end
+		end
+		return @episodes_action
 	end
 
 	def get_round_message(round_id, status, count_difference, action)
