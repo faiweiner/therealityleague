@@ -21,14 +21,14 @@
 				= f.hidden_field :commissioner_id, value: @current_user.id
 			-# League Name
 			.row.form-group
-				.col-md-3.text-right
+				.col-lg-3.col-md-3.col-sm-3.text-right
 					= f.label :league_name, "League Name"
 					%br/
 				.col-md-6{:id => "league_name", :data => {:toggle => "popover", :trigger => "hover", :content => "And make it snappy!"}, :title => "Enter League Name"} 
 					= f.text_field :name, class:"form-control", :placeholder => "Enter name here", :required => true
 			-# Select show to filter season
 			.row.form-group
-				.col-md-3.text-right
+				.col-lg-3.col-md-3.col-sm-3.text-right
 					= label_tag :show
 				.col-md-6{:id => "league_show", :data => {:toggle => "popover", :trigger => "hover", :content => "More shows to come."}, :title => "Select Show"} 
 					- if @league_show_id
@@ -38,7 +38,7 @@
 						= select_tag(:show_list, (), {:prompt => "Select a show", class: "form-control step1", :required => true})
 			-# Select reality show's season
 			.row.form-group
-				.col-md-3.text-right
+				.col-lg-3.col-md-3.col-sm-3.text-right
 					= f.label :season
 					%br/
 				.col-md-6{:id => "league_season"}
@@ -53,7 +53,7 @@
 						= f.select(:season_id, [], {:include_blank => "Select a season"}, class: "form-control step2", :required => true)
 			-#	Type
 			.row.form-group
-				.col-md-3.text-right
+				.col-lg-3.col-md-3.col-sm-3.text-right
 					= f.label :type
 					%br/
 				.col-md-6{:id => "league_type", :data => {:toggle => "popover", :trigger => "hover", :content => "Click the button above to learn more."}, :title => "Fantasy vs. Elimination"} 
@@ -70,32 +70,33 @@
 			-# Participant Cap
 			- if @league.participant_cap.present?
 				.row.form-group#participantCapField
-					.col-md-3.text-right
+					.col-lg-3.col-md-3.col-sm-3.text-right
 						= f.label :participant_cap, "Max # of Teams"
 					.col-md-6
 						= f.number_field :participant_cap, id: "participantCap", class: "form-control step4", placeholder: @league.participant_cap, disabled: true
 			- else	
 				.row.form-group#participantCapField.hidden
-					.col-md-3.text-right
+					.col-lg-3.col-md-3.col-sm-3.text-right
 						= f.label :participant_cap, "Max # of Teams"
 					.col-md-6
 						= f.number_field :participant_cap, id: "participantCap", min: 2, max: 30, class: "form-control step4", placeholder: "Select max number of teams in this league"
 			-# Draft Limit
 			- if @league.draft_limit.present?
 				.row.form-group#draftLimitField
-					.col-md-3.text-right
+					.col-lg-3.col-md-3.col-sm-3.text-right
 						= f.label :draft_limit, "Limit # of Contestants Per Team"
 					.col-md-6
 						= f.number_field :draft_limit, id: "draftLimit", min: 2, max: 12, step: 1, class: "form-control", placeholder: @league.draft_limit, disabled: true
 			-# Draft deadline
 			.row.form-group#draftDatePickerField
-				.col-md-3.text-right#draftDateLabel
+				.col-lg-3.col-md-3.col-sm-3.text-right#draftDateLabel
 					= f.label :draft_deadline, "Draft Deadline"
-				.col-md-6{:id => "league_deadline", :data => {:toggle => "popover", :trigger => "hover", :content => "This show starts on..."}, :title => "Select Draft Deadline"}
-					= f.date_select :draft_deadline, {order: [:day, :month, :year]}, {class: "form-date draftDatePicker", :id => "draftDateInput", default: Date.today}
+				.col-md-6{:id => "league_deadline"}
+					= f.date_field :draft_deadline, {class: "form-control form-date draftDatePicker", placeholder: Date.today,:id => "draftDateInput", default: DateTime.now, :require => true}
+				.col-lg-3.col-md-3.col-sm-3#premiereBox
 			-# Public or private league, public default
 			.row.form-group
-				.col-md-3.text-right
+				.col-lg-3.col-md-3.col-sm-3.text-right
 					= f.label :league_access, "League Access"
 				.col-md-6{:id => "league_access", :data => {:toggle => "popover", :trigger => "hover", :content => "Go 'Public' if you want others to search and join your league. Select 'Private' if you want an exclusive 'invite-only' league."}, :title => "Public vs. Private"}
 					.col-md-6
@@ -105,7 +106,7 @@
 						= f.radio_button :public_access, false
 						= f.label(:private, 'Private')
 			.row.form-group
-				.col-md-3.text-right
+				.col-lg-3.col-md-3.col-sm-3.text-right
 					= f.label :scoring_system, "Scoring System"
 					%br/
 				.col-md-6{:id => "league_scoring", :data => {:toggle => "popover", :trigger => "hover", :content => "Coming Soon - Choose between standard scoring system for a show's contestant, or customize your league's scoring scheme."}, :title => "Standard vs. Custom"}
@@ -119,8 +120,8 @@
 			.row.form-group
 				.actions.col-md-offset-3.col-md-9
 					- if params[:id]
-						= f.submit "Update League", class: "btn btn-primary"
-						= link_to("Cancel", league_path(@league.id), class: 'btn btn-default')
+						= f.submit "Update League", class: "btn btn-sm btn-primary"
+						= link_to("Cancel", league_path(@league.id), class: 'btn btn-sm btn-default')
 					- else
-						= f.submit "Create League", class: "btn btn-primary"
-						= link_to("Cancel", leagues_path, class: 'btn btn-default')
+						= f.submit "Create League", class: "btn btn-sm btn-primary"
+						= link_to("Cancel", leagues_path, class: 'btn btn-sm btn-default')
