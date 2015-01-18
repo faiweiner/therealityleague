@@ -101,6 +101,16 @@ $(document).ready(function () {
 			});
 		};			
 
+		var redirectToLeague = function (leagueId) {
+			$.ajax({
+				url: '/leagues/' + leagueId,
+				type: 'GET',
+				success: function (msg) {
+					url = '/leagues/' + leagueId;
+					window.location.href = url;		
+				}
+			});	
+		};
 		// ========== END server-side ========== //
 
 		// ========== BEGIN client-side ========== //
@@ -297,6 +307,9 @@ $(document).ready(function () {
 					break;
 				case 'next':
 					refreshRoundEditBoard(targetRoundId, leagueId);
+					break;
+				case 'finish':
+					redirectToLeague(leagueId);
 					break;
 				case 'bulk-add':
 					bulkAddContestantsToRound(targetRoundId);
