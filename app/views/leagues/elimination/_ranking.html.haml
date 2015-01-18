@@ -7,7 +7,6 @@
 		%th Total Pts
 		%th Actions
 	%tbody
-		= @league.users.count
 		- @ranking.each_with_index do |ranking, i|
 			%tr 
 				%td= i + 1
