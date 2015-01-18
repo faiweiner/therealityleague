@@ -38,17 +38,22 @@ class RoundsController < ApplicationController
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		@contestants = @season.contestants
 		
+		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
+		static_data_pack = get_static_data(@league.id)
+		
 		if params[:round_id] == "first"
 			@active_round = @league.rounds.where(user_id: @current_user.id).first
 		else
 			@active_round = @league.rounds.find(params[:round_id])
 		end
-		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
-		static_data_pack = get_static_data(@league.id)
-		round_data_package = get_round_data(@active_round.id, @league.id, "landing")
 		
-		@round_data_collection = round_data_package
+		# populating first round with all contetants - user can eliminate people off of round
+		if @active_round.contestants.empty?
+			bulk_add_contestants(@active_round.id, static_data_pack[:rounds_ids_collection])
+		end
 
+		round_data_package = get_round_data(@active_round.id, @league.id, "landing")
+		@round_data_collection = round_data_package
 		@episodes_ids_collection = static_data_pack[:episodes_ids_collection]
 		@rounds_ids_collection = static_data_pack[:rounds_ids_collection]
 		@upcoming_rounds_ids_collection = static_data_pack[:upcoming_rounds_ids]
@@ -63,10 +68,6 @@ class RoundsController < ApplicationController
 		@previous_round_id = action_packet[:previous_round_id]
 		@next_round_id = action_packet[:next_round_id]
 
-		# populating first round with all contetants - user can eliminate people off of round
-		if @active_round.contestants.empty?
-			bulk_add_contestants(@active_round.id, @rounds_ids_collection)
-		end
 	end
 
 	def add
@@ -105,7 +106,6 @@ class RoundsController < ApplicationController
 		@contestants = @season.contestants
 
 		static_data_package = get_static_data(@league.id)
-		round_data_package = get_round_data(@active_round.id, @league.id, "landing")
 		
 		@episodes_ids_collection = static_data_package[:episodes_ids_collection]
 		@rounds_ids_collection = static_data_package[:rounds_ids_collection]
@@ -122,6 +122,8 @@ class RoundsController < ApplicationController
 				@active_round.contestants << contestant unless @active_round.contestants.include? contestant
 			end
 		end
+
+		round_data_package = get_round_data(@active_round.id, @league.id, "landing")
 
 		action_packet = get_round_actions(@active_round, static_data_package, round_data_package)
 		@episode_pack = get_episode_action(@active_round.id, round_data_package[:status], @rounds_ids_collection)
@@ -445,7 +447,7 @@ class RoundsController < ApplicationController
 				round_message = {
 					:contentHero => "Oops!",
 					:contentSupport => {
-						:a => "You didn't discard enough contestants for this this episode. Remove",
+						:a => "You have too many contestants moving on to the next episode. Remove",
 						:b => "before moving on to the next episode."
 					},
 					:contentCountDifference => count_difference,
@@ -453,10 +455,10 @@ class RoundsController < ApplicationController
 				}
 			elsif action == "remove"
 				round_message = {
-					:contentHero => "Keep going!",
+					:contentHero => "More must be eliminated.",
 					:contentSupport => {
 						:a => "Discard",
-						:b => "more before moving on to the next round."
+						:b => "you think will get eliminated during this episode."
 					},
 					:contentCountDifference => count_difference,
 					:contentDate => nil
@@ -468,27 +470,27 @@ class RoundsController < ApplicationController
 					:contentHero => "Who will make it to the next round?",
 					:contentSupport => {
 						:a => "Select",
-						:b => "you think will make it through the episode."
+						:b => "you think will make it through to the next episode."
 					},
 					:contentCountDifference => count_difference.abs,
 					:contentDate => nil
 				}	
 			elsif action == "add"
 				round_message = {
-					:contentHero => "Keep going!",
+					:contentHero => "Who else will make it?",
 					:contentSupport => {
 						:a => "Select",
-						:b => "you think will make it through the episode."
+						:b => "you think will make it through to the next episode."
 					},
 					:contentCountDifference => count_difference.abs,
 					:contentDate => nil
 				}
 			elsif action == "remove"
 				round_message = {
-					:contentHero => "Keep going!",
+					:contentHero => "There's still room in this round.",
 					:contentSupport => {
 						:a => "Select",
-						:b => "you think will make it through the episode."
+						:b => "you think will make it through to the next episode."
 					},
 					:contentCountDifference => count_difference.abs,
 					:contentDate => nil
@@ -513,7 +515,11 @@ class RoundsController < ApplicationController
 		next_round_id = nil	
 
 		if round_data_collection[:round_status] == "alert-success"
-			next_button[1] = "btn-default btn-xs round-toggle next-button"
+			next_button[1] = "btn-primary btn-xs round-toggle next-button boogo"
+		elsif round_data_collection[:round_status] == "alert-warning"
+			next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
+		else
+			next_button[1] = "btn-default btn-xs round-toggle next-button disabled"	
 		end	
 
 		if round.id == static_data_pack[:rounds_ids_collection].first
@@ -525,21 +531,12 @@ class RoundsController < ApplicationController
 			active_round_title = "Final Round"
 			previous_button[1] = "btn-default btn-xs round-toggle previous-button"
 			next_button[0] = "Finish"
-			next_button[1] = "btn-primary btn-xs round-toggle next-button"
 			previous_round_id = static_data_pack[:rounds_ids_collection][-2]
 			next_round_id = nil
 		else
 			active_round_title = "Round #{active_round_index + 1}"
 			previous_round_id = static_data_pack[:rounds_ids_collection][active_round_index - 1]
 			next_round_id = static_data_pack[:rounds_ids_collection][active_round_index + 1]
-			case round_data_collection[:round_status]
-			when "alert-warning"
-				next_button[1] = "btn-default btn-xs round-toggle next-button disabled"
-			when "alert-success"
-				if Round.find(next_round_id).contestants.empty?
-					next_button[2] = "next"
-				end
-			end
 		end
 
 
