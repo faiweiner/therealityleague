@@ -206,7 +206,7 @@ class RoundsController < ApplicationController
 
 	def get_static_data(league_id)
 		league = League.includes(:users, :rounds, :season).find(league_id)	
-		rounds_ids_collection = league.rounds.pluck(:id)
+		rounds_ids_collection = league.rounds.where(user_id: @current_user.id).pluck(:id)
 		episodes_ids_collection = league.season.episodes.pluck(:id)
 		contestants_ids_collection = league.season.contestants.order(name: :asc).pluck(:id)
 
