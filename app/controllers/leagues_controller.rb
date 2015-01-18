@@ -267,7 +267,7 @@ class LeaguesController < ApplicationController
 			@alert_class = "success"
 			@alert[0] = "The league has commenced."
 			@alert[1] = ""
-			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%D")}"
+			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%D")} #{Time.zone}"
 			@invite_button[0] = ""
 			@invite_button[1] = ""
 			@invite_button[2] = ""	

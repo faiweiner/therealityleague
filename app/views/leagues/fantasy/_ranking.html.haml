@@ -1,10 +1,10 @@
 %h3 Fantasy League Ranking
 %table.table.table-hover
 	%thead
-		%th Rank
-		%th Participants
-		%th Total Pts
-		%th Actions
+		%th.col-lg-1 Ranking
+		%th.col-lg-2 Participants
+		%th.col-lg-1 Total Pts
+		%th.col-lg-2 Actions
 	%tbody
 		- @participants_roster_total_sorted.each_with_index do |participant, i|
 			%tr{"data-ranking" => i + 1}
