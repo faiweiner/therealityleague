@@ -1,5 +1,5 @@
 - if flash[:notice].present? 
-	.alert{class: "alert-#{flash[:color]}", role: "alert"}
+	.alert{class: "#{flash[:color]}", role: "alert"}
 		= flash[:notice]
 .panel.panel-default#league_view
 	.panel-body

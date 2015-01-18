@@ -6,7 +6,7 @@ class LeaguesController < ApplicationController
 	before_action :save_login_state, only: [:new, :search, :results]
 	before_action :get_league, only: [:display, :edit, :invite]
 	before_action :private_restriction, only: [:display]
-	before_action :commissioner?, only: [:edit]
+	before_action :commissioner_restriction, only: [:edit]
 	skip_before_action :verify_authenticity_token, only: [:results]
 
 	attr_accessor :name, :league_key, :league_password
@@ -471,9 +471,9 @@ class LeaguesController < ApplicationController
 
 	def commissioner_restriction
 		@league = League.find(params[:id])
-		if @league.commissioner_id != @current_user
-			flash[:notice] = "This account is not authorized to edit the current league."
-			flash[:color] = "prohibited"			
+		if @current_user.nil? || @league.commissioner_id != @current_user.id
+			flash[:notice] = "You are not authorized to edit the current league. Please contact the site administrator if you have any questions."
+			flash[:color] = "alert-danger"			
 			redirect_to league_path(params[:id])
 		end
 	end
