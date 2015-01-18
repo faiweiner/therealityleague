@@ -71,7 +71,6 @@ class LeaguesController < ApplicationController
 		
 		@export_show_list = Show.all
 		@export_season_list = Season.where(expired: false)
-		
 	end
 	
 	def create
@@ -103,7 +102,6 @@ class LeaguesController < ApplicationController
 			flash[:color] = "danger"
 			render :new
 		end
-
 	end
 
 	def edit
@@ -129,7 +127,8 @@ class LeaguesController < ApplicationController
 	def display
 		@show = @league.season.show
 		@participants = @league.users
-		@rules = Show.get_schemes(@show.id)
+		@rules_collection = get_schemes(@show)
+
 		@show_title = "#{@show.name}: #{@league.season.name}"
 		board_type = ""
 		case @league.type

@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	$leagueCrationDiv = $('#league_creation');
 	$leagueCommissionerOne = $('#comm-one');
+	$leagueViewDiv = $('#league_view');
 
 	if ($leagueCrationDiv.length > 0) {
 		console.log('Leagues JS for new league initiated');
@@ -148,10 +149,9 @@ $(document).ready(function () {
 				}, 1000);			
 			};
 		});
+	} else if ($leagueViewDiv.length > 0) {
 
-	} else {}
+	} else {
 		$('.participants_prompt').hide();
-	;
-
-
+	};
 });

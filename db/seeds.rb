@@ -20,6 +20,7 @@ Extracurricular.destroy_all
 Survival.destroy_all
 
 user1 = User.create(:email => 'faiweiner@gmail.com', :username => 'faiweiner', :avatar => 'http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png', :password => 'chicken', :password_confirmation => 'chicken', :admin => true)
+user2 = User.create(:email => 'test@gmail.com', :username => 'test_user', :password => 'chicken', :password_confirmation => 'chicken')
 
 show1 = Show.create(:name => 'The Bachelor', :image => '/assets/the_bachelor/logo.jpg')
 challenge = Show.create(:name => 'The Challenge', :image => '/assets/the_challenge/thechallenge.jpg')

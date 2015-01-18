@@ -90,5 +90,4 @@ Rails.application.routes.draw do
 	get		'api/seasons'			=> 'application#seasons_list',		:as => :api_seasons
 	get		'api/episodes'			=> 'application#episodes_list', :as => :api_episodes
 	get		'api/contestants'	=> 'application#contestants_list', :as => :api_contestants
-	get		'api/schemes'			=> 'application#schemes_list',		:as => :api_schemes	
 end

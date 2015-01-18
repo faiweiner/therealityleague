@@ -6,16 +6,14 @@
 				= render "scoring_system"
 		.col-lg-4.text-right
 			.panel-group
-				- if @current_user && @current_user.admin?
-					= link_to "Back to Shows", shows_path, class:"btn btn-default btn-sm"
+				= link_to "Back to Shows", shows_path, class:"btn btn-default btn-sm"
 		.panel-body
 			%table.table.table-hover
 				%thead
 					%tr
-						%th Season List
-						- if @current_user.admin
-							%th Episodes
-						%th
+						%th.col-lg-2 Season List
+						%th.col-lg-8 Episodes
+						%th.col-lg-2
 				%tbody
 					- @seasons.order("number DESC").each do |season|
 						- if season.published?
@@ -24,10 +22,9 @@
 									%a{:href => season_path(season.id)} 
 										Season #{season.number}: 
 										= season.name
-									- if @current_user.admin
-										%td
-											- season.episodes.each_with_index do |episode, index|
-												= link_to "Episode #{index+1}", episode_path(episode.id), class:"btn btn-default btn-xs"
+									%td
+										- season.episodes.each_with_index do |episode, index|
+											= link_to "Episode #{index+1}", episode_path(episode.id), class:"btn btn-default btn-xs"
 								%td.text-right
 									= link_to "View Season", season_path(season.id), class:"btn btn-default btn-sm"
 						- else
@@ -35,7 +32,6 @@
 								%td
 									Season #{season.number}:
 									= season.name
-								- if @current_user.admin
-									%td
+								%td
 								%td.text-right
 									= link_to "Coming Soon", season_path(season.id), class:"btn btn-default btn-sm disabled"

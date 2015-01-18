@@ -10,7 +10,7 @@
 				= @league.season.name
 			#league-action-panel
 				= render partial: "/shows/scoring_system"
-				%p
+				.yourCountdownContainer
 		- if @alert.present?
 			.col-lg-4
 				.alert#alert-panel.alert-dismissible{class: "alert-#{@alert_class}", role: "alert"}

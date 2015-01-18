@@ -107,30 +107,19 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-	# for AJAX requests only
-	def schemes_list
-		schemes = Scheme.where(:show_id => params[:show_list]).order(:type, :id)
-		schemes_list = []
-		schemes.each_with_index do |scheme, index|
-			scheme = {
-				:description => scheme.description,
-				:type => scheme.type,
-				:id => scheme.id
-			}
-			schemes_list.push scheme
-		end
-		respond_to do |format|
-			format.js {
-				render :json => {
-					:schemesList => schemes_list
-				}
-			}
-		end		
-	end
-
 	def new_message
 		@message = Message.new	
 		set_current_user
+	end
+
+	def get_schemes(show)
+		rules = show.schemes
+		rule_types = rules.pluck(:type).uniq.sort
+		rules_package = Hash.new
+		rule_types.each do |type|
+			rules_package[type] = rules.where(type: type).order(points_asgn: :asc)
+		end
+		return rules_package
 	end
 
 	private 
@@ -193,7 +182,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def render_admin
-		if @current_user.admin?
+		if @current_user && @current_user.admin?
 			render layout: "admin"
 		end
 	end

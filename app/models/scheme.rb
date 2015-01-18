@@ -27,7 +27,6 @@ class Scheme < ActiveRecord::Base
 	end
 
 	def self.select_type
-		# FIXME - make type_list scalable
-		@type_list = ["Altercation", "Competition", "Debauchery", "Extracurricular", "Survival"]
+		@type_list = Scheme.all.pluck(:type).uniq
 	end
 end
