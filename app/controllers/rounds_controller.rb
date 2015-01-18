@@ -531,6 +531,7 @@ class RoundsController < ApplicationController
 			active_round_title = "Final Round"
 			previous_button[1] = "btn-default btn-xs round-toggle previous-button"
 			next_button[0] = "Finish"
+			next_button[2] = "finish"
 			previous_round_id = static_data_pack[:rounds_ids_collection][-2]
 			next_round_id = nil
 		else

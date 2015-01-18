@@ -1,12 +1,12 @@
 .panel
 	.panel-body
-		%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde dignissimos aliquam autem, iure sit, iusto, molestias corrupti accusamus magni doloremque harum officiis quas nisi quos beatae eos et! Sunt, soluta!
 		.col-lg-12
-			%h1 All Seasons
+			%h2 All Seasons
 			.input-group
-				.input-header Filters
-				= select_tag "Show", options_from_collection_for_select(@shows, "id", "name"), class:"form-control"
-				= select_tag "Published", options_for_select("true" "false"), class:"form-control"
+				.input-header
+					Filters
+					= select_tag "Show", options_from_collection_for_select(@shows, "id", "name"), class:"form-control"
+					= select_tag "Published", options_for_select("true" "false"), class:"form-control"
 			%table.table.table-bordered
 				%thead
 					%tr
