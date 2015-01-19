@@ -356,17 +356,26 @@ class LeaguesController < ApplicationController
 	end
 
 	def search
-		if params[:search]
+		public_leagues = League.includes(:users).where(public_access: true, active: true).order("created_at ASC")
+		@pages = 1
+		if public_leagues.count > 10
+			@pages = public_leagues.count / 10
+		end
+
+		if params[:search].present?
+			raise
 			query = params[:search]
+			@notice = "Search results for \"#{params[:search]}\""
 			search_term = regex_validation(query)
 			case search_term 
 			when "empty"
-				flash[:notice] = "Empty search query - please enter a search term"
-				flash[:color] = "invalid"
+				flash[:notice] = "Empty search query - please enter a search term."
+				flash[:color] = "alert-warning"
+				@league_results = nil
 			when "league_key"
-				@league_result = League.search_by_key(query)[0]
+				@league_results = League.search_by_key(query)[0]
 			else
-				@league_results = League.all.order("created_at ASC")
+				@league_results = League.where(public_access: true, active: true).order("created_at ASC")
 			end
 			# # if query is a league name, presumably having space and/or \' between words
 			# elsif regex_validation(query)
@@ -384,8 +393,29 @@ class LeaguesController < ApplicationController
 			# end
 		# If there is no query (direct visit to search)
 		else
-			@league_results_participant = League.includes(:users).where(:active => true) 	#
-			@league_results_nonparticipant = League.all
+			@league_results = public_leagues 
+			@league_actions = Hash.new
+			@league_results.each_with_index do |league, index|
+				@league_actions[league.id] = {
+					:path => league_path(league.id),
+					:class => "btn btn-default btn-sm"
+				}
+				if league.users.include? @current_user
+					if league.commissioner_id == @current_user.id
+						@league_actions[league.id] = {
+							:action => "Manage"
+						}			
+					else
+						@league_actions[league.id] = {
+							:action => "View"
+						}						
+					end
+				else
+					@league_actions[league.id] = {
+						:action => "Join"
+					}
+				end
+			end
 			@private_leagues = League.where(:public_access => false) if @current_user.admin? 
 		end
 	end

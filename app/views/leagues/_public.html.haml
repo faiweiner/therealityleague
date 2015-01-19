@@ -1,56 +1,46 @@
-/ League display and search results
-.col-lg-5
-	%h2 Public Leagues
-.col-lg-7
-	%form.navbar-form.navbar-right{:action => "/leagues/search", role: "search", method: "get"}
-		.form-group
-			%input.input-sm{:type => "text", class: "form-control", name: "search", id: "search", placeholder: "Search league"}/
-			%button.btn.btn-sm.btn-default{type: "submit"} Submit
-.panel-body
-	.row
-	- if params[:search]
-		%h4
-			Search Results for
-			= "\"" + params[:search] + "\""
-	%table.table.table-striped
-		%thead
-			%tr
-				%th League Name
-				%th Show
-				%th Type
-				%th Action
-		- if @league_result
-			%tbody
-				%tr
-					%td= @league_result.name
-					%td= @league_result.season.show.name + ": " + @league_result.season.name
-					%td= @league_result.type
-					%td
-						- if @league_result.users.include? (@current_user)
-							= link_to "Manage roster", league_path(@league_result), class: "btn btn-default btn-sm"
-						- else
-							= link_to "Join", league_path(@league_result), class: "btn btn-default btn-sm"
-		- elsif @league_results_participant
-			%tbody
-				- @league_results_participant.each do |league|
-					%tr
-						%td= league.name
-						%td= league.season.show.name + ": " + league.season.name
-						%td= league.type
-						%td
-							- if league.users.include? (@current_user)
-								= link_to "Go To League", league_path(league.id), class: "btn btn-default btn-sm"
-							- else
-								= link_to "Join", league_path(league.id), class: "btn btn-default btn-sm"
-		- else
-			%tbody
-				- @league_results.each do |league|
-					%tr
-						%td= league.name
-						%td= league.season.show.name + ": " + league.season.name
-						%td= league.type
-						%td
-							- if league.users.include? (@current_user)
-								= link_to "Manage roster", league_path(league.id), class: "btn btn-default btn-sm"
-							- else
-								= link_to "Join", league_path(league.id), class: "btn btn-default btn-sm"
+.panel.panel-default
+	.panel-body
+		.col-lg-5
+			%h2 Public Leagues
+		.col-lg-7
+			%form.navbar-form.navbar-right{:action => "/leagues/search", role: "search", method: "get"}
+				.form-group
+					%input.input-sm{:type => "text", class: "form-control", name: "search", id: "search", placeholder: "Search league"}
+					%button.btn.btn-sm.btn-default{type: "submit"} Submit
+		.col-lg-12
+			- if flash[:notice]
+				.alert{class: flash[:color], :role => "alert"}
+					= flash[:notice]
+		.col-lg-12
+			- if @league_results
+				- if @pages >= 2
+					%nav
+						%ul.pagination.pagination-sm
+							%li
+								%a{"aria-label" => "Previous", :href => "#"}
+									%span{"aria-hidden" => "true"} «
+							- @pages.times do |i|
+								%li
+									%a{:href => "#"}=i + 1
+							%li
+								%a{"aria-label" => "Next", :href => "#"}
+									%span{"aria-hidden" => "true"} »
+				%table.table.table-striped
+					%thead
+						%tr
+							%th League Name
+							%th Show
+							%th Type
+							%th Action
+					%tbody
+						- @league_results.each do |league|
+							%tr
+								%td= league.name
+								%td= league.season.show.name + ": " + league.season.name
+								%td= league.type
+								%td
+									= link_to "#{@league_actions[league.id][:action]}", league_path(league.id), class: "btn btn-default btn-sm"
+									
+
+
+
