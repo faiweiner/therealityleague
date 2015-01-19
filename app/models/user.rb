@@ -30,9 +30,9 @@ class User < ActiveRecord::Base
 	before_create :downcase_field
 
 	has_secure_password
-	validates :email, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create
+	validates :email, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create, case_sensitive: false
 	validates_format_of :email, :with => EmailRegex
-	validates :username, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create
+	validates :username, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create, case_sensitive: false
 	validates :password, length: { in: 6..20 }, confirmation: true
 	validates :password_confirmation, presence: true, :on => :update, :unless => lambda{ |user| user.password.blank? }
 
