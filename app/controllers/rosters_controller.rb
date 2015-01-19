@@ -28,6 +28,7 @@ class RostersController < ApplicationController
 		if @roster.user_id != @current_user.id
 			flash[:notice] = "You do not have permission to edit this roster!"
 			flash[:color] = "alert-warning"	
+			redirect_to league_path(@roster.league.id)
 		end
 		@league = @roster.league
 		@season = @league.season
