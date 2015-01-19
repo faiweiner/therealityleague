@@ -19,12 +19,16 @@ class RostersController < ApplicationController
 		Roster.find_or_create_by!(:user_id => @current_user.id, :league_id => league.id)
 		league.users << @current_user
 		flash[:notice] = "You've successfully join #{league.name}!"
-		flash[:color] = "success"	
+		flash[:color] = "success alert-success"	
 		redirect_to league_path(league.id)
 	end
 
 	def edit
 		@roster = Roster.includes(:league).find(params[:id])
+		if @roster.user_id != @current_user.id
+			flash[:notice] = "You do not have permission to edit this roster!"
+			flash[:color] = "alert-warning"	
+		end
 		@league = @roster.league
 		@season = @league.season
 		@contestants = @season.contestants.order(name: :asc)
