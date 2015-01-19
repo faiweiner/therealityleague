@@ -357,10 +357,6 @@ class LeaguesController < ApplicationController
 
 	def search
 		public_leagues = League.includes(:users).where(public_access: true, active: true).order("created_at ASC")
-		@pages = 1
-		if public_leagues.count > 10
-			@pages = public_leagues.count / 10
-		end
 
 		if params[:search].present?
 			raise
@@ -417,6 +413,10 @@ class LeaguesController < ApplicationController
 				end
 			end
 			@private_leagues = League.where(:public_access => false) if @current_user.admin? 
+		end
+
+		if @league_results.count > 10
+			@pages = @league_results.count / 10
 		end
 	end
 
