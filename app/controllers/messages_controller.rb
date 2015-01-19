@@ -1,4 +1,7 @@
-class MessagesController < ActionController::Base
+class MessagesController < ApplicationController
+	layout "admin"
+	before_action :check_if_logged_in
+	before_action :check_if_admin
 
 	def index
 		@unresolved_messages = Message.where(resolved: false)

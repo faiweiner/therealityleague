@@ -1,0 +1,14 @@
+- if @unresolved_messages.present?
+	%table.table.table-condensed
+		%thead
+			%th Date
+			%th Message Type
+			%th Message
+			%th Status
+		%tbody
+			- @unresolved_messages.each do |message|
+				%tr
+					%td= message.created_at.strftime("%D %H:%I %Z")
+					%td= message.messagetype
+					%td= message.messagecomment
+					%td= message.resolved
