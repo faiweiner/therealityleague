@@ -232,17 +232,18 @@ class LeaguesController < ApplicationController
 					["participant", "active", "unlocked", "public", "cap", :F2],
 					["participant", "active", "unlocked", "public", "cap", :F3]
 			argument = "p-unlocked"
-		when 	["non-participant", "active", "unlocked", "public", "no_cap", nil],	
-			argument = ""
-		when 	["non-participant", "active", "unlocked", "private", "no_cap", nil], 
-					["non-participant", "active", "unlocked", "private", "cap", :F1],
+		when 	["non-participant", "active", "unlocked", "public", "no_cap", nil]	
+			argument = "np-unlocked-public-nocap"
+		when 	["non-participant", "active", "unlocked", "private", "no_cap", nil]
+			argument = "np-unlocked-private-cap"
+		when	["non-participant", "active", "unlocked", "private", "cap", :F1],
 					["non-participant", "active", "unlocked", "private", "cap", :F2],
 					["non-participant", "active", "unlocked", "private", "cap", :F3]
-			argument = ""		
+			argument = "np-unlocked-private-cap"		
 		when	["non-participant", "active", "unlocked", "public", "cap", :F1],
 					["non-participant", "active", "unlocked", "public", "cap", :F2],
 					["non-participant", "active", "unlocked", "public", "cap", :F3]
-			argument = ""
+			argument = "np-unlocked-public-cap"
 		end
 
 		case argument
@@ -261,7 +262,7 @@ class LeaguesController < ApplicationController
 			@alert[0] = "Your #{@league.type} league is open."
 			@alert[1] = "#{board_type.pluralize.capitalize} can be edited up to the league's deadline on #{@league.draft_deadline.strftime("%D")}."
 			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%D")} #{Time.zone}"
-		when "comm-unlocked-cap" 						# comm, active, UNLOCKED, cap, private OR public
+		when 	"comm-unlocked-cap" 						# comm, active, UNLOCKED, cap, private OR public
 			case cases[5]
 			when :F1 # spots == 0
 				@status = "full"
@@ -288,7 +289,7 @@ class LeaguesController < ApplicationController
 				@invite_button[1] = league_invite_path(@league.id)
 				@invite_button[2] = "btn btn-sm btn-default"			
 			end	
-		when "all-inactive"									# comm & p, inactive
+		when 	"all-inactive"									# comm & p, inactive
 			@status = "inactive"
 			@alert_class = "warning"
 			@alert[0] = "This league is no longer active"
@@ -297,7 +298,7 @@ class LeaguesController < ApplicationController
 			@invite_button[0] = "Revive League"
 			@invite_button[1] = "#"
 			@invite_button[2] = "btn btn-sm btn-default"		
-		when "p-locked" 										# p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
+		when 	"p-locked" 										# p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
 			@status = "locked"
 			@alert_class = "alert-success"
 			@alert[0] = "Your #{@league.type} league has commenced."
@@ -306,7 +307,7 @@ class LeaguesController < ApplicationController
 			@invite_button[0] = nil
 			@invite_button[1] = nil
 			@invite_button[2] = nil		
-		when "p-unlocked" 									# p, active, UNLOCKED, public OR private, cap OR no cap
+		when 	"p-unlocked" 									# p, active, UNLOCKED, public OR private, cap OR no cap
 			@status = "unlocked"
 			@alert_class = "alert-warning"
 			@alert[0] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("D")}."
@@ -314,76 +315,53 @@ class LeaguesController < ApplicationController
 			@invite_button[0] = nil
 			@invite_button[1] = nil
 			@invite_button[2] = nil			
-		when "np-unlocked-public"						# p, active, UNLOCKED, public
+		when 	"np-unlocked-public-nocap",	"np-unlocked-private-nocap"		# p, active, UNLOCKED, public, no cap		
 			@status = "available"
 			@alert_class = "alert-success"
-			@alert[0] = "This league is no longer active"
-			@alert[1] = "as #{@show_title} has concluded."
-			@alert[2] = "Please contact the commissioner if you want to see this league revived."
-			@invite_button[0] = "Contact Commissioner"
-			@invite_button[1] = "#"
-			@invite_button[2] = "btn btn-sm btn-default"			
+			@alert[0] = "This league is still open!"
+			@alert[1] = "HURRY -"
+			@alert[2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+			@invite_button[0] = "Join This League"
+			@invite_button[1] = join_path
+			@invite_button[2] = "btn btn-sm btn-default"
+			@invite_button[3] = "join"
+			@invite_button[4] = @league.id
+			@invite_button[5] = "POST"		
+		when 	"np-unlocked-public-cap", "np-unlocked-private-cap"
+			case cases[5]
+			when :F1
+				@status = "full"
+				@alert_class = "alert-success"
+				@alert[0] = "Sorry, this #{@league.type} league is currently full."
+				@alert[1] = ""
+				@invite_button[0] = nil
+				@invite_button[1] = nil
+				@invite_button[2] = nil	
+			when :F2
+				@status = "limited"
+				@alert_class = "alert-danger"
+				@alert[0] = "Only #{spots} #{"spot".pluralize(spots)} left in this league!"
+				@alert[1] = ""
+				@invite_button[0] = "Join This League"
+				@invite_button[1] = join_path
+				@invite_button[2] = "btn btn-sm btn-default"
+				@invite_button[3] = "join"
+				@invite_button[4] = @league.id
+				@invite_button[5] = "POST"	
+			else :F3 # all other cases
+				@status = "available"
+				@alert_class = "warning"
+				@alert[0] = "#{spots} #{"spot".pluralize(spots)} left in this league."
+				@alert[1] = "Join today before this league fills up!"
+				@alert[2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
+				@invite_button[0] = "Join This League"
+				@invite_button[1] = join_path
+				@invite_button[2] = "btn btn-sm btn-default"
+				@invite_button[3] = "join"
+				@invite_button[4] = @league.id
+				@invite_button[5] = "POST"		
+			end	
 		end
-
-			
-		# 		# ------ no participant cap------ #
-		# 		if spots.nil?
-		# 			@status = "available"
-		# 			@alert_class = "info"
-		# 			if @league.public_access?
-		# 				@alert[0] = "This league is open to the public."
-		# 			else
-		# 				@alert[0] = "You have accessed a private league."
-		# 			end
-		# 			@alert[1] = ""
-		# 			@alert[2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-		# 			@invite_button[0] = "Join This League"
-		# 			@invite_button[1] = join_path
-		# 			@invite_button[2] = "btn btn-sm btn-default"
-		# 			@invite_button[3] = "join"
-		# 			@invite_button[4] = @league.id
-		# 			@invite_button[5] = "POST"		
-		# 		# ------ participant cap exists ------ #
-		# 		else
-		# 			if spots == 0
-		# 				@status = "full"
-		# 				@alert_class = "danger"
-		# 				@alert[0] = "This league is completely full."
-		# 				@alert[1] = "Would you like to search other available leagues?"
-		# 				@invite_button[0] = "Search other leagues"
-		# 				@invite_button[1] = "/leagues/search"
-		# 				@invite_button[2] = "btn btn-sm btn-default"
-		# 			elsif spots <= 3
-		# 				# if there is a cap and less than 3 spots left
-		# 				@status = "danger"
-		# 				@alert_class = "warning"				
-		# 				@alert[0] = "HURRY!" 
-		# 				@alert[1] = "There are only #{spots} #{"spot".pluralize(spots)} left in this league. Click \"Join League\" now before the league fills up!"
-		# 				@alert[2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-		# 				@invite_button[0] = "Join This League"
-
-		# 				@invite_button[1] = join_path
-		# 				@invite_button[2] = "btn btn-sm btn-default"
-		# 				@invite_button[3] = "join"
-		# 				@invite_button[4] = @league.id
-		# 				@invite_button[5] = "POST"	
-		# 			else
-		# 				# if there is a cap and there are some room left
-		# 				@status = "limited"
-		# 				@alert_class = "warning"
-		# 				@alert[0] = "#{spots} #{"spot".pluralize(spots)} left in this league."
-		# 				@alert[1] = "Join today before this league fills up!"
-		# 				@alert[2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-		# 				@invite_button[0] = "Join This League"
-		# 				@invite_button[1] = join_path
-		# 				@invite_button[2] = "btn btn-sm btn-default"
-		# 				@invite_button[3] = "join"
-		# 				@invite_button[4] = @league.id
-		# 				@invite_button[5] = "POST"								
-		# 			end
-		# 		end
-		# 	end
-		# end
 
 		case @league.type
 
@@ -413,6 +391,10 @@ class LeaguesController < ApplicationController
 			deadline_alert = nil
 
 			@alert_messages = [deadline_alert]
+
+		# ============== ACTION BUTTONS =========== #
+			@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
+			raise
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
 			@participants_ranking = {}
@@ -444,6 +426,9 @@ class LeaguesController < ApplicationController
 				# 	roster_rounds_points << [id, round.calculate_round_points]
 				# end
 				# @participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
+				# ============== ACTION BUTTONS =========== #
+				@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
+				raise
 			end
 			# sort roster to reflect current leads
 			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
@@ -453,6 +438,7 @@ class LeaguesController < ApplicationController
 			@league.rosters.where(user_id: @current_user.id).empty?
 
 			deadline_alert = "Last day to submit a roster is on #{@league.draft_deadline.strftime('%B %d')}."
+
 		end
 	end
 
@@ -572,6 +558,42 @@ class LeaguesController < ApplicationController
 			:league_key, 
 			:league_password, 
 			:active)
+	end
+
+	def get_action_buttons(league, participants_collection, current_user, current_user_cases, board_type)
+		participants = participants_collection
+		cases = current_user_cases
+
+		button = []
+		participants.each do |participant|
+			button[participant.id] = []
+			if cases[1] == "inactive"
+				button[participant.id][0] = "View"
+				button[participant.id][1] = ""
+				button[participant.id][2] = "btn btn-default btn-sm"
+			else
+				if participant == current_user
+					if cases[2] == "unlocked"
+						if league.rounds.where(user_id: participant.id).empty?
+							button[participant.id][0] = "Build #{league.type.capitalize} #{board_type.capitalize}"
+							button[participant.id][1] = ""
+							button[participant.id][2] = "btn btn-default btn-sm"
+						end
+						button[participant.id][0] = "View"
+						button[participant.id][1] = ""
+						button[participant.id][2] = "btn btn-default btn-sm"
+					elsif cases[2] == "locked"	
+						button[participant.id][0] = "View"
+						button[participant.id][1] = ""
+						button[participant.id][2] = "btn btn-default btn-sm"				
+					else
+						button[participant.id][0] = "View"
+						button[participant.id][1] = ""
+						button[participant.id][2] = "btn btn-default btn-sm"
+					end
+				end
+			end		
+		end
 	end
 
 	def remaining(date, event)
