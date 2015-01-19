@@ -1,7 +1,8 @@
 class MessagesController < ActionController::Base
 
 	def index
-		
+		@unresolved_messages = Message.where(resolved: false)
+		@resolved_messages = Message.where(resolved: true)
 	end
 	def new
 		

@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
 	get		'schemes/:show_id' => 'schemes#display', :as => :event
 	resources :schemes
-	
+	resources :messages
+
 	get		'events/display'
 	get		'events/get_seasons' => 'events#seasons', :as => :get_seasons
 	resources :events

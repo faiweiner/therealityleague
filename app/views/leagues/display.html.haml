@@ -10,6 +10,11 @@
 				= @league.season.name
 			#league-action-panel
 				= render partial: "/shows/scoring_system"
+				.btn.btn-default.btn-sm.disabled
+					League locks on
+					= @league.draft_deadline.strftime("%B %d")
+					at
+					= @league.draft_deadline.strftime("%I:%M %P %Z")
 		- if @alert.present?
 			.col-lg-4
 				.alert#alert-panel.alert-dismissible{class: "alert-#{@alert_class}", role: "alert"}
