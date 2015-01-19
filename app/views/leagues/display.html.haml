@@ -17,7 +17,7 @@
 					= @league.draft_deadline.strftime("%I:%M %P %Z")
 		- if @alert.present?
 			.col-lg-4
-				.alert#alert-panel.alert-dismissible{class: "alert-#{@alert_class}", role: "alert"}
+				.alert#alert-panel.alert-dismissible{class: "#{@alert_class}", role: "alert"}
 					%button.close{:type => "button", "data-dismiss" => "alert", "aria-label" => "Close"}
 						%span.small{"aria-hidden" => true} &times;
 					%p
@@ -25,7 +25,7 @@
 							%strong= @alert[i] if i == 0
 							= @alert[i] unless i == 0
 					- if @invite_button.length == 3
-						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "huzzah #{@invite_button[2]}"
+						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}"
 					- elsif @invite_button.length > 3
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
 		- case @league.type
