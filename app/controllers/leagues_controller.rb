@@ -461,7 +461,7 @@ class LeaguesController < ApplicationController
 
 	def private_restriction
 		@league = League.find(params[:id])
-		if (@league.public_access? == false) && (@leagues.users.include? @current_user == false)
+		if (@league.public_access? == false) && (@league.users.include? @current_user == false)
 		# if league is private AND @current_user is not a member
 			flash[:notice] = "You do not have permission to access this private league."
 			flash[:color] = "danger"
