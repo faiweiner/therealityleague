@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
 	has_many :messages
 
 	# FIXME! Come bck to deal with dependencies please
+	before_create :downcase_field
 
 	has_secure_password
 	validates :email, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create
@@ -55,6 +56,9 @@ class User < ActiveRecord::Base
 
 	private
 
+	def downcase_field
+		self.email.downcase!
+	end
 	def gen_new_password
 		self.password = SecureRandom.hex(5)
 	end

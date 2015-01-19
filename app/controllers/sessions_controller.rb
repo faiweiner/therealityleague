@@ -6,7 +6,7 @@ class SessionsController	< ApplicationController
 	end
 
 	def login_attempt
-		user = User.find_by(:email => params[:email])
+		user = User.find_by(:email => params[:email].downcase)
 		if user.present? && user.authenticate(params[:password])
 			user.save
 			session[:user_id] = user.id
