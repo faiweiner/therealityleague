@@ -157,22 +157,21 @@ class LeaguesController < ApplicationController
 			spots = @league.participant_cap - @participants.count
 		end
 		
-		# ============ CASES ============ #
+	# ============ JOIN PATH FOR LINK ============ #
 		case @league.type
 		when "Fantasy"
 			join_path = rosters_path(@league.id)
 		when "Elimination"
 			join_path = rounds_create_path(@league.id)
 		end
-
-		# ============ ALERTS ============ #
+	# ============ ALERTS ============ #
 		@status = ""
 		@alert_class = ""
 		@alert = []
 		@invite_button = []
 		
 		cases = []
-
+	# ----- index[0] ----- #
 		if @league.commissioner_id == @current_user.id  # index[0] = commissioner
 			cases[0] = "commissioner" 
 		else 																						# index[0] = participant or non-participant
@@ -182,7 +181,7 @@ class LeaguesController < ApplicationController
 				cases[0] = "non-participant"
 			end
 		end
-
+	# ----- index[1]..[5] ----- #
 		if @league.active? 	# index[1] active, index[2]...[5]
 			cases[1] = "active" 		
 			if @league.locked? 	# index[2] = locked, index[3]...[5] == nil
@@ -205,7 +204,7 @@ class LeaguesController < ApplicationController
 			cases[1] = "inactive" 
 			cases[2], cases[3], cases[4], cases[5] = nil
 		end
-	
+	# ----- Argument Assignment ----- #
 		case cases
 		when 	["commissioner", "active", "locked", nil, nil, nil ],
 					["participant", "active", "locked", nil, nil, nil ]
@@ -245,7 +244,7 @@ class LeaguesController < ApplicationController
 					["non-participant", "active", "unlocked", "public", "cap", :F3]
 			argument = "np-unlocked-public-cap"
 		end
-
+	# ----- Alert Values Assignment ----- #
 		case argument
 		when "all-locked"							 			# comm & p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
 			@status = "locked"
@@ -362,8 +361,10 @@ class LeaguesController < ApplicationController
 				@invite_button[5] = "POST"		
 			end	
 		end
-
+	# ============ GET RANKINGS ============ #
+		@rankings = get_rankings(@league, cases)
 		case @league.type
+
 
 		# ========== FOR ELIMINATION ========== #
 		when "Elimination"
@@ -391,9 +392,6 @@ class LeaguesController < ApplicationController
 			deadline_alert = nil
 
 			@alert_messages = [deadline_alert]
-
-		# ============== ACTION BUTTONS =========== #
-			@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
 
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
@@ -595,6 +593,20 @@ class LeaguesController < ApplicationController
 		end
 	end
 
+	def get_rankings(league, cases)
+		type = league.type
+		case type
+		when "Elimination"
+			league_rounds_collection = league.rounds.where(user_id: @current_user.id)
+			calculate_elimination_league_ranking(league_rounds_collection)
+		when "Fantasy"
+		end
+	end
+
+	def calculate_elimination_league_ranking(league_rounds_collection)
+		@rounds_collection = league_rounds_collection
+	end
+
 	def remaining(date, event)
 		intervals = [["day", 1], ["hour", 24], ["minute", 60], ["second", 60]]
 		elapsed = DateTime.now - date
@@ -610,7 +622,6 @@ class LeaguesController < ApplicationController
 
 	def get_league
 		@league = League.includes(:users, :season).find(params[:id]).becomes(League)
-		@league.unlock_league if @league.locked == true
 	end
 
 	def private_restriction

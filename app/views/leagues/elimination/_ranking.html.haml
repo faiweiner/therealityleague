@@ -1,4 +1,3 @@
-
 %h3 League Ranking
 %table.table.table-hover
 	%thead
@@ -13,11 +12,14 @@
 				%td= ranking[1][:participant].username
 				%td= ranking[1][:score]
 				%td
-					- if ranking[1][:participant] == @current_user && @league.active?
-						- if ranking[1][:rounds_collection].empty? || ranking[1][:rounds_contestants_collection].empty?
-							= link_to "Build Elimination Bracket", rounds_create_path(@league.id), :action => "create", :method => "post", class: "btn btn-primary btn-sm" 
-						- else
-							= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
-							= link_to "Edit", rounds_edit_path(@league.id, "first"), class: "btn btn-primary btn-sm" 
+					- if @league.locked? == false
+						- if ranking[1][:participant] == @current_user
+							- if ranking[1][:rounds_collection].empty? || ranking[1][:rounds_contestants_collection].empty?
+								= link_to "Build Elimination Bracket", rounds_create_path(@league.id), :action => "create", :method => "post", class: "btn btn-primary btn-sm" 
+							- else
+								= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-primary btn-sm"
+								= link_to "Edit", rounds_edit_path(@league.id, "first"), class: "btn btn-primary btn-sm" 
+						- else 
+							= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-default btn-sm"
 					- else
 						= link_to "View", rounds_path(@league.id, ranking[1][:participant].id), class: "btn btn-default btn-sm"
