@@ -395,7 +395,7 @@ class RoundsController < ApplicationController
 			@episodes_action[index] = [id, index + 1, "Episode #{index + 1}", ""]
 			@episodes_action[index][3] = round_status if id == round_id
 			round = Round.find(id)
-			if round.episode.air_date.future?
+			if round.episode.aired == false
 				if round.id == round_id
 					@episodes_action[index].push("btn btn-block btn-sm btn-default btn-primary selected")
 				else

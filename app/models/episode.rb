@@ -8,6 +8,7 @@
 #  created_at         :datetime
 #  updated_at         :datetime
 #  expected_survivors :integer
+#  aired              :boolean          default(FALSE)
 #
 
 class Episode < ActiveRecord::Base

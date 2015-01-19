@@ -8,6 +8,7 @@
 #  created_at         :datetime
 #  updated_at         :datetime
 #  expected_survivors :integer
+#  aired              :boolean          default(FALSE)
 #
 
 require 'rails_helper'
