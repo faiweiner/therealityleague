@@ -394,7 +394,7 @@ class LeaguesController < ApplicationController
 
 		# ============== ACTION BUTTONS =========== #
 			@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
-			raise
+
 		# ========== FOR FANTASY ========== #
 		when "Fantasy"
 			@participants_ranking = {}
@@ -428,7 +428,7 @@ class LeaguesController < ApplicationController
 				# @participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
 				# ============== ACTION BUTTONS =========== #
 				@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
-				raise
+
 			end
 			# sort roster to reflect current leads
 			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
@@ -447,7 +447,6 @@ class LeaguesController < ApplicationController
 		@pages = 1
 
 		if params[:search].present?
-			raise
 			query = params[:search]
 			@notice = "Search results for \"#{params[:search]}\""
 			search_term = regex_validation(query)
