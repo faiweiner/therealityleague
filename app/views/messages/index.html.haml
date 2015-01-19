@@ -1,14 +1,20 @@
 - if @unresolved_messages.present?
 	%table.table.table-condensed
 		%thead
-			%th Date
-			%th Message Type
-			%th Message
-			%th Status
+			%th.col-lg-1 Date
+			%th.col-lg-1 Reporter
+			%th.col-lg.1 Type
+			%th.col-lg-7 Message
+			%th.col-lg-1 Status
+			%th.col-lg-1 Action
 		%tbody
 			- @unresolved_messages.each do |message|
 				%tr
 					%td= message.created_at.strftime("%D %H:%I %Z")
+					%td
+						=message.id 
+						=message.id
 					%td= message.messagetype
 					%td= message.messagecomment
 					%td= message.resolved
+					%td= link_to "Edit", edit_message_path(message.id), class: "btn btn-default btn-sm"

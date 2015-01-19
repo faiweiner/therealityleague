@@ -1,0 +1,23 @@
+.panel.panel-default
+	.panel-body
+		.col-lg-12.col-md-12
+			- if params[:id]
+				%h2
+					Edit Message
+			#edit-message-form.col-lg-4.col-md-6.col-sm-6
+				-# Form 
+				= form_for(@message, class:"form-horizontal", :role => "form", :html => {:multipart => true}) do |f|
+					- if @message.errors.any?
+						.row.form-group
+							.alert.alert-warning{:role => "alert"}
+								%p= flash[:notice]
+								%ul
+									- @message.errors.full_messages.each do |msg|
+										%li= msg
+					/ Form Portion
+					%fieldset{:disabled => "disabled"}
+						.row.form-group.disabled
+							= f.label :user_id, "User", class:"control-label"
+							= f.number_field :user_id, class: "form-control", :id => "disabledTextInput", :autofocus => false
+							= @username
+					
