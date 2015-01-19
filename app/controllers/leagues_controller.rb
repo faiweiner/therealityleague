@@ -357,6 +357,7 @@ class LeaguesController < ApplicationController
 
 	def search
 		public_leagues = League.includes(:users).where(public_access: true, active: true).order("created_at ASC")
+		@pages = 1
 
 		if params[:search].present?
 			raise
