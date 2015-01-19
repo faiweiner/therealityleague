@@ -1,0 +1,30 @@
+%h2 All Shows & Seasons
+%table.table.table-bordered
+	%thead
+		%tr
+			%th Show
+			%th Season
+			%th #
+			%th Expired
+			%th Premiere
+			%th Finale
+			%th Published
+	%tbody.searchable
+	- @shows.each do |show|
+		- show.seasons.each do |season|	
+			%tr
+				%td
+					= show.name
+				%td
+					= season.name
+				%td 
+					= season.number
+				%td
+					- if season.expired == true
+						True
+				%td
+					= season.premiere_date
+				%td
+					= season.finale_date
+				%td
+					= season.published			

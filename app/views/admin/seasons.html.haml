@@ -1,21 +1,16 @@
-.panel.panel-default
-	.panel-heading
-		.panel-title.row
-			.col-lg-10
-				%h2 Manage Seasons
-			.col-lg-2.text-right
-				= link_to "Add New Season", new_season_path, class:"btn btn-default btn-sm"
+.panel
 	.panel-body
-		%table.table.table-hover
-			/ Error Messages
-			.row.form-group
-				- if flash[:notice] && flash[:color] == "valid"
-					.alert.alert-success{:role => "alert"}= flash[:notice]
-				- elsif flash[:notice] && flash[:color] == "invalid"
-					.alert.alert-warning{:role => "alert"}= flash[:notice]
-				- elsif flash[:notice] && flash[:color] == "prohibited"
-					.alert.alert-danger{:role => "alert"}= flash[:notice]
-			/ End Error Messages
+		.col-lg-10
+			%h2 Manage Seasons
+		.col-lg-2.text-right
+			= link_to "Add New Season", new_season_path, class:"btn btn-default btn-sm"
+		.panel-body
+			%table.table.table-hover
+				/ Error Messages
+				.row.form-group
+					.alert{class: flash[:color]}
+						= flash[:notice]
+				/ End Error Messages
 			%h4 
 				Current 
 				= pluralize_without_count(@current_seasons.count, "Season", text = nil)
