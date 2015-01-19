@@ -13,7 +13,8 @@ class LeaguesController < ApplicationController
 	
 	def index
 		if @current_user.admin?
-			@leagues = League.where(active: true).order(:created_at)
+			all_leagues = League.where(active: true).order(:created_at)
+			@leagues = all_leagues.find_all {|league| league.users.include? @current_user}
 			@past_leagues = League.where(active: false).order(:created_at)
 		elsif @current_user.leagues.any?
 			@leagues = @current_user.leagues.where(active: true).order(:created_at)
