@@ -35,17 +35,27 @@ class RoundsController < ApplicationController
 
 	def edit
 		@league = League.includes(:users, :rounds).find(params[:league_id])	
-		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
-		@contestants = @season.contestants
-		
-		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
-		static_data_pack = get_static_data(@league.id)
-		
+
 		if params[:round_id] == "first"
 			@active_round = @league.rounds.where(user_id: @current_user.id).first
 		else
 			@active_round = @league.rounds.find(params[:round_id])
 		end
+		
+		if @active_round.user_id != @current_user.id
+			flash[:notice] = "You do not have permission to edit this bracket!"
+			flash[:color] = "warning alert-warning"
+			redirect_to league_path(@league.id)
+		end
+
+		raise "get the hell out"
+		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		@contestants = @season.contestants
+		
+
+		raise
+		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
+		static_data_pack = get_static_data(@league.id)
 		
 		# populating first round with all contetants - user can eliminate people off of round
 		if @active_round.contestants.empty?

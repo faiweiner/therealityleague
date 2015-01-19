@@ -4,11 +4,27 @@ class MessagesController < ApplicationController
 	before_action :check_if_admin
 
 	def index
-		@unresolved_messages = Message.where(resolved: false)
-		@resolved_messages = Message.where(resolved: true)
+		@unresolved_messages = Message.where(resolved: false).order(created_at: :asc)
+		@resolved_messages = Message.where(resolved: true).order(created_at: :asc)
 	end
-	def new
-		
+
+	def edit
+		@message = Message.includes(:user).find(params[:id])
+		@username = @message.user.username
+	end
+
+
+	def update
+		@message = Message.find(params[:id])
+		if @message.save
+			flash[:notice] = "Message has been successfully updated."
+			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
+			flash[:color] = "alert-success"
+		else
+			flash[:notice] = "Something went wrong - message could not be updated."
+			flash[:color] = "alert-warning"
+			render :new
+		end	
 	end
 
 	def create
