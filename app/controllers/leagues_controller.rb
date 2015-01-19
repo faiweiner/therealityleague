@@ -456,7 +456,7 @@ class LeaguesController < ApplicationController
 
 	def get_league
 		@league = League.includes(:users, :season).find(params[:id]).becomes(League)
-		@league.lock_league if @league.draft_deadline.past?
+		@league.unlock_league if @league.locked == true
 	end
 
 	def private_restriction

@@ -58,6 +58,10 @@ class League < ActiveRecord::Base
 	def lock_league
 		self.update!(locked: true)
 	end
+
+	def unlock_league
+		self.update!(locked: false)
+	end
 	
 	private
 
