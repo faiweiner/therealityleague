@@ -1,41 +1,7 @@
 .panel
 	.panel-body
 		.col-lg-12
-			%h2 All Seasons
-			.input-group
-				.input-header
-					Filters
-					= select_tag "Show", options_from_collection_for_select(@shows, "id", "name"), class:"form-control"
-					= select_tag "Published", options_for_select("true" "false"), class:"form-control"
-			%table.table.table-bordered
-				%thead
-					%tr
-						%th Show
-						%th Season
-						%th #
-						%th Expired
-						%th Premiere
-						%th Finale
-						%th Published
-				%tbody.searchable
-				- @shows.each do |show|
-					- show.seasons.each do |season|	
-						%tr
-							%td
-								= show.name
-							%td
-								= season.name
-							%td 
-								= season.number
-							%td
-								- if season.expired == true
-									True
-							%td
-								= season.premiere_date
-							%td
-								= season.finale_date
-							%td
-								= season.published			
+			= render partial: "all_shows"
 			%h1 Live Tracking
 			= link_to("Events", events_path)
 			%h1 All Leagues

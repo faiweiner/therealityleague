@@ -44,6 +44,7 @@
 					.row.form-group
 						= f.label :premiere_date
 						= f.date_field :premiere_date, class: "form-control"
+						%input{:type => "time", :name => "season[premiere_time]", class: "form-control", :value => params[:premiere_time]}
 					.row.form-group
 						= f.label :finale_date
 						= f.date_field :finale_date, class: "form-control"

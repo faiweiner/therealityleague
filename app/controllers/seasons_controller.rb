@@ -16,17 +16,18 @@ class SeasonsController < ApplicationController
 		@season = Season.new season_params
 		if @season.save
 			flash[:notice_show] = "You've successfully added #{@season.show.name}: #{@season.name}."
-			flash[:color] = "valid"
+			flash[:color] = "alert-success"
 			redirect_to contestants_season_path(@season.id)
 		else
 			flash[:notice] = "Something went wrong, please try again."
-			flash[:color] = "prohibited"
+			flash[:color] = "alert-danger"
 			render :new
 		end
 	end
 
 	def edit
 		@season = Season.find(params[:id])
+		params[:premiere_time] = @season.premiere_date.strftime("%I:%M")
 	end
 	
 	def update
@@ -42,11 +43,11 @@ class SeasonsController < ApplicationController
 		@season = Season.find(params[:id])
 		if @season.update(published: true)
 			flash[:notice] = "#{@season.show.name}: #{@season.name} is now published."
-			flash[:color] = "valid"
+			flash[:color] = "alert-success"
 			redirect_to admin_seasons_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
-			flash[:color] = "prohibited"
+			flash[:color] = "alert-warning"
 			redirect_to admin_seasons_path
 		end
 	end
@@ -55,15 +56,15 @@ class SeasonsController < ApplicationController
 		@season = Season.find(params[:id])
 		if @season.leagues.count > 0
 			flash[:notice] = "#{@season.show.name}: #{@season.name} cannot be unpublished because leagues for this season already exist."
-			flash[:color] = "prohibited"
+			flash[:color] = "alert-danger"
 			redirect_to admin_seasons_path
 		elsif @season.update(published: false)
 			flash[:notice] = "#{@season.show.name}: #{@season.name} is now hidden from the public."
-			flash[:color] = "valid"
+			flash[:color] = "alert-success"
 			redirect_to admin_seasons_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
-			flash[:color] = "prohibited"
+			flash[:color] = "alert-danger"
 			redirect_to admin_seasons_path
 		end
 	end
@@ -72,15 +73,15 @@ class SeasonsController < ApplicationController
 		@season = Season.find params[:id]
 		if @season.leagues.count > 0
 			flash[:notice] = "#{@season.show.name}: #{@season.name} cannot be deleted because leagues for this season already exist."
-			flash[:color] = "prohibited"
+			flash[:color] = "alert-danger"
 			redirect_to admin_seasons_path
 		elsif	@season.destroy
 			flash[:notice] = "#{@season.show.name}: #{@season.name} has been successfully deleted."
-			flash[:color] = "valid"
+			flash[:color] = "alert-success"
 			redirect_to admin_seasons_path
 		else
 			flash[:notice] = "Something went wrong, please try again."
-			flash[:color] = "prohibited"
+			flash[:color] = "alert-danger"
 			redirect_to admin_seasons_path
 		end
 	end
@@ -107,6 +108,8 @@ class SeasonsController < ApplicationController
 	private
 
 	def season_params
+		new_premiere_date = "#{params[:season][:premiere_date]} #{params[:season][:premiere_time]}:00"
+		params[:season][:premiere_date] = new_premiere_date
 		params.require(:season).permit(:name, :number, :show_id, :premiere_date, :finale_date, :country_origin, :type, :description, :episode_count, :image, :website, :network, :published, :expired)
 	end
 

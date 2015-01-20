@@ -6,15 +6,30 @@
 		.col-lg-8.col-md-8.col-sm-8
 			%h2= @league.name
 			%p
-				= @league.season.show.name + ": "
-				= @league.season.name
+				= link_to "#{@show_title}", season_path(@league.season.id)
 			#league-action-panel
 				= render partial: "/shows/scoring_system"
 				.btn.btn-default.btn-sm.disabled
-					League locks on
-					= @league.draft_deadline.strftime("%B %d")
-					at
-					= @league.draft_deadline.strftime("%I:%M %P %Z")
+					Draft Deadline:
+					= @league.draft_deadline.strftime("%m/%e")
+					@
+					= @league.draft_deadline.strftime("%k:%M%P %Z")
+			%h3 League Ranking
+			%table.table.table-hover
+				%thead
+					%th.col-lg-2 Ranking
+					%th.col-lg-5 Participants
+					%th.col-lg-2 Total Pts
+					%th.col-lg-3 Actions
+				%tbody
+					- @rankings.each_with_index do |item, i|
+						%tr
+							%td= i + 1
+							%td= item[0]
+							%td= item[1][:total_score]
+							%td
+								- @actions[item[0]].each do |button|
+									= link_to button[0], button[1], class: button[2]
 		- if @alert.present?
 			.col-lg-4
 				.alert#alert-panel.alert-dismissible{class: "#{@alert_class}", role: "alert"}
@@ -22,21 +37,23 @@
 						%span.small{"aria-hidden" => true} &times;
 					%p
 						- @alert.each_with_index do |alert, i|
-							%strong= @alert[i] if i == 0
-							= @alert[i] unless i == 0
+							%h4= @alert[i] if i == 0
+							%caption= @alert[i] unless i == [-1] || i == 0
 					- if @invite_button.length == 3
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}"
 					- elsif @invite_button.length > 3
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
-		- case @league.type
-		- when "Elimination"
-			.col-lg-12.col-md-12.col-sm-12
-				= render partial: "leagues/elimination/ranking"
-				- if @league.season.episode_count
-					= render partial: "leagues/elimination/weekly_score"
-		- when "Fantasy"
-			.col-lg-12.col-md-12.col-sm-12
-				= render partial: "leagues/fantasy/ranking"			
-				- if @league.season.episode_count
-					= render partial: "leagues/fantasy/weekly_score"
+		.col-lg-12.col-md-12.col-sm-12
+			%table.table.table-hover
+				%h3 Weekly Scores
+				%thead
+					- @headings.each do |heading|
+						%th= heading
+				%tbody
+					- @weekly_scores.each do |row|
+						%tr
+							%td= row[0]
+							- row[1].each do |item|
+								%td= item
+
 
