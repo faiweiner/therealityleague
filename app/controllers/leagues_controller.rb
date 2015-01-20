@@ -365,82 +365,17 @@ class LeaguesController < ApplicationController
 		# ============ GET RANKINGS ============ #
 		data_package = get_rankings(@league, @league.type)
 		@rankings = data_package[:rankings]
+		@headings = data_package[:headings]
 		@weekly_scores = data_package[:weekly_scores]
-		
 
-		case @league.type
-		# ========== FOR ELIMINATION ========== #
-		when "Elimination"
-			@rounds_collection = @league.rounds.where(user_id: @current_user.id)
-			@rounds_contestants_collection = []
-			@rounds_collection.each do |round| 
-				round.contestants.each do |contestant|
-					@rounds_contestants_collection << contestant
-				end
-			end
-
-			@rounds_contestants_collection.uniq!
-
-			@participants_ranking = {}
-			@participants.each_with_index do |participant, i|
-				@participants_ranking[i] = {
-					:participant => participant,
-					:score => participant.calculate_total_rounds_points(@league),
-					:rounds_collection => @rounds_collection,
-					:rounds_contestants_collection => @rounds_contestants_collection
-				}
-			end
-			
-
-			deadline_alert = nil
-
-			@alert_messages = [deadline_alert]
-
-		# ========== FOR FANTASY ========== #
-		when "Fantasy"
-			@participants_ranking = {}
-			# @participants.each_with_index do |participant, i|
-			# 	@participants_ranking[i] = {
-			# 		:participant => participant,
-			# 		:score => participant.roster.calculate_total_roster_points
-			# 	}
-			# end
-			# @ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
-
-			@participants_roster_id = {}
-			@participants_roster_total = {}
-			@participants_roster_weekly = {}		
-				
-			@participants.each do |participant|
-				# get Roster ID
-				roster_id = participant.rosters.where(league_id: @league.id).pluck(:id)[0]
-				@participants_roster_id.store(participant.username, roster_id)
-				# get Roster Total
-				roster_total = Roster.find(roster_id).calculate_total_roster_points
-				@participants_roster_total.store(participant.username, roster_total)
-
-				# # get Roster Rounds
-				# roster_rounds_points = []
-				# roster_rounds = Roster.find(roster_id).rounds.pluck(:id)		# stores hash of { round_id => points }
-				# roster_rounds.each do |id| 
-				# 	round = Round.find(id)
-				# 	roster_rounds_points << [id, round.calculate_round_points]
-				# end
-				# @participants_roster_weekly.store(participant.username, {roster_rounds_id: roster_rounds_points})
-				# ============== ACTION BUTTONS =========== #
-				@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
-
-			end
-			# sort roster to reflect current leads
-			@participants_roster_total_sorted = @participants_roster_total.sort_by{|key, value| value}.reverse!
-			
-			deadline_alert = nil
-
-			@league.rosters.where(user_id: @current_user.id).empty?
-
-			deadline_alert = "Last day to submit a roster is on #{@league.draft_deadline.strftime('%B %d')}."
-
+		if @rankings.nil? || @headings.nil? || @weekly_scores.nil?
+			flash[:notice] = "This league is currently not ready for viewing."
+			flash[:color] = "alert-warning"
+			redirect_to :back
 		end
+		
+		@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
+
 	end
 
 	def search
@@ -597,31 +532,69 @@ class LeaguesController < ApplicationController
 	end
 
 	def get_rankings(league, type)
-		participants = league.users
+		participants = league.users.order(username: :desc)
+		episodes_expected = league.season.episode_count
+		episodes_collection = league.season.episodes
+		rankings = Hash.new
+		headings = []
 		boards_collection = Hash.new
 		weekly_scores = Hash.new
 		data_package = Hash.new
+		
+		if episodes_collection.count != episodes_expected
+			data_package = {
+				:rankings => nil,
+				:headings => nil,
+				:weekly_scores => nil
+			}
+			return data_package
+		end
+
+		headings.push("Participant")
+		episodes_collection.length.to_i.times {|count| headings.push("#{count+1}")}
+		headings.push("Total")
+
 		# join_path = rounds_create_path(league.id)			
 		participants.each_with_index do |participant, i|
+			boards_collection[participant.username] = []
 			if participant == @current_user then owner = true else owner = false end			
 			case type
 			when "Elimination"
 				user_board_collection = league.rounds.where(user_id: participant.id) 	# get collection of rounds
 				score = participant.calculate_total_rounds_points(league)							# get score for league
+				episodes_collection.each_with_index do |episode, i|
+					points = user_board_collection[i].calculate_round_points
+					if points == 0 && episode.aired? == false
+						boards_collection[participant.username][i] = "--"
+					else  
+						boards_collection[participant.username][i] = points
+					end
+				end
 			when "Fantasy"
 				user_board_collection = league.rosters.where(user_id: participant.id) # get roster in collection form
-				score = user_board_collection[0].calculate_total_roster_points
+				roster = user_board_collection[0]
+				contestants_collection = roster.contestants
+				score = roster.calculate_total_roster_points
+				episodes_collection.each_with_index do |episode, i|
+					points = 0
+					contestants_collection.each do |contestant|
+						points += contestant.calculate_points_per_episode(episode.id)
+					end
+					if points == 0 && episode.aired? == false
+						boards_collection[participant.username][i] = "--"
+					else  
+						boards_collection[participant.username][i] = points
+					end
+				end
 			end
-			boards_collection[participant.username] = {
-				:total_score => score,
-				:owner => owner,
-				:board => user_board_collection
-			}
+			boards_collection[participant.username].push(score)
+			rankings[participant.username] = {:total_score => score}
 		end		
-		boards_sorted = boards_collection.map.sort_by {|k, v| -v[:total_score]}
+		rankings_sorted = rankings.map.sort_by {|k, v| -v[:total_score]}
 		data_package = {
-			:rankings => boards_sorted,
-			:weekly_scores => "hi"
+			:rankings => rankings_sorted,
+			:headings => headings,
+			:weekly_scores => boards_collection
 		}
 	end
 

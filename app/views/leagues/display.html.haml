@@ -45,13 +45,17 @@
 							%td= item[0]
 							%td= item[1][:total_score]
 							%td= item[2] if item[2].present?
+		.col-lg-12.col-md-12.col-sm-12
+			%table.table.table-hover
+				%h3 Weekly Scores
+				%thead
+					- @headings.each do |heading|
+						%th= heading
+				%tbody
+					- @weekly_scores.each do |row|
+						%tr
+							%td= row[0]
+							- row[1].each do |item|
+								%td= item
 
-
-			/ 	= render partial: "leagues/elimination/ranking"
-			/ 	- if @league.season.episode_count
-			/ 		= render partial: "leagues/elimination/weekly_score"
-			/ .col-lg-12.col-md-12.col-sm-12
-			/ 	= render partial: "leagues/fantasy/ranking"			
-			/ 	- if @league.season.episode_count
-			/ 		= render partial: "leagues/fantasy/weekly_score"
 
