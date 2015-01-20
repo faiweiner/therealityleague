@@ -158,30 +158,31 @@ class LeaguesController < ApplicationController
 		end
 		
 	# ============ JOIN PATH FOR LINK ============ #
+		# !!! DELETE
 		case @league.type
 		when "Fantasy"
 			join_path = rosters_path(@league.id)
 		when "Elimination"
 			join_path = rounds_create_path(@league.id)
 		end
-	# ============ ALERTS ============ #
+		# ============ ALERTS ============ #
 		@status = ""
 		@alert_class = ""
 		@alert = []
 		@invite_button = []
 		
 		cases = []
-	# ----- index[0] ----- #
+		# ----- index[0] ----- #
 		if @league.commissioner_id == @current_user.id  # index[0] = commissioner
 			cases[0] = "commissioner" 
-		else 																						# index[0] = participant or non-participant
+		else 																						# index[0] = participant or non-participant + index[6]
 			if @league.users.include? @current_user 			 
 				cases[0] = "participant" 
 			else
 				cases[0] = "non-participant"
 			end
 		end
-	# ----- index[1]..[5] ----- #
+		# ----- index[1]..[5] ----- #
 		if @league.active? 	# index[1] active, index[2]...[5]
 			cases[1] = "active" 		
 			if @league.locked? 	# index[2] = locked, index[3]...[5] == nil
@@ -190,8 +191,7 @@ class LeaguesController < ApplicationController
 			else 								# index[2] = unlocked, index[3]..[5]
 				cases[2] = "unlocked" 
 				# index[3] = public?
-				if @league.public_access? then cases[3] = "public" else cases[3] = "private" end
-				
+				if @league.public_access? then cases[3] = "public" else cases[3] = "private" end				
 				if @league.participant_cap?	# index[4] = cap exists, index[5]...
 					cases[4] = "cap"  						# index[5] = spots within cap
 					if spots == 0 then cases[5] = :F1 elsif spots < 3 then cases[5] = :F2 else cases[5] = :F3 end
@@ -204,7 +204,7 @@ class LeaguesController < ApplicationController
 			cases[1] = "inactive" 
 			cases[2], cases[3], cases[4], cases[5] = nil
 		end
-	# ----- Argument Assignment ----- #
+		# ----- Argument Assignment ----- #
 		case cases
 		when 	["commissioner", "active", "locked", nil, nil, nil ],
 					["participant", "active", "locked", nil, nil, nil ]
@@ -244,7 +244,7 @@ class LeaguesController < ApplicationController
 					["non-participant", "active", "unlocked", "public", "cap", :F3]
 			argument = "np-unlocked-public-cap"
 		end
-	# ----- Alert Values Assignment ----- #
+		# ----- Alert Values Assignment ----- #
 		case argument
 		when "all-locked"							 			# comm & p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
 			@status = "locked"
@@ -361,11 +361,14 @@ class LeaguesController < ApplicationController
 				@invite_button[5] = "POST"		
 			end	
 		end
-	# ============ GET RANKINGS ============ #
-		@rankings = get_rankings(@league, cases)
+	
+		# ============ GET RANKINGS ============ #
+		data_package = get_rankings(@league, @league.type)
+		@rankings = data_package[:rankings]
+		@weekly_scores = data_package[:weekly_scores]
+		
+
 		case @league.type
-
-
 		# ========== FOR ELIMINATION ========== #
 		when "Elimination"
 			@rounds_collection = @league.rounds.where(user_id: @current_user.id)
@@ -387,7 +390,7 @@ class LeaguesController < ApplicationController
 					:rounds_contestants_collection => @rounds_contestants_collection
 				}
 			end
-			@ranking = @participants_ranking.map.sort_by{|k, v| -v[:score]}
+			
 
 			deadline_alert = nil
 
@@ -593,14 +596,33 @@ class LeaguesController < ApplicationController
 		end
 	end
 
-	def get_rankings(league, cases)
-		type = league.type
-		case type
-		when "Elimination"
-			league_rounds_collection = league.rounds.where(user_id: @current_user.id)
-			calculate_elimination_league_ranking(league_rounds_collection)
-		when "Fantasy"
-		end
+	def get_rankings(league, type)
+		participants = league.users
+		boards_collection = Hash.new
+		weekly_scores = Hash.new
+		data_package = Hash.new
+		# join_path = rounds_create_path(league.id)			
+		participants.each_with_index do |participant, i|
+			if participant == @current_user then owner = true else owner = false end			
+			case type
+			when "Elimination"
+				user_board_collection = league.rounds.where(user_id: participant.id) 	# get collection of rounds
+				score = participant.calculate_total_rounds_points(league)							# get score for league
+			when "Fantasy"
+				user_board_collection = league.rosters.where(user_id: participant.id) # get roster in collection form
+				score = user_board_collection[0].calculate_total_roster_points
+			end
+			boards_collection[participant.username] = {
+				:total_score => score,
+				:owner => owner,
+				:board => user_board_collection
+			}
+		end		
+		boards_sorted = boards_collection.map.sort_by {|k, v| -v[:total_score]}
+		data_package = {
+			:rankings => boards_sorted,
+			:weekly_scores => "hi"
+		}
 	end
 
 	def calculate_elimination_league_ranking(league_rounds_collection)

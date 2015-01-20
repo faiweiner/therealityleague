@@ -30,15 +30,28 @@
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}"
 					- elsif @invite_button.length > 3
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
-		- case @league.type
-		- when "Elimination"
-			.col-lg-12.col-md-12.col-sm-12
-				= render partial: "leagues/elimination/ranking"
-				- if @league.season.episode_count
-					= render partial: "leagues/elimination/weekly_score"
-		- when "Fantasy"
-			.col-lg-12.col-md-12.col-sm-12
-				= render partial: "leagues/fantasy/ranking"			
-				- if @league.season.episode_count
-					= render partial: "leagues/fantasy/weekly_score"
+		.col-lg-12.col-md-12.col-sm-12
+			%h3 League Ranking
+			%table.table.table-hover
+				%thead
+					%th.col-lg-1 Ranking
+					%th.col-lg-2 Participants
+					%th.col-lg-1 Total Pts
+					%th.col-lg-2 Actions
+				%tbody
+					- @rankings.each_with_index do |item, i|
+						%tr
+							%td= i + 1
+							%td= item[0]
+							%td= item[1][:total_score]
+							%td= item[2] if item[2].present?
+
+
+			/ 	= render partial: "leagues/elimination/ranking"
+			/ 	- if @league.season.episode_count
+			/ 		= render partial: "leagues/elimination/weekly_score"
+			/ .col-lg-12.col-md-12.col-sm-12
+			/ 	= render partial: "leagues/fantasy/ranking"			
+			/ 	- if @league.season.episode_count
+			/ 		= render partial: "leagues/fantasy/weekly_score"
 
