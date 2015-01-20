@@ -14,6 +14,22 @@
 					= @league.draft_deadline.strftime("%m/%e")
 					@
 					= @league.draft_deadline.strftime("%k:%M%P %Z")
+			%h3 League Ranking
+			%table.table.table-hover
+				%thead
+					%th.col-lg-2 Ranking
+					%th.col-lg-5 Participants
+					%th.col-lg-2 Total Pts
+					%th.col-lg-3 Actions
+				%tbody
+					- @rankings.each_with_index do |item, i|
+						%tr
+							%td= i + 1
+							%td= item[0]
+							%td= item[1][:total_score]
+							%td
+								- @actions[item[0]].each do |button|
+									= link_to button[0], button[1], class: button[2]
 		- if @alert.present?
 			.col-lg-4
 				.alert#alert-panel.alert-dismissible{class: "#{@alert_class}", role: "alert"}
@@ -27,21 +43,6 @@
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}"
 					- elsif @invite_button.length > 3
 						%p= link_to "#{@invite_button[0]}", @invite_button[1], class: "#{@invite_button[2]}", action: "#{@invite_button[3]}", league_id: @invite_button[4], method: "#{@invite_button[5]}"
-		.col-lg-8.col-md-8.col-sm-8
-			%h3 League Ranking
-			%table.table.table-hover
-				%thead
-					%th.col-lg-2 Ranking
-					%th.col-lg-6 Participants
-					%th.col-lg-2 Total Pts
-					%th.col-lg-2 Actions
-				%tbody
-					- @rankings.each_with_index do |item, i|
-						%tr
-							%td= i + 1
-							%td= item[0]
-							%td= item[1][:total_score]
-							%td= item[2] if item[2].present?
 		.col-lg-12.col-md-12.col-sm-12
 			%table.table.table-hover
 				%h3 Weekly Scores

@@ -130,13 +130,21 @@ class LeaguesController < ApplicationController
 		@participants = @league.users
 		@rules_collection = get_schemes(@show)
 		@show_title = "#{@show.name}: #{@league.season.name}"
-		@alerts = get_alerts(@league, @participants)
 
-		data_package = get_rankings(@league, @league.type)
-		cases = data_package[:cases]
-		@rankings = data_package[:rankings]
-		@headings = data_package[:headings]
-		@weekly_scores = data_package[:weekly_scores]
+		alert_package = get_alerts(@league, @participants)
+		@status 				= alert_package[:status] 
+		@alert_class 		= alert_package[:alert_class] 
+		@alert 					= alert_package[:alert]
+		@invite_button 	= alert_package[:invite_button]
+		cases 					=  alert_package[:cases]
+
+		data_package = get_rankings(@league, @league.type, cases)
+		action_package = get_action_buttons(@current_user, @participants, @league, cases)
+		@actions 				= action_package
+		@rankings 			= data_package[:rankings]
+		@headings 			= data_package[:headings]
+		@weekly_scores 	= data_package[:weekly_scores]
+		
 		# bounce out of episodes dont exist yet
 		if @rankings.nil? || @headings.nil? || @weekly_scores.nil?
 			flash[:notice] = "This league is currently not ready for viewing."
@@ -497,43 +505,80 @@ class LeaguesController < ApplicationController
 		}	
 	end
 
-	def get_action_buttons(league, participants_collection, current_user, current_user_cases, board_type)
+	def get_action_buttons(user, participants_collection, league, cases)
+		current_user = user
 		participants = participants_collection
-		cases = current_user_cases
 
-		button = []
-		participants.each do |participant|
-			button[participant.id] = []
-			if cases[1] == "inactive"
-				button[participant.id][0] = "View"
-				button[participant.id][1] = ""
-				button[participant.id][2] = "btn btn-default btn-sm"
-			else
-				if participant == current_user
-					if cases[2] == "unlocked"
-						if league.rounds.where(user_id: participant.id).empty?
-							button[participant.id][0] = "Build #{league.type.capitalize} #{board_type.capitalize}"
-							button[participant.id][1] = ""
-							button[participant.id][2] = "btn btn-default btn-sm"
-						end
-						button[participant.id][0] = "View"
-						button[participant.id][1] = ""
-						button[participant.id][2] = "btn btn-default btn-sm"
-					elsif cases[2] == "locked"	
-						button[participant.id][0] = "View"
-						button[participant.id][1] = ""
-						button[participant.id][2] = "btn btn-default btn-sm"				
-					else
-						button[participant.id][0] = "View"
-						button[participant.id][1] = ""
-						button[participant.id][2] = "btn btn-default btn-sm"
-					end
-				end
-			end		
+		board_path = nil
+		collection = nil
+
+		view_default = ["View", board_path, "btn btn-default btn-sm"]
+		view_primary = ["View", board_path, "btn btn-primary btn-sm"]
+		view_restricted = ["Pending", board_path, "btn btn-default btn-sm disabled"]
+		edit_primary = ["Edit", board_path, "btn btn-primary btn-sm"]
+		
+		case league.type
+		when "Elimination"
+			board_type = "bracket"
+			board_path = "rounds/#{league.id}"
+			collection = league.rounds.where(user_id: current_user.id)
+		when "Fantasy"
+			board_type = "roster"
+			collection = league.rosters.where(user_id: current_user.id)
 		end
+		new_primary = ["Build #{league.type.capitalize} #{board_type.capitalize}", board_path, "btn btn-primary btn-sm"]
+
+		buttons_options = Hash.new
+		buttons_options[:self] = {
+			:inactive => view_default,
+			:locked => view_primary,
+			:unlocked => [view_primary, edit_primary],
+			:empty => new_primary
+		}
+		buttons_options[:others] = {
+			:inactive => view_default,
+			:unlocked => view_restricted,
+			:locked => view_default
+		}
+
+		buttons_package = Hash.new
+		participants.each do |participant|
+			buttons_package[participant.username] = []
+			# SELF
+			if participant == current_user
+				case cases[1]					# if active
+				when "active"
+					if cases[2] == "unlocked"
+						if collection.empty?
+							buttons_package[participant.username] = buttons_options[:self][:empty]
+						else
+							buttons_package[participant.username] = buttons_options[:self][:unlocked]
+						end
+					else
+						buttons_package[participant.username] = buttons_options[:self][:locked]
+					end
+				when "inactive"
+					buttons_package[participant.username] = buttons_options[:self][:inactive]
+				end
+			# OTHER PPL
+			else
+				case cases[1]
+				when "active"
+					if cases[2] == "unlocked"
+						buttons_package[participant.username] = button_options[:others][:unlocked]
+					elsif cases[2] == "locked"
+						buttons_package[participant.username] = button_options[:others][:locked]
+					end
+				when "inactive"
+					buttons_package[participant.username] = button_options[:others][:inactive]
+				end
+			end
+		end
+
+		return buttons_package
 	end
 
-	def get_rankings(league, type)
+	def get_rankings(league, type, cases)
 		participants = league.users.order(username: :desc)
 		episodes_expected = league.season.episode_count
 		episodes_collection = league.season.episodes
@@ -541,6 +586,7 @@ class LeaguesController < ApplicationController
 		rankings = Hash.new
 		actions = Hash.new
 		boards_collection = Hash.new
+		user_board_collection = Hash.new
 		weekly_scores = Hash.new
 		data_package = Hash.new
 		
@@ -548,6 +594,7 @@ class LeaguesController < ApplicationController
 			data_package = {
 				:rankings => nil,
 				:headings => nil,
+				:actions => nil,
 				:weekly_scores => nil
 			}
 			return data_package
@@ -556,13 +603,15 @@ class LeaguesController < ApplicationController
 		headings.push("Participant")
 		episodes_collection.length.to_i.times {|count| headings.push("#{count+1}")}
 		headings.push("Total")
-
-		# join_path = rounds_create_path(league.id)			
+		
 		participants.each_with_index do |participant, i|
 			boards_collection[participant.username] = []
-			if participant == @current_user then owner = true else owner = false end			
+			user_board_collection[participant.id] = []
 			case type
 			when "Elimination"
+				if participant == @current_user  
+					user_board_collection[participant.id] = league.rounds.where(user_id: participant.id)
+				end		
 				user_board_collection = league.rounds.where(user_id: participant.id) 	# get collection of rounds
 				score = participant.calculate_total_rounds_points(league)							# get score for league
 				episodes_collection.each_with_index do |episode, i|
@@ -574,27 +623,31 @@ class LeaguesController < ApplicationController
 					end
 				end
 			when "Fantasy"
-				user_board_collection = league.rosters.where(user_id: participant.id) # get roster in collection form
-				roster = user_board_collection[0]
-				contestants_collection = roster.contestants
-				score = roster.calculate_total_roster_points
-				episodes_collection.each_with_index do |episode, i|
-					points = 0
-					contestants_collection.each do |contestant|
-						points += contestant.calculate_points_per_episode(episode.id)
+				if participant == @current_user  
+					user_board_collection[participant.id] = league.rosters.where(user_id: participant.id)
+				end	
+				roster = league.rosters.where(user_id: participant.id)[0] # get roster in collection form
+				if roster.present?
+					contestants_collection = roster.contestants
+					score = roster.calculate_total_roster_points
+					episodes_collection.each_with_index do |episode, i|
+						points = 0
+						contestants_collection.each do |contestant|
+							points += contestant.calculate_points_per_episode(episode.id)
+						end
+						if points == 0 && episode.aired? == false
+							boards_collection[participant.username][i] = "--"
+						else  
+							boards_collection[participant.username][i] = points
+						end
 					end
-					if points == 0 && episode.aired? == false
-						boards_collection[participant.username][i] = "--"
-					else  
-						boards_collection[participant.username][i] = points
-					end
+				else
+					boards_collection[participant.username][i] = "--"
+					score = 0
 				end
 			end
 			boards_collection[participant.username].push(score)
-			rankings[participant.username] = {
-				:total_score => score,
-				:actions => actions
-			}
+			rankings[participant.username] = {:total_score => score}
 		end		
 		rankings_sorted = rankings.map.sort_by {|k, v| -v[:total_score]}
 		boards_sorted = boards_collection.map.sort_by {|k, v| k}
