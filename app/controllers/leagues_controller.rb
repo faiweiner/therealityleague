@@ -565,12 +565,12 @@ class LeaguesController < ApplicationController
 				case cases[1]
 				when "active"
 					if cases[2] == "unlocked"
-						buttons_package[participant.username] = button_options[:others][:unlocked]
+						buttons_package[participant.username] = buttons_options[:others][:unlocked]
 					elsif cases[2] == "locked"
-						buttons_package[participant.username] = button_options[:others][:locked]
+						buttons_package[participant.username] = buttons_options[:others][:locked]
 					end
 				when "inactive"
-					buttons_package[participant.username] = button_options[:others][:inactive]
+					buttons_package[participant.username] = buttons_options[:others][:inactive]
 				end
 			end
 		end
