@@ -251,7 +251,7 @@ class LeaguesController < ApplicationController
 			@alert_class = "alert-success"
 			@alert[0] = "This #{@league.type} league has commenced."
 			@alert[1] = "#{board_type.pluralize.capitalize} are now locked and can no longer be edited."
-			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%D")} #{Time.zone}"
+			@alert[2] = ""
 			@invite_button[0] = nil
 			@invite_button[1] = nil
 			@invite_button[2] = nil			
@@ -260,7 +260,7 @@ class LeaguesController < ApplicationController
 			@alert_class = "alert-success"
 			@alert[0] = "Your #{@league.type} league is open."
 			@alert[1] = "#{board_type.pluralize.capitalize} can be edited up to the league's deadline on #{@league.draft_deadline.strftime("%D")}."
-			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%D")} #{Time.zone}"
+			@alert[2] = ""
 		when 	"comm-unlocked-cap" 						# comm, active, UNLOCKED, cap, private OR public
 			case cases[5]
 			when :F1 # spots == 0

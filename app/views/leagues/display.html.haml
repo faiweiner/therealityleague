@@ -8,6 +8,8 @@
 			%p
 				= @league.season.show.name + ": "
 				= @league.season.name
+				%br/
+				= "Premiere: #{@league.season.premiere_date.strftime("%D")} at #{@league.season.premiere_date.strftime("%l:%M %P %Z")}"
 			#league-action-panel
 				= render partial: "/shows/scoring_system"
 				.btn.btn-default.btn-sm.disabled
