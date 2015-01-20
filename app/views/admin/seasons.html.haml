@@ -1,111 +1,112 @@
-.panel
+.panel.panel-default
 	.panel-body
 		.col-lg-10
 			%h2 Manage Seasons
 		.col-lg-2.text-right
 			= link_to "Add New Season", new_season_path, class:"btn btn-default btn-sm"
-		.panel-body
-			%table.table.table-hover
-				/ Error Messages
-				.row.form-group
-					.alert{class: flash[:color]}
+		.col-lg-12#current-seasons
+			%table.table.table-condensed.table-hover
+				-# Error Messages
+				- if flash[:notice]
+					.row.form-group
+						.alert{class: flash[:color]}
 						= flash[:notice]
-				/ End Error Messages
-			%h4 
-				Current 
-				= pluralize_without_count(@current_seasons.count, "Season", text = nil)
-			%thead
-				%tr
-					%th.col-sm-3 Season Name
-					%th.col-sm-1 Status
-					%th.col-sm-1 Premiere
-					%th.col-sm-1 Finale
-					%th.col-sm-1 Actions
-					%th.col-sm-1 Episodes
-					%th.col-sm-1 Contestants
-					%th.col-sm-1 Events
-			%tbody
-				- @current_seasons.each do |season|
+				-# End Error Messages
+				%h4 
+					Current 
+					= pluralize_without_count(@current_seasons.count, "Season", text = nil)
+				%thead
 					%tr
-						/ column 1
-						%td
-							= link_to "#{season.show.name}: #{season.name}", season_path(season.id)
-							%br/
-							%p #{ season.episodes.count } out of #{ season.episode_count } episodes recorded.
-						/ column 2
-						%td
-							/ PUBLISH SEASON
-							- if season.published? 
+						%th.col-sm-3 Season Name
+						%th.col-sm-1 Status
+						%th.col-sm-1 Premiere
+						%th.col-sm-1 Finale
+						%th.col-sm-1 Actions
+						%th.col-sm-1 Episodes
+						%th.col-sm-1 Contestants
+						%th.col-sm-1 Events
+				%tbody
+					- @current_seasons.each do |season|
+						%tr
+							/ column 1
+							%td
+								= link_to "#{season.show.name}: #{season.name}", season_path(season.id)
+								%br/
+								%p #{ season.episodes.count } out of #{ season.episode_count } episodes recorded.
+							/ column 2
+							%td
+								/ PUBLISH SEASON
+								- if season.published? 
+									- if season.premiere_date.future?
+										= link_to "Unpublish", unpublish_season_path(season.id), :method => "patch", :data => {:confirm => "Are you sure you want to unpublish this season?"}, class:"btn btn-xs btn-default btn-block"
+										Preshow
+									- else
+										= link_to "Unpublish", unpublish_season_path(season.id), :method => "patch", :data => {:confirm => "Are you sure you want to unpublish this season?"}, class:"btn btn-xs btn-default btn-block disabled"
+										Commenced
+								- else
+									= link_to "Publish", publish_season_path(season.id), :method => "patch", class:"btn btn-xs btn-primary btn-block"
+							%td= season.premiere_date.strftime("%D %l:%M %p %Z")
+							/ column 3
+							%td= season.finale_date.strftime("%D")
+							%td
+								= link_to "View", season_path(season.id), class:"btn btn-xs btn-default btn-block"
+								= link_to "Edit", edit_season_path(season.id), class:"btn btn-xs btn-default btn-block"
 								- if season.premiere_date.future?
-									= link_to "Unpublish", unpublish_season_path(season.id), :method => "patch", :data => {:confirm => "Are you sure you want to unpublish this season?"}, class:"btn btn-xs btn-default btn-block"
-									Preshow
-								- else
-									= link_to "Unpublish", unpublish_season_path(season.id), :method => "patch", :data => {:confirm => "Are you sure you want to unpublish this season?"}, class:"btn btn-xs btn-default btn-block disabled"
-									Commenced
-							- else
-								= link_to "Publish", publish_season_path(season.id), :method => "patch", class:"btn btn-xs btn-primary btn-block"
-						%td= season.premiere_date.strftime("%D")
-						/ column 3
-						%td= season.finale_date.strftime("%D")
-						%td
-							= link_to "View", season_path(season.id), class:"btn btn-xs btn-default btn-block"
-							= link_to "Edit", edit_season_path(season.id), class:"btn btn-xs btn-default btn-block"
-							- if season.premiere_date.future?
-								= link_to "Delete", season_path(season.id), :method => "delete", :action => "destroy", :data => {:confirm => "Are you sure you want to delete this season?"}, class:"btn btn-xs btn-default btn-block"
-							- else 
-								= link_to "Delete", season_path(season.id), :method => "delete", :action => "destroy", :data => {:confirm => "Are you sure you want to delete this season?"}, class:"btn btn-xs btn-default btn-block disabled"
-						%td
-							= link_to "View All", episodes_path(season.id), class:"btn btn-xs btn-default btn-block"
-							= link_to "Add New", new_episode_path(season.id), class:"btn btn-xs btn-default btn-block"
-						%td
-							= link_to "View", contestants_season_path(season.id), class:"btn btn-xs btn-default btn-block"
-							= link_to "Add", new_contestant_path(season.id), class:"btn btn-default btn-xs btn-block"
-							= link_to "Edit", contestants_season_path(season.id), class:"btn btn-default btn-xs btn-block"
-						%td 
-							= link_to "View", season_path(season.id), class:"btn btn-xs btn-default btn-block"
-							= link_to "Track", edit_season_path(season.id), class:"btn btn-xs btn-default btn-block"
-	.panel-body
-		%table.table.table-hover
-			%h4 
-				Past 
-				= pluralize_without_count(@past_seasons.count, "Season", text = nil)
-			%thead
-				%tr
-					/ column 1
-					%th.col-sm-3 Season Name
-					/ column 2
-					%th.col-sm-1 Status
-					/ column 3
-					%th.col-sm-1 Premiered
-					/ column 4
-					%th.col-sm-1 Finale Date
-					/ column 5
-					%th.col-sm-3 Actions
-					/ column 6
-					%th.col-sm-3 Statistics
-			%tbody
-				- @past_seasons.each do |season|
+									= link_to "Delete", season_path(season.id), :method => "delete", :action => "destroy", :data => {:confirm => "Are you sure you want to delete this season?"}, class:"btn btn-xs btn-default btn-block"
+								- else 
+									= link_to "Delete", season_path(season.id), :method => "delete", :action => "destroy", :data => {:confirm => "Are you sure you want to delete this season?"}, class:"btn btn-xs btn-default btn-block disabled"
+							%td
+								= link_to "View All", episodes_path(season.id), class:"btn btn-xs btn-default btn-block"
+								= link_to "Add New", new_episode_path(season.id), class:"btn btn-xs btn-default btn-block"
+							%td
+								= link_to "View", contestants_season_path(season.id), class:"btn btn-xs btn-default btn-block"
+								= link_to "Add", new_contestant_path(season.id), class:"btn btn-default btn-xs btn-block"
+								= link_to "Edit", contestants_season_path(season.id), class:"btn btn-default btn-xs btn-block"
+							%td 
+								= link_to "View", season_path(season.id), class:"btn btn-xs btn-default btn-block"
+								= link_to "Track", edit_season_path(season.id), class:"btn btn-xs btn-default btn-block"
+		.col-lg-12#past-seasons
+			%table.table.table-hover
+				%h4 
+					Past 
+					= pluralize_without_count(@past_seasons.count, "Season", text = nil)
+				%thead
 					%tr
 						/ column 1
-						%td
-							= link_to "#{season.show.name}: #{season.name}", season_path(season.id)
+						%th.col-sm-3 Season Name
 						/ column 2
-						%td
-							- if season.expired == true
-								Completed
-							- else
-								- if season.premiere_date < @current_date
-									Commenced
-								- elsif season.published? == false
-									Unpublished
-								- else
-									Draft Open
+						%th.col-sm-1 Status
 						/ column 3
-						%td= season.premiere_date.strftime("%D")
+						%th.col-sm-1 Premiered
 						/ column 4
-						%td= season.finale_date.strftime("%D")
+						%th.col-sm-1 Finale Date
 						/ column 5
-						%td
-							= link_to "View", season_path(season.id), class:"btn btn-sm btn-default"
-							= link_to "Contestants", contestants_season_path(season.id), class:"btn btn-sm btn-default"
-						%td
+						%th.col-sm-3 Actions
+						/ column 6
+						%th.col-sm-3 Statistics
+				%tbody
+					- @past_seasons.each do |season|
+						%tr
+							/ column 1
+							%td
+								= link_to "#{season.show.name}: #{season.name}", season_path(season.id)
+							/ column 2
+							%td
+								- if season.expired == true
+									Completed
+								- else
+									- if season.premiere_date < @current_date
+										Commenced
+									- elsif season.published? == false
+										Unpublished
+									- else
+										Draft Open
+							/ column 3
+							%td= season.premiere_date.strftime("%D")
+							/ column 4
+							%td= season.finale_date.strftime("%D")
+							/ column 5
+							%td
+								= link_to "View", season_path(season.id), class:"btn btn-sm btn-default"
+								= link_to "Contestants", contestants_season_path(season.id), class:"btn btn-sm btn-default"
+							%td

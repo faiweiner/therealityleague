@@ -27,6 +27,7 @@ class SeasonsController < ApplicationController
 
 	def edit
 		@season = Season.find(params[:id])
+		params[:premiere_time] = @season.premiere_date.strftime("%I:%M")
 	end
 	
 	def update
@@ -107,6 +108,8 @@ class SeasonsController < ApplicationController
 	private
 
 	def season_params
+		new_premiere_date = "#{params[:season][:premiere_date]} #{params[:season][:premiere_time]}:00"
+		params[:season][:premiere_date] = new_premiere_date
 		params.require(:season).permit(:name, :number, :show_id, :premiere_date, :finale_date, :country_origin, :type, :description, :episode_count, :image, :website, :network, :published, :expired)
 	end
 
