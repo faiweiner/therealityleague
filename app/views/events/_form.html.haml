@@ -33,7 +33,7 @@
 			= f.select :contestant_id, [], {:include_blank => "Select a contestant"}, class:"form-control step4", :required => true
 		.row.form-group.field.has-feedback
 			= f.label :scheme_type
-			= select_tag :scheme_type_select, options_for_select(Scheme.select_type), class:"form-control step5", :required => true
+			= select_tag(:scheme_type_select, (), {:prompt => "Select a scheme type", class:"form-control step5", :required => true})
 		.row.form-group.field.has-feedback
 			= f.label :scheme_id, "Event"
 			= f.select :scheme_id, [], {:include_blank => "select an event"}, class:"form-control step6", :required => true

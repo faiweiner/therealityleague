@@ -29,9 +29,9 @@ $(document).ready(function () {
 							var selectOnlyOption = data.length <= 1;
 							response($.map(data.seasonsList, function (item, index) {
 								return {
-										label: item.name,
-										value: item.id,
-										selected: selectOnlyOption // Select if only option
+									label: item.name,
+									value: item.id,
+									selected: selectOnlyOption // Select if only option
 								};
 							}));
 						});
@@ -52,9 +52,9 @@ $(document).ready(function () {
 							response($.map(data.episodesList, function (item, index) {
 								var episodeName = item.name + " - " + item.airDate;
 								return {
-										label: episodeName,
-										value: item.id,
-										selected: selectOnlyOption // Select if only option
+									label: episodeName,
+									value: item.id,
+									selected: selectOnlyOption // Select if only option
 								};
 							}));
 						});
@@ -72,9 +72,9 @@ $(document).ready(function () {
 							var selectOnlyOption = data.length <= 1;
 							response($.map(data.contestantsList, function (item, index) {
 								return {
-										label: item.name,
-										value: item.id,
-										selected: selectOnlyOption // Select if only option
+									label: item.name,
+									value: item.id,
+									selected: selectOnlyOption // Select if only option
 								};
 							}));
 						});
@@ -83,20 +83,34 @@ $(document).ready(function () {
 				},	// end Step 4!
 				{
 					selector: '.step5',
+					requires: ['.step1'],
+					paramName: 'schemeType',
+					source: function (request, response) {
+						$.getJSON('/api/scheme_types', request, function (data) {
+							var selectOnlyOption = data.schemeTypesList.length <= 1;
+							response($.map(data.schemeTypesList, function (item, index) {
+								return {
+									label: item,
+									value: item,
+									selected: selectOnlyOption // Select if only option
+								};
+							}));
+						});
+					}
 				},
 				// ==== begin Step 6 for SCHEMES === //			
 				{
 					selector: '.step6',
 					requires: ['.step1','.step5'],
 					requireAll: true,
-					paramName: 'showId',
+					paramName: 'schemeId',
 					source: function (request, response) {
-						$.getJSON('/api/schemes', request, function (data) {
+						var url = '/api/schemes';
+						$.getJSON(url, request, function (data) {
 							var selectOnlyOption = data.length <= 1;
 							response($.map(data.schemesList, function (item, index) {
-								var schemeName = item.type + ": " + item.description
 								return {
-									label: schemeName,
+									label: item.description,
 									value: item.id,
 									selected: selectOnlyOption
 								}
