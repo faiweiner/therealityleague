@@ -129,252 +129,20 @@ class LeaguesController < ApplicationController
 		@show = @league.season.show
 		@participants = @league.users
 		@rules_collection = get_schemes(@show)
-
 		@show_title = "#{@show.name}: #{@league.season.name}"
-		board_type = ""
-		board_count = 0
-		case @league.type
-		when "Fantasy"
-			board_type = "roster"
-			board_count = @league.rosters.count
-		when "Elimination"
-			board_type = "bracket"
-			board_count = @league.rounds.count
-		end
+		@alerts = get_alerts(@league, @participants)
 
-		@participants_ids_collection = @participants.pluck(:id)
-		
-		@action_panel = Hash.new
-		@alert = Hash.new
-		if @participants.include? @current_user
-			@action_panel[:include_current_user] = true
-		else
-			@action_panel[:include_current_user] = false
-		end
-
-		spots = nil
-		if @league.participant_cap.present?
-			spots = @league.participant_cap - @participants.count
-		end
-		
-	# ============ JOIN PATH FOR LINK ============ #
-		# !!! DELETE
-		case @league.type
-		when "Fantasy"
-			join_path = rosters_path(@league.id)
-		when "Elimination"
-			join_path = rounds_create_path(@league.id)
-		end
-		# ============ ALERTS ============ #
-		@status = ""
-		@alert_class = ""
-		@alert = []
-		@invite_button = []
-		
-		cases = []
-		# ----- index[0] ----- #
-		if @league.commissioner_id == @current_user.id  # index[0] = commissioner
-			cases[0] = "commissioner" 
-		else 																						# index[0] = participant or non-participant + index[6]
-			if @league.users.include? @current_user 			 
-				cases[0] = "participant" 
-			else
-				cases[0] = "non-participant"
-			end
-		end
-		# ----- index[1]..[5] ----- #
-		if @league.active? 	# index[1] active, index[2]...[5]
-			cases[1] = "active" 		
-			if @league.locked? 	# index[2] = locked, index[3]...[5] == nil
-				cases[2] = "locked" 
-				cases[3], cases[4], cases[5] = nil
-			else 								# index[2] = unlocked, index[3]..[5]
-				cases[2] = "unlocked" 
-				# index[3] = public?
-				if @league.public_access? then cases[3] = "public" else cases[3] = "private" end				
-				if @league.participant_cap?	# index[4] = cap exists, index[5]...
-					cases[4] = "cap"  						# index[5] = spots within cap
-					if spots == 0 then cases[5] = :F1 elsif spots < 3 then cases[5] = :F2 else cases[5] = :F3 end
-				else 												# if index[4] =  no cap, index[5] = nil
-					cases[4] = "no_cap" 
-					cases[5] = nil # nil because spot is nil
-				end
-			end
-		else 								# index[1] inactive, index[2]...[5] == nil
-			cases[1] = "inactive" 
-			cases[2], cases[3], cases[4], cases[5] = nil
-		end
-		# ----- Argument Assignment ----- #
-		case cases
-		when 	["commissioner", "active", "locked", nil, nil, nil ],
-					["participant", "active", "locked", nil, nil, nil ]
-			argument = "all-locked"
-		when 	["commissioner", "active", "unlocked", "private", "no_cap", nil], 
-					["commissioner", "active", "unlocked", "public", "no_cap", nil]
-			argument = "comm-unlocked-nocap"
-		when 	["commissioner", "active", "unlocked", "private", "cap", :F1], 
-					["commissioner", "active", "unlocked", "private", "cap", :F2],
-					["commissioner", "active", "unlocked", "private", "cap", :F3],
-					["commissioner", "active", "unlocked", "public", "cap", :F1],
-					["commissioner", "active", "unlocked", "public", "cap", :F2],
-					["commissioner", "active", "unlocked", "public", "cap", :F3]
-			argument = "comm-unlocked-cap"
-		when 	["commissioner", "inactive", nil, nil, nil, nil], 
-					["participant", "inactive", nil, nil, nil, nil]
-			argument = "all-inactive"
-		when 	["participant", "active", "unlocked", "private", "no_cap", nil], 
-					["participant", "active", "unlocked", "private", "cap", :F1],
-					["participant", "active", "unlocked", "private", "cap", :F2],
-					["participant", "active", "unlocked", "private", "cap", :F3],
-					["participant", "active", "unlocked", "public", "no_cap", nil],	
-					["participant", "active", "unlocked", "public", "cap", :F1],
-					["participant", "active", "unlocked", "public", "cap", :F2],
-					["participant", "active", "unlocked", "public", "cap", :F3]
-			argument = "p-unlocked"
-		when 	["non-participant", "active", "unlocked", "public", "no_cap", nil]	
-			argument = "np-unlocked-public-nocap"
-		when 	["non-participant", "active", "unlocked", "private", "no_cap", nil]
-			argument = "np-unlocked-private-cap"
-		when	["non-participant", "active", "unlocked", "private", "cap", :F1],
-					["non-participant", "active", "unlocked", "private", "cap", :F2],
-					["non-participant", "active", "unlocked", "private", "cap", :F3]
-			argument = "np-unlocked-private-cap"		
-		when	["non-participant", "active", "unlocked", "public", "cap", :F1],
-					["non-participant", "active", "unlocked", "public", "cap", :F2],
-					["non-participant", "active", "unlocked", "public", "cap", :F3]
-			argument = "np-unlocked-public-cap"
-		end
-		# ----- Alert Values Assignment ----- #
-		case argument
-		when "all-locked"							 			# comm & p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
-			@status = "locked"
-			@alert_class = "alert-success"
-			@alert[0] = "This #{@league.type} league has commenced."
-			@alert[1] = "#{board_type.pluralize.capitalize} are now locked and can no longer be edited."
-			@alert[2] = ""
-			@invite_button[0] = nil
-			@invite_button[1] = nil
-			@invite_button[2] = nil			
-		when "comm-unlocked-nocap" 					# comm, active, UNLOCKED, no cap, private OR public
-			@status = "open"
-			@alert_class = "alert-success"
-			@alert[0] = "Your #{@league.type} league is open."
-			@alert[1] = "#{board_type.pluralize.capitalize} can be edited up to the league's deadline on #{@league.draft_deadline.strftime("%D")}."
-			@alert[2] = ""
-		when 	"comm-unlocked-cap" 						# comm, active, UNLOCKED, cap, private OR public
-			case cases[5]
-			when :F1 # spots == 0
-				@status = "full"
-				@alert_class = "alert-success"
-				@alert[0] = "Your league is currently full."
-				@alert[1] = ""
-				@invite_button[0] = nil
-				@invite_button[1] = nil
-				@invite_button[2] = nil	
-			when :F2 # spots less than 3
-				@status = "limited"
-				@alert_class = "alert-danger"
-				@alert[0] = "Only #{spots} #{"spot".pluralize(spots)} left in this league!"
-				@alert[1] = ""
-				@invite_button[0] = nil
-				@invite_button[1] = nil
-				@invite_button[2] = nil	
-			else :F3 # all other cases
-				@status = "available"
-				@alert_class = "alert-warning"
-				@alert[0] = ""
-				@alert[1] = "Invite friends to join the league before the league commences on #{@league.draft_deadline.strftime("%D")}!"
-				@invite_button[0] = "Invite Participants"
-				@invite_button[1] = league_invite_path(@league.id)
-				@invite_button[2] = "btn btn-sm btn-default"			
-			end	
-		when 	"all-inactive"									# comm & p, inactive
-			@status = "inactive"
-			@alert_class = "warning"
-			@alert[0] = "This league is no longer active"
-			@alert[1] = "as #{@show_title} has concluded."
-			@alert[2] = "Would you like to revive this league for the next season of #{@league.show}?"
-			@invite_button[0] = "Revive League"
-			@invite_button[1] = "#"
-			@invite_button[2] = "btn btn-sm btn-default"		
-		when 	"p-locked" 										# p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
-			@status = "locked"
-			@alert_class = "alert-success"
-			@alert[0] = "Your #{@league.type} league has commenced."
-			@alert[1] = "#{board_type.pluralize.capitalize} are now locked and can no longer be edited."
-			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%D")} #{Time.zone}"
-			@invite_button[0] = nil
-			@invite_button[1] = nil
-			@invite_button[2] = nil		
-		when 	"p-unlocked" 									# p, active, UNLOCKED, public OR private, cap OR no cap
-			@status = "unlocked"
-			@alert_class = "alert-warning"
-			@alert[0] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("D")}."
-			@alert[1] = "Be sure to submit your #{board_type} before the league's deadline on #{@league.draft_deadline.strftime("D")}."
-			@invite_button[0] = nil
-			@invite_button[1] = nil
-			@invite_button[2] = nil			
-		when 	"np-unlocked-public-nocap",	"np-unlocked-private-nocap"		# p, active, UNLOCKED, public, no cap		
-			@status = "available"
-			@alert_class = "alert-success"
-			@alert[0] = "This league is still open!"
-			@alert[1] = "HURRY -"
-			@alert[2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-			@invite_button[0] = "Join This League"
-			@invite_button[1] = join_path
-			@invite_button[2] = "btn btn-sm btn-default"
-			@invite_button[3] = "join"
-			@invite_button[4] = @league.id
-			@invite_button[5] = "POST"		
-		when 	"np-unlocked-public-cap", "np-unlocked-private-cap"
-			case cases[5]
-			when :F1
-				@status = "full"
-				@alert_class = "alert-success"
-				@alert[0] = "Sorry, this #{@league.type} league is currently full."
-				@alert[1] = ""
-				@invite_button[0] = nil
-				@invite_button[1] = nil
-				@invite_button[2] = nil	
-			when :F2
-				@status = "limited"
-				@alert_class = "alert-danger"
-				@alert[0] = "Only #{spots} #{"spot".pluralize(spots)} left in this league!"
-				@alert[1] = ""
-				@invite_button[0] = "Join This League"
-				@invite_button[1] = join_path
-				@invite_button[2] = "btn btn-sm btn-default"
-				@invite_button[3] = "join"
-				@invite_button[4] = @league.id
-				@invite_button[5] = "POST"	
-			else :F3 # all other cases
-				@status = "available"
-				@alert_class = "warning"
-				@alert[0] = "#{spots} #{"spot".pluralize(spots)} left in this league."
-				@alert[1] = "Join today before this league fills up!"
-				@alert[2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%D")}."
-				@invite_button[0] = "Join This League"
-				@invite_button[1] = join_path
-				@invite_button[2] = "btn btn-sm btn-default"
-				@invite_button[3] = "join"
-				@invite_button[4] = @league.id
-				@invite_button[5] = "POST"		
-			end	
-		end
-	
-		# ============ GET RANKINGS ============ #
 		data_package = get_rankings(@league, @league.type)
+		cases = data_package[:cases]
 		@rankings = data_package[:rankings]
 		@headings = data_package[:headings]
 		@weekly_scores = data_package[:weekly_scores]
-
+		# bounce out of episodes dont exist yet
 		if @rankings.nil? || @headings.nil? || @weekly_scores.nil?
 			flash[:notice] = "This league is currently not ready for viewing."
 			flash[:color] = "alert-warning"
 			redirect_to :back
 		end
-		
-		@action_buttons = get_action_buttons(@league, @participants, @current_user, cases, board_type)
 
 	end
 
@@ -495,6 +263,240 @@ class LeaguesController < ApplicationController
 			:active)
 	end
 
+	def get_alerts(league, participants_collection)
+		@league = league
+		@show = @league.season.show
+		data_package = Hash.new
+		participants = participants_collection
+		
+		spots = nil
+		board_type = ""
+		board_count = 0
+
+		case @league.type
+		when "Fantasy"
+			board_type = "roster"
+			board_count = @league.rosters.count
+			join_path = rosters_path(@league.id)
+		when "Elimination"
+			board_type = "bracket"
+			board_count = @league.rounds.count
+			join_path = rounds_create_path(@league.id)
+		end
+
+		if @league.participant_cap.present?
+			spots = @league.participant_cap - participants.count
+		end	
+
+		@status = ""
+		@alert_class = ""
+		@alert = []
+		@invite_button = []
+		cases = []
+
+		if participants.include? @current_user # index[0]
+			if @league.commissioner_id == @current_user.id?
+				cases[0] = "commissioner"
+			else
+				cases[0] = "participant"
+			end
+		else
+			cases[0] = "non-participant"
+		end
+
+		if @league.active? 	# index[1] active, index[2]...[5]
+			cases[1] = "active" 		
+			if @league.locked? 	# index[2] = locked, index[3]...[5] == nil
+				cases[2] = "locked" 
+				cases[3], cases[4], cases[5] = nil
+			else 								# index[2] = unlocked, index[3]..[5]
+				cases[2] = "unlocked" 
+				# index[3] = public?
+				if @league.public_access? then cases[3] = "public" else cases[3] = "private" end				
+				if @league.participant_cap?	# index[4] = cap exists, index[5]...
+					cases[4] = "cap"  						# index[5] = spots within cap
+					if spots == 0 then cases[5] = :F1 elsif spots < 3 then cases[5] = :F2 else cases[5] = :F3 end
+				else 												# if index[4] =  no cap, index[5] = nil
+					cases[4] = "no_cap" 
+					cases[5] = nil # nil because spot is nil
+				end
+			end
+		else 								# index[1] inactive, index[2]...[5] == nil
+			cases[1] = "inactive" 
+			cases[2], cases[3], cases[4], cases[5] = nil
+		end
+		# A.4 ----- Argument Assignment ----- #
+		
+		case cases
+		when 	["commissioner", "active", "locked", nil, nil, nil ],
+					["participant", "active", "locked", nil, nil, nil ]
+			argument = "all-locked"
+		when 	["commissioner", "active", "unlocked", "private", "no_cap", nil], 
+					["commissioner", "active", "unlocked", "public", "no_cap", nil]
+			argument = "comm-unlocked-nocap"
+		when 	["commissioner", "active", "unlocked", "private", "cap", :F1], 
+					["commissioner", "active", "unlocked", "private", "cap", :F2],
+					["commissioner", "active", "unlocked", "private", "cap", :F3],
+					["commissioner", "active", "unlocked", "public", "cap", :F1],
+					["commissioner", "active", "unlocked", "public", "cap", :F2],
+					["commissioner", "active", "unlocked", "public", "cap", :F3]
+			argument = "comm-unlocked-cap"
+		when 	["commissioner", "inactive", nil, nil, nil, nil], 
+					["participant", "inactive", nil, nil, nil, nil]
+			argument = "all-inactive"
+		when 	["participant", "active", "unlocked", "private", "no_cap", nil], 
+					["participant", "active", "unlocked", "private", "cap", :F1],
+					["participant", "active", "unlocked", "private", "cap", :F2],
+					["participant", "active", "unlocked", "private", "cap", :F3],
+					["participant", "active", "unlocked", "public", "no_cap", nil],	
+					["participant", "active", "unlocked", "public", "cap", :F1],
+					["participant", "active", "unlocked", "public", "cap", :F2],
+					["participant", "active", "unlocked", "public", "cap", :F3]
+			argument = "p-unlocked"
+		when 	["non-participant", "active", "unlocked", "public", "no_cap", nil]	
+			argument = "np-unlocked-public-nocap"
+		when 	["non-participant", "active", "unlocked", "private", "no_cap", nil]
+			argument = "np-unlocked-private-cap"
+		when	["non-participant", "active", "unlocked", "private", "cap", :F1],
+					["non-participant", "active", "unlocked", "private", "cap", :F2],
+					["non-participant", "active", "unlocked", "private", "cap", :F3]
+			argument = "np-unlocked-private-cap"		
+		when	["non-participant", "active", "unlocked", "public", "cap", :F1],
+					["non-participant", "active", "unlocked", "public", "cap", :F2],
+					["non-participant", "active", "unlocked", "public", "cap", :F3]
+			argument = "np-unlocked-public-cap"
+		end
+		# A.5 ----- Alert Values Assignment ----- #
+		case argument
+		when "all-locked"							 			# comm & p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
+			@status = "locked"
+			@alert_class = "alert-success"
+			@alert[0] = "League Commenced"
+			@alert[1] = "#{board_type.pluralize.capitalize} are locked and cannot be edited."
+			@alert[2] = ""
+			@invite_button[0] = nil
+			@invite_button[1] = nil
+			@invite_button[2] = nil			
+		when "comm-unlocked-nocap" 					# comm, active, UNLOCKED, no cap, private OR public
+			@status = "open"
+			@alert_class = "alert-success"
+			@alert[0] = "Open League"
+			@alert[1] = "There's still plenty of space."
+			@alert[2] = "#{board_type.pluralize.capitalize} can still be submitted."
+			@invite_button[0] = "Invite Participants"
+			@invite_button[1] = league_invite_path(@league.id)
+			@invite_button[2] = "btn btn-sm btn-default"	
+		when 	"comm-unlocked-cap" 						# comm, active, UNLOCKED, cap, private OR public
+			case cases[5]
+			when :F1 # spots == 0
+				@status = "full"
+				@alert_class = "alert-success"
+				@alert[0] = "Full League"
+				@alert[1] = ""
+				@invite_button[0] = nil
+				@invite_button[1] = nil
+				@invite_button[2] = nil	
+			when :F2 # spots less than 3
+				@status = "limited"
+				@alert_class = "alert-danger"
+				@alert[0] = "Limited Space"
+				@alert[1] = "Only #{spots} #{"spot".pluralize(spots)} left."
+				@invite_button[0] = nil
+				@invite_button[1] = nil
+				@invite_button[2] = nil	
+			else :F3 # all other cases
+				@status = "available"
+				@alert_class = "alert-warning"
+				@alert[0] = "Open League"
+				@alert[1] = "Invite friends to join the league before the league commences."
+				@invite_button[0] = "Invite Participants"
+				@invite_button[1] = league_invite_path(@league.id)
+				@invite_button[2] = "btn btn-sm btn-default"			
+			end	
+		when 	"all-inactive"									# comm & p, inactive
+			@status = "inactive"
+			@alert_class = "warning"
+			@alert[0] = "Inactive League"
+			@alert[1] = "#{@show_title} has concluded."
+			@alert[2] = "Would you like to revive this league for the next season of #{@league.season.show}?"
+			@invite_button[0] = "Revive League"
+			@invite_button[1] = "#"
+			@invite_button[2] = "btn btn-sm btn-default"		
+		when 	"p-locked" 										# p, active, LOCKED, public OR private (doesn't matter if there's a cap or not)
+			@status = "locked"
+			@alert_class = "alert-success"
+			@alert[0] = "League commenced."
+			@alert[1] = "#{board_type.pluralize.capitalize} are now locked and can no longer be edited."
+			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%m/%e")}."
+			@invite_button[0] = nil
+			@invite_button[1] = nil
+			@invite_button[2] = nil		
+		when 	"p-unlocked" 									# p, active, UNLOCKED, public OR private, cap OR no cap
+			@status = "unlocked"
+			@alert_class = "alert-warning"
+			@alert[0] = "Have you finalized your #{board_type}?"
+			@alert[1] = "Submit your #{board_type} before the league's deadline."
+			@alert[2] = "#{@show_title} premieres on #{@league.season.premiere_date.strftime("%m/%e")}."
+			@invite_button[0] = nil
+			@invite_button[1] = nil
+			@invite_button[2] = nil			
+		when 	"np-unlocked-public-nocap",	"np-unlocked-private-nocap"		# p, active, UNLOCKED, public, no cap		
+			@status = "available"
+			@alert_class = "alert-success"
+			@alert[0] = "Open League"
+			@alert[1] = "There're still spots left."
+			@alert[2] = "Last day to join and submit a #{board_type} is #{@league.draft_deadline.strftime("%m/%e")}."
+			@invite_button[0] = "Join This League"
+			@invite_button[1] = join_path
+			@invite_button[2] = "btn btn-sm btn-default"
+			@invite_button[3] = "join"
+			@invite_button[4] = @league.id
+			@invite_button[5] = "POST"		
+		when 	"np-unlocked-public-cap", "np-unlocked-private-cap"
+			case cases[5]
+			when :F1
+				@status = "full"
+				@alert_class = "alert-success"
+				@alert[0] = "Full League"
+				@alert[1] = "Sorry, there is no spot left."
+				@invite_button[0] = nil
+				@invite_button[1] = nil
+				@invite_button[2] = nil	
+			when :F2
+				@status = "limited"
+				@alert_class = "alert-danger"
+				@alert[0] = "Limited Space"
+				@alert[1] = "Only #{spots} #{"spot".pluralize(spots)} left in this league!"
+				@invite_button[0] = "Join This League"
+				@invite_button[1] = join_path
+				@invite_button[2] = "btn btn-sm btn-default"
+				@invite_button[3] = "join"
+				@invite_button[4] = @league.id
+				@invite_button[5] = "POST"	
+			else :F3 # all other cases
+				@status = "available"
+				@alert_class = "warning"
+				@alert[0] = "Almost Full!"
+				@alert[1] = "Only #{spots} #{"spot".pluralize(spots)} left in this league."
+				@alert[2] = "Last day to submit a #{board_type} is #{@league.draft_deadline.strftime("%m/%e")}."
+				@invite_button[0] = "Join This League"
+				@invite_button[1] = join_path
+				@invite_button[2] = "btn btn-sm btn-default"
+				@invite_button[3] = "join"
+				@invite_button[4] = @league.id
+				@invite_button[5] = "POST"		
+			end	
+		end
+
+		data_package = {
+			:status => @status,
+			:alert_class => @alert_class,
+			:alert => [@alert[0], @alert[1], @alert[2]],
+			:invite_button => [@invite_button[0], @invite_button[1], @invite_button[2], @invite_button[3], @invite_button[4], @invite_button[5]],
+			:cases => cases
+		}	
+	end
+
 	def get_action_buttons(league, participants_collection, current_user, current_user_cases, board_type)
 		participants = participants_collection
 		cases = current_user_cases
@@ -535,8 +537,9 @@ class LeaguesController < ApplicationController
 		participants = league.users.order(username: :desc)
 		episodes_expected = league.season.episode_count
 		episodes_collection = league.season.episodes
-		rankings = Hash.new
 		headings = []
+		rankings = Hash.new
+		actions = Hash.new
 		boards_collection = Hash.new
 		weekly_scores = Hash.new
 		data_package = Hash.new
@@ -588,13 +591,17 @@ class LeaguesController < ApplicationController
 				end
 			end
 			boards_collection[participant.username].push(score)
-			rankings[participant.username] = {:total_score => score}
+			rankings[participant.username] = {
+				:total_score => score,
+				:actions => actions
+			}
 		end		
 		rankings_sorted = rankings.map.sort_by {|k, v| -v[:total_score]}
+		boards_sorted = boards_collection.map.sort_by {|k, v| k}
 		data_package = {
 			:rankings => rankings_sorted,
 			:headings => headings,
-			:weekly_scores => boards_collection
+			:weekly_scores => boards_sorted
 		}
 	end
 
