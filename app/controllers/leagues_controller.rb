@@ -509,36 +509,33 @@ class LeaguesController < ApplicationController
 		current_user = user
 		participants = participants_collection
 
+		board_type = nil
 		board_path = nil
 		collection = nil
 
-		view_default = ["View", board_path, "btn btn-default btn-sm"]
-		view_primary = ["View", board_path, "btn btn-primary btn-sm"]
-		view_restricted = ["Pending", board_path, "btn btn-default btn-sm disabled"]
-		edit_primary = ["Edit", board_path, "btn btn-primary btn-sm"]
-		
 		case league.type
 		when "Elimination"
 			board_type = "bracket"
-			board_path = "rounds/#{league.id}"
 			collection = league.rounds.where(user_id: current_user.id)
 		when "Fantasy"
 			board_type = "roster"
 			collection = league.rosters.where(user_id: current_user.id)
 		end
-		new_primary = ["Build #{league.type.capitalize} #{board_type.capitalize}", board_path, "btn btn-primary btn-sm"]
+
+		labels = ["View", "Pending", "Edit", "Build #{board_type.capitalize if board_type}", "Leave League"]
+		button_classes = ["btn btn-default btn-sm", "btn btn-primary btn-sm", "btn btn-default btn-sm disabled"]
 
 		buttons_options = Hash.new
 		buttons_options[:self] = {
-			:inactive => [view_default],
-			:locked => [view_primary],
-			:unlocked => [view_primary, edit_primary],
-			:empty => [new_primary]
+			:inactive => [labels[0], "#", button_classes[1]],
+			:locked => [labels[0], "#", button_classes[1]],
+			:unlocked => [[labels[0], "#", button_classes[1]], [labels[2], "#", button_classes[1]]],
+			:empty => [labels[3], "#",button_classes[1]]
 		}
 		buttons_options[:others] = {
-			:inactive => [view_default],
-			:unlocked => [view_restricted],
-			:locked => [view_default]
+			:inactive => [labels[0], "#", button_classes[0]],
+			:unlocked => [labels[1], "#", button_classes[1]],
+			:locked => [labels[0], "#", button_classes[0]]
 		}
 
 		buttons_package = Hash.new
