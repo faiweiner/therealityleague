@@ -113,15 +113,17 @@ class RoundsController < ApplicationController
 		@contestants = @season.contestants
 
 		static_data_package = get_static_data(@league.id)
-		
+
 		@episodes_ids_collection = static_data_package[:episodes_ids_collection]
 		@rounds_ids_collection = static_data_package[:rounds_ids_collection]
 		@upcoming_rounds_ids_collection = static_data_package[:upcoming_rounds_ids]
 
-		if @rounds_ids_collection.index(@active_round.id) == 0
+		if @rounds_ids_collection[@active_round.user_id].index(@active_round.id) == 0
 			previous_round = nil
 		else
-			previous_round = Round.find(@rounds_ids_collection[@rounds_ids_collection.index(@active_round.id) - 1])
+			current_index = @rounds_ids_collection[@active_round.user_id].index(@active_round.id)
+			previous_index = current_index - 1
+			previous_round = Round.find(@rounds_ids_collection[@active_round.user_id][previous_index])
 		end
 
 		if @active_round.contestants.empty? && previous_round.present?
@@ -207,20 +209,20 @@ class RoundsController < ApplicationController
 		round.contestants.destroy(contestant)
 	end
 
-	def get_small_static_data(league_id, round_id)
-		league = League.includes(:users, :rounds, :season).find(league_id)	
-	end
 
-	def get_static_data(league_id)
+	def get_static_data(league_id)		# static data for ALL the leagues
 		league = League.includes(:users, :rounds, :season).find(league_id)	
-		rounds_ids_collection = league.rounds.where(user_id: @current_user.id).pluck(:id)
+		participants_ids_collection = league.users.pluck(:id)
+		rounds_ids_collection = {}
+		upcoming_rounds_ids = {}
+		participants_ids_collection.each do |p_id|
+			rounds_ids_collection[p_id] = league.rounds.where(user_id: p_id).pluck(:id)
+			rounds_ids_collection[p_id].each do |id|
+				upcoming_rounds_ids[p_id] = id if Round.find(id).episode.air_date.future?
+			end
+		end
 		episodes_ids_collection = league.season.episodes.pluck(:id)
 		contestants_ids_collection = league.season.contestants.order(name: :asc).pluck(:id)
-
-		upcoming_rounds_ids = []
-		rounds_ids_collection.each do |id|
-			upcoming_rounds_ids << id if Round.find(id).episode.air_date.future?
-		end
 
 		static_data_package = Hash.new
 		static_data_package = {
@@ -235,19 +237,22 @@ class RoundsController < ApplicationController
 	def get_round_data(round_id, league_id, round_action)
 		@league = League.includes(:users, :rounds, :season).find(league_id)	
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
+		current_round = Round.find(round_id)
 		
+
 		static_data_pack = get_static_data(@league.id)
 		
-		rounds_ids_collection = static_data_pack[:rounds_ids_collection]
+		rounds_ids_collection = static_data_pack[:rounds_ids_collection][current_round.user_id]
 		episodes_ids_collection = static_data_pack[:episodes_ids_collection]
 		contestants_ids_collection = static_data_pack[:contestants_ids_collection]
-		upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids]
+		upcoming_rounds_ids = static_data_pack[:upcoming_rounds_ids][current_round.user_id]
 
-		current_round = Round.find(round_id)
 		current_round_index = rounds_ids_collection.index(current_round.id)
 
 		previous_round, previous_round_id, next_round, next_round_id = nil
 		previous_round_index = current_round_index - 1
+
+
 		next_round_index = current_round_index + 1
 
 		if current_round.id == rounds_ids_collection[0]
@@ -398,7 +403,8 @@ class RoundsController < ApplicationController
 
 	def get_episode_action(round_id, round_status, rounds_ids_collection)
 		@episodes_action = []
-		rounds_ids_collection.each_with_index do |id, index|
+		current_round = Round.find(round_id)
+		rounds_ids_collection[current_round.user_id].each_with_index do |id, index|
 			@episodes_action[index] = [id, index + 1, "Episode #{index + 1}", ""]
 			@episodes_action[index][3] = round_status if id == round_id
 			round = Round.find(id)
@@ -508,7 +514,7 @@ class RoundsController < ApplicationController
 
 	def get_round_actions(round, static_data_pack, round_data_collection)
 		action_package = Hash.new 
-		active_round_index = static_data_pack[:rounds_ids_collection].index(round.id)
+		active_round_index = static_data_pack[:rounds_ids_collection][round.user_id].index(round.id)
 		active_round_title = ""
 		previous_button = []
 		next_button = []
@@ -529,22 +535,22 @@ class RoundsController < ApplicationController
 			next_button[1] = "btn-default btn-xs round-toggle next-button disabled"	
 		end	
 
-		if round.id == static_data_pack[:rounds_ids_collection].first
+		if round.id == static_data_pack[:rounds_ids_collection][round.user_id].first
 			active_round_title = "Round #{active_round_index + 1}"
 			previous_button[1] = "btn-default btn-xs round-toggle previous-button disabled"
 			previous_round_id = nil
-			next_round_id = static_data_pack[:rounds_ids_collection][1]
-		elsif	round.id == static_data_pack[:rounds_ids_collection].last
+			next_round_id = static_data_pack[:rounds_ids_collection][round.user_id][1]
+		elsif	round.id == static_data_pack[:rounds_ids_collection][round.user_id].last
 			active_round_title = "Final Round"
 			previous_button[1] = "btn-default btn-xs round-toggle previous-button"
 			next_button[0] = "Finish"
 			next_button[2] = "finish"
-			previous_round_id = static_data_pack[:rounds_ids_collection][-2]
+			previous_round_id = static_data_pack[:rounds_ids_collection][round.user_id][-2]
 			next_round_id = nil
 		else
 			active_round_title = "Round #{active_round_index + 1}"
-			previous_round_id = static_data_pack[:rounds_ids_collection][active_round_index - 1]
-			next_round_id = static_data_pack[:rounds_ids_collection][active_round_index + 1]
+			previous_round_id = static_data_pack[:rounds_ids_collection][round.user_id][active_round_index - 1]
+			next_round_id = static_data_pack[:rounds_ids_collection][round.user_id][active_round_index + 1]
 		end
 
 
