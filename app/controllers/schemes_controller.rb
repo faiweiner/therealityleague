@@ -16,7 +16,8 @@ class SchemesController < ApplicationController
 		if @scheme.save
 			redirect_to schemes_path
 		else
-			raise "no sorry"
+			flash[:notice] = "Something went wrong and the scheme was not saved."
+			flahs[:color] = "alert-warning warning"
 		end
 	end
 

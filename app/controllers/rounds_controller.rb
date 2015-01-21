@@ -48,12 +48,9 @@ class RoundsController < ApplicationController
 			redirect_to league_path(@league.id)
 		end
 
-		raise "get the hell out"
 		@season = Season.includes(:show, :episodes, :contestants).find(@league.season.id)
 		@contestants = @season.contestants
 		
-
-		raise
 		# -- collection of episodes and episode IDs for this season for list of absent episodes by contestant
 		static_data_pack = get_static_data(@league.id)
 		

@@ -530,15 +530,15 @@ class LeaguesController < ApplicationController
 
 		buttons_options = Hash.new
 		buttons_options[:self] = {
-			:inactive => view_default,
-			:locked => view_primary,
+			:inactive => [view_default],
+			:locked => [view_primary],
 			:unlocked => [view_primary, edit_primary],
-			:empty => new_primary
+			:empty => [new_primary]
 		}
 		buttons_options[:others] = {
-			:inactive => view_default,
-			:unlocked => view_restricted,
-			:locked => view_default
+			:inactive => [view_default],
+			:unlocked => [view_restricted],
+			:locked => [view_default]
 		}
 
 		buttons_package = Hash.new
