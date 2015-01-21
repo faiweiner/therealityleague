@@ -53,7 +53,7 @@ Rails.application.routes.draw do
 	post	'rosters/:league_id' => 'rosters#create', :as => :rosters
 	get		'rosters' => 'rosters#index'
 	get		'rosters/new' => 'rosters#new', :as => :new_roster
-	get		'rosters/:id/edit' => 'rosters#edit', :as => :edit_roster
+	get		'rosters/:roster_id/edit' => 'rosters#edit', :as => :roster_edit
 	get		'rosters/:id' => 'rosters#display', :as => :roster
 	patch 'rosters/:id' => 'rosters#update'
 	put		'rosters/:id' => 'rosters#update'
@@ -62,7 +62,7 @@ Rails.application.routes.draw do
 	post	'rounds/:league_id' => 'rounds#create', :as => :rounds_create
 	get		'rounds/:league_id/:user_id' => 'rounds#index', :as => :rounds
 	get		'rounds/:round_id' => 'rounds#display', :as => :round_display
-	get		'rounds/:round_id/edit' => 'rounds#edit', :as => :rounds_edit
+	get		'rounds/:round_id/edit' => 'rounds#edit', :as => :round_edit
 	post	'rounds/:round_id/add/:contestant_id' => 'rounds#add', :as => :round_add
 	post	'rounds/:round_id/bulk' => 'rounds#bulk_add', :as => :round_bulk_add
 	post	'rounds/:round_id/remove/:contestant_id' => 'rounds#remove', :as => :round_remove
