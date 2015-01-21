@@ -96,7 +96,6 @@ class LeaguesController < ApplicationController
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = "success"
-			
 			redirect_to league_path(@league.id)
 		else
 			flash[:notice] = "Something went wrong and we were unable to save your league"
@@ -151,7 +150,6 @@ class LeaguesController < ApplicationController
 			flash[:color] = "alert-warning"
 			redirect_to :back
 		end
-
 	end
 
 	def search
@@ -516,9 +514,10 @@ class LeaguesController < ApplicationController
 		case league.type
 		when "Elimination"
 			board_type = "bracket"
+			board_path = "rounds/#{league.id}"
 			collection = league.rounds.where(user_id: current_user.id)
 		when "Fantasy"
-			board_type = "roster"
+			board_type = "rosters/#{league.id}"
 			collection = league.rosters.where(user_id: current_user.id)
 		end
 
@@ -527,19 +526,25 @@ class LeaguesController < ApplicationController
 
 		buttons_options = Hash.new
 		buttons_options[:self] = {
-			:inactive => [labels[0], "#", button_classes[1]],
-			:locked => [labels[0], "#", button_classes[1]],
-			:unlocked => [[labels[0], "#", button_classes[1]], [labels[2], "#", button_classes[1]]],
-			:empty => [labels[3], "#",button_classes[1]]
+			:inactive => [labels[0], board_type, button_classes[1], "GET"],
+			:locked => [labels[0], board_type, button_classes[1], "GET"],
+			:editable => [labels[2], board_type, button_classes[1], "GET"],
+			:unlocked => [labels[0], board_type, button_classes[1], "GET"],
+			:empty => [labels[3], board_type, button_classes[1], "POST"]
 		}
 		buttons_options[:others] = {
-			:inactive => [labels[0], "#", button_classes[0]],
-			:unlocked => [labels[1], "#", button_classes[1]],
-			:locked => [labels[0], "#", button_classes[0]]
+			:inactive => [labels[0], board_type, button_classes[0]],
+			:unlocked => [labels[1], board_type, button_classes[1]],
+			:locked => [labels[0], board_type, button_classes[0]]
 		}
 
 		buttons_package = Hash.new
 		participants.each do |participant|
+			board_id = nil
+			if board_type == "Elimination"
+				board_id = league.rounds.where(user_id: participant.id).first.pluck[:id]
+			elsif board_type == "Fantasy"
+			end
 			buttons_package[participant.username] = []
 			# SELF
 			if participant == current_user
@@ -549,7 +554,10 @@ class LeaguesController < ApplicationController
 						if collection.empty?
 							buttons_package[participant.username] = buttons_options[:self][:empty]
 						else
-							buttons_package[participant.username] = buttons_options[:self][:unlocked]
+							buttons_options[:self][:unlocked][1] = "rosters/#{league.id}/"
+							buttons_package[participant.username][0] = buttons_options[:self][:unlocked]
+							buttons_options[:self][:editable][1] = "rosters/#{league.id}/"
+							buttons_package[participant.username][1] = buttons_options[:self][:editable]							
 						end
 					else
 						buttons_package[participant.username] = buttons_options[:self][:locked]
