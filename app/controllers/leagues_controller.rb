@@ -508,94 +508,82 @@ class LeaguesController < ApplicationController
 		participants = participants_collection
 
 		board_type = nil
-		board_path = nil
 		collection = nil
+		board_path = []
 
 		case league.type
 		when "Elimination"
 			board_type = "bracket"
-			board_path = "rounds/"
 			collection = league.rounds.where(user_id: current_user.id)
 		when "Fantasy"
 			board_type = "roster"
-			board_path = "rosters/"
 			collection = league.rosters.where(user_id: current_user.id)
 		end
 
 		labels = ["View", "Pending", "Edit", "Build #{board_type.capitalize if board_type}", "Leave League"]
 		button_classes = ["btn btn-default btn-sm", "btn btn-primary btn-sm", "btn btn-default btn-sm disabled"]
 
-		buttons_options = Hash.new
-		buttons_options[:self] = {
-			:inactive => [labels[0], board_path, button_classes[1], "GET"],
-			:locked => [labels[0], board_path, button_classes[1], "GET"],
-			:editable => [labels[2], board_path, button_classes[1], "GET"],
-			:unlocked => [labels[0], board_path, button_classes[1], "GET"],
-			:empty => [labels[3], board_path, button_classes[1], "POST"]
-		}
-		buttons_options[:others] = {
-			:inactive => [labels[0], board_path, button_classes[0]],
-			:unlocked => [labels[1], board_path, button_classes[1]],
-			:locked => [labels[0], board_path, button_classes[0]]
-		}
-
 		buttons_package = Hash.new
 		participants.each do |participant|
-			board_id = nil
+			buttons_options = Hash.new
 			if league.type == "Elimination"
 				board_id = league.rounds.where(user_id: participant.id).pluck(:id)[0]
+				board_path[0] = round_path(board_id)
+				board_path[1] = round_edit_path(board_id)
+				board_path[2] = rounds_create_path(league.id)
 			elsif league.type == "Fantasy"
 				board_id = league.rosters.where(user_id: participant.id).pluck(:id)[0]
+				board_path[0] = roster_path(board_id)
+				board_path[1] = roster_edit_path(board_id)
+				board_path[2] = rosters_path(league.id)
 			end
-			buttons_package[participant.username] = []
-			final_button = nil
 
 			if participant == current_user
-				case cases[1]					# if active
-				when "active"
-					if cases[2] == "unlocked"	
-						if collection.empty?	# if unlocked and bracket is empty - create
-							buttons_options[:self][:empty][1] << "#{league.id}"
-							buttons_package[participant.username] = buttons_options[:self][:empty]
-						else									# if unlocked and can be viewed or edited
-							buttons_options[:self][:unlocked][1] << "#{board_id}"
-							buttons_package[participant.username][0] = buttons_options[:self][:unlocked]
-							buttons_options[:self][:editable][1] << "#{board_id}/edit"
-							buttons_package[participant.username][1] = buttons_options[:self][:editable]							
-							buttons_options[:self][:unlocked][1] = board_path
-							buttons_options[:self][:editable][1] = board_path
-						end
-					else										# if locked
-						buttons_options[:self][:locked][1] << "#{board_id}"
-						buttons_package[participant.username] = buttons_options[:self][:locked]
-						buttons_options[:self][:locked][1] = board_path
-					end
-				when "inactive"
-					buttons_options[:self][:inactive][1] << "#{board_id}"
-					buttons_package[participant.username] = buttons_options[:self][:inactive]
-					buttons_options[:self][:inactive][1] = board_path
-				end
-			# OTHER PPL
+				buttons_options = {
+					:inactive => [labels[0], nil, button_classes[1], "GET"],
+					:locked => [labels[0], nil, button_classes[1], "GET"],
+					:editable => [labels[2], nil, button_classes[1], "GET"],
+					:unlocked => [labels[0], nil, button_classes[1], "GET"],
+					:empty => [labels[3], nil, button_classes[1], "POST"]
+				}
 			else
-				case cases[1]
-				when "active"
-					if cases[2] == "unlocked"
-						buttons_options[:others][:unlocked][1] << "#{board_id}"
-						buttons_package[participant.username] = buttons_options[:others][:unlocked]
-						buttons_options[:others][:unlocked][1] = board_path
-					elsif cases[2] == "locked"
-						buttons_options[:others][:locked][1] << "#{board_id} h"
-						buttons_package[participant.username] = buttons_options[:others][:locked]
-						buttons_options[:others][:locked][1] = board_path
-					end
-				when "inactive"
-					buttons_options[:others][:inactive][1] << "#{board_id}"
-					buttons_package[participant.username] = buttons_options[:others][:inactive]
-					buttons_options[:others][:inactive][1] = board_path
-				end
+				buttons_options = {
+					:inactive => [labels[0], nil, button_classes[0]],
+					:unlocked => [labels[1], nil, button_classes[1]],
+					:locked => [labels[0], nil, button_classes[0]]
+				}
 			end
-		end
 
+			final_buttons = []
+			buttons_package[participant.username] = []
+			
+			case cases[1]					# if active
+			when "active"
+				if cases[2] == "unlocked"	
+					if participant == current_user 
+						if buttons_options[:empty]	# if unlocked and bracket is empty - create
+							buttons_options[:empty][1] = board_path[3]
+							final_buttons[0] = buttons_options[:empty]
+						else
+							buttons_options[:unlocked][1] = board_path[0]
+							final_buttons[0] = buttons_options[:unlocked]		
+							buttons_options[:editable][1] = board_path[1]
+							final_buttons[1] = buttons_options[:editable]							
+						end
+					else						# if unlocked and can be viewed or edited
+						buttons_options[:unlocked][1] = board_path[0]
+						final_buttons[0] = buttons_options[:unlocked]							
+					end
+				else										# if locked
+					buttons_options[:locked][1] = board_path[0]
+					final_buttons[0] = buttons_options[:locked]
+				end
+			when "inactive"
+				buttons_options[:inactive][1] << board_path[0]
+				final_buttons[0] = buttons_options[:inactive]
+			end
+			buttons_package[participant.username] = final_buttons
+		end
 		return buttons_package
 	end
 
