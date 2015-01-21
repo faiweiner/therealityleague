@@ -514,10 +514,11 @@ class LeaguesController < ApplicationController
 		case league.type
 		when "Elimination"
 			board_type = "bracket"
-			board_path = "rounds/#{league.id}"
+			board_path = "rounds/"
 			collection = league.rounds.where(user_id: current_user.id)
 		when "Fantasy"
-			board_type = "rosters/#{league.id}"
+			board_type = "roster"
+			board_path = "rosters/"
 			collection = league.rosters.where(user_id: current_user.id)
 		end
 
@@ -526,56 +527,71 @@ class LeaguesController < ApplicationController
 
 		buttons_options = Hash.new
 		buttons_options[:self] = {
-			:inactive => [labels[0], board_type, button_classes[1], "GET"],
-			:locked => [labels[0], board_type, button_classes[1], "GET"],
-			:editable => [labels[2], board_type, button_classes[1], "GET"],
-			:unlocked => [labels[0], board_type, button_classes[1], "GET"],
-			:empty => [labels[3], board_type, button_classes[1], "POST"]
+			:inactive => [labels[0], board_path, button_classes[1], "GET"],
+			:locked => [labels[0], board_path, button_classes[1], "GET"],
+			:editable => [labels[2], board_path, button_classes[1], "GET"],
+			:unlocked => [labels[0], board_path, button_classes[1], "GET"],
+			:empty => [labels[3], board_path, button_classes[1], "POST"]
 		}
 		buttons_options[:others] = {
-			:inactive => [labels[0], board_type, button_classes[0]],
-			:unlocked => [labels[1], board_type, button_classes[1]],
-			:locked => [labels[0], board_type, button_classes[0]]
+			:inactive => [labels[0], board_path, button_classes[0]],
+			:unlocked => [labels[1], board_path, button_classes[1]],
+			:locked => [labels[0], board_path, button_classes[0]]
 		}
 
 		buttons_package = Hash.new
 		participants.each do |participant|
 			board_id = nil
-			if board_type == "Elimination"
-				board_id = league.rounds.where(user_id: participant.id).first.pluck[:id]
-			elsif board_type == "Fantasy"
+			if league.type == "Elimination"
+				board_id = league.rounds.where(user_id: participant.id).pluck(:id)[0]
+			elsif league.type == "Fantasy"
+				board_id = league.rosters.where(user_id: participant.id).pluck(:id)[0]
 			end
 			buttons_package[participant.username] = []
-			# SELF
+			final_button = nil
+
 			if participant == current_user
 				case cases[1]					# if active
 				when "active"
-					if cases[2] == "unlocked"
-						if collection.empty?
+					if cases[2] == "unlocked"	
+						if collection.empty?	# if unlocked and bracket is empty - create
+							buttons_options[:self][:empty][1] << "#{league.id}"
 							buttons_package[participant.username] = buttons_options[:self][:empty]
-						else
-							buttons_options[:self][:unlocked][1] = "rosters/#{league.id}/"
+						else									# if unlocked and can be viewed or edited
+							buttons_options[:self][:unlocked][1] << "#{board_id}"
 							buttons_package[participant.username][0] = buttons_options[:self][:unlocked]
-							buttons_options[:self][:editable][1] = "rosters/#{league.id}/"
+							buttons_options[:self][:editable][1] << "#{board_id}/edit"
 							buttons_package[participant.username][1] = buttons_options[:self][:editable]							
+							buttons_options[:self][:unlocked][1] = board_path
+							buttons_options[:self][:editable][1] = board_path
 						end
-					else
+					else										# if locked
+						buttons_options[:self][:locked][1] << "#{board_id}"
 						buttons_package[participant.username] = buttons_options[:self][:locked]
+						buttons_options[:self][:locked][1] = board_path
 					end
 				when "inactive"
+					buttons_options[:self][:inactive][1] << "#{board_id}"
 					buttons_package[participant.username] = buttons_options[:self][:inactive]
+					buttons_options[:self][:inactive][1] = board_path
 				end
 			# OTHER PPL
 			else
 				case cases[1]
 				when "active"
 					if cases[2] == "unlocked"
+						buttons_options[:others][:unlocked][1] << "#{board_id}"
 						buttons_package[participant.username] = buttons_options[:others][:unlocked]
+						buttons_options[:others][:unlocked][1] = board_path
 					elsif cases[2] == "locked"
+						buttons_options[:others][:locked][1] << "#{board_id} h"
 						buttons_package[participant.username] = buttons_options[:others][:locked]
+						buttons_options[:others][:locked][1] = board_path
 					end
 				when "inactive"
+					buttons_options[:others][:inactive][1] << "#{board_id}"
 					buttons_package[participant.username] = buttons_options[:others][:inactive]
+					buttons_options[:others][:inactive][1] = board_path
 				end
 			end
 		end
