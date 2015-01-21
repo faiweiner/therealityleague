@@ -27,7 +27,8 @@
 							%td= i + 1
 							%td= item[0]
 							%td= item[1][:total_score]
-							%td= link_to(@actions[item[0]][0], @actions[item[0]][1], class: @actions[item[0]][2])
+							- @actions[item[0]].each do |button|
+								%td= link_to(button[0], button[1], class: button[2], action: button[3])
 
 		- if @alert.present?
 			.col-lg-4
