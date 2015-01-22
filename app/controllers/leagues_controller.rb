@@ -573,7 +573,7 @@ class LeaguesController < ApplicationController
 			when "active"
 				if cases[2] == "unlocked"	
 					if participant == current_user 
-						if buttons_options[:empty]	# if unlocked and bracket is empty - create
+						if collection.empty?	# if unlocked and bracket is empty - create
 							buttons_options[:empty][1] = board_path[0]
 							final_buttons[0] = buttons_options[:empty]
 						else
