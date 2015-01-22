@@ -77,7 +77,7 @@ class LeaguesController < ApplicationController
 	def create
 		@league = League.new league_params
 		@league.season_id = params[:league][:season_id]
-		season = Season.where(name: params[:league][:season_id])
+		season = Season.where(id: params[:league][:season_id]).first
 		
 		if @league.save
 			# Automatically adds the commissioner (user) as participant of the league
@@ -89,17 +89,30 @@ class LeaguesController < ApplicationController
 			else
 				@access_type = "private"
 			end
-			# automatically creates a league roster for the user
-			roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
-			roster.save
-			
+
+			case @league.type
+			when "Elimination"
+				episodes_collection = season.episodes
+				episodes_collection.each_with_index do |episode, i|
+					round = Round.find_or_create_by!(:user_id => @current_user.id, :league_id => @league.id, :episode_id => episode.id)
+					if i == 0
+						season.contestants.each do |contestant|
+							round.contestants << contestant unless round.contestants.include? contestant
+						end
+					end
+				end
+			when "Fantasy"
+				# automatically creates a league roster for the user
+				roster = Roster.create(user_id: @current_user.id, league_id: @league.id)
+				roster.save
+			end
 			flash[:notice] = "You\'ve successfully created a #{@access_type} league!"
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
-			flash[:color] = "success"
+			flash[:color] = "success alert-success"
 			redirect_to league_path(@league.id)
 		else
 			flash[:notice] = "Something went wrong and we were unable to save your league"
-			flash[:color] = "danger"
+			flash[:color] = "danger alert-danger"
 			render :new
 		end
 	end
@@ -528,7 +541,7 @@ class LeaguesController < ApplicationController
 			buttons_options = Hash.new
 			if league.type == "Elimination"
 				board_id = league.rounds.where(user_id: participant.id).pluck(:id)[0]
-				board_path[0] = round_path(board_id)
+				board_path[0] = rounds_path(league.id, participant.id)
 				board_path[1] = round_edit_path(board_id)
 				board_path[2] = rounds_create_path(league.id)
 			elsif league.type == "Fantasy"
@@ -542,14 +555,14 @@ class LeaguesController < ApplicationController
 				buttons_options = {
 					:inactive => [labels[0], nil, button_classes[1], "GET"],
 					:locked => [labels[0], nil, button_classes[1], "GET"],
-					:editable => [labels[2], nil, button_classes[1], "GET"],
+					:editable => [labels[2], nil, button_classes[3], "GET"],
 					:unlocked => [labels[0], nil, button_classes[1], "GET"],
 					:empty => [labels[3], nil, button_classes[1], "POST"]
 				}
 			else
 				buttons_options = {
 					:inactive => [labels[0], nil, button_classes[0]],
-					:unlocked => [labels[1], nil, button_classes[1]],
+					:unlocked => [labels[1], nil, button_classes[2]],
 					:locked => [labels[0], nil, button_classes[0]]
 				}
 			end
@@ -624,11 +637,15 @@ class LeaguesController < ApplicationController
 				user_board_collection = league.rounds.where(user_id: participant.id) 	# get collection of rounds
 				score = participant.calculate_total_rounds_points(league)							# get score for league
 				episodes_collection.each_with_index do |episode, i|
-					points = user_board_collection[i].calculate_round_points
-					if points == 0 && episode.aired? == false
+					if user_board_collection.any?
+						points = user_board_collection[i].calculate_round_points
+						if points == 0 && episode.aired? == false
+							boards_collection[participant.username][i] = "--"
+						else  
+							boards_collection[participant.username][i] = points
+						end
+					else
 						boards_collection[participant.username][i] = "--"
-					else  
-						boards_collection[participant.username][i] = points
 					end
 				end
 			when "Fantasy"
