@@ -543,7 +543,6 @@ class LeaguesController < ApplicationController
 				board_id = league.rounds.where(user_id: participant.id).pluck(:id)[0]
 				board_path[0] = rounds_path(league.id, participant.id)
 				board_path[1] = round_edit_path(board_id)
-				board_path[2] = rounds_create_path(league.id)
 			elsif league.type == "Fantasy"
 				board_id = league.rosters.where(user_id: participant.id).pluck(:id)[0]
 				board_path[0] = roster_path(board_id)
@@ -557,7 +556,7 @@ class LeaguesController < ApplicationController
 					:locked => [labels[0], nil, button_classes[1], "GET"],
 					:editable => [labels[2], nil, button_classes[3], "GET"],
 					:unlocked => [labels[0], nil, button_classes[1], "GET"],
-					:empty => [labels[3], nil, button_classes[1], "POST"]
+					:empty => [labels[3], nil, button_classes[1], "GET"]
 				}
 			else
 				buttons_options = {
@@ -575,7 +574,7 @@ class LeaguesController < ApplicationController
 				if cases[2] == "unlocked"	
 					if participant == current_user 
 						if buttons_options[:empty]	# if unlocked and bracket is empty - create
-							buttons_options[:empty][1] = board_path[3]
+							buttons_options[:empty][1] = board_path[0]
 							final_buttons[0] = buttons_options[:empty]
 						else
 							buttons_options[:unlocked][1] = board_path[0]
