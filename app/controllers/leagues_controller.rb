@@ -554,7 +554,7 @@ class LeaguesController < ApplicationController
 				buttons_options = {
 					:inactive => [labels[0], nil, button_classes[1], "GET"],
 					:locked => [labels[0], nil, button_classes[1], "GET"],
-					:editable => [labels[2], nil, button_classes[3], "GET"],
+					:editable => [labels[2], nil, button_classes[1], "GET"],
 					:unlocked => [labels[0], nil, button_classes[1], "GET"],
 					:empty => [labels[3], nil, button_classes[1], "GET"]
 				}
