@@ -541,13 +541,13 @@ class LeaguesController < ApplicationController
 			buttons_options = Hash.new
 			if league.type == "Elimination"
 				board_id = league.rounds.where(user_id: participant.id).pluck(:id)[0]
-				board_path[0] = rounds_path(league.id, participant.id)
-				board_path[1] = round_edit_path(board_id)
+				board_path[0] = rounds_path(league.id, participant.id) if board_id
+				board_path[1] = round_edit_path(board_id) if board_id
 			elsif league.type == "Fantasy"
 				board_id = league.rosters.where(user_id: participant.id).pluck(:id)[0]
-				board_path[0] = roster_path(board_id)
-				board_path[1] = roster_edit_path(board_id)
-				board_path[2] = rosters_path(league.id)
+				board_path[0] = roster_path(board_id) if board_id
+				board_path[1] = roster_edit_path(board_id) if board_id
+				board_path[2] = rosters_path(league.id) if board_id
 			end
 
 			if participant == current_user
@@ -706,9 +706,11 @@ class LeaguesController < ApplicationController
 
 	def private_restriction
 		@league = League.find(params[:id])
-		if @league.public_access?
+		if @league.public_access? 
 			return
-		else @league.users.include? @current_user == false
+		elsif @league.users.include? @current_user
+			return
+		else
 			flash[:notice] = "You do not have permission to access this private league."
 			flash[:color] = "danger alert-danger"
 			redirect_to leagues_path
