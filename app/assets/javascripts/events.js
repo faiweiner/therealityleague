@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	$eventCreationDiv = $('#event_create');
-
+	$refreshArea = $('#event-form-refresh');
 	if ($eventCreationDiv.length > 0) {
 		$eventCreationDiv.cascadingDropdown({
 			selectBoxes: [
@@ -10,6 +10,7 @@ $(document).ready(function () {
 					selector: '.step1',
 					source: function(request, response) {
 						$.getJSON('/api/shows', request, function (data) {
+							debugger
 							response($.map(data.showsList, function (item, index) {
 								return {
 									label: item.name,
@@ -39,8 +40,6 @@ $(document).ready(function () {
 				}, // end Step 2
 				// ==== begin Step 3 for EPISODES === //				
 				{
-
-
 					selector: '.step3',
 					requires: ['.step2'],
 					paramName: 'seasonId',
@@ -59,52 +58,25 @@ $(document).ready(function () {
 							}));
 						});
 					} // end source for Step 2
-				},	// end Step 3!
-				// ==== begin Step 4 for CONTESTANTS === //						
-				{
-					selector: '.step4',
-					requires: ['.step2'],
-					paramName: 'seasonId',
-					source: function (request, response) {
-						var value = request.showId;
-						request = 'season_list='+value;
-						$.getJSON('/api/contestants', request, function (data) {
-							var selectOnlyOption = data.length <= 1;
-							response($.map(data.contestantsList, function (item, index) {
-								return {
-										label: item.name,
-										value: item.id,
-										selected: selectOnlyOption // Select if only option
-								};
-							}));
-						});
-
-					}
-				},	// end Step 4!
-				{
-					selector: '.step5',
-				},
-				// ==== begin Step 6 for SCHEMES === //			
-				{
-					selector: '.step6',
-					requires: ['.step1','.step5'],
-					requireAll: true,
-					paramName: 'showId',
-					source: function (request, response) {
-						$.getJSON('/api/schemes', request, function (data) {
-							var selectOnlyOption = data.length <= 1;
-							response($.map(data.schemesList, function (item, index) {
-								var schemeName = item.type + ": " + item.description
-								return {
-									label: schemeName,
-									value: item.id,
-									selected: selectOnlyOption
-								}
-							}));	// end response block
-						}) 
-					}	// end source block
-				} 	// end Step 6!
+				}	// end Step 3!
 			] // end selectBoxes
 		});
+		$('.step1').on('change', function (event) {
+			var showId = event.delegateTarget.value;
+			request = showId;
+			$.getJSON('/api/schemes', request, function (data) {
+				debugger
+			});
+		});
+		// console.log($refreshArea);
+		// $('.step2').on('change', function (event) {
+		// 	console.log('why would you change me?');
+		// 	var season = event.delegateTarget.value;
+		// 	request = 'season_list=' + seasonId;
+		// 	$.getJSON('/api/contestants', request, function (data) {
+		// 		debugger
+		// 	});
+		// });
+
 	}; // end IF statement $eventCreationDiv
 });

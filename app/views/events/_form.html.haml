@@ -28,15 +28,17 @@
 		.row.form-group.field.has-feedback
 			= f.label :episode_id
 			= f.select :episode_id, [], {:include_blank => "Select an episode"}, class:"form-control step3", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :contestant_id
-			= f.select :contestant_id, [], {:include_blank => "Select a contestant"}, class:"form-control step4", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :scheme_type
-			= select_tag :scheme_type_select, options_for_select(Scheme.select_type), class:"form-control step5", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :scheme_id, "Event"
-			= f.select :scheme_id, [], {:include_blank => "select an event"}, class:"form-control step6", :required => true
-		.row.form-group.actions
-			= f.submit "Save", class:"btn btn-primary btn-md"
-			= link_to "Cancel", events_path, class:"btn btn-default btn-md"
+		#event-form-refresh.row
+			.row.form-group.field.has-feedback
+				.thumbnail-contestant.step4
+					
+				= f.select :contestant_id, [], {:include_blank => "Select a contestant"}, class:"form-control step4", :required => true
+			.row.form-group.field.has-feedback
+				= f.label :scheme_type
+				= select_tag :scheme_type_select, options_for_select(Scheme.select_type), class:"form-control step5", :required => true
+			.row.form-group.field.has-feedback
+				= f.label :scheme_id, "Event"
+				= f.select :scheme_id, [], {:include_blank => "select an event"}, class:"form-control step6", :required => true
+			.row.form-group.actions
+				= f.submit "Save", class:"btn btn-primary btn-md"
+				= link_to "Cancel", events_path, class:"btn btn-default btn-md"
