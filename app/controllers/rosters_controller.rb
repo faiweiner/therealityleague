@@ -24,7 +24,7 @@ class RostersController < ApplicationController
 	end
 
 	def edit
-		@roster = Roster.includes(:league).find(params[:id])
+		@roster = Roster.includes(:league).find(params[:roster_id])
 		if @roster.user_id != @current_user.id
 			flash[:notice] = "You do not have permission to edit this roster!"
 			flash[:color] = "alert-warning"	
