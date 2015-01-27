@@ -11,6 +11,45 @@
 			%nav.navbar.navbar-default{:role => "navigation"}
 				.container-fluid
 					.collapse.navbar-collapse
+						%ul.nav.navbar-nav.navbar-left
+							%li
+								%a{:href => admin_path} Dashboard
+							%li
+								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "/leagues"}
+									Shows
+									%span.caret
+								%ul.dropdown-menu{:role => "menu"}
+									%li= link_to "View Shows", admin_shows_path
+									%li= link_to "Add New Show", new_show_path
+									%li= link_to "Search Leagues (User Portal)", leagues_search_path
+									%li.divider
+									%li= link_to "Manage Seasons", admin_seasons_path
+									%li= link_to "Add New Season", new_season_path
+									%li= link_to "Add New Episode", new_episode_path
+									%li.divider
+									%li= link_to "View/Update Schemes", schemes_path
+									%li= link_to "Add New Scheme", new_scheme_path
+									%li.divider
+							%li
+								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+									Events
+									%span.caret		
+								%ul.dropdown-menu{:role => "menu"}
+									%li= link_to "Track events", new_event_path
+							%li.dropdown
+								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+									Users	
+									%span.caret		
+								%ul.dropdown-menu{:role => "menu"}
+									%li= link_to "View All Shows", admin_shows_path
+									%li= link_to "Add New Show", new_show_path
+									%li= link_to "Search Leagues", leagues_search_path		
+							%li.dropdown
+								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
+									Debugging	
+									%span.caret		
+								%ul.dropdown-menu{:role => "menu"}
+									%li= link_to "View Messages", messages_path							
 						%ul.nav.navbar-nav.navbar-right
 							- if @current_user.present?
 								%li
@@ -22,60 +61,5 @@
 								%li
 									%a{:href => "/login", :data => {:method => :delete, :confirm => 'Really logout?'}} Logout
 			%div.col-lg-2
-				%nav.navbar#aside_nav
-					.container-fluid
-						.collapse.navbar-collapse
-							%ul.nav.nav-pills.nav-stacked
-								%li
-									%a{:href => admin_path} Admin Dashboard
-								%li
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "/leagues"}
-										Show
-										%span.caret
-									%ul.dropdown-menu.right-menu{:role => "menu"}
-										%li= link_to "View All Shows", admin_shows_path
-										%li= link_to "Add New Show", new_show_path
-										%li= link_to "Search Leagues (Users)", leagues_search_path
-								%li
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Seasons
-										%span.caret
-									%ul.dropdown-menu.right-menu{:role => "menu"}
-										%li= link_to "Manage All Seasons", admin_seasons_path
-										%li= link_to "Add New Show", new_show_path
-										%li= link_to "Search Leagues", leagues_search_path
-								%li
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Schemes
-										%span.caret
-									%ul.dropdown-menu.right-menu{:role => "menu"}
-										%li= link_to "View/Update Schemes", schemes_path
-										%li= link_to "Add New Scheme", new_scheme_path
-								%li
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Episodes
-										%span.caret			
-									%ul.dropdown-menu.right-menu{:role => "menu"}
-										%li= link_to "Add New Episode", new_episode_path
-								%li
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Events
-										%span.caret		
-									%ul.dropdown-menu.right-menu{:role => "menu"}
-										%li= link_to "Track events", new_event_path
-								%li.dropdown
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Users	
-										%span.caret		
-									%ul.dropdown-menu.right-menu{:role => "menu"}
-										%li= link_to "View All Shows", admin_shows_path
-										%li= link_to "Add New Show", new_show_path
-										%li= link_to "Search Leagues", leagues_search_path		
-								%li.dropdown
-									%a.dropdown-toggle{"data-toggle" => "dropdown", :href => ""}
-										Debugging	
-										%span.caret		
-									%ul.dropdown-menu.right-menu{:role => "menu"}
-										%li= link_to "View Messages", messages_path							
-			%div#admin_content.col-lg-10
+			%div#admin_content.col-lg-12
 				= yield

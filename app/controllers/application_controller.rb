@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
 
 	# for AJAX requests only 
 	def episodes_list
-		episodes = Episode.where(:season_id => params[:season_list])
+		episodes = Episode.where(:season_id => params[:season_id])
 		episodes_list = []
 		episodes.each_with_index do |episode, index|
 			episode = { 
@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
 
 	# for AJAX requests only 
 	def contestants_list
-		contestants = Contestant.where(:season_id => params[:season_list]).order(:name)
+		contestants = Contestant.where(:season_id => params[:season_id]).order(:name)
 		contestants_list = []
 		contestants.each do |contestant|
 			contestant = {
@@ -106,6 +106,32 @@ class ApplicationController < ActionController::Base
 			}
 		end
 	end
+
+	# for AJAX requests only
+	def schemes_list
+		schemes = Scheme.where(:show_id => params[:show_id])
+		schemes_list = []
+		scheme_types_list = []
+		schemes.each do |scheme|
+			scheme_types_list.push scheme.type
+			scheme = {
+				:id => scheme.id,
+				:description => scheme.description,
+				:schemeType => scheme.type
+			}
+			schemes_list.push scheme
+		end
+		scheme_types_list.uniq!
+		respond_to do |format|
+			format.js {
+				render :json => {
+					:schemesList => schemes_list,
+					:schemeTypes => scheme_types_list
+				}
+			}
+		end
+	end
+
 
 	def new_message
 		@message = Message.new	

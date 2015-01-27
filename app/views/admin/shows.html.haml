@@ -1,26 +1,28 @@
-.panel.panel-default
+.panel.panel-default.col-lg-6
 	.panel-body
-		.col-lg-8
-			%h2 All Shows
-		.col-lg-4.text-right
-			= link_to "Add new show", new_show_path, class:"btn btn-default btn-sm"
-		.panel-body
-			%table.table.table-hover
-				%thead
-					%tr
-						%th.col-lg-3 Shows List
-						%th.col-lg-5
-						%th.col-lg-4 Actions
-				%tbody
-					- @shows.each do |show|
+		.row
+			.col-lg-6
+				%h2 All Shows
+			.col-lg-6.text-right
+				= link_to "Add new show", new_show_path, class:"btn btn-default btn-sm"
+		.row
+			.col-lg-12
+				%table.table.table-hover
+					%thead
 						%tr
-							%td= link_to show.name, show_path(show.id)
-							%td
-								- show.seasons.order("number DESC").each do |season|
-									- if season.expired
-										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-default btn-xs"
-									- else
-										= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-primary btn-xs"
-							%td
-								= link_to "Edit", edit_show_path(show.id), class:"btn btn-default btn-sm"
-								= link_to "Add New Season", new_season_show_path(show.id), class:"btn btn-default btn-sm"
+							%th.col-lg-3 Shows List
+							%th.col-lg-5
+							%th.col-lg-4 Actions
+					%tbody
+						- @shows.each do |show|
+							%tr
+								%td= link_to show.name, show_path(show.id)
+								%td
+									- show.seasons.order("number DESC").each do |season|
+										- if season.expired
+											= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-default btn-xs"
+										- else
+											= link_to "Season #{season.number}", season_path(season.id), class:"btn btn-primary btn-xs"
+								%td
+									= link_to "Edit", edit_show_path(show.id), class:"btn btn-default btn-sm"
+									= link_to "Add Season", new_season_show_path(show.id), class:"btn btn-default btn-sm"
