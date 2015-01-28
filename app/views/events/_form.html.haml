@@ -26,19 +26,6 @@
 					= show.name
 		.row.form-group.field#event-season-displayed
 			= f.label :season_id
-<<<<<<< HEAD
-			= select_tag(:season_list, (), {:prompt => "Select a season", class:"form-control step2", :required => true})
-		.row.form-group.field.has-feedback
-			= f.label :episode_id
-			= f.select :episode_id, [], {:include_blank => "Select an episode"}, class:"form-control step3", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :contestant_id
-			= f.select :contestant_id, [], {:include_blank => "Select a contestant"}, class:"form-control step4", :required => true
-		.row.form-group.field.has-feedback
-			= f.label :scheme_type
-			= select_tag(:scheme_type_select, (), {:prompt => "Select a scheme type", class:"form-control step5", :required => true})
-		.row.form-group.field.has-feedback
-=======
 			%br/
 			- @seasons.each do |season|
 				%button.btn.btn-sm.btn-default.season-option{:type => "button", :action => "none", "data-season-id" => season.id, "value" => season.id, :name => "event[season_id]"}
@@ -54,7 +41,6 @@
 				#contestant-options-area.form-group.field
 			%br/
 		.row
->>>>>>> adminBuildOut
 			= f.label :scheme_id, "Event"
 			#event-scheme-type-displayed
 			%br/
