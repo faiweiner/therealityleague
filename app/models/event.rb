@@ -21,12 +21,17 @@ class Event < ActiveRecord::Base
 	validates :scheme_id, presence: true
 
 	before_save :calculate_points
+	before_save :set_contestant_status
 
 	private
 
 	def calculate_points
 		points = Scheme.find(self.scheme_id).points_asgn
 		self.points_earned = points
+	end
+
+	def set_contestant_status
+		
 	end
 end
 

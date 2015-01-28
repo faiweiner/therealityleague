@@ -18,12 +18,15 @@
 								%li= message
 		/ End Error Messages
 		/ Form Portion
-		.row.form-group.field.has-feedback
+		.row.form-group.field#event-show-displayed.step1
 			= f.label :show_id
 			%br/
-			= select_tag(:show_list, (), {:prompt => "Select a show", class:"form-control step1", :required => true})
-		.row.form-group.field.has-feedback
+			- @shows.each do |show|
+				%button.btn.btn-sm.btn-default.show-option{:type => "button", :action => "none", "data-show-id" => show.id, "value" => show.id}
+					= show.name
+		.row.form-group.field#event-season-displayed
 			= f.label :season_id
+<<<<<<< HEAD
 			= select_tag(:season_list, (), {:prompt => "Select a season", class:"form-control step2", :required => true})
 		.row.form-group.field.has-feedback
 			= f.label :episode_id
@@ -35,8 +38,29 @@
 			= f.label :scheme_type
 			= select_tag(:scheme_type_select, (), {:prompt => "Select a scheme type", class:"form-control step5", :required => true})
 		.row.form-group.field.has-feedback
+=======
+			%br/
+			- @seasons.each do |season|
+				%button.btn.btn-sm.btn-default.season-option{:type => "button", :action => "none", "data-season-id" => season.id, "value" => season.id, :name => "event[season_id]"}
+					= season.name
+		.row
+			#event-episode-displayed
+				= f.label :episode_id
+				%br/
+				#episode-options-area.form-group.field
+			#event-contestant-displayed
+				= f.label :contestant_id
+				%br/
+				#contestant-options-area.form-group.field
+			%br/
+		.row
+>>>>>>> adminBuildOut
 			= f.label :scheme_id, "Event"
-			= f.select :scheme_id, [], {:include_blank => "select an event"}, class:"form-control step6", :required => true
-		.row.form-group.actions
-			= f.submit "Save", class:"btn btn-primary btn-md"
-			= link_to "Cancel", events_path, class:"btn btn-default btn-md"
+			#event-scheme-type-displayed
+			%br/
+			#event-scheme-displayed
+				= f.select :scheme_id, [], {:include_blank => "select an event"}, class:"form-control step6", :id => "options", :required => true
+			%br/
+		.row.actions
+			.btn.btn-primary.btn-md Save
+			= link_to "Cancel", events_path, class: "btn btn-default btn-md"

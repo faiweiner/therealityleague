@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-	get		'schemes/:show_id' => 'schemes#display', :as => :event
+	get		'schemes/:show_id' => 'schemes#display'
 	resources :schemes
 	resources :messages
 
-	get		'events/display'
+	get		'events/display/:season_id/:episode_id' => 'events#display', :as => :display_events
 	get		'events/get_seasons' => 'events#seasons', :as => :get_seasons
+	delete 'events/:event_id' => 'events#destroy', :as => :delete_event
 	resources :events
 	
 	get		'episodes' => 'episodes#index', :as => :episodes
@@ -87,10 +88,18 @@ Rails.application.routes.draw do
 	get		'admin/seasons' => 'admin#seasons', :as => :admin_seasons
 
 	# API for pulling lists via AJAX
+<<<<<<< HEAD
 	get		'api/shows'				=> 'application#shows_list',				:as => :api_shows
 	get		'api/scheme_types' => 'application#scheme_types_list', :as => :api_scheme_types
 	get		'api/schemes'			=> 'application#schemes_list',			:as => :api_schemes
 	get		'api/seasons'			=> 'application#seasons_list',			:as => :api_seasons
 	get		'api/episodes'		=> 'application#episodes_list', 		:as => :api_episodes
 	get		'api/contestants'	=> 'application#contestants_list',	:as => :api_contestants
+=======
+	get		'api/shows'				=> 'application#shows_list',			:as => :api_shows
+	get		'api/seasons'			=> 'application#seasons_list',		:as => :api_seasons
+	get		'api/episodes'			=> 'application#episodes_list', :as => :api_episodes
+	get		'api/contestants'	=> 'application#contestants_list', :as => :api_contestants
+	get		'api/schemes' => 'application#schemes_list', 				:as => :api_schemes
+>>>>>>> adminBuildOut
 end

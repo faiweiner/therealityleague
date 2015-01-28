@@ -1,24 +1,29 @@
+#event-alert
+	- if flash[:notice].present?
+		.alert{class: "alert-#{flash[:color]}", role: "alert"}
+			= flash[:notice]
 #points-display-box.panel.panel-default
 	.panel-heading
 		%h4#panel-title-dynamic.panel-title
-			= @show.name
+			= @table_header
 	.panel-body
 		.row
 			.col-lg-12
 				%table.table.table-hover.points-table
 					%thead
-						%th.col-lg-2{"data-field" => "season", "data-sortable" => "true"} Season
-						%th.col-lg-6{"data-field" => "event", "data-sortable" => "true"} Event
-						%th.col-lg-1{"data-field" => "points_asgn", "data-sortable" => "true"} Pts Assigned
+						%th.col-lg-5{"data-field" => "event", "data-sortable" => "true"} Event
+						%th.col-lg-1{"data-field" => "points_asgn", "data-sortable" => "true"} Pts
+						%th.col-lg-3{"data-field" => "event", "data-sortable" => "true"} Time Assigned
 						%th.col-lg-3 Actions
-					%tbody
-						- @points_info_table.each do |id, point|
-							%tr
-								%td
-									= point[:season].show.name + ": "
-									= point[:season].name
-								%td= point[:event]
-								%td= point[:points_assigned]
-								%td.col-lg-3
-									= link_to "Edit", edit_point_path(id), class:"btn btn-default btn-sm"
-									= link_to "Delete", point_path(id), :action => "destroy", :method => "post",  class:"btn btn-default btn-sm"
+					%tbody#episode-events-table
+						- if @events
+							- @events.each do |event|
+								%tr.event-row
+									%td
+										= event.contestant.name
+										= "#{event.scheme.description.downcase}."
+									%td= event.points_earned
+									%td= event.created_at.strftime('%D %l:%M %p')
+									%td
+										= link_to "Edit", edit_event_path(event.id), class: "btn btn-xs btn-default", "action" => "edit", "method" => "PATCH"
+										= link_to "Delete", delete_event_path(event.id), class: "btn btn-xs btn-danger", "action" => "destroy", "method" => "DELETE", remote: true, confirm: "Are you sure you want to delete this event?"

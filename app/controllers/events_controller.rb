@@ -3,7 +3,7 @@ class EventsController < ApplicationController
 	def index
 		# get data for dynamic drop-down
 		@shows = Show.all
-		@seasons = Season.where("show_id = ?", Show.first.id)
+		@seasons = Season.where(expired: false)
 
 		# all events
 		@events_all = Event.all
@@ -19,44 +19,98 @@ class EventsController < ApplicationController
 				:season => season,
 				:episode => episode,
 				:scheme => event_description,
-				:points_assigned => pts}
+				:points_assigned => pts
+			}
 			@events_info_table[event.id] = event_data
 		end
+		@table_header = "Events Table"
 	end
 
 	def new
+		@shows = Show.all
+		@seasons = Season.where(expired: false)
 		@event = Event.new
 	end
 
 	def create
 		#====== check for bad entry ======#
-		@event = Event.new event_param
+		@event = Event.new event_params
 		event_episode = @event.episode
-				
-		# event_show = Show.find(params[:show_list])
-		# event_season = Season.find(params[:season_list])
-
-		# event_contestant = Contestant.find(params[:event][:contestant_id])
-		# event_scheme = Scheme.find(params[:event][:scheme_id])
-
+		event_details = []
+		
 		if @event && @event.save
-			redirect_to events_path
+			@episode = @event.episode
+			@season = @event.episode.season
+			event_details[0] = "#{@event.contestant.name} #{@event.scheme.description.downcase}."
+			event_details[1] = @event.points_earned
+			event_details[2] = @event.created_at.strftime('%D %l:%M %p')
+			event_details[3] = []
+			event_details[3][0] = "Edit"
+			event_details[3][1] = "btn btn-xs js btn-default"
+			event_details[3][2] = "PATCH"
+			event_details[3][3] = edit_event_path(@event.id)
+			event_details[3][4] = "nofollow"			
+			event_details[4] = []			
+			event_details[4][0] = "Delete"
+			event_details[4][1] = "btn btn-xs js btn-danger"
+			event_details[4][2] = "DELETE"
+			event_details[4][3] = delete_event_path(@event.id)
+			event_details[4][4] = "nofollow"	
+			@table_header = "#{@episode.season.show.name}: #{@episode.season.name} - Episode #{@episode.air_date.strftime("%D")}"
+			flash[:notice] = "Event \##{@event.id}: \"#{@event.contestant.name} #{@event.scheme.description}\" has been successfully added."
+			flash[:color] = "alert-success"
 		else
-			render :new
+			@table_header = "Events Table"
+			flash[:notice] = "Something went wrong, please try again."
+			flash[:color] = "alert-danger"
 		end
+		respond_to do |format|
+			format.html { 
+				render(:partial => "display_points", :formats => [:html])
+			}
+			format.json { 
+   			render :json => { 
+   				:newEvent => event_details,
+   				:notice => flash[:notice],
+  				:color => flash[:color]
+  			}
+  		}
+		end
+
 
 	end
 
 	def update
-		
+		@event = Event.find(params[:event_id])
+		if @event.update
+			raise "hell"
+		else
+			raise "nope"
+		end
 	end
 
-	def delete
-		raise "got to delete"
+	def destroy
+		@event = Event.find(params[:event_id])
+		if @event.destroy
+			flash[:notice] = "Event \##{@event.id}: \"#{@event.contestant.name} #{@event.scheme.description}\" has been successfully deleted."
+			flash[:color] = "alert-success"
+			render partial: "display_points"
+		else
+			flash[:notice] = "Something went wrong, please try again."
+			flash[:color] = "alert-danger"
+			render partial: "display_points"
+		end
 	end
 
 	def display
-		@season = Season.find_by("id = ?", params[:point_entry][:season_id])	
+		@season = Season.find_by("id = ?", params[:season_id])
+		@episode = Episode.find_by("id = ?", params[:episode_id])	
+		@events = Event.where(:episode_id => @episode.id).order(created_at: :desc)
+		@table_header = "Event Table"
+		if @episode.present?
+			@table_header = "#{@episode.season.show.name}: #{@episode.season.name} - Episode #{@episode.air_date.strftime("%D")}"
+		end
+		render partial: "display_points"
 	end
 
 	def get_seasons
@@ -68,7 +122,7 @@ class EventsController < ApplicationController
 
 	private
 
-	def event_param
+	def event_params
 		params.require(:event).permit(:contestant_id, :episode_id, :scheme_id)
 	end
 

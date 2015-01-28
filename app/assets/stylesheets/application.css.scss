@@ -450,3 +450,17 @@ li.bracketItem {
 img.line-marker {
 	height: 15px;
 }
+
+input[type=button].radio-button {
+	height: 200px;
+	width: 200px;
+}
+
+label.js, a > .js {
+    display: block;
+    float: left;
+    margin-right: 5px;
+    border: 1px solid black;
+    padding: 4px;
+    cursor: pointer;
+}
