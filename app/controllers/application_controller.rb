@@ -107,32 +107,6 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-<<<<<<< HEAD
-	# for AJAX requests only 
-	def scheme_types_list
-		show_id = params[:show_list].to_i
-		show = Show.where(id: show_id).first;
-		type_package = get_scheme_types(show)
-		respond_to do |format|
-			format.js {
-				render :json => {
-					:schemeTypesList => type_package
-				}
-			}
-		end
-	end
-
-	# for AJAX requests only 
-	def schemes_list
-		show_id = params[:show_list].to_i
-		show = Show.where(id: show_id).first;
-
-		rules_package = get_filtered_schemes(show, params[:schemeType])
-		respond_to do |format|
-			format.js {
-				render :json => {
-					:schemesList => rules_package
-=======
 	# for AJAX requests only
 	def schemes_list
 		schemes = Scheme.where(:show_id => params[:show_id])
@@ -153,17 +127,11 @@ class ApplicationController < ActionController::Base
 				render :json => {
 					:schemesList => schemes_list,
 					:schemeTypes => scheme_types_list
->>>>>>> adminBuildOut
 				}
 			}
 		end
 	end
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> adminBuildOut
 	def new_message
 		@message = Message.new	
 		set_current_user
