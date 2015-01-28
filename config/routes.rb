@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-	get		'schemes/:show_id' => 'schemes#display', :as => :event
+	get		'schemes/:show_id' => 'schemes#display'
 	resources :schemes
 	resources :messages
 
-	get		'events/display/:season_id/:episode_id' => 'events#display'
+	get		'events/display/:season_id/:episode_id' => 'events#display', :as => :display_events
 	get		'events/get_seasons' => 'events#seasons', :as => :get_seasons
 	delete 'events/:event_id' => 'events#destroy', :as => :delete_event
 	resources :events

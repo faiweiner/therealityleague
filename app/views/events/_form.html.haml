@@ -48,5 +48,5 @@
 				= f.select :scheme_id, [], {:include_blank => "select an event"}, class:"form-control step6", :id => "options", :required => true
 			%br/
 		.row.actions
-			%button{class: "btn btn-primary btn-md"} Save
-			= link_to "Cancel", events_path, class:"btn btn-default btn-md"
+			.btn.btn-primary.btn-md Save
+			= link_to "Cancel", events_path, class: "btn btn-default btn-md"

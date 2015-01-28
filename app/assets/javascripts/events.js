@@ -11,6 +11,7 @@ $(document).ready(function () {
 		$eventUpdate = $('#event-update');
 		$targetEpisodeId = null;
 		$targetContestantId = null;
+		$targetSchemeId = null;
 
 		var populateRecordedEvents = function (season_id, episode_id) {
 			var url = '/events/display/' + season_id + '/' + episode_id;
@@ -65,22 +66,24 @@ $(document).ready(function () {
 				for (var i = 0; i < episodesList.length; i++) {
 					var episode = data.episodesList[i];
 					$button = $('<input />');
-					$button.attr('data-episode-id', data.episodesList[i].id);
+					$button.attr('id', data.episodesList[i].id);
 					$button.attr('data-season-id', data.episodesList[i].seasonId);
+					$button.attr('data-episode-id', data.episodesList[i].id);
 					$button.attr('name', 'event[episode_id]');
+					$button.attr('type', 'button');
 					$button.css('margin', '2px');
-					$button.addClass('btn btn-sm btn-default episode-option');
-					$button.val(episode.airDate);
+					$button.addClass('radio-button btn btn-sm btn-default episode-option');
+					$button.val(episode.id);
+					$button.text('hi');
 					$eventEpisodeOptionsArea.append($button);
 				};
-
 			});
 			
 			// list contestants
 			var seasonId = event.target.dataset.seasonId;
 			$.getJSON('/api/contestants', request, function (data) {
 				var contestantsList = data.contestantsList;
-				// $eventContestantOptionsArea.empty();
+				$eventContestantOptionsArea.empty();
 				for (var i = 0; i < contestantsList.length; i++) {
 					var contestant = data.contestantsList[i];
 					$button = $('<input />');
@@ -116,9 +119,59 @@ $(document).ready(function () {
 
 		// click listener for SUBMIT button
 		$eventCreationDiv.on('click', '.actions', function (event) {
-			var showId = $eventShowsDisplay.children('.btn-primary').data().showId;
-			var contestantId = $eventContestantOptionsArea.children('.btn-primary').data().contestantId;
-			var episodeId = $eventEpisodeOptionsArea.children('.btn-primary').data().contestantId;
+			$targetSchemeId = $('#options').val()
+			var result;
+			$.ajax({
+				url: '/events',
+				type: 'POST',
+				dataType: 'JSON',
+				data: { 
+					'event': {
+						contestant_id: 	$targetContestantId,
+						episode_id: 		$targetEpisodeId,
+						scheme_id:			$targetSchemeId
+					}
+				},
+				success: function (response) {
+					$oldAlert = $('#event-alert');
+					$oldAlert.empty();
+					$alert = $('<div>');
+					$alert.addClass('alert ' + response.color);
+					$alert.text(response.notice);
+					$alert.appendTo($('#event-alert'));
+				}
+			}).done(function (response) {
+				$eventTable = $('#episode-events-table');
+				$firstEventRow = $('.event-row')[0];
+				$newRow = $('<tr/>');
+				$cell1 = $('<td/>');
+				$cell1.text(response.newEvent[0]);
+				$newRow.append($cell1);
+				$cell2 = $('<td/>');
+				$cell2.text(response.newEvent[1]);			
+				$newRow.append($cell2);
+				$cell3 = $('<td/>');
+				$cell3.text(response.newEvent[2]);			
+				$newRow.append($cell3);
+				$cell4 = $('<td/>');
+				$button1 = $('<a/>');
+				$button2 = $('<a/>');
+				$button1.text(response.newEvent[3][0]);
+				$button2.text(response.newEvent[4][0]);
+				$button1.addClass(response.newEvent[3][1]);
+				$button2.addClass(response.newEvent[4][1]);
+				$button1.attr('data-method', response.newEvent[3][2]);
+				$button2.attr('data-method', response.newEvent[4][2]);
+				$button1.attr('href', response.newEvent[3][3]);
+				$button2.attr('href', response.newEvent[4][3]);
+				$button1.attr('rel', response.newEvent[3][4]);
+				$button2.attr('rel', response.newEvent[4][4]);
+				$cell4.append($button1);
+				$cell4.append($button2);
+				$newRow.append($cell4);
+				var newRow = $newRow[0];
+				$(newRow).insertBefore($firstEventRow);
+			});
 		});
 
 				

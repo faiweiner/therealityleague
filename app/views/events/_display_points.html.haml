@@ -1,6 +1,7 @@
-- if flash[:notice].present?
-	.alert{class: "alert-#{flash[:color]}", role: "alert"}
-		= flash[:notice]
+#event-alert
+	- if flash[:notice].present?
+		.alert{class: "alert-#{flash[:color]}", role: "alert"}
+			= flash[:notice]
 #points-display-box.panel.panel-default
 	.panel-heading
 		%h4#panel-title-dynamic.panel-title
@@ -14,10 +15,10 @@
 						%th.col-lg-1{"data-field" => "points_asgn", "data-sortable" => "true"} Pts
 						%th.col-lg-3{"data-field" => "event", "data-sortable" => "true"} Time Assigned
 						%th.col-lg-3 Actions
-					%tbody
+					%tbody#episode-events-table
 						- if @events
 							- @events.each do |event|
-								%tr
+								%tr.event-row
 									%td
 										= event.contestant.name
 										= "#{event.scheme.description.downcase}."
