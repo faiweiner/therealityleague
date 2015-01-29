@@ -27,6 +27,6 @@ class Scheme < ActiveRecord::Base
 	end
 
 	def self.select_type
-		@type_list = Scheme.all.pluck(:type).uniq
+		@type_list = Scheme.descendants.map(&:name).sort
 	end
 end

@@ -1,4 +1,4 @@
-%h4 New Scheme
+%h4 Scheme
 = form_for(@scheme) do |f|
 	- if @scheme.errors.any?
 		#error_explanation
@@ -8,10 +8,6 @@
 			%ul
 				- @scheme.errors.full_messages.each do |message|
 					%li= message
-	.form-group.field
-		= f.label :show_id
-		%br/
-		= f.select(:show_id, options_for_select(Show.select_show), {:include_blank => "Select a show"}, {class:"form-control", required: true})
 	.form-group.field
 		= f.label :type
 		%br/

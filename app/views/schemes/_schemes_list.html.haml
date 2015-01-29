@@ -1,0 +1,13 @@
+%h4 Schemes List
+- @selected.each do |scheme|
+	%tr
+		%td
+			%span{"data-name" => "type", "data-pk" => scheme.id}= scheme.type
+		%td
+			%span{"data-name" => "description", "data-pk" => scheme.id}= scheme.description
+		%td
+			%span{"data-name" => "points_asgn", "data-pk" => scheme.id}= scheme.points_asgn
+		%td
+			= button_tag("Edit", class:"btn btn-xs btn-default edit")
+			= button_tag("Save", class:"btn btn-xs btn-default save")
+			= button_tag("Delete", class:"btn btn-xs btn-default destroy")

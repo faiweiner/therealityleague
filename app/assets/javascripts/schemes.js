@@ -3,9 +3,10 @@ $(document).ready(function () {
 	if ($('#manage-schemes').length > 0) {
 		console.log('Schemes initialized');
 
+
+
 		// setting variables
 		$showsPanel = $('#shows-panel');
-		$newSchemeBoard = $('#newSchemeBoard');
 		$currentSchemeBoard = $('#currentSchemeBoard');
 
 		$('.btn-primary').on('click', function (event) {
@@ -139,7 +140,11 @@ $(document).ready(function () {
 			$(this).closest('tr').find('.editable').editable('show');
 		});
 
-
+		$showsPanel.on('click', '.btn', function (event) {
+			var element = event.target;
+			$showsPanel.children('.btn').removeClass('btn-primary');
+			$(element).addClass('btn-primary');
+		});
 
 	};
 });

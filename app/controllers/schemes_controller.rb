@@ -2,14 +2,15 @@ class SchemesController < ApplicationController
 	layout "admin"
 	def index
 		@shows = Show.all.order(name: :desc)	
-		@schemes = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc, show_id: :asc)
+		@selected = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc, show_id: :asc)
 		@scheme = Scheme.new
 	end
 
-	def display
-		@show = Show.find(params[:show_id])
-		@schemes = @show.schemes
-		render :partial => "display_schemes"
+	def display_all
+		@selected = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc, show_id: :asc)
+		respond_to do |format|
+				format.js
+		end
 	end
 
 	def create
@@ -21,6 +22,15 @@ class SchemesController < ApplicationController
 			flahs[:color] = "alert-warning warning"
 		end
 	end
+
+	def from_show
+		@selected = Scheme.where(:show_id => params[:show_id]).order(type: :asc, points_asgn: :asc, description: :asc)
+		respond_to do |format|
+				format.js
+		end
+	end
+
+
 
 	private
 

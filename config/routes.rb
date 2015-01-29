@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-	get		'schemes/:show_id' => 'schemes#display'
+	get		'display_all' => 'schemes#display_all', as: 'schemes'
+	get 	'fetch_schemes' => 'schemes#from_show', as: 'fetch_schemes'
 	resources :schemes
 	resources :messages
 

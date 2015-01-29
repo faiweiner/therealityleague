@@ -1,9 +1,11 @@
 #manage-schemes.panel.panel-default
 	.panel-body
-		.col-lg-12#shows-panel
+		.col-lg-12
 			%h2 Manage Point Schemes
 	.panel-body
-		#newSchemeBoard.col-lg-3.col-md-3
-			= render "form"
-		#currentSchemeBoard.col-lg-9.col-md-9
-			= render partial: "display_schemes", locals: { shows: @shows }
+		.col-lg-12#shows-panel
+			= render "shows_menu"
+		.col-lg-3#scheme-form
+			= render partial: "form"
+		.col-lg-9#current-scheme-board
+			= render partial: "display_schemes", locals: { schemes: @schemes }
