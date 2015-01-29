@@ -12,4 +12,7 @@
 #
 
 class Extracurricular < Scheme
+	def self.model_name
+		Scheme.model_name
+	end
 end

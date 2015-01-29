@@ -1,7 +1,4 @@
-- if @show
-	%h4= @show.name 
-- else
-	%h4 Show
+%h4= @show.name if @show
 %table.table.table-hover
 	%thead
 		%th.col-lg-2{"data-field" => "type", "data-sortable" => "true"} Type
@@ -15,10 +12,10 @@
 					%td
 						%span{"data-name" => "type", "data-pk" => scheme.id}= scheme.type
 					%td
-						%span{"data-name" => "scheme", "data-pk" => scheme.id}= scheme.scheme
+						%span{"data-name" => "description", "data-pk" => scheme.id}= scheme.description
 					%td
 						%span{"data-name" => "points_asgn", "data-pk" => scheme.id}= scheme.points_asgn
 					%td
-						= button_tag("Edit", class:"btn btn-sm btn-default edit")
-						= button_tag("Save", class:"btn btn-sm btn-primary save")
-						= button_tag("Delete", class:"btn btn-sm btn-danger destroy")
+						= button_tag("Edit", class:"btn btn-xs btn-default edit")
+						= button_tag("Save", class:"btn btn-xs btn-default save")
+						= button_tag("Delete", class:"btn btn-xs btn-default destroy")

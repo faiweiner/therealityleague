@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
 	validates :scheme_id, presence: true
 
 	before_save :calculate_points
-	before_save :set_contestant_status
+	before_save :check_event
 
 	private
 
@@ -30,8 +30,10 @@ class Event < ActiveRecord::Base
 		self.points_earned = points
 	end
 
-	def set_contestant_status
-		
+	def check_event
+		scheme = Scheme.find(self.scheme_id)
+		if scheme.type == "Expulsion"
+		end
 	end
 end
 

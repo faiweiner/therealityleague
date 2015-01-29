@@ -12,4 +12,7 @@
 #
 
 class Debauchery < Scheme
+	def self.model_name
+		Scheme.model_name
+	end
 end

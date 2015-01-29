@@ -11,5 +11,8 @@
 #  updated_at  :datetime
 #
 
-class Game < Scheme
+class Expulsion < Scheme
+	def self.model_name
+		Scheme.model_name
+	end
 end

@@ -2,12 +2,8 @@
 	.panel-body
 		.col-lg-12#shows-panel
 			%h2 Manage Point Schemes
-		.col-lg-12
-			- @shows.each do |show|
-				%button.btn.btn-md.btn-primary{:id => show.id, :name => "show_list"}
-					= show.name
 	.panel-body
 		#newSchemeBoard.col-lg-3.col-md-3
 			= render "form"
 		#currentSchemeBoard.col-lg-9.col-md-9
-			= render "display_schemes"
+			= render partial: "display_schemes", locals: { shows: @shows }

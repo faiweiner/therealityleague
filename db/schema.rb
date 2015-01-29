@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119110308) do
+ActiveRecord::Schema.define(version: 20150128125857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,11 @@ ActiveRecord::Schema.define(version: 20150119110308) do
     t.integer  "episode_id"
     t.integer  "scheme_id"
     t.integer  "points_earned"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "expulsions", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
