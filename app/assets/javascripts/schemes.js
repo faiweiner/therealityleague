@@ -129,7 +129,10 @@ $(document).ready(function () {
 			addEventToShow();
 		});
 
+		$('#scheme_form_type').on('select', function () {
 
+		});
+		
 		$eventsBoard.on('click', '.edit', function () {
 			// Get value of event type to be populated in X-editable
 			var eventTypeValue = $(this).closest('tr').find('span[data-name="type"]').text();

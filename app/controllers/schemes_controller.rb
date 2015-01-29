@@ -16,11 +16,16 @@ class SchemesController < ApplicationController
 	def create
 		@scheme = Scheme.new scheme_params
 		if @scheme.save
-			redirect_to schemes_path
+			@selected = Scheme.where(:show_id => params[:show_id]).order(type: :asc, points_asgn: :asc, description: :asc)
+			respond_to do |format|
+					format.js
+			end			
 		else
+			raise
 			flash[:notice] = "Something went wrong and the scheme was not saved."
 			flahs[:color] = "alert-warning warning"
 		end
+		raise
 	end
 
 	def from_show

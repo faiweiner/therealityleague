@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 	root :to => 'pages#home'
 
 	get		'display_all' => 'schemes#display_all', as: 'schemes'
+	post	'display_all' => 'schemes#create'
 	get 	'fetch_schemes' => 'schemes#from_show', as: 'fetch_schemes'
 	resources :schemes
 	resources :messages

@@ -1,5 +1,5 @@
 %h4 Scheme
-= form_for(@scheme) do |f|
+= form_for(@scheme, remote: true) do |f|
 	- if @scheme.errors.any?
 		#error_explanation
 			%h2
@@ -8,18 +8,19 @@
 			%ul
 				- @scheme.errors.full_messages.each do |message|
 					%li= message
-	.form-group.field
+	.form-group.field#scheme_form_type
 		= f.label :type
 		%br/
-		= f.select(:type, options_for_select(Scheme.select_type), {}, {class:"form-control"})
+		= f.select(:type, options_for_select(Scheme.select_type), {}, {class: "form-control"})
+		= f.text_field :type, placeholder: "Input new scheme type", class: "form-control hidden"
 	.form-group.field
 		= f.label :description
 		%br/
-		= f.text_area :description, class:"form-control"
+		= f.text_area :description, class: "form-control"
 	.form-group.field
 		= f.label :points_asgn, "Points assignment"
 		%br/
-		= f.number_field :points_asgn, class:"form-control", :placeholder => 0
+		= f.number_field :points_asgn, class: "form-control", placeholder: 0
 	.actions
 		%br/
-		= f.submit "Add new scheme", class:"btn btn-block btn-default", :id => "new-scheme-submit"
+		= f.submit "Add new scheme", action: :create, class: "btn btn-block btn-default", id: "new-scheme-submit"
