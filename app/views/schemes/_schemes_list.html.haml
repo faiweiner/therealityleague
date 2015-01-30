@@ -7,6 +7,5 @@
 		%td
 			%span{"data-name" => "points_asgn", "data-pk" => scheme.id}= scheme.points_asgn
 		%td
-			= button_tag("Edit", class:"btn btn-xs btn-default edit")
-			= button_tag("Save", class:"btn btn-xs btn-default save")
+			.btn.btn-xs.btn-default.edit{"data-id" => scheme.id} Edit
 			= button_tag("Delete", class:"btn btn-xs btn-default destroy")
