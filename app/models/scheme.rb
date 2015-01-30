@@ -19,6 +19,11 @@ class Scheme < ActiveRecord::Base
 	has_many :episodes, through: :events
 	has_and_belongs_to_many :leagues
 
+	validates :type, presence: true, on: :create
+	validates :show_id, presence: true, on: :create
+	validates :description, presence: true, on: :create
+	validates :points_asgn, presence: true, on: :create
+	
 	private
 
 	def self.select_scheme
