@@ -50,6 +50,7 @@ class SchemesController < ApplicationController
 			format.json {
 				render :json => {
 					:scheme => @scheme,
+					:type => @scheme.type
 				}, :status => 200
 			}
 		end
@@ -103,23 +104,10 @@ class SchemesController < ApplicationController
 					params[:scheme][:type] = params[:type_select]
 				end
 			else
-				params[:scheme][:type] = params[:scheme][:type]
+				params[:scheme][:type]
 			end
 		else
-			if params[:type_text].present?
-				params[:type] = params[:type_text]
-			elsif params[:type_select].present?
-				case params[:type_select]
-				when "Select type"
-					params[:type] = nil
-				when "Add new type"
-					params[:type] = nil
-				else
-					params[:type] = params[:type_select]
-				end
-			else
-				params[:type]
-			end
+			params[:scheme][:type]
 		end
 		params.require(:scheme).permit(:id, :type, :show_id, :description, :points_asgn)
 	end
