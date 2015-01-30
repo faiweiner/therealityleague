@@ -3,9 +3,9 @@
 		.col-lg-12
 			%h2 Manage Point Schemes
 	.panel-body
-		.col-lg-12#shows-panel
+		.col-lg-12#shows_panel
 			= render "shows_menu"
-		.col-lg-3#scheme-form
+		.col-lg-3#scheme_form
 			= render partial: "form"
-		.col-lg-9#current-scheme-board
+		.col-lg-9#current_scheme_board
 			= render partial: "display_schemes", locals: { schemes: @schemes }
