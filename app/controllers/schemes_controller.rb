@@ -58,14 +58,29 @@ class SchemesController < ApplicationController
 
 	def update
 		@scheme = Scheme.find(params[:id])
-		raise
 		if @scheme.update scheme_params
 			flash[:notice] = "Scheme has been successfully updated."
 			flash[:color] = "alert-success success"
+			respond_to do |format|
+				format.json {
+					render :json => {
+						:scheme => @scheme,
+						:type => @scheme.type
+					}, :status => 200
+				}
+			end
 		else
 			@scheme.errors
 			flash[:notice] = "Something went wrong and the scheme was not updated."
 			flash[:color] = "alert-warning warning"
+			respond_to do |format|
+				format.json {
+					render :json => {
+						:scheme => @scheme,
+						:type => @scheme.type
+					}, :status => 400
+				}
+			end	
 		end
 	end
 
