@@ -13,6 +13,11 @@ class SchemesController < ApplicationController
 		end
 	end
 
+	def new
+		@scheme = Scheme.new
+		render :partial => "form"
+	end
+
 	def create
 		@scheme = Scheme.new scheme_params
 		if @scheme.save	
@@ -65,7 +70,9 @@ class SchemesController < ApplicationController
 				format.json {
 					render :json => {
 						:scheme => @scheme,
-						:type => @scheme.type
+						:type => @scheme.type,
+						:notice => flash[:notice],
+						:color => flash[:color]
 					}, :status => 200
 				}
 			end
@@ -74,10 +81,13 @@ class SchemesController < ApplicationController
 			flash[:notice] = "Something went wrong and the scheme was not updated."
 			flash[:color] = "alert-warning warning"
 			respond_to do |format|
+				format.js
 				format.json {
 					render :json => {
 						:scheme => @scheme,
-						:type => @scheme.type
+						:type => @scheme.type,
+						:notice => flash[:notice],
+						:color => flash[:color]
 					}, :status => 400
 				}
 			end	

@@ -33,7 +33,7 @@ class Scheme < ActiveRecord::Base
 
 	def self.select_type
 		@type_list = Scheme.descendants.map(&:name).sort
-		@type_list.unshift(["Select type"])
-		@type_list.push(["Add new type"])
+		@type_list.unshift(["Select type", nil])
+		@type_list.push(["Add new type", nil])
 	end
 end

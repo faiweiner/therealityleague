@@ -1,19 +1,12 @@
 %h4 Scheme
 = form_for(@scheme, remote: true) do |f|
-	- if @scheme.errors.any?
-		#error_explanation
-			%h2
-				= pluralize(@scheme.errors.count, "error")
-				prohibited this score from being saved:
-			%ul
-				- @scheme.errors.full_messages.each do |message|
-					%li= message
+	#form_alert
 	.form-group.field
 		= f.number_field :show_id, id: "scheme_show_id", class: "form-control hidden", value: ""
 	.form-group.field#scheme_form_type
 		= f.label :type
 		%br/
-		= select_tag :type, options_for_select(Scheme.select_type), {name: "type_select", id: "scheme_type_dropdown", class: "form-control", disabled: true}
+		= select_tag :type, options_for_select(Scheme.select_type), {name: "type_select", id: "scheme_type_dropdown", class: "form-control", disabled: true, placeholder: "Select a type"}
 		= f.text_field :type, placeholder: "Input new scheme type", name: "type_text", id: "scheme_type_text", class: "form-control hidden"
 		= f.hidden_field :type, name: "scheme[type]"
 	.form-group.field

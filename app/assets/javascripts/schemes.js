@@ -5,9 +5,10 @@ $(document).ready(function () {
 		$showsPanel = $('#shows_panel');
 		$schemesBoard = $('#schemes_board');
 		$schemesTable = $('#schemes_table');
-		$newSchemeForm = $('#new_scheme');
+		$newSchemeForm = $('#scheme_form');
 		$schemeUpdateButton = $('<div/>');
 		$schemeClearButton = $('<div/>');
+		$formAlert = $('#form_alert');
 		// ================== GLOBAL FUNCTIONS ================== //
 
 		// ----- BEGIN server-side ----- //
@@ -63,6 +64,12 @@ $(document).ready(function () {
 			return $element;
 		};
 
+		var clearForm = function () {
+			$formFields = $newSchemeForm.find('.form-group.field');
+			$formFields[2].val('');
+			debugger
+		};
+
 		$('#scheme_form_type').on('change', function (event) {
 			var val = event.target.value;
 			$typeText = $('#scheme_type_text');
@@ -88,25 +95,27 @@ $(document).ready(function () {
 		});
 
 		$schemesBoard.on('click', '.edit', function (event) {
+			$formAlert.empty();
+			$formAlert.attr('class', '');	
 			var id = event.target.dataset.id;
 			var url = 'schemes/' + id + '/edit';
 			$.ajax({
 				url: url
 			}).done(function (response) {
 				var updateURL = '/schemes/'+ response.scheme.id;
-				$newSchemeForm.children('.form-group.field').children('#scheme_show_id').val(response.scheme.show_id);
+				$formGroups = $newSchemeForm.find('.form-group.field');
+				$formGroups.find('#scheme_show_id').val(response.scheme.show_id);
 				// Type
 				var option = 'option[value="' + response.type + '"]';
-				var typeField = $newSchemeForm.children('.form-group.field').children('#scheme_type_dropdown');
-				var selection = $newSchemeForm.children('.form-group.field').children('#scheme_type_dropdown').children(option)
+				var typeField = $formGroups.find('#scheme_type_dropdown');
+				var selection = $formGroups.find('#scheme_type_dropdown').children(option)
 				selection.attr('selected', 'selected');
 				// Description
-				var descriptionField = $newSchemeForm.children('.form-group.field').children('#new_scheme_description');
+				var descriptionField = $formGroups.find('#scheme_description');
 				descriptionField.val(response.scheme.description);
 				// Points
-				var pointsField = $newSchemeForm.children('.form-group.field').children('#new_scheme_points');
+				var pointsField = $formGroups.find('#scheme_points_asgn');
 				pointsField.val(response.scheme.points_asgn);
-
 				// Enabling form
 				$('#new_scheme_submit').hide();
 				$schemeUpdateButton.addClass('btn btn-md btn-default update');
@@ -122,42 +131,69 @@ $(document).ready(function () {
 		});
 
 		$newSchemeForm.on('click', '.update', function (event) {
+			$formAlert.empty();
+			$formAlert.attr('class', '');	
 			$formFields = $(event.target).parent().siblings('.form-group.field');
 			var id = event.target.dataset.id;
 			var showId = $formFields.find('#scheme_show_id').val();
 			var schemeTypeDropdown = $formFields.find('#scheme_type_dropdown').val();
 			var schemeTypeText = $formFields.find('#scheme_type_text').val();
-			var description = $formFields.find('#new_scheme_description').val();
-			var pointsAsgn = $formFields.find('#new_scheme_points').val();
-			
+			var description = $formFields.find('#scheme_description').val();
+			var pointsAsgn = $formFields.find('#scheme_points_asgn').val();
 			var url = '/schemes/' + id;
 			var schemeData = {
 				id: id,
-				type_text: schemeTypeText,
-				type_select: schemeTypeDropdown,
 				show_id: showId,
 				description: description,
 				points_asgn: pointsAsgn
 			};
+			var scheme = {
+				scheme: schemeData,
+				type_text: schemeTypeText,
+				type_select: schemeTypeDropdown
+			}
 			$.ajax({
 				url: url,
 				dataType: 'JSON',
 				type: 'PATCH',
-				data: schemeData,
+				data: scheme,
 				success: function (data) {
+					$formAlert.empty();
+					$formAlert.attr('class', '');
+					$formAlert.addClass('alert ' + data.color);
+					$formAlert.text(data.notice);
+				},
+				error: function (data) {
+					$formAlert.empty();
+					$formAlert.attr('class', '');
+					$formAlert.addClass('alert ' + data.responseJSON.color);
+					$formAlert.text(data.responseJSON.notice);					
+				}
+			});
+		}).on('click', '.clear', function (event) {
+			$.ajax({
+				url: '/schemes/new',
+				type: 'GET',
+				success: function (response) {
+					$newSchemeForm.html(response);
+				},
+				error: function (data) {
 				}
 			});
 		}).on('ajax:success', function (event, data, status, xhr) {
-			console.log(status);
+			$formAlert.empty();
+			$formAlert.attr('class', '');
+			$formAlert.addClass('alert ' + data.color);
+			$formAlert.text(data.notice);
 		}).on('ajax:error', function (event, data, status, xhr) {
-			$errorExplanation = $('#error_explanation');
-			$errorExplanation.addClass('alert ' + data.responseJSON.color);
+			$formAlert.empty();
+			$formAlert.attr('class', '');
+			$formAlert.addClass('alert ' + data.responseJSON.color);
 			$errorMessageStrong = $('<strong/>');
 			$errorMessageStrong.text(data.responseJSON.notice);
-			$errorExplanation.append($errorMessageStrong);
-			$newSchemeForm.append(data.responseText);
+			$formAlert.append($errorMessageStrong);
 			$element = formatErrorMessages(data.responseJSON);
-			$errorExplanation.append($element);
+			$formAlert.append($element);
 		});
 	};
 });
