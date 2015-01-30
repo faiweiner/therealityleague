@@ -1,4 +1,4 @@
 %h4 Shows
 = link_to "All", schemes_path, class: "btn btn-sm btn-default btn-primary", :remote => true	
 - @shows.each do |show|
-	= link_to show.name, fetch_schemes_path(show_id: show.id), class: "btn btn-sm btn-default", :remote => true
+	= link_to show.name, fetch_schemes_path(show_id: show.id), class: "btn btn-sm btn-default", "data-show-id" => show.id, :remote => true
