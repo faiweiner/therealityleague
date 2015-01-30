@@ -19,8 +19,8 @@ class Scheme < ActiveRecord::Base
 	has_many :episodes, through: :events
 	has_and_belongs_to_many :leagues
 
-	validates :type, presence: true, on: :create
-	validates :show_id, presence: true, on: :create
+	validates :type, presence: true, allow_blank: false
+	validates :show_id, presence: true, allow_blank: false
 	validates :description, presence: true, allow_blank: false
 	validates :points_asgn, presence: true, allow_blank: false
 	
