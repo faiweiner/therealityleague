@@ -2,12 +2,12 @@ class SchemesController < ApplicationController
 	layout "admin"
 	def index
 		@shows = Show.all.order(name: :asc)	
-		@selected = Scheme.all.order(points_asgn: :asc, description: :asc, show_id: :asc)
+		@selected = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc, show_id: :asc)
 		@scheme = Scheme.new
 	end
 
 	def display_all
-		@selected = Scheme.all.order(points_asgn: :asc, description: :asc, show_id: :asc)
+		@selected = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc, show_id: :asc)
 		respond_to do |format|
 			format.js
 		end
@@ -16,7 +16,7 @@ class SchemesController < ApplicationController
 	def create
 		@scheme = Scheme.new scheme_params
 		if @scheme.save	
-			@selected = Scheme.where(:show_id => params[:show_id]).order(points_asgn: :asc, description: :asc)	
+			@selected = Scheme.where(:show_id => params[:show_id]).order(type: :asc, points_asgn: :asc, description: :asc)	
 			flash[:notice] = "New scheme has been successfully added."
 			flash[:color] = "alert-success success"
 			respond_to do |format|
@@ -73,7 +73,7 @@ class SchemesController < ApplicationController
 	end
 
 	def from_show
-		@selected = Scheme.where(:show_id => params[:show_id]).order(points_asgn: :asc, description: :asc)
+		@selected = Scheme.where(:show_id => params[:show_id]).order(type: :asc, points_asgn: :asc, description: :asc)
 		respond_to do |format|
 				format.js
 		end
