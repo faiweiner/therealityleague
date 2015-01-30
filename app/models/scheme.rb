@@ -21,8 +21,8 @@ class Scheme < ActiveRecord::Base
 
 	validates :type, presence: true, on: :create
 	validates :show_id, presence: true, on: :create
-	validates :description, presence: true, on: :create
-	validates :points_asgn, presence: true, on: :create
+	validates :description, presence: true, allow_blank: false
+	validates :points_asgn, presence: true, allow_blank: false
 	
 	private
 
