@@ -1,90 +1,18 @@
 $(document).ready(function () {
-
 	if ($('#manage-schemes').length > 0) {
 		console.log('Schemes initialized');
-
-
-
 		// setting variables
-		$showsPanel = $('#shows-panel');
-		$currentSchemeBoard = $('#currentSchemeBoard');
-
-		$('.btn-primary').on('click', function (event) {
-			var $showId = event.target.id;
-			$.ajax({
-				url: '/api/schemes',
-				data: 'show_list='+ $showId,
-				dataType: 'json',
-				type: 'get',
-				success: function (response) {
-					var partial = response.schemesList;
-					$currentSchemeBoard.data(partial);
-				}	// end success function
-			});
-		});
-		$newEventForm = $('#new-event');
-		$newEventSubmitButton = $('#new-event-submit');
-		$eventsBoard = $('#events-board');
-		$eventsDisplayBox = $('#events-display-box');
-	
-	// ================== IN-LINE EDITING ================== //
-		$.extend($.fn.editable.defaults, defaults);
-
-		var makeElementsReloadable = function (eventTypeValue) {
-
-			$eventsBoard.find('span[data-name="type"]').editable({
-				type: 'select',
-				tpl: '<select style="width: 100px">',
-				display: 'value',
-				value: eventTypeValue,
-				source: [
-					{'value': 'Survival', 'text': 'Survival'},
-					{'value': 'Game', 'text': 'Game'},
-					{'value': 'Extracurricular', 'text': 'Extracurricular'}
-				]
-			});
-
-			$eventsBoard.find('span[data-name="event"]').editable({
-				title: 'Enter event',
-				tpl: "<input type='text' style='width: 200px'>"
-			});
-
-			$eventsBoard.find('span[data-name="points_asgn"]').editable({
-				title: 'Enter points',
-				tpl: "<input style='width: 50px'>",
-				validate: function (value) {
-					if ($.trim(value) == '') {
-						return 'This field is required';
-					}
-				}	
-			});
-		};
-
-		$('#event-display-box').on('click', '.save', function() {
-			var $btn = $(this);
-			var eventId = jQuery(this).closest('tr').find('span')[0].dataset.pk;
-			$.ajax({
-				url: '/schemes/' + eventId,
-				type: 'POST',
-				responseTime: 200,
-				response: function(settings) {
-					console.log(settings.data);   
-				}
-				// success: function (msg) {
-				// 	var partial = msg;
-				// 	$rosterBoard.html(partial);
-				// }
-			});
-
-			$btn.closest('tr').find('.editable').editable('hide');
-			$btn.hide().siblings('.edit').show();
-		});
-
+		$showsPanel = $('#shows_panel');
+		$schemesBoard = $('#schemes_board');
+		$schemesTable = $('#schemes_table');
+		$newSchemeForm = $('#new_scheme');
+		$schemeUpdateButton = $('<div/>');
+		$schemeClearButton = $('<div/>');
 		// ================== GLOBAL FUNCTIONS ================== //
 
 		// ----- BEGIN server-side ----- //
 		// sends data to server for addition to events
-		var addEventToShow = function () {
+		var addSchemeToShow = function () {
 			$.ajax({
 				url: '/schemes/',
 				type: 'POST',
@@ -125,29 +53,111 @@ $(document).ready(function () {
 
 		// ----- END server-side ----- //
 
-		$newEventSubmitButton.on('click', function () {
-			addEventToShow();
-		});
+		var formatErrorMessages = function (data) {
+			$element = $('<ul/>');
+			for (var i = 0; i < data.errors.length; i ++) {
+				$bullet = $('<li/>');
+				$bullet.text(data.errors[i]);
+				$element.append($bullet);
+			};
+			return $element;
+		};
 
-		$('#scheme_form_type').on('select', function () {
-
-		});
-		
-		$eventsBoard.on('click', '.edit', function () {
-			// Get value of event type to be populated in X-editable
-			var eventTypeValue = $(this).closest('tr').find('span[data-name="type"]').text();
-			makeElementsReloadable(eventTypeValue);	
-			$eventsBoard.find('.editable-open').editable('hide');
-			$(this).hide().siblings('.btn-primary').show();
-			$(this).siblings('.btn-danger').show();
-			$(this).closest('tr').find('.editable').editable('show');
+		$('#scheme_form_type').on('change', function (event) {
+			var val = event.target.value;
+			$typeText = $('#scheme_type_text');
+			if (val == 'Add new type') {
+				$typeText.removeClass('hidden');
+				$typeText.focus();
+			} else {
+				$typeText.addClass('hidden');
+			}; 
 		});
 
 		$showsPanel.on('click', '.btn', function (event) {
 			var element = event.target;
+			var showId = element.dataset.showId;
+			$('#scheme_show_id').val(showId);
+			if (showId == null) {
+				$('.form-group').children().attr('disabled', 'disabled');
+			} else {
+				$('.form-group').children().attr('disabled', false);
+			}
 			$showsPanel.children('.btn').removeClass('btn-primary');
 			$(element).addClass('btn-primary');
 		});
 
+		$schemesBoard.on('click', '.edit', function (event) {
+			var id = event.target.dataset.id;
+			var url = 'schemes/' + id + '/edit';
+			$.ajax({
+				url: url
+			}).done(function (response) {
+				var updateURL = '/schemes/'+ response.scheme.id;
+				$newSchemeForm.children('.form-group.field').children('#scheme_show_id').val(response.scheme.show_id);
+				// Type
+				var option = 'option[value="' + response.type + '"]';
+				var typeField = $newSchemeForm.children('.form-group.field').children('#scheme_type_dropdown');
+				var selection = $newSchemeForm.children('.form-group.field').children('#scheme_type_dropdown').children(option)
+				selection.attr('selected', 'selected');
+				// Description
+				var descriptionField = $newSchemeForm.children('.form-group.field').children('#new_scheme_description');
+				descriptionField.val(response.scheme.description);
+				// Points
+				var pointsField = $newSchemeForm.children('.form-group.field').children('#new_scheme_points');
+				pointsField.val(response.scheme.points_asgn);
+
+				// Enabling form
+				$('#new_scheme_submit').hide();
+				$schemeUpdateButton.addClass('btn btn-md btn-default update');
+				$schemeClearButton.addClass('btn btn-md btn-default clear');
+				$schemeUpdateButton.attr('data-id', id);
+				$schemeUpdateButton.text('Update scheme');
+				$schemeClearButton.text('Cancel');
+				$('.actions').append($schemeUpdateButton).append(" ");
+				$('.actions').append($schemeClearButton).append(" ");
+				$('#new_scheme_update').attr('href', updateURL);
+				$('.form-group').children().attr('disabled', false);
+			});
+		});
+
+		$newSchemeForm.on('click', '.update', function (event) {
+			$formFields = $(event.target).parent().siblings('.form-group.field');
+			var id = event.target.dataset.id;
+			var showId = $formFields.find('#scheme_show_id').val();
+			var schemeTypeDropdown = $formFields.find('#scheme_type_dropdown').val();
+			var schemeTypeText = $formFields.find('#scheme_type_text').val();
+			var description = $formFields.find('#new_scheme_description').val();
+			var pointsAsgn = $formFields.find('#new_scheme_points').val();
+			
+			var url = '/schemes/' + id;
+			var schemeData = {
+				id: id,
+				type_text: schemeTypeText,
+				type_select: schemeTypeDropdown,
+				show_id: showId,
+				description: description,
+				points_asgn: pointsAsgn
+			};
+			$.ajax({
+				url: url,
+				dataType: 'JSON',
+				type: 'PATCH',
+				data: schemeData,
+				success: function (data) {
+				}
+			});
+		}).on('ajax:success', function (event, data, status, xhr) {
+			console.log(status);
+		}).on('ajax:error', function (event, data, status, xhr) {
+			$errorExplanation = $('#error_explanation');
+			$errorExplanation.addClass('alert ' + data.responseJSON.color);
+			$errorMessageStrong = $('<strong/>');
+			$errorMessageStrong.text(data.responseJSON.notice);
+			$errorExplanation.append($errorMessageStrong);
+			$newSchemeForm.append(data.responseText);
+			$element = formatErrorMessages(data.responseJSON);
+			$errorExplanation.append($element);
+		});
 	};
 });
