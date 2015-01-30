@@ -56,20 +56,16 @@ class SchemesController < ApplicationController
 	end
 
 	def update
-		# @scheme = Scheme.find(params[:id])
-		# if params[:type_text].present?
-		# 	type = params[:type_text]
-		# else
-		# 	schemeType = params[:type_select]
-		# end
-		# if @scheme.update(type: schemeType, description: params[:description], points_asgn: params[:points_asgn])
-		# 	flash[:notice] = "Scheme has been successfully updated."
-		# 	flash[:color] = "alert-success success"
-		# else
-		# 	@scheme.errors
-		# 	flash[:notice] = "Something went wrong and the scheme was not updated."
-		# 	flash[:color] = "alert-warning warning"
-		# end
+		@scheme = Scheme.find(params[:id])
+		raise
+		if @scheme.update scheme_params
+			flash[:notice] = "Scheme has been successfully updated."
+			flash[:color] = "alert-success success"
+		else
+			@scheme.errors
+			flash[:notice] = "Something went wrong and the scheme was not updated."
+			flash[:color] = "alert-warning warning"
+		end
 	end
 
 	def from_show
@@ -94,20 +90,37 @@ class SchemesController < ApplicationController
 	private
 
 	def scheme_params
-		if params[:scheme][:type_text].present?
-			params[:scheme][:type] = params[:scheme][:type_text]
-		elsif params[:scheme][:type_select].present?
-			case params[:scheme][:type_select]
-			when "Select type"
-				params[:scheme][:type] = nil
-			when "Add new type"
-				params[:scheme][:type] = nil
+		if params[:type_select].present? || params[:type_text].present?
+			if params[:type_text].present?
+				params[:scheme][:type] = params[:type_text]
+			elsif params[:type_select].present?
+				case params[:type_select]
+				when "Select type"
+					params[:scheme][:type] = nil
+				when "Add new type"
+					params[:scheme][:type] = nil
+				else
+					params[:scheme][:type] = params[:type_select]
+				end
 			else
-				params[:scheme][:type] = params[:scheme][:type_select]
+				params[:scheme][:type] = params[:scheme][:type]
 			end
 		else
-			params[:scheme][:type]
+			if params[:type_text].present?
+				params[:type] = params[:type_text]
+			elsif params[:type_select].present?
+				case params[:type_select]
+				when "Select type"
+					params[:type] = nil
+				when "Add new type"
+					params[:type] = nil
+				else
+					params[:type] = params[:type_select]
+				end
+			else
+				params[:type]
+			end
 		end
-		params.require(:scheme).permit(:id, :show_id, :description, :points_asgn)
+		params.require(:scheme).permit(:id, :type, :show_id, :description, :points_asgn)
 	end
 end
