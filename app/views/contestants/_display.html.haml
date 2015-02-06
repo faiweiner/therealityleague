@@ -18,8 +18,7 @@
 							%th Gender
 							%th Occupation
 							%th Description
-							%th Status
-							%th
+							%th Actions
 					%tbody
 						- @contestants.each do |contestant|
 							%tr
@@ -41,10 +40,6 @@
 									%span{"data-name" => "description", "data-pk" => contestant.id}
 										= contestant.description
 								%td
-									%span{"data-name" => "status", "data-pk" => contestant.id}
-										= contestant.status_on_show
-								%td
-									%button.btn.btn-default.btn-sm.edit Edit
-									%button.btn.btn-primary.btn-sm.save Save
-									%button.btn.btn-default.btn-sm.cancel Cancel
+									%button.btn.btn-default.btn-sm.edit Edit Info
+									%button.btn.btn-default.btn-sm.status Mark Status
 	.panel-body

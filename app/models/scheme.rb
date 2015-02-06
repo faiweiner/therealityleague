@@ -4,7 +4,6 @@
 #
 #  id          :integer          not null, primary key
 #  type        :string(255)
-#  show_id     :integer
 #  description :string(255)
 #  points_asgn :integer
 #  created_at  :datetime
@@ -18,6 +17,7 @@ class Scheme < ActiveRecord::Base
 	has_many :contestants, through: :events
 	has_many :episodes, through: :events
 	has_and_belongs_to_many :leagues
+	has_and_belongs_to_many :shows
 
 	validates :type, presence: true, allow_blank: false
 	validates :show_id, presence: true, allow_blank: false
