@@ -2,6 +2,17 @@ $(document).ready(function () {
 	$leagueCrationDiv = $('#league_creation');
 	$leagueCommissionerOne = $('#comm-one');
 	$leagueViewDiv = $('#league_view');
+	$leagueSchemesDiv = $('#league_schemes');
+	var leagueSchemeAction = function (leagueId, schemeId, action) {
+		var url = 'schemes/' + schemeId;
+		var data = {APIaction: action};
+		$.ajax({
+			url: url,
+			data: data,
+			method: 'post'
+		});
+
+	};
 
 	if ($leagueCrationDiv.length > 0) {
 		console.log('Leagues JS for new league initiated');
@@ -149,8 +160,21 @@ $(document).ready(function () {
 				}, 1000);			
 			};
 		});
-	} else if ($leagueViewDiv.length > 0) {
-
+	} else if ($leagueSchemesDiv.length > 0) {
+		console.log('League\'s scheme management initiated.');
+		$table = $('#show_schemes_table');
+		$leagueSchemesDiv.on('change', '.selection', function (event) {
+			var leagueId = event.target.dataset.leagueId;
+			var schemeId = event.target.dataset.schemeId;
+			var action = null;
+			if (event.target.checked == true) {
+				action = ('add')
+			} else {
+				action = 'remove'
+			};
+			console.log(event.target.checked);
+			leagueSchemeAction(leagueId, schemeId, action);
+		});
 	} else {
 		$('.participants_prompt').hide();
 	};

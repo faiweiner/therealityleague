@@ -1,0 +1,25 @@
+- if flash[:notice].present? 
+	.alert{class: "#{flash[:color]}", role: "alert"}
+		= flash[:notice]
+.panel.panel-default#league_schemes
+	.panel-body
+		.col-lg-12
+			%h2= @league.name
+			%p= @show_title
+		.col-lg-12
+			%table.table.table-hover#show_schemes_table
+				%theader
+					%th 
+					%th Type
+					%th Description
+					%th Points
+				%tbody
+					- @show_schemes.each do |scheme|
+						%tr
+							%td{class: "selection"}
+								= form_tag("schemes/#{scheme[0].id}") do
+									= check_box_tag :scheme, "selection", scheme[1][:selection], {"data-scheme-id" => scheme[0].id, "data-league-id" => @league.id}
+							%td= scheme[0].type
+							%td= scheme[0].description
+							%td= scheme[0].points_asgn
+

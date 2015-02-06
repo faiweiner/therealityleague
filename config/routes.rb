@@ -43,6 +43,8 @@ Rails.application.routes.draw do
 	get		'leagues/search' => 'leagues#search'
 	get		'leagues/:id/invite' => 'leagues#invite', :as => :league_invite
 	get		'leagues/:id' => 'leagues#display', :as => :league
+	get		'leagues/:id/schemes' => 'leagues#manage_schemes', :as => :league_schemes
+	post	'leagues/:id/schemes/:scheme_id' => 'leagues#scheme_action', :as => :league_scheme_action
 	resources :leagues
 	resources :fantasies, path: 'leagues', :controller => 'leagues'
 	post		'leagues/access' => 'leagues#access', :as => :league_access

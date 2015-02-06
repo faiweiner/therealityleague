@@ -17,6 +17,7 @@ class Scheme < ActiveRecord::Base
 	has_many :contestants, through: :events
 	has_many :episodes, through: :events
 	has_and_belongs_to_many :leagues
+	has_and_belongs_to_many :schemes
 	has_and_belongs_to_many :shows
 
 	validates :type, presence: true, allow_blank: false

@@ -4,9 +4,9 @@ class LeaguesController < ApplicationController
 
 	before_action :check_if_logged_in
 	before_action :save_login_state, only: [:new, :search, :results]
-	before_action :get_league, only: [:display, :edit, :invite]
+	before_action :get_league, only: [:display, :edit, :invite, :manage_schemes]
 	before_action :private_restriction, only: [:display]
-	before_action :commissioner_restriction, only: [:edit]
+	before_action :commissioner_restriction, only: [:edit, :manage_schemes]
 	skip_before_action :verify_authenticity_token, only: [:results]
 
 	attr_accessor :name, :league_key, :league_password
@@ -138,7 +138,6 @@ class LeaguesController < ApplicationController
 	end
 
 	def display
-		@show = @league.season.show
 		@participants = @league.users
 		@rules_collection = get_schemes(@show)
 		@show_title = "#{@show.name}: #{@league.season.name}"
@@ -163,6 +162,25 @@ class LeaguesController < ApplicationController
 			flash[:color] = "alert-warning"
 			redirect_to :back
 		end
+	end
+
+	def manage_schemes
+		@show_schemes = {}
+		@league_schemes = @league.schemes
+		@show.schemes.order(type: :asc, description: :asc, points_asgn: :asc).each do |scheme|
+			@show_schemes[scheme] = {}
+			if @league.schemes.include? scheme
+				@show_schemes[scheme] = {
+					:selection => true
+				}
+			else
+				@show_schemes[scheme] = {
+					:selection => false
+				}				
+			end
+		end
+
+		@show_title = "#{@show.name}: #{@league.season.name}"
 	end
 
 	def search
@@ -233,6 +251,23 @@ class LeaguesController < ApplicationController
 	def invite
 	end
 
+	def scheme_action
+		action = params[:APIaction]
+		@league = League.find(params[:id])
+		case action
+		when "add"
+			add_scheme(@league, params[:scheme_id])
+		when "remove"
+			remove_scheme(@league, params[:scheme_id])
+		end
+		respond_to do |format|
+			format.js {
+				render :json => {
+				} 
+			}
+		end
+	end
+
 	def access
 		if params[:league_key].empty? || params[:password].empty?
 			flash[:notice] = "Invalid entry. Please enter both league key and password."
@@ -280,6 +315,19 @@ class LeaguesController < ApplicationController
 			:league_key, 
 			:league_password, 
 			:active)
+	end
+
+	# API
+	def add_scheme(league, scheme_id)
+		@league = league
+		scheme = Scheme.find(scheme_id)
+		@league.schemes << scheme
+	end
+
+	#API
+	def remove_scheme(league, scheme_id)
+		scheme = Scheme.find(scheme_id)
+		@league.schemes.delete(scheme)
 	end
 
 	def get_alerts(league, participants_collection)
@@ -702,6 +750,8 @@ class LeaguesController < ApplicationController
 
 	def get_league
 		@league = League.includes(:users, :season).find(params[:id]).becomes(League)
+		@season = @league.season
+		@show = @league.season.show
 	end
 
 	def private_restriction

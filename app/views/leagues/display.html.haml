@@ -9,6 +9,7 @@
 				= link_to "#{@show_title}", season_path(@league.season.id)
 			#league-action-panel
 				= render partial: "/shows/scoring_system"
+				= link_to "Manage Scoring System", league_schemes_path(@league.id), class: "btn btn-sm btn-default"
 				.btn.btn-default.btn-sm.disabled
 					Draft Deadline:
 					= @league.draft_deadline.strftime("%m/%e")
