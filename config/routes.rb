@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
 	root :to => 'pages#home'
 
-	get		'display_all' => 'schemes#display_all', as: 'schemes'
-	post	'display_all' => 'schemes#create'
-	get 	'fetch_schemes' => 'schemes#from_show', as: 'fetch_schemes'
-	resources :schemes
 	resources :messages
 
 	get		'events/display/:season_id/:episode_id' => 'events#display', :as => :display_events
@@ -20,10 +16,10 @@ Rails.application.routes.draw do
 
 	get		'pages/about' => 'pages#about'
 
-	get		'shows/new' => 'shows#new', :as => :new_show
-	get		'shows/:id' => 'shows#display', :as => :show
-	resources :shows
-
+	get		'schemes/display_all' => 'schemes#display_all', as: 'schemes'
+	post	'schemes/display_all' => 'schemes#create'
+	get 	'schemes/fetch_schemes' => 'schemes#from_show', as: 'fetch_schemes'
+	resources :schemes
 
 	get		'seasons/search' => 'seasons#search'
 	get		'seasons' => 'seasons#index', :as => :seasons
@@ -37,6 +33,10 @@ Rails.application.routes.draw do
 	patch 'seasons/:id' => 'seasons#update'
 	put		'seasons/:id' => 'seasons#update'
 	delete 'seasons/:id' => 'seasons#destroy'
+
+	get		'shows/new' => 'shows#new', :as => :new_show
+	get		'shows/:id' => 'shows#display', :as => :show
+	resources :shows
 
 	get		'leagues/new' => 'leagues#new', :as => :new_league
 	get		'leagues' => 'leagues#index', :as => :leagues

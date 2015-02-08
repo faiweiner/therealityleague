@@ -2,6 +2,7 @@ class SeasonsController < ApplicationController
 	before_action :check_if_admin, only: [:new, :edit, :update, :publish, :unpublish, :destroy]
 	before_action :check_if_logged_in, only: [:display]
 	layout "admin", except: [:display]
+
 	def index
 		@current_seasons = Season.where(:expired => :false).order("premiere_date ASC")
 		@past_seasons = Season.where(:expired => :true).order("premiere_date DESC")
@@ -105,6 +106,10 @@ class SeasonsController < ApplicationController
 		render_admin
 	end
 	
+	def manage
+		
+	end
+
 	private
 
 	def season_params

@@ -79,29 +79,7 @@
 				Built by Fai Weiner © 2015
 				#status
 			%footer
-				- if @current_user.present?
-					%button.btn.btn-primary#feedbackBox{"data-target" => "#commentModal", "data-toggle" => "modal", :type => "button"}
-						%i.glyphicon.glyphicon-comment
-					/ Modal
-					#commentModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-						.modal-dialog
-							.modal-content
-								.modal-header
-									%button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-										%span{"aria-hidden" => "true"} &times;
-									%h4#commentModalLabel.modal-title Feedback
-								= form_for(@message, :method => "POST", :id => "commentForm") do |f|
-									.modal-body#commentModalBody
-										.form-group.alert#post-response-box{:style => "display: none"}
-										.form-group
-											= f.hidden_field(:user_id, value: @current_user.id)
-										.form-group#post-type-box
-											= f.label :messagetype, "Type"
-											= f.select(:messagetype, options_for_select([["Feature Request"], ["Report a Bug"]]), {}, {class:"form-control"})
-										.form-group#post-comment-box
-											= f.label :messagecomment, "Comment/Questions"
-											= f.text_area :messagecomment, class:"form-control"
-										.form-group
-											%button.btn.btn-default.btn-sm#form-cancel-button{:type => "button", :data => {"dismiss" => "modal"}} 
-												Close
-											= f.submit "Submit", :type => "submit", class: "btn btn-primary btn-sm", id: "form-submit-button"				
+				%fb
+				%div#status
+
+

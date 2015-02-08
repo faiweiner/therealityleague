@@ -46,14 +46,14 @@ $(document).ready(function () {
 				toggleActionButtons();
 				// $btn.siblings('.cancel').hide();
 				// $btn.hide().siblings('.edit').show();
-			};
+			});
 	
 			$('#contestants').on('click', '.save', function() {
 				var $btn = $(this);
 				
-				 Currently no elegant way to get actual values from shown inputs.
-				 It's possible to collect it manually, submit and then use `setValue` method to update data in table row. But it's overload..
-				 Need investigation.
+				 // Currently no elegant way to get actual values from shown inputs.
+				 // It's possible to collect it manually, submit and then use `setValue` method to update data in table row. But it's overload..
+				 // Need investigation.
 				
 				var contestantId = jQuery(this).closest('tr').find('span')[0].dataset.pk
 

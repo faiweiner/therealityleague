@@ -2,12 +2,17 @@ class SchemesController < ApplicationController
 	layout "admin"
 	def index
 		@shows = Show.all.order(name: :asc)	
-		@selected = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc, show_id: :asc)
+		@show_id = nil
+		@schemes = {}
+		schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
+		schemes.each do |scheme|
+			@schemes[scheme] = false
+		end
 		@scheme = Scheme.new
 	end
 
 	def display_all
-		@selected = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc, show_id: :asc)
+		@schemes = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc)
 		respond_to do |format|
 			format.js
 		end
@@ -95,9 +100,19 @@ class SchemesController < ApplicationController
 	end
 
 	def from_show
-		@selected = Scheme.where(:show_id => params[:show_id]).order(type: :asc, points_asgn: :asc, description: :asc)
+		@show_id = params[:show_id]
+		show = Show.find(params[:show_id])
+		schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
+		@schemes = {}
+		schemes.each do |scheme|
+			if show.schemes.include? scheme
+				@schemes[scheme] = true
+			else
+				@schemes[scheme] = false
+			end
+		end
 		respond_to do |format|
-				format.js
+			format.js
 		end
 	end
 

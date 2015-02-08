@@ -1,11 +1,13 @@
-- @selected.each do |scheme|
+- @schemes.each do |scheme|
 	%tr
 		%td
-			%span{"data-name" => "type", "data-pk" => scheme.id}= scheme.type
+			= check_box_tag :scheme, "selection", scheme[1], {"data-scheme-id" => scheme[0].id, "data-show-id" => @show_id}
 		%td
-			%span{"data-name" => "description", "data-pk" => scheme.id}= scheme.description
+			%span{"data-name" => "type", "data-pk" => scheme[0].id}= scheme[0].type
 		%td
-			%span{"data-name" => "points_asgn", "data-pk" => scheme.id}= scheme.points_asgn
+			%span{"data-name" => "description", "data-pk" => scheme[0].id}= scheme[0].description
 		%td
-			.btn.btn-xs.btn-default.edit{"data-id" => scheme.id} Edit
+			%span{"data-name" => "points_asgn", "data-pk" => scheme[0].id}= scheme[0].points_asgn
+		%td
+			.btn.btn-xs.btn-default.edit{"data-id" => scheme[0].id} Edit
 			= button_tag("Delete", class:"btn btn-xs btn-default destroy")
