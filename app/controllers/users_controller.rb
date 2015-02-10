@@ -69,12 +69,12 @@ class UsersController < ApplicationController
 		@user_account[:username] = @user.username
 		@user_account[:email] = @user.email
 		if @user.fb_id.present?
-			@user_account[:facebook][:label] = "Unlink Facebook"
+			@user_account[:facebook][:label] = "Connected"
 			@user_account[:facebook][:path] = unlink_fb_path(@user.id)
 			@user_account[:facebook][:link_id] = ""
 			@user_account[:facebook][:method] = ""
 		else
-			@user_account[:facebook][:label] = "Link Facebook"
+			@user_account[:facebook][:label] = "Not connected"
 			@user_account[:facebook][:path] = link_fb_path(@user.id)
 			@user_account[:facebook][:link_id] = "#fb-login-button"
 			@user_account[:facebook][:method] = "POST"

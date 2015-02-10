@@ -55,11 +55,7 @@ $(document).ready(function () {
 
 		}
 	};
-
-	var updateFbButtonLabel = function (message) {
-		$('#fb-login-button').text(message);
-	};
-
+	
 	if ($('#feedbackBox')) {
 		$('#new_message').submit(function (e) {
 			var formData = $(this).serializeArray();
@@ -112,55 +108,16 @@ $(document).ready(function () {
 		});
 	};
 
+	// Facebook Login Click Listener
 	if ($('#fb-login')) {
 		$('#fb-login').on('click', '#fb-login-button', function () {
 			// check current FB linkage status
 			var currentStatus = status;
 			// indicates if user is signing up, or linking, or etc.
 			var action = this.dataset.action;
-			// set variable for below switch
-			var scenario = '';
-
-			if (currentStatus === null || action === null)  {
-				// This scenario is when Facebook status cound not be established
-				// and no value is assigned to "action" or variable does not exist
-				scenario = 'fbError';
-			} else if (currentStatus === 'not_authorized' && action === 'signup-fb') {
-				// User is logged into Facebook but not to the app
-				// First time signing up via Facebook
-				scenario = 'B';
-			} else if (currentStatus === 'not_authorized' && action === 'signin-fb') {
-				// User is logged into Facebook but not to the app
-				// Current user signing in with Facebook
-				scenario = 'C';
-			} else if (currentStatus === 'not_authorized' && action === 'link-fb') {
-				// User is logged into Facebook but not to the app
-				// Current user want to link account to FB for future use
-				scenario = 'D';
-			} else if (currentStatus === 'unknown') {
-				scenario = 'noFbConnection'
-			};
-			
-			console.log(scenario);
-
-			switch (scenario) {
-				case 'fbError':
-					updateFbButtonLabel('Try again');
-					break;
-				case 'B':
-					signupFbUser();
-					updateFbButtonLabel('Sign up with Facebook');
-					break;
-				case 'C':
-					updateFbButtonLabel('dooze');
-					break;
-				case 'D':
-					updateFbButtonLabel('coooozzzee');
-					break;
-				case 'noFbConnection':
-					updateFbButtonLabel('COOOOO');
-					break;
-			};
+			var userId = this.dataset.userId;
+			// set scenario to be passed to executeFbInteraction
+			processFbInteraction(currentStatus, action, userId);
 		});
-	};	
+	};		
 });
