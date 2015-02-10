@@ -13,7 +13,8 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  last_logged_in   :datetime
-#
+#  fb_id            :integer
+#  timezone         :integer
 #
 
 require 'rails_helper'

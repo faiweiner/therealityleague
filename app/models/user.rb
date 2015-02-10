@@ -13,6 +13,8 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  last_logged_in   :datetime
+#  fb_id            :integer
+#  timezone         :integer
 #
 
 class User < ActiveRecord::Base
@@ -32,7 +34,7 @@ class User < ActiveRecord::Base
 	has_secure_password
 	validates :email, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create, case_sensitive: false
 	validates_format_of :email, :with => EmailRegex
-	validates :username, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create, case_sensitive: false
+	validates :username, presence: true, length: { :minimum => 6 }, on: :create, case_sensitive: false
 	validates :password, length: { in: 6..20 }, confirmation: true
 	validates :password_confirmation, presence: true, :on => :update, :unless => lambda{ |user| user.password.blank? }
 

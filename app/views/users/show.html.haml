@@ -1,19 +1,21 @@
-.panel
+.panel.panel-default
 	.panel-body
-		.row.form-group
-			- if flash[:notice] && flash[:color] == "valid"
-				.alert.alert-success{:role => "alert"}= flash[:notice]
-			- elsif flash[:notice] && flash[:color] == "invalid"
-				.alert.alert-danger{:role => "alert"}= flash[:notice]				
-		.panel-heading
-			%h1 Account Settings
-		.panel-body
-			.row
-				.col-md-9
-					%strong Username:
-					= @current_user.username
-					%br/
-					%strong Email:
-					= @current_user.email 
-					%br/
-					= link_to "Change account settings", edit_user_path(@current_user.id)
+		.row.alert-group
+			- if flash[:notice]
+				.alert.alert-success{:role => "alert", class: flash[:color]}= flash[:notice]	
+		.row
+			.col-lg-12	
+				%h1 Account Settings
+		.row
+			.col-lg-12
+				= link_to "Update Profile", edit_user_path(@user.id)
+		.row
+			.col-lg-2 Username:
+			.col-lg-10= @user_account[:username]
+		.row
+			.col-lg-2 Email:
+			.col-lg-10= @user_account[:email]
+		.row
+			.col-lg-2 Facebook:
+			.col-lg-10#fb-login
+				#fb-login-button.btn.btn-sm.btn-default{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-auto-logout-link" => false, "data-scope" => "public_profile, email", "data-action" => "link-fb", "data-user-id" => @user.id}

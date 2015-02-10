@@ -3,8 +3,13 @@ class SessionsController	< ApplicationController
 	
 	def new
 		# view renders Sign-in (Session) form
+		@header = "Sign In"
 	end
 
+	def facebook_login
+		
+	end
+	
 	def login_attempt
 		user = User.find_by(:email => params[:email].downcase)
 		if user.present? && user.authenticate(params[:password])

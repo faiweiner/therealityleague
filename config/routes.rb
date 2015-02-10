@@ -49,6 +49,8 @@ Rails.application.routes.draw do
 	resources :fantasies, path: 'leagues', :controller => 'leagues'
 	post		'leagues/access' => 'leagues#access', :as => :league_access
 
+	post		'users/:id/link_fb' => 'users#link_fb', :as => :link_fb
+	post		'users/:id/unlink_fb' => 'users#unlink_fb', :as => :unlink_fb
 	resources :users
 	resources :messages
 	
@@ -82,7 +84,8 @@ Rails.application.routes.draw do
 	delete 'contestants/:id' => 'contestants#destroy'
 
 	get		'login' => 'sessions#new'
-	post		'login' => 'sessions#login_attempt'
+	post	'login' => 'sessions#login_attempt'
+	post	'login/fb' => 'sessions#facebook_login', :as => :facebook_login
 	delete 'login' => 'sessions#logout'
 
 	get		'admin' => 'admin#home'

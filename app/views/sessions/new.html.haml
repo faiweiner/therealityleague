@@ -1,7 +1,13 @@
 .panel.panel-default
 	.panel-body
 		.col-lg-12.col-md-12
-			%h2 Sign In
+			%h2= @header
+			%br/
+			#fb-login
+				.btn.btn-md.btn-default#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-auto-logout-link" => false, "data-scope" => "public_profile, user_friends, email", "data-action" => "signin-fb", "data-user-id" => nil} 
+					Sign in with Facebook
+			%br/
+			%p OR
 			#sign-in-form.col-lg-4.col-md-6.col-sm-6
 				-# Error Messages
 				- if flash[:notice]
@@ -25,9 +31,6 @@
 						= submit_tag("Sign in", :class => "form_submit btn btn-default")
 						%span.help-block
 							%a{:href => "#"} Forgot password?
-					.row.form-group
-
-						%div#sign_in.btn.fb-login-button{:data => {"max-rows" => 1, "size" => "large", "auto-logout-link" => false, "show-faces" => false}}
 					.row
 						%p 
 							New to the site?

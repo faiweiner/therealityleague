@@ -1,14 +1,13 @@
-#fb-root
 .panel.panel-default
 	.panel-body
 		.col-lg-12.col-md-12
-			- if params[:id]
-				%h2
-					Edit User
-					- if @user.admin == true
-						\- Master Admin
-			- else
-				%h2 Sign Up
+			%h2= @header
+			%br/
+			#fb-login
+				.btn.btn-md.btn-default#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-action" => "signup-fb", "data-auto-logout-link" => false, "data-scope" => "public_profile, email", "data-user-id" => nil}
+					Sign up with Facebook
+			%br/
+			%p OR
 			#sign-up-form.col-lg-4.col-md-6.col-sm-6
 				-# Form 
 				= form_for(@user, class:"form-horizontal", :role => "form", :html => {:multipart => true}) do |f|
