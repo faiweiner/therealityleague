@@ -87,7 +87,8 @@ class ApplicationController < ActionController::Base
 
 	# for AJAX requests only 
 	def contestants_list
-		contestants = Contestant.where(:season_id => params[:season_id]).order(:name)
+		season = Season.find(params[:season_id])
+		contestants = season.contestants.order(:name)
 		contestants_list = []
 		contestants.each do |contestant|
 			contestant = {

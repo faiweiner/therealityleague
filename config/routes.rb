@@ -97,7 +97,7 @@ Rails.application.routes.draw do
 	# API for pulling lists via AJAX
 	get		'api/shows'				=> 'application#shows_list',			:as => :api_shows
 	get		'api/seasons'			=> 'application#seasons_list',		:as => :api_seasons
-	get		'api/episodes'			=> 'application#episodes_list', :as => :api_episodes
+	get		'api/episodes'		=> 'application#episodes_list', 	:as => :api_episodes
 	get		'api/contestants'	=> 'application#contestants_list', :as => :api_contestants
-	get		'api/schemes' => 'application#schemes_list', 				:as => :api_schemes
+	get		'api/schemes' 		=> 'application#schemes_list', 		:as => :api_schemes
 end
