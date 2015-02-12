@@ -61,9 +61,15 @@
 										%li= link_to "Track events", new_event_path			
 						%ul.nav.navbar-nav.navbar-right
 							- if @current_user.present?
-								%li
-									%a{:href => "#"}
-										= @current_user.username
+								%li#fb-link
+									- if @current_user.oauth_id.nil?
+										%a{id: "fb-link-button", "data-user-id" => @current_user.id}
+											.btn.btn-xs.btn-primary
+												Connect
+												= @current_user.oauth_id
+									- else
+										%p.navbar-text
+											= @current_user.username
 								%li
 									%a{:href => user_path(@current_user)}
 										%span.glyphicon.glyphicon-cog

@@ -97,6 +97,8 @@ $(document).ready(function () {
 			e.preventDefault(); //STOP default action
 		});
 
+	
+
 		$('.close').on('click', function () {
 			$('#post-response-box').text('');
 			$('#post-response-box').hide();
@@ -111,13 +113,31 @@ $(document).ready(function () {
 	// Facebook Login Click Listener
 	if ($('#fb-login')) {
 		$('#fb-login').on('click', '#fb-login-button', function () {
-			// check current FB linkage status
-			var currentStatus = status;
-			// indicates if user is signing up, or linking, or etc.
-			var action = this.dataset.action;
-			var userId = this.dataset.userId;
+			var _self = this;
+			FB.getLoginStatus(function(response) {
+				// check current FB linkage status
+				var userId = _self.dataset.userId;
+				var action = _self.id;
+				statusChangeCallback(response, userId);
+			});
 			// set scenario to be passed to executeFbInteraction
-			processFbInteraction(currentStatus, action, userId);
+
+		});
+	};	
+
+		// Facebook Link Click Listener
+	if ($('#fb-link')) {
+		$('#fb-link').on('click', '#fb-link-button', function () {
+			var _self = this;
+
+			// check current FB linkage status
+			FB.login(function (response) {
+				var userId = _self.dataset.userId;
+				var action = _self.id;
+				// call statusChangeCallback to link user
+				statusChangeCallback(response, userId, action);
+				}, {scope: 'public_profile, email, user_friends'}
+			);
 		});
 	};		
 });

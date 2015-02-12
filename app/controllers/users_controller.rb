@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	
+ 	helper UsersHelper
 	before_action :assign_user, :only => [:edit, :link_fb, :update, :show]
 	before_action :check_if_logged_in, :except => [:new, :create]
 	before_action :save_login_state, :only => [:new, :create]
@@ -39,14 +39,15 @@ class UsersController < ApplicationController
 
 	def link_fb
 		# assign @user to match with View
-		raise
-		if @user.update(fb_params)
+		@user.update_with_auth(params)
+		if @user.save(validate: false)
 		else
+			@user.errors.full_messages
 		end
 	end
 
 	def unlink_fb
-		raise
+		raise "got to unlink"
 	end
 
 	def update
@@ -68,7 +69,7 @@ class UsersController < ApplicationController
 		@user_account[:facebook] = {}
 		@user_account[:username] = @user.username
 		@user_account[:email] = @user.email
-		if @user.fb_id.present?
+		if @user.oauth_id.present?
 			@user_account[:facebook][:label] = "Connected"
 			@user_account[:facebook][:path] = unlink_fb_path(@user.id)
 			@user_account[:facebook][:link_id] = ""
@@ -92,7 +93,7 @@ class UsersController < ApplicationController
 	end
 		
 	def fb_params
-		params.require(:user).permit(:fb_id, :email, :username, :oauth_token, :oauth_expires_at, :timezone)
+		params.require(:user).permit(:oauth_provider, :oauth_id, :email, :timezone)
 	end
 		
 	def check_if_admin

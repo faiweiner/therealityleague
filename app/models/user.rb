@@ -13,7 +13,8 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  last_logged_in   :datetime
-#  fb_id            :integer
+#  oauth_provider   :string(255)
+#  oauth_id         :text
 #  timezone         :integer
 #
 
@@ -32,12 +33,45 @@ class User < ActiveRecord::Base
 	before_create :downcase_field
 
 	has_secure_password
-	validates :email, presence: true, uniqueness: true, length: { :minimum => 6 }, on: :create, case_sensitive: false
-	validates_format_of :email, :with => EmailRegex
-	validates :username, presence: true, length: { :minimum => 6 }, on: :create, case_sensitive: false
-	validates :password, length: { in: 6..20 }, confirmation: true
-	validates :password_confirmation, presence: true, :on => :update, :unless => lambda{ |user| user.password.blank? }
+	validates :email, presence: true, 
+										uniqueness: true, 
+										length: { minimum: 6 }, 
+										on: :create, 
+										case_sensitive: false
+	validates_format_of :email, with: EmailRegex
+	validates :username, presence: true, 
+										length: { minimum: 6 }, 
+										on: :create, 
+										case_sensitive: false
+	validates :password, length: { in: 6..20 }, 
+										confirmation: true
+	validates :password_confirmation, 
+										presence: true, 
+										on: :update, 
+										unless: lambda{ |user| user.password.blank? }
+	validates :oauth_id, uniqueness: true
 
+	def self.create_with_auth(auth)
+		create! do |user|
+			user.oauth_provider = auth[:oauth_provider]
+			user.oauth_id = auth[:info][:id]
+			user.username = auth[:info][:name]
+			user.email = auth[:info][:email]
+			user.timezone = auth[:info][:timezone]
+			user.oauth_token = auth[:token][:oauth_token]
+			user.oauth_expires_at = auth[:token][:expiration]
+		end
+	end
+
+	def update_with_auth(params)
+		self.update_columns({
+			avatar: params[:user][:avatar],
+			email: params[:user][:email],
+			oauth_id: params[:user][:oauth_id],
+			oauth_provider: params[:user][:oauth_provider],
+			timezone: params[:user][:timezone]
+		})
+	end
 	def roster_for_league(league)
 		roster = self.rosters.where(:league_id => league.id).first
 		roster || Roster.first

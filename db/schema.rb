@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20150210091335) do
     t.integer  "points_asgn"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "show_id"
   end
 
   create_table "schemes_shows", id: false, force: true do |t|
@@ -181,7 +182,8 @@ ActiveRecord::Schema.define(version: 20150210091335) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "last_logged_in"
-    t.integer  "fb_id"
+    t.string   "oauth_provider"
+    t.text     "oauth_id"
     t.integer  "timezone"
   end
 

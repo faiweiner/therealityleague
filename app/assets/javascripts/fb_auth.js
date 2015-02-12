@@ -1,78 +1,147 @@
-var status = null;
+	var postData = function (response, data, userId, url) {
+		FB.api('/me', { fields: 'email, timezone, picture' }, function (response) {
+			console.log(response.picture.data.url);
+			data.user.avatar = response.picture.data.url;
+			data.user.email = response.email;
+			data.user.timezone = response.timezone;
+			$.ajax({
+				async: 		false,
+				url: 			url,
+				type: 		'POST',
+				data: 		data,
+				success: 	function () {
+				}
+			});
+			console.log(data);
+		});
+	};
 
-var updateFbButtonLabel = function (message) {
-	$('#fb-login-button').text(message);
-};
+var loginUser = function (response) {
+	console.log(response.authResponse.userID);
+	var fbId = response.authResponse.userID;
+	var url = '/login/fb';
+	var data = {};
 
-var executeFbInteraction = function (scenario, userId) {
-	if (scenario === null) {
-		return;
-	} else {
-		switch (scenario) {
-			case 'noFbConnection-link', 'notAuthorized-link':
-				linkFbUser(userId);
-				break;
-			case '':
-				break;
+	$.ajax({
+		url:			url,
+		type: 		'POST',
+		data: 		{oauth_id: fbId},
+		success: 	function () {
+			location = '/leagues';
 		}
-	};
+	});
 };
 
-var processFbInteraction = function (currentStatus, action, userId) {
-	// set variable for below switch
-	var scenario = '';
-
-	if (currentStatus === null || action === null)  {
-		// This scenario is when Facebook status cound not be established
-		// and no value is assigned to "action" or variable does not exist
-		scenario = 'fbError';
-	} else if (currentStatus === 'not_authorized' && action === 'signup-fb') {
-		// User is logged into Facebook but not to the app
-		// First time signing up via Facebook
-		scenario = 'B';
-	} else if (currentStatus === 'not_authorized' && action === 'signin-fb') {
-		// User is logged into Facebook but not to the app
-		// Current user signing in with Facebook
-		scenario = 'C';
-	} else if (currentStatus === 'not_authorized' && action === 'link-fb') {
-		// User is logged into Facebook but not to the app
-		// Current user want to link account to FB for future use
-		updateFbButtonLabel('Link account to Facebook');
-		scenario = 'notAuthorized-link';
-	} else if (currentStatus === 'unknown' && action === 'signup-fb') {
-		updateFbButtonLabel('Sign up with Facebook');
-		scenario = 'noFbConnection-signup';
-	} else if (currentStatus === 'unknown' && action === 'signin-fb') {
-		scenario = 'noFbConnection-signin';
-	} else if (currentStatus === 'unknown' && action === 'link-fb') {
-		updateFbButtonLabel('Link account to Facebook');
-		scenario = 'noFbConnection-link';
-	};
-
-	executeFbInteraction(scenario, userId);
-
+var linkUser = function (response, userId) {
+	var url = '/users/' + userId + '/link_fb';
+	// compile user data
+	var compiler = {};
+	if (response.status != null) {
+		compiler = {
+			user: {
+				oauth_provider: 'Facebook',
+				oauth_id: 			response.authResponse.userID,
+				email: 					null,
+				timezone: 			null
+			}
+		};
+	} else {
+		// User closes permission dialogue before completion
+		console.log('boo you didnt let me in!');
+	}
+	postData(response, compiler, userId, url);
 };
 
+var unlinkUser = function (userId) {
+	var url = '/users/' + userId + '/unlink_fb';
+	$.ajax({
+		url: 			url,
+		success: 	function () {
 
+		}
+	}).done(function () {
+
+	});
+};
 
 // This is called with the results from from FB.getLoginStatus().
-function statusChangeCallback(response) {
+function statusChangeCallback(response, userId, _action) {
 	console.log('Initiate statusChangeCallback');
+	var action = [];
 	// The response object is returned with a status field that lets the
 	// app know the current login status of the person.
 	// Full docs on the response object can be found in the documentation
 	// for FB.getLoginStatus().
-	if (response.status === 'connected') {
-		// Logged into your app and Facebook.
-		updateFbButtonLabel('I am connected');
-	} else if (response.status === 'not_authorized') {
-		// The person is logged into Facebook, but not your app.
-		updateFbButtonLabel('i am not authorized');
+
+	// Switch case determine ACTION
+	switch (_action) {
+		case 'fb-signup-button':
+			action[0] = 'signup';
+			break;
+		case 'fb-login-button':
+			action[0] = 'login';
+			break;
+		case 'fb-logout-button':
+			action[0] = 'logout';
+			break;
+		case 'fb-link-button':
+			action[0] = 'link';
+			break;
+		case 'fb-unlink-button':
+			action[0] = 'unlink';
+			break;
+		default:
+			action[0] = 'undetermined';
+			break;
+	};
+
+	// Switch case determine STATUS
+	switch (response.status) {
+		case 'connected':
+			// Logged into your app and Facebook.
+			action[1] = 'connected';
+			break;
+		case 'not_authorized':
+			// The person is logged into Facebook, but not authorized to your app.
+			action[1] = 'not_authorized';
+			break;
+		default:
+			// The person is not logged into Facebook, so we're not sure if
+			// they are logged into this app or not.
+			action[1] = 'unknown';
+			break;
+	};
+
+	if (action[0] === 'signup' && action[1] ==='not_authorized') {
+		// User wants to signup but hasn't granted permission
+		// Social signup
+		console.log('AA');
+	} else if	(action[0] === 'signup' && action[1] ==='unknown') {
+		// User wants to signup with unknown Facebook status
+		// must login first
+		// Social signup
+		// --------######!!!!!!
+		console.log('BB');
+	} else if (action[0] === 'login' && action[1] ==='connected') {
+		// Linked user wants to login with FB
+		// Social signin
+		// !!!!!!----------------------
+		fbLoginAPI(response, userId, loginUser);
+	} else if (action[0] === 'unlink' && action[1] === 'connected') {
+		fbLoginAPI(response, userId, unlinkUser);
 	} else {
-		// The person is not logged into Facebook, so we're not sure if
-		// they are logged into this app or not.
-	}
-}
+		// - 'login', 'not_authorized'
+		// User who signed up locally wants to login with FB
+		// - 'login', 'unknown'
+		// User who signed up locally wants to login with FB
+		// - 'link', 'unknown'
+		// User who signed up locally wants to link with unknown FB
+		// - 'link', 'not_authorized'
+		// User who signed up locally wants to link with FB
+		linkUser(response, userId);
+	};
+};
+
 
 // This function is called when someone finishes with the Login
 // Button.  See the onlogin handler attached to it in the sample
@@ -104,10 +173,10 @@ window.fbAsyncInit = function() {
 	//
 	// These three cases are handled in the callback function.
 
-	FB.getLoginStatus(function(response) {
-		statusChangeCallback(response);
-		status = response.status;
-	});
+	// FB.getLoginStatus(function(response) {
+	// 	statusChangeCallback(response);
+	// 	status = response.status;
+	// });
 };
 
 // Load the SDK asynchronously
@@ -128,57 +197,5 @@ function testAPI() {
 		console.log('Successful login for: ' + response.name);
 		document.getElementById('status').innerHTML =
 			'Thanks for logging in, ' + response.name + '!';
-	});
-};
-
-var postUserInfo = function (data, userId) {
-	var url = '/users/' + userId;
-	var data = {
-		email: data.email,
-		fbId: data.id,
-		oauth_token: 
-
-	};
-
-	$.ajax({
-		url: url,
-		data: {user: data}
-		}
-	);
-};
-
-var unlinkFbUser = function () {
-
-};
-
-var linkFbUser = function (userId) {
-	console.log('got to link');
-	fbLoginFunction();
-};
-
-var signupFbUser = function () {
-
-};
-
-var fbLoginFunction = function (userId) {
-	FB.login(function(response){
-		if (response.status === 'connected') {
-			// Permission from Facebook.
-			FB.api('/me', function (response) {
-				postUserInfo(response, userId)
-			});
-		} else if (response.status === 'not_authorized') {
-			// The person is logged into Facebook, but not your app.
-			var userId = $('#fb-login-button').data().userId
-			console.log(userId)
-
-			console.log(response);
-		} else {
-			// The person is not logged into Facebook, so we're not sure if
-			// they are logged into this app or not.
-		}
-	}, {
-		scope: 'user_friends, email', 
-		return_scopes: true
 	});
 };

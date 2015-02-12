@@ -13,7 +13,8 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  last_logged_in   :datetime
-#  fb_id            :integer
+#  oauth_provider   :string(255)
+#  oauth_id         :text
 #  timezone         :integer
 #
 
