@@ -1,7 +1,8 @@
 	var postData = function (response, data, url) {
-		FB.api('/me', { fields: 'email, timezone, picture' }, function (response) {
-			console.log(response.picture.data.url);
+		FB.api('/me', { fields: 'email, timezone, picture, name' }, function (response) {
+			console.log(response);
 			data.user.avatar = response.picture.data.url;
+			data.user.username = response.name;
 			data.user.email = response.email;
 			data.user.timezone = response.timezone;
 			$.ajax({
@@ -9,15 +10,31 @@
 				url: 			url,
 				type: 		'POST',
 				data: 		data,
-				success: 	function () {
+				success: 	function (response) {
+					window.location.html(response);
 				}
 			});
-			console.log(data);
 		});
 	};
 
+var signupUser = function (response) {
+	var fbId = response.authResponse.userID;
+	var url = '/users/signup_fb';
+	var compiler = {};
+
+	compiler = {
+		user: {
+			oauth_provider: 'Facebook',
+			oauth_id: 			response.authResponse.userID	
+		}
+	};
+	console.log(fbId);
+	console.log(response);
+	console.log(compiler);
+	postData(response, compiler, url);
+};
+
 var loginUser = function (response) {
-	console.log(response.authResponse.userID);
 	var fbId = response.authResponse.userID;
 	var url = '/login/fb';
 	var compiler = {};
@@ -108,23 +125,16 @@ function statusChangeCallback(response, userId, _action) {
 			break;
 	};
 
-	if (action[0] === 'signup' && action[1] ==='not_authorized') {
-		// User wants to signup but hasn't granted permission
-		// Social signup
-		console.log('AA');
-	} else if	(action[0] === 'signup' && action[1] ==='unknown') {
-		// User wants to signup with unknown Facebook status
-		// must login first
-		// Social signup
-		// --------######!!!!!!
-		console.log('BB');
+	console.log(action);
+	if (action[0] === 'signup') {
+		signupUser(response);
 	} else if (action[0] === 'login' && action[1] ==='connected') {
 		// Linked user wants to login with FB
 		// Social signin
 		// !!!!!!----------------------
-		loginUser(response, userId);
+		loginUser(response);
 	} else if (action[0] === 'unlink' && action[1] === 'connected') {
-		fbLoginAPI(response, userId, unlinkUser);
+		// fbLoginAPI(response, userId, unlinkUser);
 	} else {
 		// - 'login', 'not_authorized'
 		// User who signed up locally wants to login with FB
@@ -143,7 +153,7 @@ function statusChangeCallback(response, userId, _action) {
 // Button.  See the onlogin handler attached to it in the sample
 // code below.
 function checkLoginState() {
-	FB.getLoginStatus(function(response) {
+	FB.getLoginStatus(function(response, userId, _action) {
 		statusChangeCallback(response);
 	});
 }

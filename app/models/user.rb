@@ -51,15 +51,17 @@ class User < ActiveRecord::Base
 										unless: lambda{ |user| user.password.blank? }
 	validates :oauth_id, uniqueness: true
 
-	def create_with_oauth(params)
-		self.create({
-			oauth_provider: params[:user][:oauth_provider],
-			oauth_id: params[:user][:id],
-			username: params[:user][:name],
-			email: params[:user][:email],
-			timezone: params[:user][:timezone],
-		})
-	end
+	# def create_with_oauth(params)
+	# 	self.assign_attributes({
+	# 		oauth_provider: params[:user][:oauth_provider],
+	# 		oauth_id: params[:user][:id],
+	# 		username: params[:user][:username],
+	# 		email: params[:user][:email],
+	# 		timezone: params[:user][:timezone],
+	# 		password: "password",
+	# 		password_confirmation 
+	# 	})
+	# end
 
 	def update_with_oauth(params)
 		self.update_columns({

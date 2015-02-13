@@ -4,7 +4,8 @@
 			%h2= @header
 			%br/
 			#fb-login
-				.btn.btn-md.btn-default#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-auto-logout-link" => false, "data-scope" => "public_profile, user_friends, email", "data-action" => "fb-login", "data-user-id" => nil} 
+				.btn.btn-md.btn-default.fb-button#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-auto-logout-link" => false, "data-scope" => "public_profile, user_friends, email", "data-action" => "fb-login", "data-user-id" => nil} 
+					%span= image_tag "/assets/fbicon-white.png", asc: "Facebook Icon", class: "fb-icon-xs"
 					Sign in with Facebook
 			%br/
 			%p OR

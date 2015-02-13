@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.min
 //= require underscore
 //= require bootstrap.min
 //= require bootstrap3-editable/bootstrap-editable
@@ -111,13 +110,36 @@ $(document).ready(function () {
 		});
 	};
 
+	// Facebook Signup Click Listener
+	if ($('#fb-signup')) {
+		$('#fb-signup').on('click', '#fb-signup-button', function () {
+			var _self = this;
+			FB.login(function (response) {
+				// check current FB linkage status
+				console.log(response);
+				var userId = null;
+				if (response.authResponse !== undefined) {
+					userId = response.authResponse.userID
+				};
+				var action = _self.dataset.action;
+				statusChangeCallback(response, userId, action);
+			}, {scope: 'public_profile, email, user_friends'}	
+			);
+		});
+	};	
+
+
 	// Facebook Login Click Listener
 	if ($('#fb-login')) {
 		$('#fb-login').on('click', '#fb-login-button', function () {
 			var _self = this;
 			FB.login(function (response) {
 				// check current FB linkage status
-				var userId = response.authResponse.userID;
+				console.log(response);
+				var userId = null;
+				if (response.authResponse !== undefined) {
+					userId = response.authResponse.userID
+				};
 				var action = _self.dataset.action;
 				statusChangeCallback(response, userId, action);
 			}, {scope: 'public_profile, email, user_friends'}	

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
  	helper UsersHelper
 	before_action :assign_user, :only => [:edit, :link_fb, :update, :show]
-	before_action :check_if_logged_in, :except => [:new, :create]
+	before_action :check_if_logged_in, :except => [:new, :create, :fb_create]
 	before_action :save_login_state, :only => [:new, :create]
 
 	def index
@@ -30,13 +30,16 @@ class UsersController < ApplicationController
 
 	def fb_create
 		@user = User.new fb_params
-		@user.create_with_auth
+		password = gen_random_password
+		@user.password, @user.password_confirmation = password
+		# @user.create_with_oauth(params)
 		if @user.save
 			flash[:notice] = "You've successfully signed up."
 			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
 			flash[:color] = "alert-success"	
 			redirect_to root_path
 		else
+			puts @user.errors.messages
 			render :new
 		end
 	end
@@ -102,15 +105,21 @@ class UsersController < ApplicationController
 		@user = @current_user
 	end
 
+	def gen_random_password
+		return SecureRandom.hex(10)
+	end
+	
 	def user_params
 		params.require(:user).permit(:email, :username, :avatar, :password, :password_confirmation)
 	end
 		
 	def fb_params
-		params.require(:user).permit(:oauth_provider, :oauth_id, :avatar, :email, :timezone)
+		params.require(:user).permit(:oauth_provider, :oauth_id, :username, :avatar, :email, :timezone)
 	end
 		
 	def check_if_admin
 		redirect_to(root_path) unless @current_user.is_admin?
 	end
+
 end
+
