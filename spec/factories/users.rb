@@ -9,13 +9,14 @@
 #  avatar           :string(255)
 #  oauth_token      :string(255)
 #  oauth_expires_at :datetime
+#  oauth_provider   :string(255)
+#  oauth_id         :text
+#  timezone         :integer
 #  admin            :boolean          default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
 #  last_logged_in   :datetime
-#  oauth_provider   :string(255)
-#  oauth_id         :text
-#  timezone         :integer
+#  verified         :boolean          default(FALSE)
 #
 
 FactoryGirl.define do

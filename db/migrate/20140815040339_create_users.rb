@@ -13,7 +13,7 @@ class CreateUsers < ActiveRecord::Migration
 			t.boolean :admin, default: :false
 			t.timestamps
 			t.datetime :last_logged_in
-			t.boolean :verified, default: :fase
+			t.boolean :verified, default: :false
 		end
 	end
 end

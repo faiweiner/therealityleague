@@ -53,13 +53,12 @@ class User < ActiveRecord::Base
 
 	def create_with_oauth(params)
 		self.create({
-				oauth_provider: params[:user][:oauth_provider],
-				oauth_id: params[:user][:id],
-				username: params[:user][:name],
-				email: params[:user][:email],
-				timezone: params[:user][:timezone],
-			})
-		end
+			oauth_provider: params[:user][:oauth_provider],
+			oauth_id: params[:user][:id],
+			username: params[:user][:name],
+			email: params[:user][:email],
+			timezone: params[:user][:timezone],
+		})
 	end
 
 	def update_with_oauth(params)
@@ -71,6 +70,7 @@ class User < ActiveRecord::Base
 			timezone: params[:user][:timezone]
 		})
 	end
+	
 	def roster_for_league(league)
 		roster = self.rosters.where(:league_id => league.id).first
 		roster || Roster.first

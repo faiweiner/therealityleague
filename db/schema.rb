@@ -50,10 +50,10 @@ ActiveRecord::Schema.define(version: 20150210091335) do
   create_table "episodes", force: true do |t|
     t.integer  "season_id"
     t.datetime "air_date"
+    t.boolean  "aired",              default: false
+    t.integer  "expected_survivors"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "expected_survivors"
-    t.boolean  "aired",              default: false
   end
 
   create_table "events", force: true do |t|
@@ -79,10 +79,10 @@ ActiveRecord::Schema.define(version: 20150210091335) do
     t.string   "league_key"
     t.string   "league_password"
     t.boolean  "active",          default: true
+    t.boolean  "full",            default: false
+    t.boolean  "locked",          default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "locked",          default: false
-    t.boolean  "full",            default: false
   end
 
   create_table "leagues_schemes", id: false, force: true do |t|
@@ -99,10 +99,10 @@ ActiveRecord::Schema.define(version: 20150210091335) do
     t.integer  "user_id"
     t.string   "messagetype"
     t.text     "messagecomment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "page_url"
     t.boolean  "resolved",       default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "rosters", force: true do |t|
@@ -173,13 +173,14 @@ ActiveRecord::Schema.define(version: 20150210091335) do
     t.string   "avatar"
     t.string   "oauth_token"
     t.datetime "oauth_expires_at"
+    t.string   "oauth_provider"
+    t.text     "oauth_id"
+    t.integer  "timezone"
     t.boolean  "admin",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "last_logged_in"
-    t.string   "oauth_provider"
-    t.text     "oauth_id"
-    t.integer  "timezone"
+    t.boolean  "verified",         default: false
   end
 
 end
