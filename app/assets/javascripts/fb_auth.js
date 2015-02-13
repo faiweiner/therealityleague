@@ -104,6 +104,7 @@ function statusChangeCallback(response, userId, _action) {
 			break;
 		default:
 			action[0] = 'undetermined';
+			return;
 			break;
 	};
 
@@ -127,6 +128,8 @@ function statusChangeCallback(response, userId, _action) {
 	console.log(action);
 	if (action[0] === 'signup') {
 		signupUser(response);
+	} else if (action[0] === 'undetermined' && action[1] ==='connected') {
+		return;
 	} else if (action[0] === 'login' && action[1] ==='connected') {
 		// Linked user wants to login with FB
 		// Social signin
@@ -178,10 +181,10 @@ window.fbAsyncInit = function() {
 	//
 	// These three cases are handled in the callback function.
 
-	// FB.getLoginStatus(function(response) {
-	// 	statusChangeCallback(response);
-	// 	status = response.status;
-	// });
+	FB.getLoginStatus(function (response, userId, _action) {
+		statusChangeCallback(response, userId, _action);
+		status = response.status;
+	});
 };
 
 // Load the SDK asynchronously
