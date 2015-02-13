@@ -65,11 +65,6 @@ ActiveRecord::Schema.define(version: 20150210091335) do
     t.datetime "updated_at"
   end
 
-  create_table "expulsions", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "leagues", force: true do |t|
     t.string   "name"
     t.integer  "commissioner_id"
@@ -127,11 +122,11 @@ ActiveRecord::Schema.define(version: 20150210091335) do
 
   create_table "schemes", force: true do |t|
     t.string   "type"
+    t.integer  "show_id"
     t.string   "description"
     t.integer  "points_asgn"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "show_id"
   end
 
   create_table "schemes_shows", id: false, force: true do |t|

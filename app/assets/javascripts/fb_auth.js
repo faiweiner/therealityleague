@@ -1,4 +1,4 @@
-	var postData = function (response, data, userId, url) {
+	var postData = function (response, data, url) {
 		FB.api('/me', { fields: 'email, timezone, picture' }, function (response) {
 			console.log(response.picture.data.url);
 			data.user.avatar = response.picture.data.url;
@@ -20,16 +20,15 @@ var loginUser = function (response) {
 	console.log(response.authResponse.userID);
 	var fbId = response.authResponse.userID;
 	var url = '/login/fb';
-	var data = {};
+	var compiler = {};
 
-	$.ajax({
-		url:			url,
-		type: 		'POST',
-		data: 		{oauth_id: fbId},
-		success: 	function () {
-			location = '/leagues';
+	compiler = {
+		user: {
+			oauth_provider: 'Facebook',
+			oauth_id: 			response.authResponse.userID	
 		}
-	});
+	};
+	postData(response, compiler, url);
 };
 
 var linkUser = function (response, userId) {
@@ -40,16 +39,14 @@ var linkUser = function (response, userId) {
 		compiler = {
 			user: {
 				oauth_provider: 'Facebook',
-				oauth_id: 			response.authResponse.userID,
-				email: 					null,
-				timezone: 			null
+				oauth_id: 			response.authResponse.userID
 			}
 		};
 	} else {
 		// User closes permission dialogue before completion
 		console.log('boo you didnt let me in!');
 	}
-	postData(response, compiler, userId, url);
+	postData(response, compiler, url);
 };
 
 var unlinkUser = function (userId) {
@@ -57,7 +54,6 @@ var unlinkUser = function (userId) {
 	$.ajax({
 		url: 			url,
 		success: 	function () {
-
 		}
 	}).done(function () {
 
@@ -75,19 +71,19 @@ function statusChangeCallback(response, userId, _action) {
 
 	// Switch case determine ACTION
 	switch (_action) {
-		case 'fb-signup-button':
+		case 'fb-signup':
 			action[0] = 'signup';
 			break;
-		case 'fb-login-button':
+		case 'fb-login':
 			action[0] = 'login';
 			break;
-		case 'fb-logout-button':
+		case 'fb-logout':
 			action[0] = 'logout';
 			break;
-		case 'fb-link-button':
+		case 'fb-link':
 			action[0] = 'link';
 			break;
-		case 'fb-unlink-button':
+		case 'fb-unlink':
 			action[0] = 'unlink';
 			break;
 		default:
@@ -126,7 +122,7 @@ function statusChangeCallback(response, userId, _action) {
 		// Linked user wants to login with FB
 		// Social signin
 		// !!!!!!----------------------
-		fbLoginAPI(response, userId, loginUser);
+		loginUser(response, userId);
 	} else if (action[0] === 'unlink' && action[1] === 'connected') {
 		fbLoginAPI(response, userId, unlinkUser);
 	} else {

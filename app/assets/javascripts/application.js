@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.min
 //= require underscore
 //= require bootstrap.min
 //= require bootstrap3-editable/bootstrap-editable
@@ -114,14 +115,13 @@ $(document).ready(function () {
 	if ($('#fb-login')) {
 		$('#fb-login').on('click', '#fb-login-button', function () {
 			var _self = this;
-			FB.getLoginStatus(function(response) {
+			FB.login(function (response) {
 				// check current FB linkage status
-				var userId = _self.dataset.userId;
-				var action = _self.id;
-				statusChangeCallback(response, userId);
-			});
-			// set scenario to be passed to executeFbInteraction
-
+				var userId = response.authResponse.userID;
+				var action = _self.dataset.action;
+				statusChangeCallback(response, userId, action);
+			}, {scope: 'public_profile, email, user_friends'}	
+			);
 		});
 	};	
 
@@ -133,10 +133,10 @@ $(document).ready(function () {
 			// check current FB linkage status
 			FB.login(function (response) {
 				var userId = _self.dataset.userId;
-				var action = _self.id;
+				var action = _self.dataset.action;
 				// call statusChangeCallback to link user
 				statusChangeCallback(response, userId, action);
-				}, {scope: 'public_profile, email, user_friends'}
+			}, {scope: 'public_profile, email, user_friends'}
 			);
 		});
 	};		

@@ -28,6 +28,18 @@ class UsersController < ApplicationController
 		end
 	end
 
+	def fb_create
+		@user = User.new fb_params
+		@user.create_with_auth
+		if @user.save
+			flash[:notice] = "You've successfully signed up."
+			# Once someone signs up, they currently need to log in. Better to have automatically log-in?
+			flash[:color] = "alert-success"	
+			redirect_to root_path
+		else
+			render :new
+		end
+	end
 	def edit
 		# assign @user to match with View
 		if @user.admin?
@@ -39,10 +51,11 @@ class UsersController < ApplicationController
 
 	def link_fb
 		# assign @user to match with View
-		@user.update_with_auth(params)
-		if @user.save(validate: false)
+		@user.update_with_oauth(params) if User.where(email: params[:user][:email]).empty
+		if @user.save
 		else
-			@user.errors.full_messages
+			# cannot create because a person with this email already exists
+			@user.errors.full_message
 		end
 	end
 
@@ -57,6 +70,7 @@ class UsersController < ApplicationController
 			flash[:color] = "alert-success"		
 			redirect_to user_path
 		else
+			@user.errors.full_message
 			flash[:notice] = "Something went wrong, try again."
 			flash[:color] = "alert-warning"		
 			redirect_to edit_user_path(@user.id)
@@ -93,7 +107,7 @@ class UsersController < ApplicationController
 	end
 		
 	def fb_params
-		params.require(:user).permit(:oauth_provider, :oauth_id, :email, :timezone)
+		params.require(:user).permit(:oauth_provider, :oauth_id, :avatar, :email, :timezone)
 	end
 		
 	def check_if_admin

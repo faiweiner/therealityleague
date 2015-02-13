@@ -4,7 +4,7 @@
 			%h2= @header
 			%br/
 			#fb-login
-				.btn.btn-md.btn-default#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-auto-logout-link" => false, "data-scope" => "public_profile, user_friends, email", "data-action" => "signin-fb", "data-user-id" => nil} 
+				.btn.btn-md.btn-default#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-auto-logout-link" => false, "data-scope" => "public_profile, user_friends, email", "data-action" => "fb-login", "data-user-id" => nil} 
 					Sign in with Facebook
 			%br/
 			%p OR
@@ -14,6 +14,10 @@
 					.row.form-group
 						.alert{class: flash[:color], :role => "alert"}
 							= flash[:notice]
+							- if @errors.present?
+								%ul
+								- @errors.each do |error|
+									%li= error
 				-# Form 
 				= form_tag("/login", method: "post", :role => "form") do
 					.row.form-group
