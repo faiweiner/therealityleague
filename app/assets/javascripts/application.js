@@ -117,12 +117,12 @@ $(document).ready(function () {
 			FB.login(function (response) {
 				// check current FB linkage status
 				console.log(response);
-				var userId = null;
+				var userID = null;
 				if (response.authResponse !== undefined) {
-					userId = response.authResponse.userID
+					userID = response.authResponse.userID
 				};
 				var action = _self.dataset.action;
-				statusChangeCallback(response, userId, action);
+				statusChangeCallback(response, userID, action);
 			}, {scope: 'public_profile, email, user_friends'}	
 			);
 		});
@@ -136,12 +136,13 @@ $(document).ready(function () {
 			FB.login(function (response) {
 				// check current FB linkage status
 				console.log(response);
-				var userId = null;
+				var userID = null;
 				if (response.authResponse !== undefined) {
-					userId = response.authResponse.userID
+					userID = response.authResponse.userID
 				};
+				console.log(userID);
 				var action = _self.dataset.action;
-				statusChangeCallback(response, userId, action);
+				statusChangeCallback(response, userID, action);
 			}, {scope: 'public_profile, email, user_friends'}	
 			);
 		});

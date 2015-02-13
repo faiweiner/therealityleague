@@ -11,7 +11,7 @@
 				type: 		'POST',
 				data: 		data,
 				success: 	function (response) {
-					window.location.html(response);
+					window.location.href = response.url;
 				}
 			});
 		});
@@ -34,15 +34,14 @@ var signupUser = function (response) {
 	postData(response, compiler, url);
 };
 
-var loginUser = function (response) {
-	var fbId = response.authResponse.userID;
+var loginUser = function (response, fbID) {
+	var fbID = response.authResponse.userID;
+	console.log('hey this is' + fbID);
 	var url = '/login/fb';
 	var compiler = {};
-
 	compiler = {
 		user: {
-			oauth_provider: 'Facebook',
-			oauth_id: 			response.authResponse.userID	
+			oauth_id: response.authResponse.userID	
 		}
 	};
 	postData(response, compiler, url);
