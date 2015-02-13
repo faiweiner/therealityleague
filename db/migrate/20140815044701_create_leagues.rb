@@ -4,7 +4,7 @@ class CreateLeagues < ActiveRecord::Migration
 			t.string 		:name
 			t.integer 	:commissioner_id
 			t.integer 	:season_id
-			t.boolean 	:public_access, :default => true
+			t.boolean 	:public_access, default: :true
 			t.string		:type
 			t.integer		:participant_cap
 			t.integer		:draft_limit
@@ -14,6 +14,8 @@ class CreateLeagues < ActiveRecord::Migration
 			t.string 		:league_key
 			t.string 		:league_password
 			t.boolean		:active, default: :true
+			t.boolean		:full, default: :false
+			t.boolean		:locked, default: :false
 			t.timestamps
 		end
 	end
