@@ -7,10 +7,16 @@ class SessionsController	< ApplicationController
 	end
 
 	def facebook_login
-		user = User.find_by(:oauth_id => params[:oauth_id].to_i)
+		user = User.find_by(:oauth_id => params[:user][:oauth_id], :email => params[:user][:email])
 		if user.present?
 			session[:user_id] = user.id
-			redirect_to leagues_path
+			respond_to do |format|
+				format.json {
+					render :json => {
+						:url => leagues_path
+					}
+				}
+			end
 		else
 			redirect_to login_path
 		end
@@ -35,7 +41,10 @@ class SessionsController	< ApplicationController
 			else
 				flash[:notice] = "Welcome!"
 				flash[:color] = "alert-success"
+				redirect_to root_path
 			end
+		elsif user.invalid?
+			raise
 		else
 			flash[:notice] = "Invalid login. Please try again."
 			flash[:color] = "alert-warning"
@@ -45,6 +54,8 @@ class SessionsController	< ApplicationController
 
 	def logout
 		session[:user_id] = nil
+		flash[:notice] = nil
+		flash[:color] = nil
 		redirect_to root_path
 	end
 end
