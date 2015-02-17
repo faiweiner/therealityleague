@@ -1,10 +1,11 @@
 .panel.panel-default
 	.panel-body
-		.col-lg-12.col-md-12
+		.col-lg-4.col-md-4.col-sm-12
 			%h2= @header
 			%br/
 			#fb-login
-				.btn.btn-md.btn-default#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-auto-logout-link" => false, "data-scope" => "public_profile, user_friends, email", "data-action" => "signin-fb", "data-user-id" => nil} 
+				.btn.btn-block.btn-md.btn-default.fb-button#fb-login-button{"data-scope" => "public_profile, user_friends, email", "data-action" => "fb-login", "data-user-id" => nil}
+					%span= image_tag "/assets/fbicon-white.png", asc: "Facebook Icon", class: "fb-icon-xs"
 					Sign in with Facebook
 			%br/
 			%p OR
@@ -14,6 +15,10 @@
 					.row.form-group
 						.alert{class: flash[:color], :role => "alert"}
 							= flash[:notice]
+							- if @errors.present?
+								%ul
+									- @errors.each do |error|
+										%li= error
 				-# Form 
 				= form_tag("/login", method: "post", :role => "form") do
 					.row.form-group
