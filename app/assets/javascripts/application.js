@@ -110,18 +110,40 @@ $(document).ready(function () {
 		});
 	};
 
+	// Facebook Signup Click Listener
+	if ($('#fb-signup')) {
+		$('#fb-signup').on('click', '#fb-signup-button', function () {
+			var _self = this;
+				FB.login(function (response) {
+					// check current FB linkage status
+					console.log(response);
+					var userID = null;
+					if (response.authResponse !== undefined) {
+						userID = response.authResponse.userID
+					};
+					var action = _self.dataset.action;
+						statusChangeCallback(response, userID, action);
+					}, {scope: 'public_profile, email, user_friends'}
+			);
+		});
+	};
+
 	// Facebook Login Click Listener
 	if ($('#fb-login')) {
 		$('#fb-login').on('click', '#fb-login-button', function () {
 			var _self = this;
-			FB.getLoginStatus(function(response) {
+			FB.login(function (response) {
 				// check current FB linkage status
-				var userId = _self.dataset.userId;
-				var action = _self.id;
-				statusChangeCallback(response, userId);
-			});
-			// set scenario to be passed to executeFbInteraction
-
+				console.log(response);
+				var userID = null;
+				if (response.authResponse !== undefined) {
+				        userID = response.authResponse.userID
+				};
+				console.log(userID);
+				var action = _self.dataset.action;
+				statusChangeCallback(response, userID, action);
+			}, {scope: 'public_profile, email, user_friends'}
+			);
 		});
 	};	
 
@@ -133,7 +155,7 @@ $(document).ready(function () {
 			// check current FB linkage status
 			FB.login(function (response) {
 				var userId = _self.dataset.userId;
-				var action = _self.id;
+				var action = _self.dataset.action;
 				// call statusChangeCallback to link user
 				statusChangeCallback(response, userId, action);
 				}, {scope: 'public_profile, email, user_friends'}

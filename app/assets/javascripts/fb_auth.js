@@ -1,35 +1,49 @@
-	var postData = function (response, data, userId, url) {
-		FB.api('/me', { fields: 'email, timezone, picture' }, function (response) {
-			console.log(response.picture.data.url);
-			data.user.avatar = response.picture.data.url;
-			data.user.email = response.email;
-			data.user.timezone = response.timezone;
-			$.ajax({
-				async: 		false,
-				url: 			url,
-				type: 		'POST',
-				data: 		data,
-				success: 	function () {
-				}
-			});
-			console.log(data);
+var postData = function (response, data, url) {
+	FB.api('/me', { fields: 'email, timezone, picture, name' }, function (response) {
+		console.log(response);
+		data.user.avatar = response.picture.data.url;
+		data.user.username = response.name;
+		data.user.email = response.email;
+		data.user.timezone = response.timezone;
+		$.ajax({
+			async: 		false,
+			url: 			url,
+			type: 		'POST',
+			data: 		data,
+			success:	function (response) {
+				window.location.href = response.url;
+			}
 		});
+		console.log(data);
+	});
+};
+
+var signupUser = function (response) {
+	var fbId = response.authResponse.userID;
+	var url = '/users/signup_fb';
+	var compiler = {};
+
+	compiler = {
+		user: {
+			oauth_provider: 	'Facebook',
+			oauth_id:					response.authResponse.userID
+		}
 	};
+	postData(response, compiler, url);
+});
+
 
 var loginUser = function (response) {
-	console.log(response.authResponse.userID);
 	var fbId = response.authResponse.userID;
 	var url = '/login/fb';
-	var data = {};
+	var compiler = {};
 
-	$.ajax({
-		url:			url,
-		type: 		'POST',
-		data: 		{oauth_id: fbId},
-		success: 	function () {
-			location = '/leagues';
+	compiler = {
+		user: {
+			oauth_id: response.authResponse.userID
 		}
-	});
+	};
+	postData(response, compiler, url);
 };
 
 var linkUser = function (response, userId) {
@@ -40,16 +54,14 @@ var linkUser = function (response, userId) {
 		compiler = {
 			user: {
 				oauth_provider: 'Facebook',
-				oauth_id: 			response.authResponse.userID,
-				email: 					null,
-				timezone: 			null
+				oauth_id: 			response.authResponse.userID
 			}
 		};
 	} else {
 		// User closes permission dialogue before completion
 		console.log('boo you didnt let me in!');
 	}
-	postData(response, compiler, userId, url);
+	postData(response, compiler, url);
 };
 
 var unlinkUser = function (userId) {
@@ -60,7 +72,6 @@ var unlinkUser = function (userId) {
 
 		}
 	}).done(function () {
-
 	});
 };
 
@@ -75,23 +86,24 @@ function statusChangeCallback(response, userId, _action) {
 
 	// Switch case determine ACTION
 	switch (_action) {
-		case 'fb-signup-button':
+		case 'fb-signup':
 			action[0] = 'signup';
 			break;
-		case 'fb-login-button':
+		case 'fb-login':
 			action[0] = 'login';
 			break;
-		case 'fb-logout-button':
+		case 'fb-logout':
 			action[0] = 'logout';
 			break;
-		case 'fb-link-button':
+		case 'fb-link':
 			action[0] = 'link';
 			break;
-		case 'fb-unlink-button':
+		case 'fb-unlink':
 			action[0] = 'unlink';
 			break;
 		default:
 			action[0] = 'undetermined';
+			return;
 			break;
 	};
 
@@ -112,23 +124,17 @@ function statusChangeCallback(response, userId, _action) {
 			break;
 	};
 
-	if (action[0] === 'signup' && action[1] ==='not_authorized') {
-		// User wants to signup but hasn't granted permission
-		// Social signup
-		console.log('AA');
-	} else if	(action[0] === 'signup' && action[1] ==='unknown') {
-		// User wants to signup with unknown Facebook status
-		// must login first
-		// Social signup
-		// --------######!!!!!!
-		console.log('BB');
+	if (action[0] === 'signup') {
+		signupUser(response);
+	} else if (action[0] === 'undetermined' && action[1] ==='connected') {
+		return;
 	} else if (action[0] === 'login' && action[1] ==='connected') {
 		// Linked user wants to login with FB
 		// Social signin
 		// !!!!!!----------------------
-		fbLoginAPI(response, userId, loginUser);
+		loginUser(response);
 	} else if (action[0] === 'unlink' && action[1] === 'connected') {
-		fbLoginAPI(response, userId, unlinkUser);
+		// fbLoginAPI(response, userId, unlinkUser);
 	} else {
 		// - 'login', 'not_authorized'
 		// User who signed up locally wants to login with FB
@@ -147,7 +153,7 @@ function statusChangeCallback(response, userId, _action) {
 // Button.  See the onlogin handler attached to it in the sample
 // code below.
 function checkLoginState() {
-	FB.getLoginStatus(function(response) {
+	FB.getLoginStatus(function (response, userId, _action) {
 		statusChangeCallback(response);
 	});
 }
@@ -173,10 +179,10 @@ window.fbAsyncInit = function() {
 	//
 	// These three cases are handled in the callback function.
 
-	// FB.getLoginStatus(function(response) {
-	// 	statusChangeCallback(response);
-	// 	status = response.status;
-	// });
+	FB.getLoginStatus(function (response, userId, _action) {
+		statusChangeCallback(response, userId, _action);
+		status = response.status;
+	});
 };
 
 // Load the SDK asynchronously
