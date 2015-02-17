@@ -49,8 +49,9 @@ Rails.application.routes.draw do
 	resources :fantasies, path: 'leagues', :controller => 'leagues'
 	post		'leagues/access' => 'leagues#access', :as => :league_access
 
-	post		'users/:id/link_fb' => 'users#link_fb', :as => :link_fb
-	post		'users/:id/unlink_fb' => 'users#unlink_fb', :as => :unlink_fb
+	post	'users/signup_fb' => 'users#fb_create', :as => :fb_create	
+	post	'users/:id/link_fb' => 'users#link_fb', :as => :link_fb
+	post	'users/:id/unlink_fb' => 'users#unlink_fb', :as => :unlink_fb
 	resources :users
 	resources :messages
 	
