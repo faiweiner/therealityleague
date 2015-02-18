@@ -55,11 +55,13 @@ class UsersController < ApplicationController
 
 	def link_fb
 		# assign @user to match with View
-		@user.update_with_oauth(params) if User.where(email: params[:user][:email]).empty
-		if @user.save
-		else
-			# cannot create because a person with this email already exists
-			@user.errors.full_message
+		@user.update_with_oauth(params) if @user.oauth_id.nil?
+		respond_to do |format|
+			format.json {
+				render :json => {
+					:url => leagues_path
+				}
+			}
 		end
 	end
 

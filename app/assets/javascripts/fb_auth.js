@@ -30,7 +30,7 @@ var signupUser = function (response) {
 		}
 	};
 	postData(response, compiler, url);
-});
+};
 
 
 var loginUser = function (response) {

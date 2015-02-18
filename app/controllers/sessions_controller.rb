@@ -43,7 +43,7 @@ class SessionsController	< ApplicationController
 				flash[:color] = "alert-success"
 				redirect_to root_path
 			end
-		elsif user.invalid?
+		elsif user.nil?
 			raise
 		else
 			flash[:notice] = "Invalid login. Please try again."
