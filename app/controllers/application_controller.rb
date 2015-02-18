@@ -150,6 +150,14 @@ class ApplicationController < ActionController::Base
 	end
 
 	def get_schemes(show)
+		show_schemes = Scheme.where(show_id: show.id)
+		if show_schemes.any?
+			show_schemes.each do |scheme|
+				unless show.schemes.include? scheme
+					show.schemes << scheme
+				end
+			end
+		end
 		rules = show.schemes
 		rule_types = rules.pluck(:type).uniq.sort
 		rules_package = Hash.new
