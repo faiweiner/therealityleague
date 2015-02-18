@@ -88,9 +88,20 @@ class ApplicationController < ActionController::Base
 	# for AJAX requests only 
 	def contestants_list
 		season = Season.find(params[:season_id])
+		season_contestants = Contestant.where(season_id: season.id) 
+		puts season.contestants.count
+		if season_contestants.any?
+			# this collection will be empty if a new contestant does not have a season id attached to her
+			season_contestants.each do |contestant|
+				unless season.contestants.include? contestant
+					season.contestants << contestant
+				end
+			end
+		end
 		contestants = season.contestants.order(:name)
 		contestants_list = []
 		contestants.each do |contestant|
+			puts contestant
 			contestant = {
 				:name => contestant.name,
 				:id => contestant.id,

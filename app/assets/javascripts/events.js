@@ -68,6 +68,7 @@ $(document).ready(function () {
 					$button.attr('data-season-id', data.episodesList[i].seasonId);
 					$button.attr('data-episode-id', data.episodesList[i].id);
 					$button.attr('name', 'event[episode_id]');
+					$button.attr('value', 'coocoo');
 					$button.attr('type', 'button');
 					$button.css('margin', '2px');
 					$button.addClass('radio-button btn btn-sm btn-default episode-option');
