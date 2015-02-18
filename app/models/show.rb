@@ -36,6 +36,14 @@ class Show < ActiveRecord::Base
 
 	def self.get_schemes(show_id)
 		show = Show.find(show_id)
+		show_schemes = Scheme.where(show_id: show_id)
+		if show_schemes.any?
+			show_schemes.each do |scheme|
+				unless show.schemes.include? scheme
+					show.schemes << scheme
+				end
+			end
+		end
 		@rules = show.schemes
 	end
 end
