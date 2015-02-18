@@ -34,7 +34,4 @@ Rails.application.configure do
 
 	# Raises error for missing translations
 	# config.action_view.raise_on_missing_translations = true
-
-	# Store Facebook's App ID for use
-	config.secret_token = '1488570754762932' if Rails.env.development?
 end
