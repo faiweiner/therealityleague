@@ -64,7 +64,8 @@
 								%li#fb-link
 									- if @current_user.oauth_id.nil?
 										%a{id: "fb-link-button", "data-action" => "fb-link", "data-user-id" => @current_user.id}
-											.btn.btn-xs.btn-primary
+											.btn.btn-xs.btn-default.fb-button
+												%span= image_tag "/assets/fbicon-white.png", alt: "Facebook", class: "fb-icon-xxs"
 												Connect
 												= @current_user.oauth_id
 									- else
