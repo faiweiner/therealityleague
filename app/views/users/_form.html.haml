@@ -2,30 +2,35 @@
 	.panel-body
 		.col-lg-12.col-md-12
 			%h2= @header
-			%br/
-			#fb-login
-				.btn.btn-md.btn-default.fb-button#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-action" => "fb-signup", "data-auto-logout-link" => false, "data-user-id" => nil}}
-					%span= image_tag "/assets/fbicon-white.png", alt: "Facebook", class: "fb-icon-xs"
-					Sign up with Facebook
-			%br/
-			%p OR
+			- if params[:id].nil?
+				%br/
+				#fb-login
+					.btn.btn-md.btn-default.fb-button#fb-login-button{"data-max-rows" => 1, "data-size" => "medium", "data-show-faces" => false, "data-action" => "fb-signup", "data-auto-logout-link" => false, "data-user-id" => nil}
+						%span= image_tag "/assets/fbicon-white.png", alt: "Facebook", class: "fb-icon-xs"
+						Sign up with Facebook
+				%br/
+				%p OR
 			#sign-up-form.col-lg-4.col-md-6.col-sm-6
 				-# Form 
 				= form_for(@user, class:"form-horizontal", :role => "form", :html => {:multipart => true}) do |f|
-					- if @user.errors.any?
+					- if flash[:notice]
 						.row.form-group
 							.alert.alert-warning{:role => "alert"}
-								%p= flash[:notice]
-								%ul
-									- @user.errors.full_messages.each do |msg|
-										%li= msg
+								= flash[:notice]
+								- if @user.errors.full_messages.any?
+									%ul
+										- @user.errors.full_messages.each do |msg|
+											%li= msg
 					/ Form Portion
 					.row.form-group
 						= f.label :email, class:"control-label"
-						= f.text_field :email, class:"form-control", placeholder: 'email@domain.com', :autofocus => true
+						- if params[:id].present? && @user.oauth_provider.present?
+							= f.text_field :email, class:"form-control", placeholder: "email@domain.com", :autofocus => true, :disabled => "disabled"
+						- else
+							= f.text_field :email, class:"form-control", placeholder: "email@domain.com", :autofocus => true
 					.row.form-group
 						= f.label :username
-						= f.text_field :username, class:"form-control", placeholder: 'username'
+						= f.text_field :username, class:"form-control", placeholder: "username"
 					/ avatar settings will only appear in user edit view
 					- if params[:id]
 						.row.form-group
@@ -36,7 +41,10 @@
 							= f.password_field :password_confirmation, class:"form-control"
 						.row.form-group
 							= f.label :avatar
-							= f.text_field :avatar, class:"form-control"
+							- if params[:id].present? && @user.oauth_provider.present?
+								= f.text_field :avatar, class:"form-control", :disabled => "disabled"
+							- else
+								= f.text_field :avatar, class:"form-control"
 					/ password and confirmation for new user vs. user edit
 					- if params[:id] == nil
 						.row.form-group
@@ -52,11 +60,11 @@
 								%a{"data-target" => "#myModal", "data-toggle" => "modal"} terms of service
 					- if params[:id]
 						.row.form-group.actions
-							= f.submit "Update", class:"btn btn-primary btn-lg"
-							= link_to "Cancel", user_path(:id), class:"btn btn-default btn-lg"
+							= f.submit "Update", class:"btn btn-primary btn-md"
+							= link_to "Cancel", user_path(:id), class:"btn btn-default btn-md"
 					- else
 						.row.form-group.actions
-							= f.submit "Sign Up", class:"btn btn-primary btn-md"
+							= f.submit "Sign Up", class:"btn btn-default btn-md"
 						.row
 							.fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1", "data-show-faces" => "false", "data-size" => "large"}
 								%login-button{:onlogin => "checkLoginState();", :scope => "public_profile,email"}

@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 	def edit
 		# assign @user to match with View
 		if @user.admin?
-			@header = "Site Master"
+			@header = "Edit Site Master"
 		else
 			@header = "Edit User"
 		end
@@ -76,10 +76,17 @@ class UsersController < ApplicationController
 			flash[:color] = "alert-success"		
 			redirect_to user_path
 		else
-			@user.errors.full_message
-			flash[:notice] = "Something went wrong, try again."
-			flash[:color] = "alert-warning"		
-			redirect_to edit_user_path(@user.id)
+			flash[:notice] = "Something went wrong and your account was not updated. Please try again."
+			flash[:color] = "alert-warning"
+			respond_to do |format|
+				format.html { redirect_to edit_user_path(@user.id) }
+				format.json {
+					render :json => {
+						:errors => @user.errors.full_messages
+					}
+				}
+			end		
+			
 		end
 	end
 
