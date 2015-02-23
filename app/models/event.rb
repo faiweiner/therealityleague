@@ -23,6 +23,8 @@ class Event < ActiveRecord::Base
 	before_save :calculate_points
 	before_save :check_event
 
+	after_save :mark_status
+
 	private
 
 	def calculate_points
@@ -34,6 +36,11 @@ class Event < ActiveRecord::Base
 		scheme = Scheme.find(self.scheme_id)
 		if scheme.type == "Expulsion"
 		end
+	end
+
+	def mark_status
+		scheme = Scheme.find(self.scheme_id)
+		raise
 	end
 end
 

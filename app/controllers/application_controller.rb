@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
 	# Prevent CSRF attacks by raising an exception.
 	# For APIs, you may want to use :null_session instead.
 	protect_from_forgery with: :exception
-	before_action :set_current_user, :get_shows, :new_message
+	before_action :set_current_user, :get_shows, :new_message, :get_facebook_app_id
 
 	def export_show_list
 		@export_show_list = Show.all
@@ -88,25 +88,12 @@ class ApplicationController < ActionController::Base
 	# for AJAX requests only 
 	def contestants_list
 		season = Season.find(params[:season_id])
-		season_contestants = Contestant.where(season_id: season.id) 
-		puts season.contestants.count
-		if season_contestants.any?
-			# this collection will be empty if a new contestant does not have a season id attached to her
-			season_contestants.each do |contestant|
-				unless season.contestants.include? contestant
-					season.contestants << contestant
-				end
-			end
-		end
 		contestants = season.contestants.order(:name)
 		contestants_list = []
 		contestants.each do |contestant|
-			puts contestant
 			contestant = {
 				:name => contestant.name,
-				:id => contestant.id,
-				:status => contestant.status_on_show,
-				:present => contestant.present
+				:id => contestant.id
 			}
 			contestants_list.push contestant
 		end	
@@ -229,6 +216,10 @@ class ApplicationController < ActionController::Base
 
 	def current_user
 		@current_user ||= User.where(session[:user_id]) if session[:user_id]
+	end
+
+	def get_facebook_app_id
+		facebook_app_id = Rails.application.secrets.facebook_app_id
 	end
 
 	def admin?

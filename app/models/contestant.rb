@@ -2,34 +2,41 @@
 #
 # Table name: contestants
 #
-#  id             :integer          not null, primary key
-#  name           :string(255)
-#  season_id      :integer
-#  image          :string(255)
-#  age            :integer
-#  gender         :string(255)
-#  occupation     :string(255)
-#  description    :text
-#  status_on_show :string(255)
-#  source         :string(255)
-#  present        :boolean          default(TRUE)
-#  episode_id     :integer
-#  created_at     :datetime
-#  updated_at     :datetime
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  season_id   :integer
+#  image       :string(255)
+#  age         :integer
+#  gender      :string(255)
+#  occupation  :string(255)
+#  description :text
+#  source      :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
 #
 
 class Contestant < ActiveRecord::Base
-	has_and_belongs_to_many :seasons, inverse_of: :contestants
 	has_and_belongs_to_many :rosters, inverse_of: :contestants
 	before_destroy { rosters.clear }
 	has_and_belongs_to_many :rounds, inverse_of: :contestants
 	
+	has_many :statuses
+	has_many :seasons, through: :statuses
 	has_many :events
 	has_many :episodes, through: :events
 	has_many :schemes, through: :events
 
 	validates :name, :presence => true, :on => :create
 	validates :season_id, :presence => true, :on => :create
+
+	after_find do |contestant|
+		if contestant.season_id?
+			season = Season.where(id: season_id).first
+			season.contestants << contestant unless season.contestants.include? contestant
+			contestant.update(season_id: nil)
+			contestant.save
+		end
+	end
 
 	def self.select_gender
 		@gender_list = ["Male", "Female", "N/A"]
@@ -60,8 +67,5 @@ class Contestant < ActiveRecord::Base
 	end
 
 	private
-	
-	def set_present
-		
-	end
+
 end
