@@ -32,12 +32,18 @@
 // }
 
 $(document).ready(function () {
-	if ($('#bracketBoard').length > 0) {
+	if ($('#roundViewPort').length > 0) {
+		console.log('Round Display Board Initiated');
+		// Initialize Popover
+		$('#roundViewPort').popover();
+
+	} else if ($('#bracketBoard').length > 0) {
 		console.log('Round Selection Board initialized');
 		$bracketBoard = $('#bracketBoard');               // overaching DIV covering the below
 		$roundEditBoard = $('#roundEdit');
 		$episodeBoard = $('#episodeBoard');
 		$roundNavBoard = $('#round-navigation')
+
 		// Server data
 		var roundsCount = $('#episodeBoard').data().roundsCount;
 		var roundsIds = $('#episodeBoard').data().roundsIds;

@@ -1,15 +1,73 @@
 class RoundsController < ApplicationController
 
 	def index
+		# general data pull from server
 		@rounds_collection = Round.includes(:league, :user).where(league_id: params[:league_id], user_id: params[:user_id])
 		@league = League.includes(:season).find(params[:league_id])
 		@season = @league.season
-		@episodes_id = @season.episodes.pluck(:id) 
+		@contestants = @season.contestants.order(name: :asc)
 		@user = User.find(params[:user_id])
 		show = @season.show
-		origin_box = params[:origin_box_number].to_i			#contestant box will always be -1
-		target_episode_number = origin_box + 1						# +1 to reflect array's position
-		episode = @season.episodes[target_episode_number]	#getting target episode ID for the round
+
+		# cross-check with statuses #FIXME
+		statuses = Status.where(season_id: @season.id).order(contestant_id: :asc)
+		expelled_statuses = statuses.select{|status| status.present == false}
+		expelled_contestants_ids = []
+
+		# pull Survival and Expulsion schemes
+		@schemes = Scheme.where(show_id: show.id, type: ["Survival", "Expulsion"])
+		@survival_schemes_ids = @schemes.order(id: :asc).select{|scheme| scheme.type == "Survival"}.collect{|scheme| scheme.id}
+		@expulsion_schemes_ids = @schemes.order(id: :asc).select{|scheme| scheme.type == "Expulsion"}.collect{|scheme| scheme.id}
+
+		@rounds_data_package = {}
+		round_expulsion_data_package = {}
+
+		# get display data per ROUND
+		@rounds_collection.each_with_index do |round, i|
+			# header
+			if round == @rounds_collection.last
+				header = "Finale"
+			else
+				header = "Episode #{i+1}"
+			end
+			# get expulsions per ROUND
+			round_expulsion_events = Event.where(episode_id: round.episode.id, scheme_id: @expulsion_schemes_ids)
+			round_expelled_contestants_ids = round_expulsion_events.pluck(:contestant_id)
+			round_expelled_contestants_ids.each {|id| expelled_contestants_ids.push id}
+			round_expulsion_data_package = {
+				:expulsion_events => round_expulsion_events,
+				:round_expelled_contestants_ids => round_expelled_contestants_ids,
+				:complete_expelled_contestants_ids => expelled_contestants_ids
+			} 	
+			# generate contestant data per ROUND
+			rounds_contestants_data = {}
+			@contestants.each do |contestant|
+				# mark if contestant is part of the round's eliminated pool
+				if round.contestants.include? contestant
+					selection = "glyphicon glyphicon-ok-circle" 
+					c_class = "selected-contestant"
+					tr_class = "success"
+					# change class if selected contestant got eliminated
+					if expelled_contestants_ids.include? contestant.id
+						selection = ""
+						c_class = "incorrect-selected-contestant"
+						tr_class = "danger"
+					end
+					# generate contestant data per ROUND
+					rounds_contestants_data[contestant] = {
+						:tr_class => tr_class,
+						:class => c_class,
+						:selection_icon => selection
+					}
+					end
+				end
+			@rounds_data_package[round] = {
+				:index => i, 
+				:header => header,
+				:contestants_data => rounds_contestants_data,
+				:expulsion => round_expulsion_data_package
+			}
+		end
 	end
 
 	def create

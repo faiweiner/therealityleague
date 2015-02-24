@@ -23,7 +23,7 @@ class Event < ActiveRecord::Base
 	before_save :calculate_points
 	before_save :check_event
 
-	after_save :mark_status
+	after_save :mark_elimination
 
 	private
 
@@ -38,9 +38,15 @@ class Event < ActiveRecord::Base
 		end
 	end
 
-	def mark_status
+	def mark_elimination
 		scheme = Scheme.find(self.scheme_id)
-		raise
+		season = Episode.find(self.episode_id).season
+		if scheme.type == "Expulsion"
+			status = Status.where(contestant_id: self.contestant_id, season_id: season.id).first
+			status.eliminated_episode_id = self.episode_id
+			status.present = false
+			status.save
+		end
 	end
 end
 

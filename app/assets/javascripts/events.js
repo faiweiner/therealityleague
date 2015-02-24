@@ -13,6 +13,10 @@ $(document).ready(function () {
 		$targetContestantId = null;
 		$targetSchemeId = null;
 
+		var updateContestantButtons = function (season_id, episode_id) {
+
+		};
+
 		var populateRecordedEvents = function (season_id, episode_id) {
 			var url = '/events/display/' + season_id + '/' + episode_id;
 			$.ajax({
@@ -54,7 +58,7 @@ $(document).ready(function () {
 			$eventSeasonsDisplay.children().removeClass('btn-primary');
 			var target = event.target;
 			$(target).addClass('btn-primary');
-			seasonId = event.target.dataset.seasonId;
+			var seasonId = event.target.dataset.seasonId;
 			var request = "season_id=" + seasonId;
 			
 			// list episodes
@@ -78,22 +82,6 @@ $(document).ready(function () {
 				};
 			});
 			
-			// list contestants
-			var seasonId = event.target.dataset.seasonId;
-			$.getJSON('/api/contestants', request, function (data) {
-				var contestantsList = data.contestantsList;
-				$eventContestantOptionsArea.empty();
-				for (var i = 0; i < contestantsList.length; i++) {
-					var contestant = data.contestantsList[i];
-					$button = $('<input />');
-					$button.attr('data-contestant-id', data.contestantsList[i].id);
-					$button.attr('name', 'event[contestant_id]');
-					$button.css('margin', '2px');
-					$button.addClass('btn btn-sm btn-default contestant-option');
-					$button.val(contestant.name);
-					$eventContestantOptionsArea.append($button);
-				};				
-			});
 		});
 
 		// click listener for Episode
@@ -104,7 +92,31 @@ $(document).ready(function () {
 			var episodeId = event.target.dataset.episodeId;
 			$targetEpisodeId = episodeId;
 			var seasonId = event.target.dataset.seasonId;
-			// list currentEvents
+			
+			// list contestants
+			var request = "season_id=" + seasonId + "&episode_id=" + episodeId;
+			$.getJSON('/api/contestants', request, function (data) {
+				var contestantsList = data.contestantsList;
+				$eventContestantOptionsArea.empty();
+				for (var i = 0; i < contestantsList.length; i++) {
+					var contestant = data.contestantsList[i];
+					$button = $('<input />');
+					$button.attr('data-contestant-id', data.contestantsList[i].id);
+					$button.attr('name', 'event[contestant_id]');
+					$button.css('margin', '2px');
+					$button.addClass('btn btn-sm btn-default contestant-option');
+					var status = data.contestantsList[i].status;
+					if (status === '') {
+						$button.attr('disabled', false);
+					} else {
+						$button.attr('disabled', status);
+					};
+					$button.val(contestant.name);
+					$eventContestantOptionsArea.append($button);
+				};				
+			}); // end list contestants
+
+			// display currentEvents
 			var data = populateRecordedEvents(seasonId, episodeId);
 		});
 

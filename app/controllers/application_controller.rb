@@ -88,12 +88,22 @@ class ApplicationController < ActionController::Base
 	# for AJAX requests only 
 	def contestants_list
 		season = Season.find(params[:season_id])
+		episode_id = params[:episode_id]
 		contestants = season.contestants.order(:name)
 		contestants_list = []
 		contestants.each do |contestant|
+			status = Status.where(contestant_id: contestant.id, season_id: season.id).first
+			if status.present === false
+				if status.eliminated_episode_id < episode_id.to_i
+					season_status = "eliminated"
+				end
+			else
+				season_status = ""
+			end
 			contestant = {
 				:name => contestant.name,
-				:id => contestant.id
+				:id => contestant.id,
+				:status => season_status
 			}
 			contestants_list.push contestant
 		end	

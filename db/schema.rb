@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223102831) do
+ActiveRecord::Schema.define(version: 20150223215338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,11 @@ ActiveRecord::Schema.define(version: 20150223102831) do
   create_table "contestants_rounds", id: false, force: true do |t|
     t.integer "contestant_id"
     t.integer "round_id"
+  end
+
+  create_table "contestants_seasons", id: false, force: true do |t|
+    t.integer "contestant_id"
+    t.integer "season_id"
   end
 
   create_table "episodes", force: true do |t|
@@ -155,8 +160,8 @@ ActiveRecord::Schema.define(version: 20150223102831) do
   create_table "statuses", id: false, force: true do |t|
     t.integer "contestant_id"
     t.integer "season_id"
-    t.boolean "present",            default: true
-    t.integer "eliminated_episode"
+    t.boolean "present",               default: true
+    t.integer "eliminated_episode_id"
   end
 
   create_table "teams", force: true do |t|

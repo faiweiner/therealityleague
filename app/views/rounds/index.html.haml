@@ -7,7 +7,6 @@
 				= @season.name
 			%p 
 		.col-md-4.col-lg-4.text-right
-
 			- if @user == @current_user && @league.active?
 				- if @rounds_collection.count == 0
 					= button_to "Build Elimination Bracket", rounds_create_path(@league.id), method: "POST", class: "btn btn-default btn-sm"
@@ -17,24 +16,29 @@
 		/ Contestant Board
 		#roundViewPort.col-lg-12
 			.bracketList
-				- @rounds_collection.each_with_index do |round, i|
+				- @rounds_data_package.each do |round|
 					.bracketItem.col-lg-2.col-md-2.col-sm-2.col-xs-2
 						%table.table.table-bordered.table-condensed.table-hover
 							%thead
-								- if round == @rounds_collection.last
-									%th Finale
-								- else
-									%th Episode #{ i + 1 }
+								%th= round[1][:header]
 							%tbody
-								- @season.contestants.order(name: :asc).each do |contestant|
-									- if contestant.present == false
-										%tr.strike-through
-											%td= contestant.name
-									- else
-										- if round.contestants.include? contestant
-											%tr.selected-contestant
-												%td= contestant.name
-										- else
-											%tr
-												%td= contestant.name
-							/ END Bracket Board
+								- round[1][:contestants_data].each do |contestant|
+									%tr{class: contestant[1][:tr_class]}
+										%td{class: contestant[1][:class]}
+											-#%a{"tabindex" => 0, role: "button", "data-toggle" => "popover", "data-trigger"=> "focus", "title"=>"Dismissible popover", "data-content"=>"And here's some amazing content. It's very engaging. Right?"}
+											%span
+												= contestant[0].name
+					-# 			- @season.contestants.order(name: :asc).each do |contestant|
+					-# 				%tr
+					-# 					%td= contestant.name
+					-# 				-# - if contestant.present == false
+					-# 				-# 	%tr.strike-through
+					-# 				-# 		%td= contestant.name
+					-# 				-# - else
+					-# 				-# 	- if round.contestants.include? contestant
+					-# 				-# 		%tr.selected-contestant
+					-# 				-# 			%td= contestant.name
+					-# 				-# 	- else
+					-# 				-# 		%tr
+					-# 				-# 			%td= contestant.name
+					-# 		/ END Bracket Board

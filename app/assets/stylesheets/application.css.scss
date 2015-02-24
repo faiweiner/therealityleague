@@ -397,12 +397,23 @@ input.form-control.input-small {
 }
 
 // Elimination Bracket Viewing
-tr.strike-through {
-	color: #BFBFBF;
-	text-decoration: line-through }
+td.selected-contestant {
+}
 
-tr.selected-contestant {
-	background-color: green;
+td.eliminated-contestant {
+	color: #B9B9B9;
+	> span {
+		font-style: italic;
+		text-decoration: line-through;
+	}
+}
+
+td.incorrect-selected-contestant {
+	// color: #B9B9B9;
+	> span {
+		font-style: italic;
+		text-decoration: line-through;
+	}
 }
 
 ul.bracketList {
