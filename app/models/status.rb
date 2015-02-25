@@ -12,4 +12,5 @@ class Status < ActiveRecord::Base
 	self.primary_key = :contestant_id
 	belongs_to :contestant
 	belongs_to :season
+	belongs_to :episode
 end

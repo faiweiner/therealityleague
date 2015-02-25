@@ -44,3 +44,18 @@
 									%td
 										= link_to contestant.calculate_points_per_episode(episode.id), episode_path(episode.id)
 								%td= @contestant_status_collection[index].capitalize
+	- if @statuses
+		.panel-body
+			.col-lg-12
+				%h4 Contestant Status
+				%table.table.table-hover
+					%thead
+						%th Contestant
+						%th Present
+						%th Eliminated Episode
+					- @statuses.each do |status|
+						%tbody
+							%tr
+								%td= status.contestant.name
+								%td= status.present
+								%td= status.eliminated_episode_id

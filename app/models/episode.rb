@@ -16,6 +16,7 @@ class Episode < ActiveRecord::Base
 	has_many :rounds
 
 	has_many :events
+	has_many :statuses
 	has_many :contestants, through: :events
 	has_many :schemes, through: :events
 

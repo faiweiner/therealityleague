@@ -49,12 +49,6 @@
 					.row.form-group
 						= f.label :description
 						= f.text_area :description, class: "form-control", :placeholder => "Enter description here", :rows => 5
-					.row.form-group.hidden
-						= f.label :status_on_show
-						= f.hidden_field :status_on_show, class: "form-control", :default => "Present"
-					.row.form-group.hidden
-						= f.label :present
-						= f.hidden_field :present, class: "form-control", :default => 1
 					.row.form-group
 						= f.label :image
 						= f.text_field :image, class: "form-control"

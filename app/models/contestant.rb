@@ -17,7 +17,6 @@
 
 class Contestant < ActiveRecord::Base
 	has_and_belongs_to_many :rosters, inverse_of: :contestants
-	before_destroy { rosters.clear }
 	has_and_belongs_to_many :rounds, inverse_of: :contestants
 	
 	has_many :statuses
@@ -29,7 +28,14 @@ class Contestant < ActiveRecord::Base
 	validates :name, :presence => true, :on => :create
 	validates :season_id, :presence => true, :on => :create
 
-	after_find do |contestant|
+	before_destroy { rosters.clear }
+	before_save :create_status
+
+	after_create :link_to_season
+	after_find :link_to_season
+
+	def link_to_season
+		raise
 		if contestant.season_id?
 			season = Season.where(id: season_id).first
 			season.contestants << contestant unless season.contestants.include? contestant
@@ -62,6 +68,9 @@ class Contestant < ActiveRecord::Base
 		Event.where(contestant_id: self.id, episode_id: episode.id).sum("points_earned")
 	end
 
+	def create_status()
+		
+	end
 	def calculate_total_points		# takes one contestant of a roster to get his/her total score
 		Event.where(contestant_id: self.id).sum("points_earned")
 	end

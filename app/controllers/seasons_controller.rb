@@ -88,7 +88,8 @@ class SeasonsController < ApplicationController
 	end
 
 	def display
-		@season = Season.find(params[:id])
+		@season = Season.includes(:show, :statuses, :contestants).find(params[:id])
+		@statuses = @season.statuses
 		@show = @season.show
 		@rules_collection = get_schemes(@show)
 		@contestants = @season.contestants.order("name ASC")

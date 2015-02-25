@@ -29,6 +29,7 @@ class ContestantsController < ApplicationController
 		@season = Season.find(params[:contestant][:season_id])
 		@contestant = Contestant.new contestant_params
 		if @contestant.save
+			@season.contestants << @contestant
 			flash[:notice] = "You've successfully added a new contestant."
 			flash[:color] = "valid"
 			redirect_to contestants_season_path(@contestant.season_id)
@@ -42,7 +43,7 @@ class ContestantsController < ApplicationController
 	private
 
 	def contestant_params
-		params.require(:contestant).permit(:name, :season_id, :age, :gender, :occupation, :description, :status_on_season, :present, :image)
+		params.require(:contestant).permit(:name, :age, :gender, :occupation, :description, :status_on_season, :present, :image)
 	end
 
 	def contestant_limited_params
