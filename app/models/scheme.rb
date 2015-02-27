@@ -38,4 +38,9 @@ class Scheme < ActiveRecord::Base
 		@type_list.unshift(["Select type", nil])
 		@type_list.push(["Add new type", nil])
 	end
+
+	def self.list_schemes(episode_id)
+		show = Episode.find(episode_id).season.show.schemes.order(type: :asc, description: :asc)
+	end
+
 end

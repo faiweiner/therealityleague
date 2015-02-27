@@ -26,23 +26,8 @@ class Contestant < ActiveRecord::Base
 	has_many :schemes, through: :events
 
 	validates :name, :presence => true, :on => :create
-	validates :season_id, :presence => true, :on => :create
 
 	before_destroy { rosters.clear }
-	before_save :create_status
-
-	after_create :link_to_season
-	after_find :link_to_season
-
-	def link_to_season
-		raise
-		if contestant.season_id?
-			season = Season.where(id: season_id).first
-			season.contestants << contestant unless season.contestants.include? contestant
-			contestant.update(season_id: nil)
-			contestant.save
-		end
-	end
 
 	def self.select_gender
 		@gender_list = ["Male", "Female", "N/A"]
@@ -58,6 +43,10 @@ class Contestant < ActiveRecord::Base
 		@contestants_list.unshift(["Select a contestant", nil])
 	end
 
+	def self.list_contestants(episode_id)
+		@contestants_list = Episode.find(episode_id).season.contestants
+	end
+
 	def calculate_points_per_episode(episode_id)
 		Event.joins(:scheme).where(contestant_id: self.id, episode_id: episode_id).sum("schemes.points_asgn")
 	end
@@ -68,13 +57,24 @@ class Contestant < ActiveRecord::Base
 		Event.where(contestant_id: self.id, episode_id: episode.id).sum("points_earned")
 	end
 
-	def create_status()
-		
+	def create_status(season)
+		season.contestants << self unless season.contestants.include? self
 	end
+
+	def check_status(season)
+		if contestant.season_id?
+			season = Season.find(id: contestant.season_id)
+			season.contestants << contestant unless season.contestants.include? contestant
+			contestant.update(season_id: nil)
+			contestant.save
+		end	
+	end
+
 	def calculate_total_points		# takes one contestant of a roster to get his/her total score
 		Event.where(contestant_id: self.id).sum("points_earned")
 	end
 
 	private
+
 
 end

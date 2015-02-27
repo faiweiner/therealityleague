@@ -1,67 +1,60 @@
-.panel.panel-default
-	.panel-body
-		.col-md-12
-			- if flash[:notice_show]
-				.alert.alert-success{:role => "alert"}= flash[:notice_show]
-			%h2
-				= @season.show.name + ": "
-				= @season.name
-			#new-contestant-form.col-lg-4.col-md-6.col-sm-6
-				.row
-					- if params[:season_id]
-						%h4 Add New Contestant
-					- else
-						%h4 Edit Contestant
-				= form_for(@contestant, class: "form-horizontal", :role => "form") do |f|
-					/ Error Messages
-					.row.form-group
-						- if flash[:notice] && flash[:color] == "valid"
-							.alert.alert-success{:role => "alert"}= flash[:notice]
-						- elsif flash[:notice] && flash[:color] == "invalid"
-							.alert.alert-warning{:role => "alert"}= flash[:notice]
-						- elsif flash[:notice] && flash[:color] == "prohibited"
-							.alert.alert-danger{:role => "alert"}
-								%p= flash[:notice]
-								- if @contestant.errors.any?
-									%p
-										= pluralize(@contestant.errors.count, "error")
-										prohibited this contestant from being saved:
-									%ul
-										- @contestant.errors.full_messages.each do |message|
-											%li= message
-					/ End Error Messages
-					/ Form Portion
-					.row.form-group
-						= f.label :contestant_name
-						= f.text_field :name, class: "form-control"
-					.row.form-group.hidden
-						= f.label :season_id
-						= f.hidden_field :season_id, class: "form-control", :value => params[:season_id]
-					.row.form-group
-						= f.label :age
-						= f.number_field :age, class: "form-control"
-					.row.form-group
-						= f.label :gender
-						= f.select :gender, options_for_select(Contestant.select_gender), {include_blank: "Select gender"}, {class: "form-control"}
-					.row.form-group
-						= f.label :occupation
-						= f.text_field :occupation, class: "form-control"
-					.row.form-group
-						= f.label :description
-						= f.text_area :description, class: "form-control", :placeholder => "Enter description here", :rows => 5
-					.row.form-group
-						= f.label :image
-						= f.text_field :image, class: "form-control"
-					.row.form-group.actions
-						- if params[:season_id] && @contestant.id
-							= f.submit "Update Contestant", class: "btn btn-primary btn-md"
-							- if flash[:notice_show]
-								= link_to "Skip Step", season_path(@season.id), class: "btn btn-primary-btn-md"
-						- else
-							= f.submit "Add New Contestant", class: "btn btn-primary btn-md"
-						= link_to "Cancel", seasons_path, class: "btn btn-default btn-md"
-					/ End Form portion
-			/ End contestant form
-		/ End col-md-12
-	/ End panel-body
-/ End panel panel-default
+.col-lg-6.col-md-6
+	- if flash[:notice_show]
+		.alert.alert-success{:role => "alert"}= flash[:notice_show]
+	%h2
+		= @season.show.name + ": "
+		= @season.name
+	#new-contestant-form.col-lg-12.col-md-12.col-sm-12
+		.row
+			- if params[:season_id]
+				%h4 Add New Contestant
+			- else
+				%h4 Edit Contestant
+		= form_for(@contestant, class: "form-horizontal", :role => "form") do |f|
+			/ Error Messages
+			.row.form-group
+				- if flash[:notice]
+					.alert{class: flash[:color], role: "alert"}
+						%p= flash[:notice]
+						- if @contestant.errors.any?
+							%p
+								= pluralize(@contestant.errors.count, "error")
+								prohibited this contestant from being saved:
+							%ul
+								- @contestant.errors.full_messages.each do |message|
+									%li= message
+			/ End Error Messages
+			/ Form Portion
+			.row.form-group.hidden
+				= label_tag :season_id
+				= number_field :season, :season_id, value: params[:season_id]
+			.row.form-group
+				= f.label :contestant_name
+				= f.text_field :name, class: "form-control"
+			.row.form-group
+				= f.label :age
+				= f.number_field :age, class: "form-control"
+			.row.form-group
+				= f.label :gender
+				= f.select :gender, options_for_select(Contestant.select_gender), {include_blank: "Select gender"}, {class: "form-control"}
+			.row.form-group
+				= f.label :occupation
+				= f.text_field :occupation, class: "form-control"
+			.row.form-group
+				= f.label :description
+				= f.text_area :description, class: "form-control", :placeholder => "Enter description here", :rows => 5
+			.row.form-group
+				= f.label :image
+				= f.text_field :image, class: "form-control"
+			.row.form-group.actions
+				- if params[:season_id] && @contestant.id
+					= f.submit "Update Contestant", class: "btn btn-primary btn-md"
+					- if flash[:notice_show]
+						= link_to "Skip Step", season_path(@season.id), class: "btn btn-primary-btn-md"
+				- else
+					= f.submit "Add New Contestant", class: "btn btn-primary btn-md"
+				= link_to "Cancel", seasons_path, class: "btn btn-default btn-md"
+			/ End Form portion
+	/ End contestant form
+/ End col-md-12
+/ End panel-body

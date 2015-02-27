@@ -1,0 +1,4 @@
+<%# renders /_form_update.html.haml %>
+$eventUpdateDiv.show();
+$eventCreationDiv.hide();
+$('#event-update').html("<%= escape_javascript(render partial: 'form_update', locals: { schemes: @event } ) %>");

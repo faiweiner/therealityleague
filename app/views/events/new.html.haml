@@ -1,8 +1,14 @@
-.panel.col-lg-5
-	.panel.panel-default
-		.panel-body
-			#new-event-form
-				= render partial: "form"
-#event-update.col-lg-7
-	= render partial: "display_points"
+.col-lg-5
+	#event-actions
+		%button.btn.btn-default#new-event-button
+			New
+		%button.btn.btn-default#update-event-button
+			Update
+	%br/
+	#event-create{style: "display: none"}
+		= render partial: "form"
+	#event-update{style: "display: none"}
+.col-lg-7
+	.panel.panel-default#event-display
+		= render partial: "display_points"
 		

@@ -69,23 +69,34 @@ class EventsController < ApplicationController
 				render(:partial => "display_points", :formats => [:html])
 			}
 			format.json { 
-   			render :json => { 
-   				:newEvent => event_details,
-   				:notice => flash[:notice],
-  				:color => flash[:color]
-  			}
-  		}
+				render :json => { 
+					:newEvent => event_details,
+					:notice => flash[:notice],
+					:color => flash[:color]
+				}
+			}
 		end
-
-
 	end
 
+	def edit
+		@options = [1,2,3]
+		@event = Event.find(params[:id])
+		respond_to do |format|
+			format.html { redirect_to @event }	
+			format.js
+		end
+	end
 	def update
-		@event = Event.find(params[:event_id])
-		if @event.update
-			raise "hell"
+		@event = Event.find(params[:id])
+		if @event.update(event_params)
+			@events = Event.where(:episode_id => @event.episode_id).order(created_at: :desc)
+			respond_to do |format|
+				format.html { 
+					render(:partial => "display_points", :formats => [:html], locals: { events: @events })
+				}
+			end
 		else
-			raise "nope"
+
 		end
 	end
 

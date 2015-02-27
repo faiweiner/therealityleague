@@ -1,3 +1,4 @@
+%h3 New Event
 .col-lg-12#event_create
 	= form_for(:event, :url => {:action => "create"}, :html => {:method => "post"}, class:"form-horizontal", :role => "form") do |f|
 		/ Error Messages
@@ -48,5 +49,5 @@
 				= f.select :scheme_id, [], {:include_blank => "select an event"}, class:"form-control step6", :id => "options", :required => true
 			%br/
 		.row.actions
-			.btn.btn-primary.btn-md Save
+			.btn.btn-primary.btn-md#event-save-button Save
 			= link_to "Cancel", events_path, class: "btn btn-default btn-md"

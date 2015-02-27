@@ -2,28 +2,27 @@
 	- if flash[:notice].present?
 		.alert{class: "alert-#{flash[:color]}", role: "alert"}
 			= flash[:notice]
-#points-display-box.panel.panel-default
-	.panel-heading
-		%h4#panel-title-dynamic.panel-title
-			= @table_header
-	.panel-body
-		.row
-			.col-lg-12
-				%table.table.table-hover.points-table
-					%thead
-						%th.col-lg-5{"data-field" => "event", "data-sortable" => "true"} Event
-						%th.col-lg-1{"data-field" => "points_asgn", "data-sortable" => "true"} Pts
-						%th.col-lg-3{"data-field" => "event", "data-sortable" => "true"} Time Assigned
-						%th.col-lg-3 Actions
-					%tbody#episode-events-table
-						- if @events
-							- @events.each do |event|
-								%tr.event-row
-									%td
-										= event.contestant.name
-										= "#{event.scheme.description.downcase}."
-									%td= event.points_earned
-									%td= event.created_at.strftime('%D %l:%M %p')
-									%td
-										= link_to "Edit", edit_event_path(event.id), class: "btn btn-xs btn-default", "action" => "edit", "method" => "PATCH"
-										= link_to "Delete", delete_event_path(event.id), class: "btn btn-xs btn-danger", "action" => "destroy", "method" => "DELETE", remote: true, confirm: "Are you sure you want to delete this event?"
+.panel-heading#points-display-box
+	%h4#panel-title-dynamic
+		= @table_header
+.panel-body
+	.row
+		.col-lg-12
+			%table.table.table-hover.points-table
+				%thead
+					%th.col-lg-5{"data-field" => "event", "data-sortable" => "true"} Event
+					%th.col-lg-1{"data-field" => "points_asgn", "data-sortable" => "true"} Pts
+					%th.col-lg-3{"data-field" => "event", "data-sortable" => "true"} Time Assigned
+					%th.col-lg-3 Actions
+				%tbody#episode-events-table
+					- if @events
+						- @events.each do |event|
+							%tr.event-row
+								%td
+									= event.contestant.name
+									= "#{event.scheme.description.downcase}."
+								%td= event.points_earned
+								%td= event.created_at.strftime('%D %l:%M %p')
+								%td
+									= link_to "Edit", edit_event_path(event.id), class: "btn btn-xs btn-default edit-button", "action" => "edit", remote: true
+									= link_to "Delete", delete_event_path(event.id), class: "btn btn-xs btn-danger", "action" => "destroy", "method" => "DELETE", remote: true, confirm: "Are you sure you want to delete this event?"

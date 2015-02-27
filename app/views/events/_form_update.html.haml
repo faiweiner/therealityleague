@@ -1,0 +1,37 @@
+%h3 Update Event
+.col-lg-12#event-update-form
+	= form_for(:event, :url => {:action => "create"}, :html => {:method => "post"}, class: "form-horizontal", :role => "form") do |f|
+		/ Error Messages
+		.row.form-group
+			- if flash[:notice] && flash[:color] == "valid"
+				.alert.alert-success{:role => "alert"}= flash[:notice]
+			- elsif flash[:notice] && flash[:color] == "invalid"
+				.alert.alert-warning{:role => "alert"}= flash[:notice]
+			- elsif flash[:notice] && flash[:color] == "prohibited"
+				.alert.alert-danger{:role => "alert"}
+					%p= flash[:notice]
+					- if @point.errors.any?
+						%p
+							= pluralize(@point.errors.count, "error")
+							prohibited this event from being tracked:
+						%ul
+							- @point.errors.full_messages.each do |message|
+								%li= message
+		/ End Error Messages
+		/ Form Portion
+		.row
+			%h4 
+				Event ID:
+				= @event.id
+		.row.form-group.hidden
+			= f.number_field :id
+			= f.number_field :episode_id
+		.row.form-group
+			= f.label :contestant_id
+			= f.collection_select :contestant_id, Contestant.list_contestants(@event.episode_id), :id, :name, {required: true}, class: "form-control"
+		.row.form-group
+			= f.label :scheme_id
+			= f.collection_select :scheme_id, Scheme.list_schemes(@event.episode_id), :id, :description, {required: true}, class: "form-control"
+		.row.actions
+			.btn.btn-primary.btn-md#update-button Update
+			.btn.btn-primary.btn-md#cancel-button Cancel

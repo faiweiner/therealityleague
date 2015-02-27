@@ -1,5 +1,17 @@
 $(document).ready(function () {
-	$eventCreationDiv = $('#event_create');
+	$eventActionsDiv = $('#event-actions');
+	$eventCreationDiv = $('#event-create');
+	$eventUpdateDiv = $('#event-update');
+	$eventActionsDiv.on('click', 'button', function () {
+		$button = event.target;
+		if ($button.id == 'new-event-button') {
+			$eventUpdateDiv.hide();
+			$eventCreationDiv.toggle();
+		} else if ($button.id == 'update-event-button') {
+			$eventCreationDiv.hide();
+			$eventUpdateDiv.toggle();
+		};
+	});
 	if ($eventCreationDiv.length > 0) {
 		$eventShowsDisplay = $('#event-show-displayed');
 		$eventSeasonsDisplay = $('#event-season-displayed');
@@ -8,7 +20,8 @@ $(document).ready(function () {
 		$eventSchemesDisplay = $('#event-scheme-displayed');
 		$eventEpisodeOptionsArea = $('#episode-options-area');
 		$eventContestantOptionsArea = $('#contestant-options-area');
-		$eventUpdate = $('#event-update');
+		$eventTable = $('#episode-events-table');
+		$eventDisplay = $('#event-display');
 		$targetEpisodeId = null;
 		$targetContestantId = null;
 		$targetSchemeId = null;
@@ -23,7 +36,7 @@ $(document).ready(function () {
 				url: url,
 				type: 'GET',
 				success: function (result) {
-					$eventUpdate.html(result);
+					$eventDisplay.html(result);
 				}
 			});
 		};
@@ -129,7 +142,7 @@ $(document).ready(function () {
 		});
 
 		// click listener for SUBMIT button
-		$eventCreationDiv.on('click', '.actions', function (event) {
+		$eventCreationDiv.on('click', '#event-save-button', function (event) {
 			$targetSchemeId = $('#options').val()
 			var result;
 			$.ajax({
@@ -152,7 +165,6 @@ $(document).ready(function () {
 					$alert.appendTo($('#event-alert'));
 				}
 			}).done(function (response) {
-				$eventTable = $('#episode-events-table');
 				$firstEventRow = $('.event-row')[0];
 				$newRow = $('<tr/>');
 				$cell1 = $('<td/>');
@@ -177,6 +189,7 @@ $(document).ready(function () {
 				$button2.attr('href', response.newEvent[4][3]);
 				$button1.attr('rel', response.newEvent[3][4]);
 				$button2.attr('rel', response.newEvent[4][4]);
+				$button1.css('margin-right', '4px');
 				$cell4.append($button1);
 				$cell4.append($button2);
 				$newRow.append($cell4);
@@ -185,6 +198,29 @@ $(document).ready(function () {
 			});
 		});
 
-				
+		$eventUpdateDiv.on('click', ('#update-button'), function (event) {
+			$form = $('#event-update-form').children($('form'));
+			var eventId = $form.find($('#event_id')).val();
+			var contestantId = $form.find($('#event_contestant_id')).val();
+			var episodeId = $form.find($('#event_episode_id')).val();
+			var schemeId = $form.find($('#event_scheme_id')).val();
+			var url = '/events/' + eventId;
+			$.ajax({
+				url: url,
+				type: 'PATCH',
+				dataType: 'JSON',
+				data: { 
+					'event': {
+						id: 						eventId,
+						contestant_id: 	contestantId,
+						episode_id: 		episodeId,
+						scheme_id:			schemeId
+					}
+				},
+				success: function (response) {
+					console.log(response);
+				}
+			});
+		});
 	}; // end IF statement $eventCreationDiv
 });

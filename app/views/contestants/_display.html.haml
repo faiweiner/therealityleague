@@ -1,45 +1,42 @@
-.panel.panel-default
-	.panel-heading
-		.panel-title
-			%h3
-				= @season.name
-				Contestants
-			= link_to "Season User View", season_path(@season.id), class:"btn btn-default"
-			#season_id.invisible= @season.id
+%h3
+	= @season.name
+	Contestants
+	= link_to "Season User View", season_path(@season.id), class: "btn btn-default btn-sm"
+	= link_to "Select Contestant", statuses_path(@season.id), class: "btn btn-default btn-sm"
+#season_id.invisible= @season.id
+.row
 	.panel-body
-		.row
-			.panel-body
-				%table#contestants.table.table-hover
-					%thead
-						%tr
-							%th.col-lg-1 Image
-							%th Name
-							%th Age
-							%th Gender
-							%th Occupation
-							%th Description
-							%th Actions
-					%tbody
-						- @contestants.each do |contestant|
-							%tr
-								%td
-									= image_tag contestant.image, class:"img-thumbnail thumbnail-sm"
-								%td
-									%span{"data-name" => "name", "data-pk" => contestant.id}
-										= contestant.name
-								%td
-									%span{"data-name" => "age", "data-pk" => contestant.id}
-										= contestant.age
-								%td
-									%span{"data-name" => "gender", "data-pk" => contestant.id}
-										= contestant.gender
-								%td
-									%span{"data-name" => "occupation", "data-pk" => contestant.id}
-										= contestant.occupation
-								%td
-									%span{"data-name" => "description", "data-pk" => contestant.id}
-										= contestant.description
-								%td
-									%button.btn.btn-default.btn-sm.edit Edit Info
-									%button.btn.btn-default.btn-sm.status Mark Status
-	.panel-body
+		%table#contestants.table.table-hover
+			%thead
+				%tr
+					%th.col-lg-1 Image
+					%th Name
+					%th Age
+					%th Gender
+					%th Occupation
+					%th Description
+					%th Actions
+			%tbody
+				- @contestants.each do |contestant|
+					%tr
+						%td
+							= image_tag contestant.image, class:"img-thumbnail thumbnail-sm"
+						%td
+							%span{"data-name" => "name", "data-pk" => contestant.id}
+								= contestant.name
+						%td
+							%span{"data-name" => "age", "data-pk" => contestant.id}
+								= contestant.age
+						%td
+							%span{"data-name" => "gender", "data-pk" => contestant.id}
+								= contestant.gender
+						%td
+							%span{"data-name" => "occupation", "data-pk" => contestant.id}
+								= contestant.occupation
+						%td
+							%span{"data-name" => "description", "data-pk" => contestant.id}
+								= contestant.description
+						%td
+							%button.btn.btn-default.btn-sm.edit Edit Info
+							%button.btn.btn-default.btn-sm.status Mark Status
+.panel-body
