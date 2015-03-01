@@ -82,8 +82,20 @@ class SchemesController < ApplicationController
 		
 	end
 
-	def assign
-		scheme = Scheme.find(params[:id])
+	def update
+		@scheme = Scheme.find(params[:id])
+		shows = Show.all
+		scheme_shows = {}
+
+		shows.each_with_index do |show, i| 
+			scheme_shows[i] = {}
+			scheme_shows[i][:id] = show.id
+			if @scheme.shows.include? show
+				scheme_shows[i][:include] = true
+			else
+				scheme_shows[i][:include] = false
+			end
+		end
 
 		if params[:showIdsList] 
 			show_ids_list = params[:showIdsList] 
@@ -93,32 +105,6 @@ class SchemesController < ApplicationController
 			end
 		end
 
-		shows = Show.all
-		scheme_shows = {}
-
-		shows.each_with_index do |show, i| 
-			scheme_shows[i] = {}
-			scheme_shows[i][:id] = show.id
-			if scheme.shows.include? show
-				scheme_shows[i][:include] = true
-			else
-				scheme_shows[i][:include] = false
-			end
-		end
-
-		respond_to do |format|
-			format.json {
-				render :json => {
-					:scheme => scheme,
-					:type => scheme.type,
-					:shows => scheme_shows
-				}, :status => 200
-			}
-		end	
-	end
-
-	def update
-		@scheme = Scheme.find(params[:id])
 		if @scheme.update scheme_params
 			@schemes = {}
 			schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
@@ -133,6 +119,7 @@ class SchemesController < ApplicationController
 					render :json => {
 						:scheme => @scheme,
 						:type => @scheme.type,
+						:shows => @scheme.scheme_shows,
 						:notice => flash[:notice],
 						:color => flash[:color]
 					}, :status => 200

@@ -38,7 +38,6 @@
 				%br/
 	.form-group
 		.actions
-			.btn.btn-md.btn-default.submit-btn{name: "create", method: "POST", action: :create, id: "new_scheme_submit"} Create scheme
+			.btn.btn-md.btn-default.submit-btn{type: "button", name: "create", method: "POST", action: :create, id: "new_scheme_submit"} Create scheme
 			.btn.btn-md.btn-default.update-btn{type: "button", name: "update", method: "PATCH", action: :update, id: "update_scheme_submit", style: "display:none"} Update scheme
-			.btn.btn-md.btn-default.assign-btn{type: "button", name: "update", method: "POST", action: :assign, id: "assign_scheme_submit", style: "display:none"} Assign to show
-			.btn.btn-md.btn-default.cancel-btn Cancel
+			.btn.btn-md.btn-default.cancel-btn{type: "button", name: "cancel", method: "GET", action: :new, id: "clear_scheme_form"} Cancel
