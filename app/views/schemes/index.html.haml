@@ -3,12 +3,13 @@
 		.col-lg-12
 			%h2 Manage Point Schemes
 	.panel-body
-		.col-lg-3#scheme_form
-			= render partial: "form"
+		.col-lg-3#action-panel
+			#scheme_form
+				= render partial: "form"
 		.col-lg-9
-			#shows_panel
-				= render "shows_menu"
-			#types_panel
-				= render "types_menu"
+			#scheme_action_alert{class: flash[:color]}
+				= flash[:notice]
+			#filter_panel
+				= render "schemes_filter"
 			#schemes_board
 				= render partial: "display_schemes", locals: { schemes: @schemes }

@@ -18,14 +18,24 @@ class Scheme < ActiveRecord::Base
 	has_many :contestants, through: :events
 	has_many :episodes, through: :events
 	has_and_belongs_to_many :leagues
-	has_and_belongs_to_many :schemes
 	has_and_belongs_to_many :shows
 
 	validates :type, presence: true, allow_blank: false
-	validates :show_id, presence: true, allow_blank: false
 	validates :description, presence: true, allow_blank: false
 	validates :points_asgn, presence: true, allow_blank: false
 	
+	before_destroy :scheme_with_show?, :scheme_with_event?
+
+	def scheme_with_show?
+		errors[:base] << "Cannot delete scheme with shows."
+		return false if self.shows.any?
+	end
+
+	def scheme_with_event?
+		errors[:base] <<  "Cannot delete scheme with events."
+		return true if self.events.count == 0
+	end
+
 	private
 
 	def self.select_scheme
@@ -43,4 +53,8 @@ class Scheme < ActiveRecord::Base
 		show = Episode.find(episode_id).season.show.schemes.order(type: :asc, description: :asc)
 	end
 
+	def self.list_types
+		@type_list = Scheme.descendants.map(&:name).sort
+		@type_list.unshift(["All Schemes", "All"])
+	end
 end

@@ -18,7 +18,8 @@ Rails.application.routes.draw do
 
 	get		'statuses/' => 'statuses#index', :as => :statuses
 	get		'statuses/:season_id' => 'statuses#display', :as => :statuses_display
-
+	
+	get 	'schemes/:id/assign' => 'schemes#assign', as: 'assign_scheme'
 	get		'schemes/' => 'schemes#index', as: 'schemes'
 	post	'schemes/display_all' => 'schemes#create'
 	get 	'schemes/fetch_schemes' => 'schemes#from_show', as: 'fetch_schemes'

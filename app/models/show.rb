@@ -30,6 +30,12 @@ class Show < ActiveRecord::Base
 		@shows_list = Show.uniq.order("name ASC").each.map {|s| [s.name, s.id] }
 	end
 
+	def self.shows_list
+		# This model method is for populating Create League's drop-down menu
+		@shows_list = Show.uniq.order("name ASC").each.map {|s| [s.name, s.id] }
+		@shows_list.unshift(["All Shows", "All"])
+	end
+
 	def self.select_show_all
 		@shows_list = Show.all.order("name ASC").each.map {|s| [s.name, s.id] }
 	end

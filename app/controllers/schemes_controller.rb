@@ -24,7 +24,10 @@ class SchemesController < ApplicationController
 	end
 
 	def create
+		puts params
+		puts "on create"
 		@scheme = Scheme.new scheme_params
+		puts @scheme.inspect
 		if @scheme.save	
 			@selected = Scheme.where(:show_id => params[:show_id]).order(type: :asc, points_asgn: :asc, description: :asc)	
 			flash[:notice] = "New scheme has been successfully added."
@@ -55,23 +58,55 @@ class SchemesController < ApplicationController
 	end
 
 	def edit
-		@scheme = Scheme.find(params[:id])
+		scheme = Scheme.find(params[:id])
 		respond_to do |format|
 			format.json {
 				render :json => {
-					:scheme => @scheme,
-					:type => @scheme.type
+					:scheme => scheme,
+					:type => scheme.type
 				}, :status => 200
 			}
 		end
 	end
 
+	def assign
+		scheme = Scheme.find(params[:id])
+		scheme_shows = {}
+
+		shows = Show.all
+		shows.each_with_index do |show, i| 
+			scheme_shows[i] = {}
+			scheme_shows[i][:id] = show.id
+			if scheme.shows.include? show
+				scheme_shows[i][:include] = true
+			else
+				scheme_shows[i][:include] = false
+			end
+		end
+
+		respond_to do |format|
+			format.json {
+				render :json => {
+					:scheme => scheme,
+					:type => scheme.type,
+					:shows => scheme_shows
+				}, :status => 200
+			}
+		end	
+	end
+
 	def update
 		@scheme = Scheme.find(params[:id])
 		if @scheme.update scheme_params
+			@schemes = {}
+			schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
+			schemes.each do |scheme|
+				@schemes[scheme] = false
+			end
 			flash[:notice] = "Scheme has been successfully updated."
 			flash[:color] = "alert-success success"
 			respond_to do |format|
+				format.html { render partial: "display_schemes", locals: {schemes: @schemes} }
 				format.json {
 					render :json => {
 						:scheme => @scheme,
@@ -100,14 +135,22 @@ class SchemesController < ApplicationController
 	end
 
 	def from_show
-		@show_id = params[:show_id]
-		show = Show.find(params[:show_id])
-		schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
+		@show_id = nil
 		@schemes = {}
-		schemes.each do |scheme|
-			if show.schemes.include? scheme
-				@schemes[scheme] = true
-			else
+		unless params[:show_id] == "All"
+			@show_id = params[:show_id]
+			schemes = Scheme.where(show_id: params[:show_id]).order(type: :asc, description: :asc, points_asgn: :asc)
+			show = Show.find(params[:show_id])
+			schemes.each do |scheme|
+				if show.schemes.include? scheme
+					@schemes[scheme] = true
+				else
+					@schemes[scheme] = false
+				end
+			end
+		else
+			schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
+			schemes.each do |scheme|
 				@schemes[scheme] = false
 			end
 		end
@@ -118,37 +161,44 @@ class SchemesController < ApplicationController
 
 	def destroy
 		@scheme = Scheme.find params[:id]
-		if	@scheme.destroy
-			flash[:notice] = "Scheme\##{@scheme.id} has been successfully deleted."
-			flash[:color] = "alert-success"
+		if @scheme.shows.count == 0 && @scheme.events.count == 0
+			if @scheme.destroy
+				flash[:notice] = "Scheme\##{@scheme.id} has been successfully deleted."
+				flash[:color] = "alert alert-success"
+			else
+				flash[:notice] = "Cannot destroy."
+				flash[:color] = "alert alert-danger"
+			end
 		else
-			flash[:notice] = "Something went wrong, please try again."
-			flash[:color] = "alert-danger"
+			flash[:notice] = "Delete prohibited. Scheme with shows and/or events cannot be deleted."
+			flash[:color] = "alert alert-danger"
 		end
 		redirect_to schemes_path
 	end
 
 	private
 
-	def scheme_params
-		if params[:type_select].present? || params[:type_text].present?
-			if params[:type_text].present?
-				params[:scheme][:type] = params[:type_text]
-			elsif params[:type_select].present?
-				case params[:type_select]
-				when "Select type"
-					params[:scheme][:type] = nil
-				when "Add new type"
-					params[:scheme][:type] = nil
-				else
-					params[:scheme][:type] = params[:type_select]
-				end
+	def setSchemeType(params)
+		puts params
+		if params[:type_select].present?
+			case params[:type_select]
+			when "Select type"
+				params[:scheme][:type] = nil
+			when "Add new type"
+				params[:scheme][:type] = nil
 			else
-				params[:scheme][:type]
+				params[:scheme][:type] = params[:type_select]
 			end
+		elsif params[:type_text].present?
+			params[:scheme][:type] = params[:type_text]
 		else
-			params[:scheme][:type]
+			return
 		end
-		params.require(:scheme).permit(:id, :type, :show_id, :description, :points_asgn)
+		return params
+	end
+
+	def scheme_params
+		setSchemeType(params)
+		params.require(:scheme).permit(:id, :type, :description, :points_asgn)
 	end
 end
