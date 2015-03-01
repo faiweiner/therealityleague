@@ -1,6 +1,7 @@
 class SchemesController < ApplicationController
 	layout "admin"
 	def index
+		@form_header = "New Scheme"
 		@shows = Show.all.order(name: :asc)	
 		@show_id = nil
 		@schemes = {}
@@ -9,13 +10,6 @@ class SchemesController < ApplicationController
 			@schemes[scheme] = false
 		end
 		@scheme = Scheme.new
-	end
-
-	def display_all
-		@schemes = Scheme.all.order(type: :asc, points_asgn: :asc, description: :asc)
-		respond_to do |format|
-			format.js
-		end
 	end
 
 	def new
@@ -36,6 +30,7 @@ class SchemesController < ApplicationController
 				format.json {
 					render :json => {
 						:schemeList => @selected,
+						:scheme_id => @scheme.id,
 						:notice => flash[:notice],
 						:color => flash[:color]
 					}
@@ -58,22 +53,49 @@ class SchemesController < ApplicationController
 	end
 
 	def edit
+		@form_header = "Update Scheme"
 		scheme = Scheme.find(params[:id])
+		scheme_shows = {}
+
+		scheme.shows.each_with_index do |show, i| 
+			scheme_shows[i] = {}
+			scheme_shows[i][:id] = show.id
+			if scheme.shows.include? show
+				scheme_shows[i][:include] = true
+			else
+				scheme_shows[i][:include] = false
+			end
+		end
+
 		respond_to do |format|
 			format.json {
 				render :json => {
 					:scheme => scheme,
+					:shows => scheme_shows,
 					:type => scheme.type
 				}, :status => 200
 			}
 		end
 	end
 
+	def method_name
+		
+	end
+
 	def assign
 		scheme = Scheme.find(params[:id])
-		scheme_shows = {}
+
+		if params[:showIdsList] 
+			show_ids_list = params[:showIdsList] 
+			show_ids_list.each do |show_id|
+				show = Show.find(show_id)
+				scheme.shows << show unless scheme.shows.include? show
+			end
+		end
 
 		shows = Show.all
+		scheme_shows = {}
+
 		shows.each_with_index do |show, i| 
 			scheme_shows[i] = {}
 			scheme_shows[i][:id] = show.id

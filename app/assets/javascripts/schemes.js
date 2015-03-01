@@ -46,7 +46,26 @@ $(document).ready(function () {
 		var createScheme = function (data) {
 			$.post('/schemes/', data)
 			.done( function (response) {
-				console.log(response);
+				$showsListInput = $('#shows_list').children('input:checked')
+				var showIdsList = [];
+				
+				for (var i = 0; i < $showsListInput.length; i++) {
+					var showId = parseInt($showsListInput[i].dataset.showId);
+					showIdsList.push(showId);
+				};
+				
+				var dataPackage = {
+					schemeId: response.scheme_id,
+					showIdsList: showIdsList
+				}
+
+				$formAlert.empty();
+				$formAlert.attr('class', '');
+				$formAlert.addClass('alert ' + response.color);
+				$formAlert.text(response.notice);
+				$schemesBoard.empty().html(response.schemeList);
+
+				assignScheme(dataPackage);
 			}).error( function (response) {
 				$formAlert.empty();
 				$formAlert.attr('class', '');
@@ -69,8 +88,8 @@ $(document).ready(function () {
 				success: function (response) {
 					$formAlert.empty();
 					$formAlert.attr('class', '');
-					$formAlert.addClass('alert ' + data.color);
-					$formAlert.text(data.notice);
+					$formAlert.addClass('alert ' + response.color);
+					$formAlert.text(response.notice);
 					$schemesBoard.empty().html(response);
 				}, 
 				error: function (data) {
@@ -84,9 +103,10 @@ $(document).ready(function () {
 		};
 
 		// sends data to server to update scheme
-		var assignScheme = function (schemeId, data) {
+		var assignScheme = function (dataPackage) {
+			var schemeId = dataPackage.schemeId
 			var url = '/schemes/' + schemeId + '/assign';
-			$.post(url, data);
+			$.post(url, dataPackage);
 			// $.ajax({
 			// 	url: 
 			// 	type: formAction.method,
@@ -163,7 +183,6 @@ $(document).ready(function () {
 			}).done(function (response) {
 				responseData = response
 				actionFunction(response);
-				console.log('ho!');
 				return responseData;
 			});	
 		};
@@ -210,13 +229,24 @@ $(document).ready(function () {
 		};
 
 		var constructEditForm = function (response) {
-			console.log('you\'ve edit');
+			var shows = response.shows;
+			var showsList = $schemeShows.find('#shows_list').children('input');
+			
+			// setting up Form
 			baseFormConstruction(response);
-
-			var showElementCollection = ['#scheme_type_dropdown', '#scheme_description_input', '#scheme_points_asgn_input', $schemeUpdateButton];
-			var hideElementCollection = ['#scheme_type_value', '#scheme_description_value', '#scheme_points_asgn_value', $schemeSubmitButton, $schemeAssignButton, $schemeShows];
+			var showElementCollection = ['#scheme_type_dropdown', '#scheme_description_input', '#scheme_points_asgn_input', $schemeUpdateButton, $schemeShows];
+			var hideElementCollection = ['#scheme_type_value', '#scheme_description_value', '#scheme_points_asgn_value', $schemeSubmitButton, $schemeAssignButton];
 			showElement($formGroups, showElementCollection);
 			hideElement($formGroups, hideElementCollection);
+			
+			// populating shows selected
+			for (var i = 0; i < Object.keys(shows).length; i++) {
+				var $checkbox = $(showsList).filter( function () {
+					return ($(this).data("showId") == shows[i].id);
+				});
+				$checkbox.prop("checked", shows[i].include);
+			};
+
 		};		
 
 		var constructAssignForm = function (response) {
@@ -227,7 +257,10 @@ $(document).ready(function () {
 			baseFormConstruction(response);
 			var hideElementCollection = ['#scheme_type_dropdown', '#scheme_description_input', '#scheme_points_asgn_input', $schemeUpdateButton, $schemeSubmitButton];
 			var showElementCollection = ['#scheme_type_value', '#scheme_description_value', '#scheme_points_asgn_value', '#new_scheme_submit', $schemeAssignButton, $schemeShows];
+			showElement($formGroups, showElementCollection);
+			hideElement($formGroups, hideElementCollection);
 
+			// populating shows selected
 			for (var i = 0; i < Object.keys(shows).length; i++) {
 				var $checkbox = $(showsList).filter( function () {
 					return ($(this).data("showId") == shows[i].id);
@@ -235,8 +268,6 @@ $(document).ready(function () {
 				$checkbox.prop("checked", shows[i].include);
 			};
 
-			showElement($formGroups, showElementCollection);
-			hideElement($formGroups, hideElementCollection);
 		};
 
 		// click listener for BOARD

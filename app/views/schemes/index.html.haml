@@ -1,15 +1,13 @@
-#manage-schemes.panel.panel-default
-	.panel-body
-		.col-lg-12
-			%h2 Manage Point Schemes
-	.panel-body
-		.col-lg-3#action-panel
-			#scheme_form
-				= render partial: "form"
-		.col-lg-9
-			#scheme_action_alert{class: flash[:color]}
-				= flash[:notice]
-			#filter_panel
-				= render "schemes_filter"
-			#schemes_board
-				= render partial: "display_schemes", locals: { schemes: @schemes }
+#manage-schemes
+	.col-lg-12
+		%h2 Manage Point Schemes
+	.col-lg-3#action-panel
+		#scheme_form
+			= render partial: "form"
+	.col-lg-9
+		#scheme_action_alert{class: flash[:color]}
+			= flash[:notice]
+		#filter_panel
+			= render "schemes_filter"
+		#schemes_board
+			= render partial: "display_schemes", locals: { schemes: @schemes }
