@@ -296,10 +296,17 @@ $(document).ready(function () {
 		// Shows Filter on Display Board
 		$filterPanel.on('change', 'select', function (event) {
 			var element = event.target;
-			var showId = $(element).val();
+			$filterFields = $(element).closest('#filters').children()
+			$showFilter = $filterFields.find('#show');
+			$schemeTypeFilter = $filterFields.find('#scheme_type')
+			var showId = $showFilter.val();
+			var schemeType = $schemeTypeFilter.val()
 			$.ajax({
 				url: '/schemes/fetch_schemes',
-				data: {show_id: showId},
+				data: {
+					show_id: showId,
+					scheme_type: schemeType
+				},
 				success: function (response) {
 					$schemesTable.load();
 				}

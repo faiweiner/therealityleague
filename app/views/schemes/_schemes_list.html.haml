@@ -3,11 +3,11 @@
 		-# %td
 		-# 	= check_box_tag :scheme, "selection", scheme[1], {"data-scheme-id" => scheme[0].id, "data-show-id" => @show_id}
 		%td
-			%span{"data-name" => "type", "data-pk" => scheme[0].id}= scheme[0].type
+			%span{"data-name" => "type", "data-pk" => scheme.id}= scheme.type
 		%td
-			%span{"data-name" => "description", "data-pk" => scheme[0].id}= scheme[0].description
+			%span{"data-name" => "description", "data-pk" => scheme.id}= scheme.description
 		%td
-			%span{"data-name" => "points_asgn", "data-pk" => scheme[0].id}= scheme[0].points_asgn
+			%span{"data-name" => "points_asgn", "data-pk" => scheme.id}= scheme.points_asgn
 		%td
-			.btn.btn-xs.btn-default.action.edit{"data-id" => scheme[0].id} Edit
-			= link_to "Delete", scheme_path(scheme[0].id), method: "DELETE", class: "btn btn-xs btn-default destroy"
+			.btn.btn-xs.btn-default.action.edit{"data-id" => scheme.id} Edit
+			= link_to "Delete", scheme_path(scheme.id), method: "DELETE", class: "btn btn-xs btn-default destroy"

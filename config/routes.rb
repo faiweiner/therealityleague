@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
 	post 	'schemes/:id/assign' => 'schemes#assign'
 	get		'schemes/' => 'schemes#index', as: 'schemes'
-	get 	'schemes/fetch_schemes' => 'schemes#from_show', as: 'fetch_schemes'
+	get 	'schemes/fetch_schemes' => 'schemes#filter', as: 'fetch_schemes'
 	resources :schemes
 
 	get		'seasons/search' => 'seasons#search'

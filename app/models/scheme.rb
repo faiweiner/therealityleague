@@ -25,6 +25,7 @@ class Scheme < ActiveRecord::Base
 	validates :points_asgn, presence: true, allow_blank: false
 	
 	before_destroy :scheme_with_show?, :scheme_with_event?
+	# cannot delete scheme if shows/events attached
 
 	def scheme_with_show?
 		errors[:base] << "Cannot delete scheme with shows."
@@ -33,7 +34,7 @@ class Scheme < ActiveRecord::Base
 
 	def scheme_with_event?
 		errors[:base] <<  "Cannot delete scheme with events."
-		return true if self.events.count == 0
+		return false if self.events.any?
 	end
 
 	def assign_shows(show_ids)
@@ -42,10 +43,8 @@ class Scheme < ActiveRecord::Base
 		shows = Show.all
 		shows.each do |show|
 			if show_ids && ( show_ids.include? show.id.to_s )
-				puts "YESsssssss"
 				linked_shows << show 
 			else
-				puts "NO"
 				nonlinked_shows << show
 			end
 		end
@@ -54,6 +53,36 @@ class Scheme < ActiveRecord::Base
 	end
 
 	private
+
+	def self.filter_search(queries_hash)
+		scenario = []
+		results = []
+
+		# 1.A If either queries exist, then proceed
+		if queries_hash[:show_id] || queries_hash[:type]
+			# 1.A.A If YES show_id
+			if queries_hash[:show_id]
+				show = Show.find(queries_hash[:show_id])
+				# 1.A.A.A YES show_id && YES type
+				if queries_hash[:type].present?
+					schemes = show.schemes.order(type: :asc, description: :asc, points_asgn: :asc).select{|scheme| scheme.type == queries_hash[:type]}
+				# 1.A.A.B YES show_id && NO type
+				else
+					schemes = show.schemes.order(type: :asc, description: :asc, points_asgn: :asc)
+				end
+			# 1.A.B If NO show_id 
+			else
+				# NO show_id, YES type
+				if queries_hash[:type].present?
+					schemes = Scheme.where(type: queries_hash[:type]).order(type: :asc, description: :asc, points_asgn: :asc)
+				end
+			end
+		# 1.B If both queries are "All"
+		else
+			schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
+		end
+		results = schemes
+	end
 
 	def self.select_scheme
 		@schemes_list = Scheme.all.each.map {|s| [s.description, s.type, s.id]}

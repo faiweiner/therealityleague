@@ -5,11 +5,7 @@ class SchemesController < ApplicationController
 		@form_header = "New Scheme"
 		@shows = Show.all.order(name: :asc)	
 		@show_id = nil
-		@schemes = {}
-		schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
-		schemes.each do |scheme|
-			@schemes[scheme] = false
-		end
+		@schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
 		@scheme = Scheme.new
 	end
 
@@ -19,11 +15,9 @@ class SchemesController < ApplicationController
 	end
 
 	def create
-		puts params
-		puts "on create"
 		@scheme = Scheme.new scheme_params
-		puts @scheme.inspect
 		if @scheme.save	
+			@scheme.assign_shows(params[:showIdsList])
 			@selected = Scheme.where(:show_id => params[:show_id]).order(type: :asc, points_asgn: :asc, description: :asc)	
 			flash[:notice] = "New scheme has been successfully added."
 			flash[:color] = "alert-success success"
@@ -97,11 +91,7 @@ class SchemesController < ApplicationController
 		end
 
 		if @scheme.update scheme_params
-			@schemes = {}
-			schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
-			schemes.each do |scheme|
-				@schemes[scheme] = false
-			end
+			@schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
 			flash[:notice] = "Scheme has been successfully updated."
 			flash[:color] = "alert-success success"
 			respond_to do |format|
@@ -154,26 +144,16 @@ class SchemesController < ApplicationController
 		end	
 	end
 
-	def from_show
+	def filter
 		@show_id = nil
-		@schemes = {}
-		unless params[:show_id] == "All"
-			@show_id = params[:show_id]
-			schemes = Scheme.where(show_id: params[:show_id]).order(type: :asc, description: :asc, points_asgn: :asc)
-			show = Show.find(params[:show_id])
-			schemes.each do |scheme|
-				if show.schemes.include? scheme
-					@schemes[scheme] = true
-				else
-					@schemes[scheme] = false
-				end
-			end
-		else
-			schemes = Scheme.all.order(type: :asc, description: :asc, points_asgn: :asc)
-			schemes.each do |scheme|
-				@schemes[scheme] = false
-			end
-		end
+		@scheme_type = nil
+		queries_hash = {}
+
+		queries_hash[:show_id] = params[:show_id] unless params[:show_id] == "All"
+		queries_hash[:type] = params[:scheme_type] unless params[:scheme_type] == "All"
+		
+		@schemes = Scheme.filter_search(queries_hash)
+
 		respond_to do |format|
 			format.js
 		end
