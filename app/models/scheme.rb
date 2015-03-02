@@ -36,6 +36,23 @@ class Scheme < ActiveRecord::Base
 		return true if self.events.count == 0
 	end
 
+	def assign_shows(show_ids)
+		linked_shows = []
+		nonlinked_shows = []
+		shows = Show.all
+		shows.each do |show|
+			if show_ids && ( show_ids.include? show.id.to_s )
+				puts "YESsssssss"
+				linked_shows << show 
+			else
+				puts "NO"
+				nonlinked_shows << show
+			end
+		end
+		nonlinked_shows.each {|show| self.shows.delete(show)}
+		linked_shows.each {|show| self.shows << show unless self.shows.include? show}
+	end
+
 	private
 
 	def self.select_scheme

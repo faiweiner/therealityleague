@@ -14,15 +14,9 @@ $(document).ready(function () {
 		$schemeClearButton = $('.cancel-btn');
 		$schemeShows = $('#scheme_shows');
 		$formAlert = $('#form_alert');
-
 		// ------------------------------------------------------ //
 		// ============== GLOBAL CLIENT FUNCTIONS =============== //
 		// ------------------------------------------------------ //
-		var hideActionButtons = function () {
-			$eventsBoard.find('.save').hide();
-			$eventsBoard.find('.destroy').hide();
-		};
-
 		var showElement = function (elementCollection, targetElementCollection) {
 			for (var i = 0; i < targetElementCollection.length; i++) {
 				var element = elementCollection.find(targetElementCollection[i]);
@@ -50,16 +44,27 @@ $(document).ready(function () {
 
 		// ---------------------- Forms ------------------------ //
 		var clearForm = function () {
-			$formFields = $schemeForm.find('.form-group.field');
-			$formFields[2].val('');
+			$formFields = $schemeForm.find('.form-group');
+			$formFields.find('#scheme_type_dropdown').val('');
+			$formFields.find('#scheme_description_input').val('');
+			$formFields.find('#scheme_points_asgn_input').val('');
+			var showsList = $formFields.find('#shows_list').children('input');
+			for (var i = 0; i < showsList.length; i++) {
+				var $checkbox = $(showsList[i]);
+				$checkbox.prop("checked", false);
+			};
 		};
 
+		var clearFormAlert = function () {
+			$formAlert.empty();
+			$formAlert.attr('class', '');	
+		};
 
+		// Populate form with response data
 		var baseFormConstruction = function (response) {
 			$formGroups = $schemeForm.find('.form-group');
 			$formGroups.children().attr('disabled', false);
 			$formGroups.children().children().attr('disabled', false);
-			$formGroups.find('#scheme_show_id').val(response.scheme.show_id);
 			
 			// Type
 			var option = 'option[value="' + response.type + '"]';
@@ -100,21 +105,59 @@ $(document).ready(function () {
 				});
 				$checkbox.prop("checked", shows[i].include);
 			};
-
 		};		
 
+		var mineFormData = function (dataSource) {
+			$source = $(dataSource);
+			$formFields = $(event.target).parents('form').children('.form-group');
+			var schemeId = $source.data().id;
+			var formAction = {
+				method: $source.attr('method'),
+				action: $source.attr('action')
+			}
 
+			// set up parameters
+			var schemeId = $source.data().id;
+			var schemeTypeDropdown = $formFields.find('#scheme_type_dropdown');
+			var schemeTypeText = $formFields.find('select').filter('#scheme_type_dropdown').val();
+			var description = $formFields.find('#scheme_description_input').val();
+			var pointsAsgn = $formFields.find('#scheme_points_asgn_input').val();
+			var schemeShows = $formFields.find('#shows_list').children('input:checked');
+			var showIdsList = [];
+			
+			for (var i = 0; i < schemeShows.length; i++) {
+				$schemeShow = $(schemeShows[i]);
+				var showId = parseInt($schemeShow.data().showId);
+				showIdsList.push(showId);
+			};
+			// setting up schemeData
+			var schemeData = {
+				id: schemeId,
+				description: description,
+				points_asgn: pointsAsgn		
+			};
+
+			// setting up parameters
+			var data = {
+				scheme: schemeData,
+				type_text: schemeTypeText,
+				showIdsList: showIdsList
+			}	
+			
+			return data
+		};
 		// ------------------------------------------------------ //
 		// ============== GLOBAL BACKEND FUNCTIONS ============== //
 		// ------------------------------------------------------ //
 
 		var getSchemeData = function (url, actionFunction) {
-			var responseData = {};
+			var responseData;
 			$.ajax({
 				url: url
 			}).done(function (response) {
-				responseData = response
 				actionFunction(response);
+				responseData = response
+				console.log(response);
 				return responseData;
 			});	
 		};
@@ -143,7 +186,7 @@ $(document).ready(function () {
 				$formAlert.text(response.notice);
 				$schemesBoard.empty().html(response.schemeList);
 
-				assignScheme(dataPackage);
+				// assignScheme(dataPackage);
 			}).error( function (response) {
 				$formAlert.empty();
 				$formAlert.attr('class', '');
@@ -159,6 +202,7 @@ $(document).ready(function () {
 		// Update
 		var updateScheme = function (schemeId, data) {
 			var url = '/schemes/' + schemeId;
+			assignScheme(data);
 			$.ajax({
 				url: url,
 				type: 'PATCH',
@@ -168,7 +212,6 @@ $(document).ready(function () {
 					$formAlert.attr('class', '');
 					$formAlert.addClass('alert ' + response.color);
 					$formAlert.text(response.notice);
-					$eventsBoard.reload(true);
 				}, 
 				error: function (data) {
 					$formAlert.empty();
@@ -182,7 +225,7 @@ $(document).ready(function () {
 
 		// Assign
 		var assignScheme = function (dataPackage) {
-			var schemeId = dataPackage.schemeId
+			var schemeId = dataPackage.scheme.id;
 			var url = '/schemes/' + schemeId + '/assign';
 			$.post(url, dataPackage);
 		};
@@ -197,10 +240,10 @@ $(document).ready(function () {
 			// it will wait for 5 sec. and then will fire
 			// $("#successMessage").hide() function
 			setTimeout(function() {
-				$("#scheme_action_alert").hide('blind', {}, 100)
+				$('#scheme_action_alert').hide('blind', {}, 100)
 			}, 2000);
 			setTimeout(function() {
-				$formAlert.hide('blind', {}, 100)
+				$('#form_alert').hide('blind', {}, 100)
 			}, 2000);
 		});
 
@@ -217,61 +260,31 @@ $(document).ready(function () {
 			}; 
 		});
 
-		var mineSchemeData = function (dataSource) {
-			$source = dataSource;
-			$formFields = $(event.target).parents('form').children('.form-group');
-
-		};
 		// Action for Form
 		$schemeForm.on('click', '.actions', function (event) {
-			debugger
-			$formAlert.empty();
-			$formAlert.attr('class', '');	
-			$actionButton = $(event.target);
-			var schemeId = $actionButton.data().id;
-			var formAction = {
-				method: $actionButton.attr('method'),
-				action: $actionButton.attr('action')
-			}
-			// set up parameters
-			var id = event.target.dataset.id;
-			var schemeTypeDropdown = $formFields.find('#scheme_type_dropdown');
-			var schemeTypeText = $formFields.find('select').filter('#scheme_type_dropdown').val();
-			var description = $formFields.find('#scheme_description_input').val();
-			var pointsAsgn = $formFields.find('#scheme_points_asgn_input').val();
-			// setting up schemeData
-			var schemeData = {
-				id: id,
-				description: description,
-				points_asgn: pointsAsgn		
-			};
-
-			// setting up parameters
-			var data = {
-				scheme: schemeData,
-				type_text: schemeTypeText
-			}	
-			switch ($actionButton.attr('action')) {
+			clearFormAlert();
+			var action = $(event.target).attr('action');
+			switch (action) {
 				case 'create':
+					var data = mineFormData(event.target);
 					createScheme(data);
 					break;
 				case 'update':
-					updateScheme(schemeId, data);
+					var dataPackage = mineFormData(event.target);
+					var schemeId = dataPackage.scheme.id;
+					updateScheme(schemeId, dataPackage);
 					break;
 				case 'cancel':
-					console.log('clear');
+					clearForm();
 					break;	
 			}
 		}).on('click', '.clear', function (event) {
 		}).on('ajax:success', function (event, data, status, xhr) {
-			$formAlert.empty();
-			console.log('hi');
-			$formAlert.attr('class', '');
+			clearFormAlert();
 			$formAlert.addClass('alert ' + data.color);
 			$formAlert.text(data.notice);
 		}).on('ajax:error', function (event, data, status, xhr) {
-			$formAlert.empty();
-			$formAlert.attr('class', '');
+			clearFormAlert();
 			$formAlert.addClass('alert ' + data.responseJSON.color);
 			$errorMessageStrong = $('<strong/>');
 			$errorMessageStrong.text(data.responseJSON.notice);
@@ -291,25 +304,17 @@ $(document).ready(function () {
 					$schemesTable.load();
 				}
 			});
-		// 	var showId = element.dataset.showId;
-		// 	$('#scheme_show_id').val(showId);
-		// 	if (showId == null) {
-		// 		$('.form-group').children().attr('disabled', 'disabled');
-		// 	} else {
-		// 		$('.form-group').children().attr('disabled', false);
-		// 	}
-		// 	$showsPanel.children('.btn').removeClass('btn-primary');
-		// 	$(element).addClass('btn-primary');
 		});
 
 		// Action buttons on Display Board
 		$schemesBoard.on('click', '.action', function (event) {
-			$formAlert.empty();
-			$formAlert.attr('class', '');	
+			clearFormAlert();
 			var id = event.target.dataset.id;
 			var classesList = event.target.classList;
 			var action, responseData;
 			var url = 'schemes/' + id;
+
+			// Determine action and URL
 			for (var i = 0; i < classesList.length; i ++) {
 				if (classesList[i] == 'edit') {
 					action = 'edit';
@@ -317,6 +322,8 @@ $(document).ready(function () {
 					$schemeUpdateButton.attr('data-id', id);
 				};
 			};
+
+			// Switch case for action
 			switch (action) {
 				case 'edit':
 					responseData = getSchemeData(url, constructEditForm);

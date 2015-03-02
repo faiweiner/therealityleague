@@ -1,8 +1,6 @@
 %h4= @form_header
 = form_for(@scheme, remote: true) do |f|
 	#form_alert
-	.form-group.field
-		= f.number_field :show_id, id: "scheme_show_id", class: "form-control hidden", value: ""
 	.form-group.field#scheme_form_type
 		= f.label :type
 		%br/
@@ -40,4 +38,4 @@
 		.actions
 			.btn.btn-md.btn-default.submit-btn{type: "button", name: "create", method: "POST", action: :create, id: "new_scheme_submit"} Create scheme
 			.btn.btn-md.btn-default.update-btn{type: "button", name: "update", method: "PATCH", action: :update, id: "update_scheme_submit", style: "display:none"} Update scheme
-			.btn.btn-md.btn-default.cancel-btn{type: "button", name: "cancel", method: "GET", action: :new, id: "clear_scheme_form"} Cancel
+			.btn.btn-md.btn-default.cancel-btn{type: "button", name: "cancel", method: "GET", action: :cancel, id: "clear_scheme_form"} Cancel

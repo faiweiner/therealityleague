@@ -1,5 +1,6 @@
 class SchemesController < ApplicationController
 	layout "admin"
+
 	def index
 		@form_header = "New Scheme"
 		@shows = Show.all.order(name: :asc)	
@@ -55,9 +56,10 @@ class SchemesController < ApplicationController
 	def edit
 		@form_header = "Update Scheme"
 		scheme = Scheme.find(params[:id])
+		shows = Show.all
 		scheme_shows = {}
 
-		scheme.shows.each_with_index do |show, i| 
+		shows.each_with_index do |show, i| 
 			scheme_shows[i] = {}
 			scheme_shows[i][:id] = show.id
 			if scheme.shows.include? show
@@ -78,13 +80,10 @@ class SchemesController < ApplicationController
 		end
 	end
 
-	def method_name
-		
-	end
-
 	def update
 		@scheme = Scheme.find(params[:id])
 		shows = Show.all
+		show_ids = shows.pluck(:id)
 		scheme_shows = {}
 
 		shows.each_with_index do |show, i| 
@@ -94,14 +93,6 @@ class SchemesController < ApplicationController
 				scheme_shows[i][:include] = true
 			else
 				scheme_shows[i][:include] = false
-			end
-		end
-
-		if params[:showIdsList] 
-			show_ids_list = params[:showIdsList] 
-			show_ids_list.each do |show_id|
-				show = Show.find(show_id)
-				scheme.shows << show unless scheme.shows.include? show
 			end
 		end
 
@@ -141,6 +132,26 @@ class SchemesController < ApplicationController
 				}
 			end	
 		end
+	end
+
+	def assign
+		@scheme = Scheme.find(params[:id])
+		@scheme.assign_shows(params[:showIdsList])
+		shows = @scheme.shows.pluck(:id)
+		flash[:notice] = "Success"
+		flash[:color] = "alert alert-success"
+		status = 200
+		respond_to do |format|
+			format.json {
+				render :json => {
+					:scheme => @scheme,
+					:type => @scheme.type,
+					:shows => shows,
+					:notice => flash[:notice],
+					:color => flash[:color]
+				}, :status => status
+			}
+		end	
 	end
 
 	def from_show
