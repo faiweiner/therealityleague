@@ -8,7 +8,6 @@
 #  points_asgn :integer
 #  created_at  :datetime
 #  updated_at  :datetime
-#  show_id     :integer
 #
 
 class Scheme < ActiveRecord::Base
@@ -50,8 +49,6 @@ class Scheme < ActiveRecord::Base
 		end
 		nonlinked_shows.each {|show| self.shows.delete(show)}
 		linked_shows.each {|show| self.shows << show unless self.shows.include? show}
-
-		self.show_id = nil
 	end
 
 	private

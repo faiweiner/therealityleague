@@ -8,7 +8,6 @@
 #  points_asgn :integer
 #  created_at  :datetime
 #  updated_at  :datetime
-#  show_id     :integer
 #
 
 class Survival < Scheme
