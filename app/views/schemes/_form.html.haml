@@ -7,22 +7,16 @@
 		= select_tag :type, options_for_select(Scheme.select_type), {name: "type_select", id: "scheme_type_dropdown", class: "form-control", placeholder: "Select a type"}
 		#scheme_type_value_area
 			= f.text_field :type, placeholder: "Input new scheme type", name: "type_text", id: "scheme_type_input", class: "form-control hidden"
-			%p.well.well-sm#scheme_type_value{style: "display:none"}
-				Hihi
 	.form-group.field
 		= f.label :description
 		%br/
 		#scheme_description_value_area
 			= f.text_area :description,  name: "scheme[description]", id: "scheme_description_input", class: "form-control"
-			%p.well.well-sm#scheme_description_value{style: "display:none"}
-				Hihi
 	.form-group.field
 		= f.label :points_asgn, "Points assignment"
 		%br/
 		#scheme_points_asgn_value_area
 			= f.number_field :points_asgn, name: "scheme[points_asgn]", id: "scheme_points_asgn_input", class: "form-control", placeholder: 0
-			%p.well.well-sm#scheme_points_asgn_value{style: "display:none"}
-				Hihi
 	.form-group.field
 		.col-lg-12#scheme_shows
 			.row
@@ -34,6 +28,15 @@
 					%br/
 			.row
 				%br/
+	.form-group.field
+		.col-lg-12#scheme_events
+			.row
+				= label_tag :scheme_events, "Events"
+			.row#events_list
+				- @scheme.events.each do |event|
+					= check_box_tag :scheme_events, event.id, false, {class: "checkbox_event", "data-scheme-id" => @scheme.id, "data-event-id" => event.id}
+					= event.id
+					%br/
 	.form-group
 		.actions
 			.btn.btn-md.btn-default.submit-btn{type: "button", name: "create", method: "POST", action: :create, id: "new_scheme_submit"} Create scheme
