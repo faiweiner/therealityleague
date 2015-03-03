@@ -53,6 +53,8 @@ $(document).ready(function () {
 				var $checkbox = $(showsList[i]);
 				$checkbox.prop("checked", false);
 			};
+			$formFields.find('.submit-btn').toggle();
+			$formFields.find('.update-btn').toggle();
 		};
 
 		var clearFormAlert = function () {
@@ -180,16 +182,14 @@ $(document).ready(function () {
 					showIdsList: showIdsList
 				}
 
-				$formAlert.empty();
-				$formAlert.attr('class', '');
+				clearFormAlert();
 				$formAlert.addClass('alert ' + response.color);
 				$formAlert.text(response.notice);
 				$schemesBoard.empty().html(response.schemeList);
 
 				// assignScheme(dataPackage);
 			}).error( function (response) {
-				$formAlert.empty();
-				$formAlert.attr('class', '');
+				clearFormAlert();
 				$formAlert.addClass('alert ' + response.responseJSON.color);
 				$errorMessageStrong = $('<strong/>');
 				$errorMessageStrong.text(response.responseJSON.notice);
@@ -208,18 +208,18 @@ $(document).ready(function () {
 				type: 'PATCH',
 				data: data,
 				success: function (response) {
-					$formAlert.empty();
-					$formAlert.attr('class', '');
+					clearForm();
+					clearFormAlert();
 					$formAlert.addClass('alert ' + response.color);
 					$formAlert.text(response.notice);
 				}, 
 				error: function (data) {
-					$formAlert.empty();
-					$formAlert.attr('class', '');
+					clearFormAlert();
 					$formAlert.addClass('alert ' + data.responseJSON.color);
 					$formAlert.text(data.responseJSON.notice);					
 				}
-				
+			}).done( function (response) {
+				console.log(response);
 			});
 		};
 

@@ -50,7 +50,6 @@ body {
 
 h1, h2, h3, h4, h5, h6, a.navbar-brand, th {
 	font-family: verdana, cursive;
-	margin-top: 5;
 }
 
 p, ol, ul, td {
@@ -358,6 +357,7 @@ input.form-control.input-small {
 
 .navbar.navbar-default {
 	background-color: #003034;
+	border-radius: 0;
 	border: none;
 	.navbar-nav > li > a {
 		color: white;
