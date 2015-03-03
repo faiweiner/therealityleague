@@ -118,7 +118,7 @@ class ApplicationController < ActionController::Base
 
 	# for AJAX requests only
 	def schemes_list
-		schemes = Scheme.where(:show_id => params[:show_id])
+		schemes = Scheme.all.shows.where(:id => params[:show_id])
 		schemes_list = []
 		scheme_types_list = []
 		schemes.each do |scheme|
@@ -147,7 +147,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def get_schemes(show)
-		show_schemes = Scheme.where(show_id: show.id)
+		show_schemes = show.schemes
 		if show_schemes.any?
 			show_schemes.each do |scheme|
 				unless show.schemes.include? scheme
