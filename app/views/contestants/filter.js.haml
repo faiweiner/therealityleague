@@ -1,0 +1,3 @@
+- if params[:season]
+  :plain
+    $('#print-view').html("#{escape_javascript(render 'index', locals: { contestants: @contestants })}");
