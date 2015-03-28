@@ -1,20 +1,16 @@
-%h3
-	= @season.name
-	Contestants
-	= link_to "Season User View", season_path(@season.id), class: "btn btn-default btn-sm"
-	= link_to "Select Contestant", statuses_path(@season.id), class: "btn btn-default btn-sm"
-#season_id.invisible= @season.id
+.row#batch-buttons
+	.col-lg-12
+		- @count.times.with_index do |i|
+			.btn.btn-sm.btn-default{"data-batch" => i}
+				= i+1
 .row
-	.panel-body
+	.col-lg-12
 		%table#contestants.table.table-hover
 			%thead
 				%tr
 					%th.col-lg-1 Image
-					%th Name
-					%th Age
-					%th Gender
-					%th Occupation
-					%th Description
+					%th.col-lg-2 Name
+					%th.col-lg-4 Seasons
 					%th Actions
 			%tbody
 				- @contestants.each do |contestant|
@@ -25,18 +21,9 @@
 							%span{"data-name" => "name", "data-pk" => contestant.id}
 								= contestant.name
 						%td
-							%span{"data-name" => "age", "data-pk" => contestant.id}
-								= contestant.age
+							%span{"data-name" => "name", "data-pk" => contestant.id}
+								- contestant.seasons.order(premiere_date: :desc).each do |season|
+									.row
+										= season.full_name
 						%td
-							%span{"data-name" => "gender", "data-pk" => contestant.id}
-								= contestant.gender
-						%td
-							%span{"data-name" => "occupation", "data-pk" => contestant.id}
-								= contestant.occupation
-						%td
-							%span{"data-name" => "description", "data-pk" => contestant.id}
-								= contestant.description
-						%td
-							%button.btn.btn-default.btn-sm.edit Edit Info
-							%button.btn.btn-default.btn-sm.status Mark Status
-.panel-body
+							%button.btn.btn-default.btn-sm.edit-btn Edit Info

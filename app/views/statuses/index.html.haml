@@ -1,12 +1,12 @@
-.panel.panel-default
-	.panel-body
-		%table.table.table-hover
-			%theader
-				%th
-				%th Name
-			%tbody				
-				- @contestants.each do |contestant|
-					%tr
-						%td
-						%td= contestant.name
-		
+#manage-statuses
+	%h2 Manage Contestants
+	.col-lg-3
+		#contestant-form#contestants
+			= render partial: "/contestants/form"
+	.col-lg-9
+		#statuses-action-alert{class: flash[:color]}
+			= flash[:notice]
+		#filter-panel
+			= render partial: "filter"
+		#contestant-board
+			= render partial: "/contestants/display", locals: { contestants: @contestants}

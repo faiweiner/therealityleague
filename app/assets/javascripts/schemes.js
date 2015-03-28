@@ -57,11 +57,6 @@ $(document).ready(function () {
 			$formFields.find('.update-btn').toggle();
 		};
 
-		var clearFormAlert = function () {
-			$formAlert.empty();
-			$formAlert.attr('class', '');	
-		};
-
 		// Populate form with response data
 		var baseFormConstruction = function (response) {
 			$formGroups = $schemeForm.find('.form-group');
@@ -182,14 +177,14 @@ $(document).ready(function () {
 					showIdsList: showIdsList
 				}
 
-				clearFormAlert();
+				clearFormAlert($formAlert);
 				$formAlert.addClass('alert ' + response.color);
 				$formAlert.text(response.notice);
 				$schemesBoard.empty().html(response.schemeList);
 
 				// assignScheme(dataPackage);
 			}).error( function (response) {
-				clearFormAlert();
+				clearFormAlert($formAlert);
 				$formAlert.addClass('alert ' + response.responseJSON.color);
 				$errorMessageStrong = $('<strong/>');
 				$errorMessageStrong.text(response.responseJSON.notice);
@@ -209,12 +204,12 @@ $(document).ready(function () {
 				data: data,
 				success: function (response) {
 					clearForm();
-					clearFormAlert();
+					clearFormAlert($formAlert);
 					$formAlert.addClass('alert ' + response.color);
 					$formAlert.text(response.notice);
 				}, 
 				error: function (data) {
-					clearFormAlert();
+					clearFormAlert($formAlert);
 					$formAlert.addClass('alert ' + data.responseJSON.color);
 					$formAlert.text(data.responseJSON.notice);					
 				}
@@ -262,7 +257,7 @@ $(document).ready(function () {
 
 		// Action for Form
 		$schemeForm.on('click', '.actions', function (event) {
-			clearFormAlert();
+			clearFormAlert($formAlert);
 			var action = $(event.target).attr('action');
 			switch (action) {
 				case 'create':
@@ -280,11 +275,11 @@ $(document).ready(function () {
 			}
 		}).on('click', '.clear', function (event) {
 		}).on('ajax:success', function (event, data, status, xhr) {
-			clearFormAlert();
+			clearFormAlert($formAlert);
 			$formAlert.addClass('alert ' + data.color);
 			$formAlert.text(data.notice);
 		}).on('ajax:error', function (event, data, status, xhr) {
-			clearFormAlert();
+			clearFormAlert($formAlert);
 			$formAlert.addClass('alert ' + data.responseJSON.color);
 			$errorMessageStrong = $('<strong/>');
 			$errorMessageStrong.text(data.responseJSON.notice);
@@ -315,7 +310,7 @@ $(document).ready(function () {
 
 		// Action buttons on Display Board
 		$schemesBoard.on('click', '.action', function (event) {
-			clearFormAlert();
+			clearFormAlert($formAlert);
 			var id = event.target.dataset.id;
 			var classesList = event.target.classList;
 			var action, responseData;

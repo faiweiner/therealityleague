@@ -3,10 +3,13 @@ class StatusesController < ApplicationController
 	layout "admin"
 
 	def index
-		@contestants = Contestant.all
+		@seasons = Season.where(expired: false)
+		@count = 0
+		@contestants = Contestant.all.order(name: :asc)
+		@contestant = Contestant.new
+		@status = Status.new
 	end
 
 	def new
-		
 	end
 end

@@ -54,7 +54,11 @@ $(document).ready(function () {
 
 		}
 	};
-	
+	var clearFormAlert = function (jQUERYelement) {	
+		jQUERYelement.empty()
+		jQUERYelement.attr('class', '');	
+	};
+
 	if ($('#feedbackBox')) {
 		$('#new_message').submit(function (e) {
 			var formData = $(this).serializeArray();

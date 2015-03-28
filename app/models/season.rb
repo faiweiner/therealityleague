@@ -33,6 +33,11 @@ class Season < ActiveRecord::Base
 	validates :name, :presence => true, :on => :create
 	validates :premiere_date, :presence => true, :on => :create
 
+	def full_name
+		show_name = self.show.name
+		full_name = "#{show_name}: #{self.name}"
+	end
+
 	private
 	
 	def self.top_three
@@ -41,6 +46,11 @@ class Season < ActiveRecord::Base
 		Season.where(expired: false).order("premiere_date ASC").last(3)
 	end
 
+	def self.seasons_list
+		# This model method is for populating Create League's drop-down menu
+		@seasons_list = Season.uniq.order("name ASC").each.map {|s| [s.name, s.id] }
+		@seasons_list.unshift(["All Seasons", "All"])
+	end
 	def self.select_season
 		# This model method is for populating Create League's drop-down menu
 		@seasons_list = Season.where(expired: false).each.map {|s| [s.name, s.id]}
